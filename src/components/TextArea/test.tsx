@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 
@@ -35,7 +35,10 @@ describe('<TextArea />', () => {
 
     const input = screen.getByRole('textbox')
     const text = 'This is my new text'
-    userEvent.type(input, text)
+
+    act(() => {
+      userEvent.type(input, text)
+    })
 
     await waitFor(() => {
       expect(input).toHaveValue(text)
@@ -59,7 +62,10 @@ describe('<TextArea />', () => {
     expect(input).toBeDisabled()
 
     const text = 'This is my new text'
-    userEvent.type(input, text)
+
+    act(() => {
+      userEvent.type(input, text)
+    })
 
     await waitFor(() => {
       expect(input).not.toHaveValue(text)
@@ -83,7 +89,10 @@ describe('<TextArea />', () => {
     const input = screen.getByLabelText('TextArea')
     expect(document.body).toHaveFocus()
 
-    userEvent.tab()
+    act(() => {
+      userEvent.tab()
+    })
+
     expect(input).toHaveFocus()
   })
 
@@ -93,7 +102,10 @@ describe('<TextArea />', () => {
     const input = screen.getByLabelText('TextArea')
     expect(document.body).toHaveFocus()
 
-    userEvent.tab()
+    act(() => {
+      userEvent.tab()
+    })
+
     expect(input).not.toHaveFocus()
   })
 })

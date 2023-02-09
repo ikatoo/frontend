@@ -2,7 +2,7 @@ import userEvent from '@testing-library/user-event'
 import { Email } from '@styled-icons/material-outlined'
 
 import TextField from '.'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
 
 describe('<TextField />', () => {
@@ -54,7 +54,10 @@ describe('<TextField />', () => {
 
     const input = screen.getByRole('textbox')
     const text = 'This is my new text'
-    userEvent.type(input, text)
+
+    act(() => {
+      userEvent.type(input, text)
+    })
 
     await waitFor(() => {
       expect(input).toHaveValue(text)
@@ -78,7 +81,10 @@ describe('<TextField />', () => {
     expect(input).toBeDisabled()
 
     const text = 'This is my new text'
-    userEvent.type(input, text)
+
+    act(() => {
+      userEvent.type(input, text)
+    })
 
     await waitFor(() => {
       expect(input).not.toHaveValue(text)
@@ -107,7 +113,10 @@ describe('<TextField />', () => {
     const input = screen.getByLabelText('TextField')
     expect(document.body).toHaveFocus()
 
-    userEvent.tab()
+    act(() => {
+      userEvent.tab()
+    })
+
     expect(input).toHaveFocus()
   })
 
@@ -117,7 +126,10 @@ describe('<TextField />', () => {
     const input = screen.getByLabelText('TextField')
     expect(document.body).toHaveFocus()
 
-    userEvent.tab()
+    act(() => {
+      userEvent.tab()
+    })
+
     expect(input).not.toHaveFocus()
   })
 })

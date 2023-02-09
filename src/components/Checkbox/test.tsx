@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 
@@ -7,14 +7,12 @@ import theme from '../../theme'
 
 describe('<Checkbox />', () => {
   it('should render with label', () => {
-    const { container } = render(
-      <Checkbox label="checkbox label" labelFor="check" />
-    )
+    render(<Checkbox label="checkbox label" labelFor="check" />)
 
     expect(screen.getByRole('checkbox')).toBeInTheDocument()
     expect(screen.getByLabelText(/checkbox label/i)).toBeInTheDocument()
     expect(screen.getByText(/checkbox label/i)).toHaveAttribute('for', 'check')
-    expect(container.firstChild).toMatchSnapshot()
+    expect(screen).toMatchSnapshot()
   })
 
   it('should render without label', () => {
@@ -40,7 +38,10 @@ describe('<Checkbox />', () => {
 
     expect(onCheck).not.toHaveBeenCalled()
 
-    userEvent.click(screen.getByRole('checkbox'))
+    act(() => {
+      userEvent.click(screen.getByRole('checkbox'))
+    })
+
     await waitFor(() => {
       expect(onCheck).toHaveBeenCalledTimes(1)
     })
@@ -52,7 +53,10 @@ describe('<Checkbox />', () => {
 
     render(<Checkbox label="Checkbox" onCheck={onCheck} isChecked />)
 
-    userEvent.click(screen.getByRole('checkbox'))
+    act(() => {
+      userEvent.click(screen.getByRole('checkbox'))
+    })
+
     await waitFor(() => {
       expect(onCheck).toHaveBeenCalledTimes(1)
     })
@@ -64,7 +68,9 @@ describe('<Checkbox />', () => {
 
     expect(document.body).toHaveFocus()
 
-    userEvent.tab()
+    act(() => {
+      userEvent.tab()
+    })
 
     expect(screen.getByLabelText(/checkbox/i)).toHaveFocus()
   })
