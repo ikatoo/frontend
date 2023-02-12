@@ -40,5 +40,8 @@ export default {
     const { data } = await api.get<AboutPageServiceType>('/about')
 
     return data
+  },
+  delete: async () => {
+    await api.delete('/about')
   }
 }
