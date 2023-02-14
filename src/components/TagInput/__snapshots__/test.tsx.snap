@@ -1,0 +1,92 @@
+// Vitest Snapshot v1
+
+exports[`<TagInput /> > Renders with error 1`] = `
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: #e5e7eb;
+  border-radius: 0.2rem;
+  padding: 0 0.4rem;
+  border: 0.2rem solid;
+  border-color: #e5e7eb;
+}
+
+.c4:focus-within {
+  box-shadow: 0 0 0.5rem #1e293b;
+}
+
+.c5 {
+  color: #00021f;
+  font-family: 'Oswald','Helvetica','Arial','sans-serif';
+  font-size: 0.9rem;
+  padding: 0.4rem 0;
+  padding-left: 0.4rem;
+  background: transparent;
+  border: 0;
+  outline: none;
+  width: 100%;
+}
+
+.c5:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 0.6rem #e5e7eb inset;
+  -webkit-filter: none;
+  filter: none;
+}
+
+.c5:-webkit-autofill::first-line {
+  font-family: 'Oswald','Helvetica','Arial','sans-serif';
+  font-size: 0.9rem;
+}
+
+.c2 {
+  font-size: 0.9rem;
+  color: #00021f;
+  cursor: pointer;
+}
+
+.c6 {
+  color: #ff2a2a;
+  font-size: 0.6rem;
+}
+
+.c0 .c3 {
+  border-color: #ff2a2a;
+}
+
+.c0 .c1 {
+  color: #ff2a2a;
+}
+
+<div
+  class="c0"
+>
+  <label
+    class="c1 c2"
+    for="username"
+  >
+    TagInput
+  </label>
+  <div
+    class="c3 c4"
+  >
+    <input
+      class="c5"
+      id="username"
+      name="username"
+      type="text"
+      value=""
+    />
+  </div>
+  <p
+    class="c6"
+  >
+    Error message
+  </p>
+</div>
+`
