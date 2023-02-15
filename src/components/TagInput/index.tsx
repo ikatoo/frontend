@@ -1,7 +1,7 @@
-import { InputHTMLAttributes, useEffect, useState } from 'react'
+import { InputHTMLAttributes, useState } from 'react'
 
-import Styles from './styles'
 import { Close } from '@styled-icons/material-outlined'
+import Styles from './styles'
 
 export type TagInputProps = {
   onInputChange?: (value: string) => void
@@ -24,17 +24,13 @@ const TagInput = ({
   ...props
 }: TagInputProps) => {
   const [tags, setTags] = useState(initialValue)
-  const [newTag, setNewTag] = useState('')
-
-  useEffect(() => {
-    setTags(initialValue)
-  }, [initialValue])
+  const [inputValue, setInputValue] = useState('')
 
   const addTag = (tag: string) => {
     if (tag.length && !tags.includes(tag)) {
       setTags([...tags, tag])
     }
-    setNewTag('')
+    setInputValue('')
   }
 
   const removeTag = (tag: string) => {
@@ -43,7 +39,7 @@ const TagInput = ({
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget.value
-    setNewTag(newValue)
+    setInputValue(newValue)
     if (newValue.endsWith(',')) {
       addTag(newValue.split(',')[0])
     }
@@ -78,7 +74,7 @@ const TagInput = ({
           type="text"
           onChange={onChange}
           onKeyUp={onKeyUp}
-          value={newTag}
+          value={inputValue}
           disabled={disabled}
           name={name}
           {...(label ? { id: name } : {})}
