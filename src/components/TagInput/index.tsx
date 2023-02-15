@@ -48,8 +48,9 @@ const TagInput = ({
   }
 
   const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key.toLowerCase() === 'backspace' && !newTag.length) {
-      // removeLastTag()
+    if (e.key.toLowerCase() === 'backspace' && !inputValue.length) {
+      const lastValue = tags.pop()
+      lastValue && removeTag(lastValue)
     }
   }
 
@@ -64,7 +65,7 @@ const TagInput = ({
         <Styles.TagsWrapper>
           {tags.length > 0 &&
             tags.map((tag) => (
-              <Styles.Tag key={tag}>
+              <Styles.Tag data-testid="tag-test-id" key={tag}>
                 {tag}
                 <Close onClick={() => removeTag(tag)} size={15} />
               </Styles.Tag>

@@ -121,4 +121,22 @@ describe('<TagInput />', () => {
       color: ${theme.colors.lightGray};
     `)
   })
+
+  it('When typing backspace and input is empty, remove the last tag', () => {
+    render(<TagInput label="TagInput" name="TagInput" />)
+    const input = screen.getByLabelText('TagInput')
+    const lastTag = 'last skill'
+
+    userEvent.type(input, 'skill 1,')
+    userEvent.type(input, 'skill 2,')
+    userEvent.type(input, `${lastTag},`)
+
+    const tags = screen.getAllByTestId('tag-test-id')
+    expect(tags).toHaveLength(3)
+
+    userEvent.type(input, '{backspace}')
+
+    const tagsBefore = screen.getAllByTestId('tag-test-id')
+    expect(tagsBefore).toHaveLength(2)
+  })
 })
