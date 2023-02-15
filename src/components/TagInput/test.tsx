@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import TagInput from '.'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
+import theme from '../../theme'
 
 describe('<TagInput />', () => {
   it('Renders with Label', () => {
@@ -26,11 +27,7 @@ describe('<TagInput />', () => {
   it('Changes its value when typing', async () => {
     const onInputChange = vi.fn()
     render(
-      <TagInput
-        onInputChange={onInputChange}
-        label="TagInput"
-        name="TagInput"
-      />
+      <TagInput onInputChange={onInputChange} label="Skills" name="skills" />
     )
 
     const input = screen.getByRole('textbox')
@@ -112,12 +109,16 @@ describe('<TagInput />', () => {
   it('When typing comma circul the text with gray background up to previous comma', () => {
     render(<TagInput label="TagInput" name="TagInput" />)
     const input = screen.getByLabelText('TagInput')
+    const text = 'skill typed'
 
-    act(() => {
-      input.focus()
-    })
-    expect(input).toHaveFocus()
+    userEvent.type(input, `${text},`)
 
-    userEvent.type(input, 'skill typed,')
+    const tag = screen.getByText(text)
+
+    expect(tag).toBeInTheDocument()
+    expect(tag).toHaveStyle(`
+      background-color: ${theme.colors.gray};
+      color: ${theme.colors.lightGray};
+    `)
   })
 })
