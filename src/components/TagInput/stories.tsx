@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import TagInput from '.'
 
@@ -8,19 +8,19 @@ export default {
   args: {
     label: 'Skills',
     name: 'skills',
-    initialValue: '',
+    initialValue: ['um', '2', 'tres'],
     placeholder: 'skill1',
     disabled: false
   }
-} as ComponentMeta<typeof TagInput>
+} as Meta<typeof TagInput>
 
-export const Default: ComponentStory<typeof TagInput> = (args) => (
+export const Default: StoryFn<typeof TagInput> = (args) => (
   <div style={{ maxWidth: 300, padding: 15 }}>
     <TagInput {...args} />
   </div>
 )
 
-export const withError: ComponentStory<typeof TagInput> = (args) => (
+export const withError: StoryFn<typeof TagInput> = (args) => (
   <div style={{ maxWidth: 300, padding: 15 }}>
     <TagInput {...args} />
   </div>

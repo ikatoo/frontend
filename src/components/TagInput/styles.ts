@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components'
 
 import { TagInputProps } from '.'
 import theme from '../../theme'
+import tw from 'tailwind-styled-components/dist/tailwind'
 
 type LabelProps = Pick<TagInputProps, 'labelColor'>
 
@@ -10,6 +11,7 @@ type WrapperProps = Pick<TagInputProps, 'disabled'> & { error?: boolean }
 const InputWrapper = styled.div`
   ${() => css`
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     background: ${theme.colors.lightGray};
     border-radius: 0.2rem;
@@ -32,7 +34,13 @@ const Input = styled.input`
   background: transparent;
   border: 0;
   outline: none;
-  width: 100%;
+  max-width: 5rem;
+  margin: 0.2rem;
+  border-style: dashed;
+  border-width: thin;
+  border-radius: ${theme.border.radius};
+  border-color: transparent;
+
   &:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 ${theme.spacings.small} ${theme.colors.lightGray}
       inset;
@@ -41,6 +49,10 @@ const Input = styled.input`
       font-family: ${theme.font.family};
       font-size: ${theme.font.sizes.large};
     }
+  }
+
+  &:focus {
+    border-color: ${theme.colors.gray};
   }
 `
 
@@ -82,6 +94,25 @@ const wrapperModifiers = {
   `
 }
 
+const TagsWrapper = tw.div`
+  flex
+  flex-wrap
+  gap-1
+`
+
+const Tag = styled.div`
+  display: flex;
+  padding: 0.3rem;
+  background-color: ${theme.colors.gray};
+  color: ${theme.colors.lightGray};
+  border-radius: ${theme.border.radius};
+
+  svg {
+    margin: auto;
+    padding-left: 0.2rem;
+  }
+`
+
 const Wrapper = styled.div<WrapperProps>`
   ${({ error, disabled }) => css`
     ${error && wrapperModifiers.error()}
@@ -94,5 +125,7 @@ export default {
   Error,
   Label,
   Input,
-  InputWrapper
+  InputWrapper,
+  TagsWrapper,
+  Tag
 }
