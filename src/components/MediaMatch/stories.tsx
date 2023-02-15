@@ -1,16 +1,16 @@
-import { ComponentMeta, ComponentStory, Parameters } from '@storybook/react'
+import { Meta, StoryFn, Parameters } from '@storybook/react'
 import MediaMatch from '.'
 
 export default {
   title: 'Components/MediaMatch',
   component: MediaMatch
-} as ComponentMeta<typeof MediaMatch>
+} as Meta<typeof MediaMatch>
 
-export const Desktop: ComponentStory<typeof MediaMatch> = () => (
+export const Desktop: StoryFn<typeof MediaMatch> = () => (
   <MediaMatch greaterThan="md">Only on Desktop</MediaMatch>
 )
 
-export const Mobile: ComponentStory<typeof MediaMatch> = () => (
+export const Mobile: StoryFn<typeof MediaMatch> = () => (
   <MediaMatch lessThan="md">Only on Mobile</MediaMatch>
 )
 Mobile.parameters = {

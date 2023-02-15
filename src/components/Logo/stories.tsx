@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import Logo from '.'
@@ -13,6 +13,6 @@ export default {
       </MemoryRouter>
     )
   ]
-} as ComponentMeta<typeof Logo>
+} as Meta<typeof Logo>
 
-export const Default = {} as ComponentStory<typeof Logo>
+export const Default = {} as StoryFn<typeof Logo>

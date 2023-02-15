@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 
 import Card from '.'
 import { mockProjects } from '../../pages/Projects/mock'
@@ -10,7 +10,7 @@ export default {
     ...mockProjects[1].description,
     image: mockProjects[1].snapshot
   }
-} as ComponentMeta<typeof Card>
+} as Meta<typeof Card>
 
-export const Default = {} as ComponentStory<typeof Card>
+export const Default = {} as StoryFn<typeof Card>
 Default.decorators = [(Story) => <div className="max-w-sm">{Story()}</div>]

@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import { Skills } from '.'
 
 export default {
@@ -9,6 +9,6 @@ export default {
       <div className="bg-mck_black_light text-mck_gray_light">{Story()}</div>
     )
   ]
-} as ComponentMeta<typeof Skills>
+} as Meta<typeof Skills>
 
-export const Default = {} as ComponentStory<typeof Skills>
+export const Default = {} as StoryFn<typeof Skills>

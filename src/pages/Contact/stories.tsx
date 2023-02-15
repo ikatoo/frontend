@@ -1,10 +1,10 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import { Contact } from '.'
 
 export default {
   title: 'Pages/Contact',
   component: Contact,
   decorators: [(Story) => <div className="bg-mck_black_light">{Story()}</div>]
-} as ComponentMeta<typeof Contact>
+} as Meta<typeof Contact>
 
-export const Default = {} as ComponentStory<typeof Contact>
+export const Default = {} as StoryFn<typeof Contact>

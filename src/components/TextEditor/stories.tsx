@@ -1,13 +1,13 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import { useState } from 'react'
 import TextEditor from '.'
 
 export default {
   title: 'Components/TextEditor',
   component: TextEditor
-} as ComponentMeta<typeof TextEditor>
+} as Meta<typeof TextEditor>
 
-export const Default: ComponentStory<typeof TextEditor> = () => {
+export const Default: StoryFn<typeof TextEditor> = () => {
   const [data, setData] = useState('')
   return (
     <div className="w-full grid">

@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import TextArea from '.'
 
 export default {
@@ -11,15 +11,15 @@ export default {
     placeholder: 'john.cage@gmail.com',
     disabled: false
   }
-} as ComponentMeta<typeof TextArea>
+} as Meta<typeof TextArea>
 
-export const Default: ComponentStory<typeof TextArea> = (args) => (
+export const Default: StoryFn<typeof TextArea> = (args) => (
   <div className="w-full p-15">
     <TextArea {...args} />
   </div>
 )
 
-export const withError: ComponentStory<typeof TextArea> = (args) => (
+export const withError: StoryFn<typeof TextArea> = (args) => (
   <div className="w-80 p-15">
     <TextArea {...args} />
   </div>
@@ -28,7 +28,7 @@ withError.args = {
   error: 'Ops...something is wrong'
 }
 
-export const WhiteLabel: ComponentStory<typeof TextArea> = (args) => (
+export const WhiteLabel: StoryFn<typeof TextArea> = (args) => (
   <div className="w-80 p-15">
     <TextArea {...args} />
   </div>

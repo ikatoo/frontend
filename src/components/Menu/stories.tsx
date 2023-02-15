@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory, Parameters } from '@storybook/react'
+import { Meta, StoryFn, Parameters } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import Menu from '.'
@@ -11,13 +11,13 @@ export default {
   decorators: [
     (Story) => <MemoryRouter initialEntries={['/']}>{Story()}</MemoryRouter>
   ]
-} as ComponentMeta<typeof Menu>
+} as Meta<typeof Menu>
 
-export const Default = {} as ComponentStory<typeof Menu>
+export const Default = {} as StoryFn<typeof Menu>
 export const Mobile = {
   parameters: {
     viewport: {
       defaultViewport: 'mobile2'
     }
   } as Parameters
-} as ComponentStory<typeof Menu>
+} as StoryFn<typeof Menu>

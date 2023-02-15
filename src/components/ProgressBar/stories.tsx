@@ -1,18 +1,18 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Meta, StoryFn } from '@storybook/react'
 import ProgressBar from '.'
 
 export default {
   title: 'Components/ProgressBar',
   component: ProgressBar
-} as ComponentMeta<typeof ProgressBar>
+} as Meta<typeof ProgressBar>
 
-export const Default: ComponentStory<typeof ProgressBar> = (args) => (
+export const Default: StoryFn<typeof ProgressBar> = (args) => (
   <div className="w-48 h-24 bg-mck_black_light">
     <ProgressBar {...args} />
   </div>
 )
 
-export const Animated: ComponentStory<typeof ProgressBar> = (args) => (
+export const Animated: StoryFn<typeof ProgressBar> = (args) => (
   <div className="w-48 h-24 bg-mck_black_light">
     <ProgressBar {...args} />
   </div>
