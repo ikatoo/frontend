@@ -139,4 +139,26 @@ describe('<TagInput />', () => {
     const tagsBefore = screen.getAllByTestId('tag-test-id')
     expect(tagsBefore).toHaveLength(2)
   })
+
+  it('Click for remove a tag', () => {
+    render(<TagInput label="TagInput" name="TagInput" />)
+    const input = screen.getByLabelText('TagInput')
+    const tagForRemove = 'remove skill'
+
+    userEvent.type(input, 'skill 1,')
+    userEvent.type(input, `${tagForRemove},`)
+    userEvent.type(input, 'skill 3,')
+
+    const tags = screen.getAllByTestId('tag-test-id')
+    expect(tags).toHaveLength(3)
+
+    const tagElementForRemove = screen.getByText(tagForRemove)
+    const closeElement = tagElementForRemove.querySelector('svg')
+
+    !!closeElement && userEvent.click(closeElement)
+
+    const tagsBefore = screen.getAllByTestId('tag-test-id')
+    expect(tagsBefore).toHaveLength(2)
+    expect(screen.queryByText(tagForRemove)).not.toBeInTheDocument()
+  })
 })
