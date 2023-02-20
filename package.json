@@ -17,7 +17,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "prepare": "husky install",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6006 -s ../public",
     "build-storybook": "storybook build"
   },
   "dependencies": {
@@ -71,6 +71,8 @@
     "jest-styled-components": "7.1.1",
     "jsdom": "20.0.2",
     "lint-staged": "13.0.3",
+    "msw": "^0.49.3",
+    "msw-storybook-addon": "^1.7.0",
     "postcss": "8.4.17",
     "prettier": "2.7.1",
     "storybook": "^7.0.0-beta.47",
@@ -79,5 +81,8 @@
     "typescript": "^4.9.5",
     "vite": "^4.1.1",
     "vitest": "^0.28.5"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
