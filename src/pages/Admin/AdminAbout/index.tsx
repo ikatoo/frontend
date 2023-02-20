@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 
 import Button from '../../../components/Button'
-import TextEditor from '../../../components/TextEditor'
 import { FormContainer } from '../../../components/FormContainer'
+import TagInput from '../../../components/TagInput'
 import { TextContainer } from '../../../components/TextContainer'
+import TextEditor from '../../../components/TextEditor'
 import TextInput from '../../../components/TextInput'
 import { useAlert } from '../../../hooks/useAlert'
 import aboutService from '../../../services/aboutService'
 import Styles from './styles'
-import TagInput from '../../../components/TagInput'
 
 export const AdminAbout = () => {
   const { setAlert } = useAlert()
@@ -18,16 +18,20 @@ export const AdminAbout = () => {
   const [skills, setSkills] = useState<string[]>([])
   const [illustrationURL, setIllustrationURL] = useState('')
   const [illustrationALT, setIllustrationALT] = useState('')
+  const [createOrUpdate, setCreateOrUpdate] = useState<'create' | 'update'>(
+    'create'
+  )
 
   useEffect(() => {
     const getInitialData = async () => {
       const initialData = await aboutService.get()
-      if (initialData) {
+      if (Object.keys(initialData).length) {
         setTitle(initialData.title)
         setDescription(initialData.description)
         setSkills(initialData.skills.map((skill) => skill.title))
-        setIllustrationURL(initialData.illustrationURL)
-        setIllustrationALT(initialData.illustrationALT)
+        setIllustrationURL(initialData.illustrationURL ?? '')
+        setIllustrationALT(initialData.illustrationALT ?? '')
+        setCreateOrUpdate('update')
       }
     }
     getInitialData()
@@ -36,26 +40,22 @@ export const AdminAbout = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    if (!title.length) {
-      aboutService.create({
-        title,
-        description,
-        skills: skills.map((skill) => ({ title: skill })),
-        illustrationURL,
-        illustrationALT
-      })
+    const aboutPageData = {
+      title,
+      description,
+      skills: skills.map((skill) => ({ title: skill })),
+      illustrationURL,
+      illustrationALT
+    }
+
+    if (createOrUpdate === 'create') {
+      aboutService.create(aboutPageData)
       setAlert({
         title: 'Success on create about page.',
         type: 'message'
       })
     } else {
-      aboutService.update({
-        title,
-        description,
-        skills: skills.map((skill) => ({ title: skill })),
-        illustrationURL,
-        illustrationALT
-      })
+      aboutService.update(aboutPageData)
       setAlert({ title: 'Success on update about page.', type: 'message' })
     }
   }
@@ -72,7 +72,7 @@ export const AdminAbout = () => {
                 label="Título"
                 name="title"
                 placeholder="Título"
-                onBlur={(event) => setTitle(event.currentTarget.value)}
+                onInputChange={setTitle}
                 tabIndex={1}
                 autoFocus
               />
@@ -80,26 +80,25 @@ export const AdminAbout = () => {
 
             <Styles.TextWrapper>
               <TextEditor
-                initialValue={description}
+                initialValue={description || ''}
                 label="Descrição"
                 labelColor="white"
                 name="description"
                 placeholder="Descrição"
-                onChange={(value) => setDescription(value)}
+                onChange={setDescription}
                 tabIndex={2}
               />
             </Styles.TextWrapper>
 
             <TagInput
-              initialValue={skills}
+              initialTags={skills}
+              onTagsChange={setSkills}
               label="Skills"
               labelColor="white"
               name="skills"
               placeholder="Skills"
-              onBlur={(value) =>
-                setSkills([...skills, value.currentTarget.value])
-              }
               tabIndex={3}
+              autoFocus
             />
 
             <TextInput
@@ -108,7 +107,7 @@ export const AdminAbout = () => {
               label="Illustration URL"
               name="illustrationURL"
               placeholder="http://urltoyourillustration"
-              onBlur={(event) => setIllustrationURL(event.currentTarget.value)}
+              onInputChange={setIllustrationURL}
               tabIndex={4}
               autoFocus
             />
@@ -119,7 +118,7 @@ export const AdminAbout = () => {
               label="Illustration ALT"
               name="illustrationALT"
               placeholder="Brief description of the illustration."
-              onBlur={(event) => setIllustrationALT(event.currentTarget.value)}
+              onInputChange={setIllustrationALT}
               tabIndex={5}
               autoFocus
             />
