@@ -4,10 +4,10 @@ import { Close } from '@styled-icons/material-outlined'
 import Styles from './styles'
 
 export type TagInputProps = {
-  onInputChange?: (value: string) => void
+  onTagsChange: (value: string[]) => void
   label?: string
   labelColor?: 'black' | 'white'
-  initialValue?: string[]
+  initialTags?: string[]
   disabled?: boolean
   error?: string
   name: string
@@ -17,40 +17,39 @@ const TagInput = ({
   label,
   labelColor = 'black',
   name,
-  initialValue = [],
+  initialTags = [],
   error,
   disabled = false,
-  onInputChange,
+  onTagsChange,
   ...props
 }: TagInputProps) => {
-  const [tags, setTags] = useState(initialValue)
   const [inputValue, setInputValue] = useState('')
 
   const addTag = (tag: string) => {
-    if (tag.length && !tags.includes(tag)) {
-      setTags([...tags, tag])
+    if (tag.length && !initialTags.includes(tag)) {
+      onTagsChange([...initialTags, tag])
     }
     setInputValue('')
   }
 
   const removeTag = (tag: string) => {
-    setTags(tags.filter((_tag) => _tag !== tag))
+    const newTags = initialTags.filter((_tag) => _tag !== tag)
+    onTagsChange(newTags)
   }
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget.value
-    setInputValue(newValue)
     if (newValue.endsWith(',')) {
       addTag(newValue.split(',')[0])
+    } else {
+      setInputValue(newValue)
     }
-
-    !!onInputChange && onInputChange(newValue)
   }
 
-  const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key.toLowerCase() === 'backspace' && !inputValue.length) {
-      const lastValue = tags.pop()
-      lastValue && removeTag(lastValue)
+      const newValue = initialTags.slice(0, initialTags.length - 1)
+      onTagsChange(newValue)
     }
   }
 
@@ -63,8 +62,8 @@ const TagInput = ({
       )}
       <Styles.InputWrapper>
         <Styles.TagsWrapper>
-          {tags.length > 0 &&
-            tags.map((tag) => (
+          {initialTags.length > 0 &&
+            initialTags.map((tag) => (
               <Styles.Tag data-testid="tag-test-id" key={tag}>
                 {tag}
                 <Close onClick={() => removeTag(tag)} size={15} />
@@ -74,7 +73,7 @@ const TagInput = ({
         <Styles.Input
           type="text"
           onChange={onChange}
-          onKeyUp={onKeyUp}
+          onKeyDown={onKeyDown}
           value={inputValue}
           disabled={disabled}
           name={name}
