@@ -21,14 +21,7 @@ const headers = {
   }
 }
 
-const postAndPutArgs = [
-  '/about',
-  {
-    title: aboutPageMock.title,
-    description: aboutPageMock.description
-  },
-  headers
-]
+const postAndPutArgs = ['/about', aboutPageMock, headers]
 
 describe('About page fetch data', () => {
   test('should get about page data', async () => {

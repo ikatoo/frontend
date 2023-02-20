@@ -13,28 +13,11 @@ const getHeaders = () => {
 }
 
 export default {
-  create: async ({
-    title,
-    description
-  }: Omit<Partial<AboutPageServiceType>, 'id'>) => {
-    await api.post(
-      '/about',
-      {
-        title,
-        description
-      },
-      getHeaders()
-    )
+  create: async (aboutPageData: AboutPageServiceType) => {
+    await api.post('/about', aboutPageData, getHeaders())
   },
-  update: async ({ title, description }: Partial<AboutPageServiceType>) => {
-    await api.put(
-      '/about',
-      {
-        title,
-        description
-      },
-      getHeaders()
-    )
+  update: async (aboutPageData: Partial<AboutPageServiceType>) => {
+    await api.put('/about', aboutPageData, getHeaders())
   },
   get: async () => {
     const { data } = await api.get<AboutPageServiceType>('/about')
