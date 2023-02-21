@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react'
 import Card, { CardProps } from '../../components/Card'
 import ProgressBar from '../../components/ProgressBar'
 import { TextContainer } from '../../components/TextContainer'
-import { mockSkillsPageData } from './mock'
+import skillsService from '../../services/skillsService'
+import { SkillsPageServiceType } from '../../types/SkillsPage'
 import Styles from './styles'
 
 export type SkillsProps = {
@@ -20,26 +22,32 @@ export type SkillsProps = {
 }
 
 export const Skills = () => {
-  const skillsPage = mockSkillsPageData
+  const [data, setData] = useState<SkillsPageServiceType>()
 
-  const { description, title, skills, lastJobs } = skillsPage
+  useEffect(() => {
+    const getData = async () => {
+      const _data = await skillsService.get()
+      !!_data && setData(_data)
+    }
+    getData()
+  }, [])
 
   return (
     <Styles.Wrapper>
       <Styles.Text>
-        {!!title && (
-          <TextContainer title={title}>
-            <div dangerouslySetInnerHTML={{ __html: description }} />
+        {!!data?.title && (
+          <TextContainer title={data?.title}>
+            <div dangerouslySetInnerHTML={{ __html: data?.description }} />
           </TextContainer>
         )}
       </Styles.Text>
 
-      {!!(!!skills.length || !!lastJobs.length) && (
+      {!!(!!data?.skills?.length || !!data?.lastJobs?.length) && (
         <Styles.Skills>
-          {!!skills.length && (
+          {!!data?.skills.length && (
             <Styles.Progress>
               <Styles.Subtitle>Estudo</Styles.Subtitle>
-              {skills.map(({ skillTitle, rankPercent }, index) => (
+              {data?.skills.map(({ skillTitle, rankPercent }, index) => (
                 <ProgressBar
                   key={index}
                   label={skillTitle}
@@ -49,11 +57,11 @@ export const Skills = () => {
             </Styles.Progress>
           )}
 
-          {!!lastJobs.length && (
+          {!!data?.lastJobs.length && (
             <Styles.JobsWrapper>
               <Styles.Subtitle>Últimos Trabalhos</Styles.Subtitle>
               <Styles.Jobs>
-                {lastJobs.map(
+                {data?.lastJobs.map(
                   (
                     { jobTitle, jobDescription, yearMonthStart, yearMonthEnd },
                     index
