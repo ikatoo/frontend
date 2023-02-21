@@ -4,18 +4,19 @@ import { rest } from 'msw'
 import { AdminAbout } from '.'
 import { aboutPageMock } from '../../../mocks/aboutPageMock'
 import { AlertProvider } from '../../../hooks/useAlert'
+import env from '../../../helpers/env'
 
 const handlers = [
-  rest.get('/about', (_req, res, ctx) => {
+  rest.get('http://localhost:3000/about', (_req, res, ctx) => {
     return res(ctx.json({}))
   }),
-  rest.post('/about', (_req, res) => {
+  rest.post(`${env.VITE_API_URL}/about`, (_req, res) => {
     return res()
   }),
-  rest.put('/about', (_req, res) => {
+  rest.put(`${env.VITE_API_URL}/about`, (_req, res) => {
     return res()
   }),
-  rest.delete('/about', (_req, res) => {
+  rest.delete(`${env.VITE_API_URL}/about`, (_req, res) => {
     return res()
   })
 ]
@@ -42,7 +43,7 @@ export const WithInitiallData = {
   parameters: {
     msw: {
       handlers: [
-        rest.get('/about', (_req, res, ctx) => {
+        rest.get(`${env.VITE_API_URL}/about`, (_req, res, ctx) => {
           return res(ctx.json(aboutPageMock))
         }),
         ...handlers
