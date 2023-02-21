@@ -7,17 +7,17 @@ import { AlertProvider } from '../../../hooks/useAlert'
 import env from '../../../helpers/env'
 
 const handlers = [
-  rest.get('http://localhost:3000/about', (_req, res, ctx) => {
-    return res(ctx.json({}))
+  rest.get(`${env.VITE_API_URL}/about`, (_req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({}))
   }),
-  rest.post(`${env.VITE_API_URL}/about`, (_req, res) => {
-    return res()
+  rest.post(`${env.VITE_API_URL}/about`, (_req, res, ctx) => {
+    return res(ctx.status(201))
   }),
-  rest.put(`${env.VITE_API_URL}/about`, (_req, res) => {
-    return res()
+  rest.put(`${env.VITE_API_URL}/about`, (_req, res, ctx) => {
+    return res(ctx.status(204))
   }),
-  rest.delete(`${env.VITE_API_URL}/about`, (_req, res) => {
-    return res()
+  rest.delete(`${env.VITE_API_URL}/about`, (_req, res, ctx) => {
+    return res(ctx.status(204))
   })
 ]
 
@@ -44,7 +44,7 @@ export const WithInitiallData = {
     msw: {
       handlers: [
         rest.get(`${env.VITE_API_URL}/about`, (_req, res, ctx) => {
-          return res(ctx.json(aboutPageMock))
+          return res(ctx.status(200), ctx.json(aboutPageMock))
         }),
         ...handlers
       ]
