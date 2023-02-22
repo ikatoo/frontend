@@ -3,7 +3,7 @@ import Styles from './styles'
 
 type ButtonProps = {
   children?: React.ReactNode
-  styleType?: 'primary' | 'secondary' | 'default'
+  styleType?: 'primary' | 'secondary' | 'default' | 'dangerous'
   icon?: JSX.Element
   block?: boolean
   tabIndex?: number

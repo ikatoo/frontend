@@ -17,6 +17,14 @@ const type = {
     focus:bg-blue-700
     active:bg-blue-800
   `,
+  dangerous: `
+    text-white
+    bg-mck_red
+    hover:bg-mck_gray_light
+    hover:text-slate-800
+    focus:bg-blue-700
+    active:bg-blue-800
+  `,
   default: `
     text-black
     bg-gray-500
@@ -32,7 +40,7 @@ export default {
     gap-4
     px-7
     py-3
-    ${(props: { $type: 'primary' | 'secondary' | 'default' }) =>
+    ${(props: { $type: 'primary' | 'secondary' | 'default' | 'dangerous' }) =>
       type[props.$type]}
     focus:outline-none
     font-medium
