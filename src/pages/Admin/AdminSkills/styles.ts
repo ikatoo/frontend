@@ -17,5 +17,21 @@ export default {
     mt-16
     pt-4
     pr-4
+  `,
+  TextWrapper: tw.div`
+    py-2
+    text-mck_gray_light
+  `,
+  Actions: tw.div`
+    flex
+    w-full
+    items-center
+    justify-center
+    m-4
+  `,
+  Form: tw.form`
+    flex
+    flex-col
+    gap-2
   `
 }

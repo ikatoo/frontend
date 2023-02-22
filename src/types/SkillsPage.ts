@@ -1,9 +1,9 @@
-type Skill = {
+export type Skill = {
   skillTitle: string
   rankPercent: number
 }
 
-type Jobs = {
+export type LastJob = {
   jobTitle: string
   jobDescription: string
   yearMonthStart: string
@@ -14,5 +14,5 @@ export type SkillsPageServiceType = {
   title: string
   description: string
   skills: Skill[]
-  lastJobs: Jobs[]
+  lastJobs: LastJob[]
 }
