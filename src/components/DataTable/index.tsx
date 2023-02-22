@@ -1,14 +1,29 @@
-type DataTableProps = {
+import Styles from './styles'
+
+export type DataTableProps = {
   data: object[]
+  label?: string
+  labelColor?: 'black' | 'white'
+  name: string
 }
 
-const DataTable = ({ data }: DataTableProps) => {
+const DataTable = ({
+  name,
+  data,
+  label,
+  labelColor = 'black'
+}: DataTableProps) => {
   if (!data.length) return <></>
 
   const titles: string[] = Object.keys(data[0])
 
   return (
     <div className="flex flex-col">
+      {!!label && (
+        <Styles.Label labelColor={labelColor} htmlFor={name}>
+          {label}
+        </Styles.Label>
+      )}
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
           <div className="overflow-hidden">
