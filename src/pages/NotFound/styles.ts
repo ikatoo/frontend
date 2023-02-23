@@ -16,5 +16,8 @@ export default {
   `,
   Message: tw.h3`
   text-xl
+  `,
+  Image: tw.image`
+    w-48
   `
 }
