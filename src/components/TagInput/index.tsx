@@ -66,7 +66,9 @@ const TagInput = ({
             initialTags.map((tag) => (
               <Styles.Tag data-testid="tag-test-id" key={tag}>
                 {tag}
-                <Close onClick={() => removeTag(tag)} size={15} />
+                <Styles.CloseWrapper onClick={() => removeTag(tag)}>
+                  <Close size={15} />
+                </Styles.CloseWrapper>
               </Styles.Tag>
             ))}
         </Styles.TagsWrapper>

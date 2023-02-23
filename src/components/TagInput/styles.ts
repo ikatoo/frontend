@@ -121,6 +121,8 @@ const Wrapper = styled.div<WrapperProps>`
   `}
 `
 
+const CloseWrapper = tw.span`cursor-pointer`
+
 export default {
   Wrapper,
   Error,
@@ -128,5 +130,6 @@ export default {
   Input,
   InputWrapper,
   TagsWrapper,
-  Tag
+  Tag,
+  CloseWrapper
 }
