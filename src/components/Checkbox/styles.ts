@@ -57,6 +57,8 @@ const Input = styled.input`
 
 const Label = styled.label<Pick<CheckboxProps, 'labelColor'>>`
   ${({ labelColor }) => css`
+    font-size: ${theme.font.sizes.xxlarge};
+    line-height: ${theme.spacings.xxxlarge};
     cursor: pointer;
     padding-left: ${theme.spacings.xxsmall};
     ${!!labelColor && `color: ${theme.colors[labelColor]};`}

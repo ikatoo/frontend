@@ -40,7 +40,8 @@ export default {
     medium: '0.8rem',
     large: '1.0rem',
     xlarge: '1.2rem',
-    xxlarge: '1.4rem'
+    xxlarge: '1.4rem',
+    xxxlarge: '2rem'
   },
   layers: {
     base: 10,

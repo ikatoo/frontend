@@ -58,7 +58,8 @@ const Input = styled.input`
 
 const Label = styled.label<LabelProps>`
   ${({ labelColor }) => css`
-    font-size: ${theme.font.sizes.large};
+    font-size: ${theme.font.sizes.xxlarge};
+    line-height: ${theme.spacings.xxxlarge};
     color: ${theme.colors[labelColor ?? 'black']};
     cursor: pointer;
   `}
