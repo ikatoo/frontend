@@ -139,25 +139,25 @@ export const AdminSkills = () => {
             </Styles.TextWrapper>
 
             <Styles.TextWrapper>
-              {skillsDataTable?.length && (
+              {skillsDataTable?.length ? (
                 <DataTable
                   name="skills"
                   label="Skills"
                   labelColor="white"
                   data={skillsDataTable}
                 />
-              )}
+              ) : null}
             </Styles.TextWrapper>
 
             <Styles.TextWrapper>
-              {jobsDataTable?.length && (
+              {jobsDataTable?.length ? (
                 <DataTable
                   name="lastJobs"
                   label="Last Jobs"
                   labelColor="white"
                   data={jobsDataTable}
                 />
-              )}
+              ) : null}
             </Styles.TextWrapper>
 
             <Styles.Actions>
