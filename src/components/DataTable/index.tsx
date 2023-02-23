@@ -18,47 +18,39 @@ const DataTable = ({
   const titles: string[] = Object.keys(data[0])
 
   return (
-    <div className="flex flex-col">
+    <Styles.Wrapper>
       {!!label && (
         <Styles.Label labelColor={labelColor} htmlFor={name}>
           {label}
         </Styles.Label>
       )}
-      <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-          <div className="overflow-hidden">
-            <table className="min-w-full text-center text-sm font-light">
-              <thead className="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
+      <Styles.HorizontalOverflow>
+        <Styles.InlineBlock>
+          <Styles.OverflowHidden>
+            <Styles.Table>
+              <Styles.TableHead>
                 <tr>
                   {titles.map((title) => (
-                    <th key={title} scope="col" className=" px-6 py-4">
+                    <Styles.RowHead key={title} scope="col">
                       {title.toLocaleUpperCase()}
-                    </th>
+                    </Styles.RowHead>
                   ))}
                 </tr>
-              </thead>
+              </Styles.TableHead>
               <tbody>
                 {data.map((rows, rowIndex) => (
-                  <tr
-                    key={rowIndex}
-                    className="border-b dark:border-neutral-500"
-                  >
+                  <Styles.Row key={rowIndex}>
                     {Object.values(rows).map((item, itemIndex) => (
-                      <td
-                        key={itemIndex}
-                        className="whitespace-nowrap  px-6 py-4 font-medium"
-                      >
-                        {item}
-                      </td>
+                      <Styles.Data key={itemIndex}>{item}</Styles.Data>
                     ))}
-                  </tr>
+                  </Styles.Row>
                 ))}
               </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
+            </Styles.Table>
+          </Styles.OverflowHidden>
+        </Styles.InlineBlock>
+      </Styles.HorizontalOverflow>
+    </Styles.Wrapper>
   )
 }
 
