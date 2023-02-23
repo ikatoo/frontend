@@ -3,7 +3,8 @@ import tw from 'tailwind-styled-components'
 export default {
   Wrapper: tw.div`
     flex
-    flex-col"
+    flex-col
+    w-full
   `,
   HtmlBackground: tw.div`
     font-indie_flower
