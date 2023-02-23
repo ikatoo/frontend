@@ -57,7 +57,8 @@ exports[`<TagInput /> > Renders with error 1`] = `
 }
 
 .c2 {
-  font-size: 0.9rem;
+  font-size: 1.4rem;
+  line-height: 2rem;
   color: #00021f;
   cursor: pointer;
 }
