@@ -10,6 +10,7 @@ import skillsService from '../../../services/skillsService'
 import { LastJob, Skill } from '../../../types/SkillsPage'
 import Styles from './styles'
 import { Delete, Edit } from '@styled-icons/material-outlined'
+import ProgressBar from '../../../components/ProgressBar'
 
 type SkillsDataTableHead = {
   Title: string
@@ -58,11 +59,21 @@ export const AdminSkills = () => {
     setSkillsDataTable(
       skills.map((skill) => ({
         Title: skill.skillTitle,
-        Level: skill.rankPercent,
+        Level: (
+          <ProgressBar
+            title={`${skill.skillTitle}: ${skill.rankPercent}%`}
+            percent={skill.rankPercent}
+            heightInRem={0.3}
+          />
+        ),
         Actions: (
           <div className="flex gap-4 justify-center">
-            <Button icon={<Edit />} />
-            <Button icon={<Delete />} styleType="dangerous" />
+            <Button title={`Edit data: ${skill.skillTitle}`} icon={<Edit />} />
+            <Button
+              title={`Delete data: ${skill.skillTitle}`}
+              icon={<Delete />}
+              styleType="dangerous"
+            />
           </div>
         )
       }))
@@ -73,13 +84,17 @@ export const AdminSkills = () => {
     setJobsDataTable(
       lastJobs.map((job) => ({
         Title: job.jobTitle,
-        Description: job.jobDescription.slice(10),
+        Description: job.jobDescription,
         Start: job.yearMonthStart,
         End: job.yearMonthEnd,
         Actions: (
           <div className="flex gap-4 justify-center">
-            <Button icon={<Edit />} />
-            <Button icon={<Delete />} styleType="dangerous" />
+            <Button title={`Edit data: ${job.jobTitle}`} icon={<Edit />} />
+            <Button
+              title={`Delete data: ${job.jobTitle}`}
+              icon={<Delete />}
+              styleType="dangerous"
+            />
           </div>
         )
       }))

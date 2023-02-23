@@ -32,7 +32,7 @@ const DataTable = ({
                 <tr>
                   {titles.map((title) => (
                     <Styles.RowHead key={title} scope="col">
-                      {title.toLocaleUpperCase()}
+                      {title}
                     </Styles.RowHead>
                   ))}
                 </tr>
@@ -41,7 +41,15 @@ const DataTable = ({
                 {data.map((rows, rowIndex) => (
                   <Styles.Row key={rowIndex}>
                     {Object.values(rows).map((item, itemIndex) => (
-                      <Styles.Data key={itemIndex}>{item}</Styles.Data>
+                      <Styles.Data
+                        key={itemIndex}
+                        scope={itemIndex === 0 ? 'row' : ''}
+                        title={typeof item === 'object' ? '' : item}
+                      >
+                        {typeof item === 'string' && item.length > 60
+                          ? `${item.slice(0, 60)} ...`
+                          : item}
+                      </Styles.Data>
                     ))}
                   </Styles.Row>
                 ))}

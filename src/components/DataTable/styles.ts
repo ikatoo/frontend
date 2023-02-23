@@ -23,6 +23,7 @@ const HorizontalOverflow = tw.div`
   overflow-x-auto
   sm:-mx-6
   lg:-mx-8
+  max-w-full
 `
 
 const InlineBlock = tw.div`
@@ -46,7 +47,7 @@ const TableHead = tw.thead`
   dark:bg-neutral-900
 `
 
-const RowHead = tw.th`px-6 py-4`
+const RowHead = tw.th`px-6 py-4 uppercase`
 
 const Row = tw.tr`border-b dark:border-neutral-500`
 
@@ -55,6 +56,9 @@ const Data = tw.td`
   px-6
   py-4
   font-medium
+  text-ellipsis
+  overflow-hidden
+  max-w-sm
 `
 
 export default {

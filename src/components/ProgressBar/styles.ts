@@ -13,6 +13,11 @@ export default {
   WrapperBar: tw.div`
     h-px
     bg-slate-600
+    ${(props: { $heightInRem: number }) =>
+      props.$heightInRem &&
+      `
+        h-[${props.$heightInRem}rem]
+    `}
   `,
   Bar: tw.div`
     h-full
