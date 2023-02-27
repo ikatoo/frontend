@@ -15,9 +15,9 @@ export default {
     text-9xl
   `,
   Message: tw.h3`
-  text-xl
+    text-xl
   `,
-  Image: tw.Image`
+  ImageWrapper: tw.div`
     w-48
   `
 }
