@@ -18,10 +18,8 @@ export type EditorProps = {
 
 const TextEditor = (props: EditorProps) => {
   const config: EditorConfig = {
-    // tabIndex,
     extraPlugins: [],
-    placeholder: props.placeholder
-    // applicationTitle: false
+    placeholder: props?.placeholder
   }
 
   return (
@@ -40,6 +38,11 @@ const TextEditor = (props: EditorProps) => {
           editor={ClassicEditor}
           data={props.initialValue}
           config={config}
+          onReady={(e) =>
+            e.ui
+              .getEditableElement()
+              ?.setAttribute('tabindex', `${props.tabIndex}`)
+          }
           onChange={(_event, editor) => {
             !!props.onChange && props.onChange(editor.getData())
           }}
