@@ -21,8 +21,8 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "35.3.2",
-    "@ckeditor/ckeditor5-react": "5.0.3",
+    "@ckeditor/ckeditor5-build-classic": "^36.0.1",
+    "@ckeditor/ckeditor5-react": "^5.1.0",
     "@react-google-maps/api": "2.13.1",
     "@styled-icons/boxicons-logos": "10.46.0",
     "@styled-icons/boxicons-regular": "10.46.0",
@@ -50,7 +50,7 @@
     "@storybook/theming": "^6.5.16",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "13.4.0",
-    "@types/ckeditor__ckeditor5-build-classic": "29.0.1",
+    "@types/ckeditor__ckeditor5-build-classic": "^29.0.1",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@types/styled-components": "5.1.26",
