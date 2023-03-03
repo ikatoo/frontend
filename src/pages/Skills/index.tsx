@@ -1,3 +1,4 @@
+import {} from 'react-router-dom'
 import Card, { CardProps } from '../../components/Card'
 import ProgressBar from '../../components/ProgressBar'
 import { TextContainer } from '../../components/TextContainer'
@@ -16,6 +17,7 @@ export type SkillsProps = {
     yearMonthEnd?: string
     jobTitle: string
     jobDescription: string
+    link: string
   }[]
 }
 
@@ -55,7 +57,13 @@ export const Skills = () => {
               <Styles.Jobs>
                 {lastJobs.map(
                   (
-                    { jobTitle, jobDescription, yearMonthStart, yearMonthEnd },
+                    {
+                      jobTitle,
+                      jobDescription,
+                      yearMonthStart,
+                      yearMonthEnd,
+                      link
+                    },
                     index
                   ) => {
                     const content: CardProps = {
@@ -64,7 +72,16 @@ export const Skills = () => {
                       content: jobDescription
                     }
 
-                    return <Card stretch key={index} {...content} />
+                    return (
+                      <a
+                        href={link}
+                        target="_blank"
+                        rel="noreferrer"
+                        key={index}
+                      >
+                        <Card stretch {...content} />
+                      </a>
+                    )
                   }
                 )}
               </Styles.Jobs>
