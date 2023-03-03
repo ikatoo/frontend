@@ -1,3 +1,4 @@
+import { about } from '../../pages/About/mock'
 import { AboutPageServiceType } from '../../types/AboutPage'
 import api from '../api'
 
@@ -10,6 +11,12 @@ const getHeaders = () => {
       ContentType: 'application/json'
     }
   }
+}
+
+const serviceErrorMessage = (error: Error) => {
+  console.log('----------------')
+  console.log('Service error:', error)
+  console.log('----------------')
 }
 
 export default {
@@ -37,8 +44,17 @@ export default {
     )
   },
   get: async () => {
-    const { data } = await api.get<AboutPageServiceType>('/about')
+    try {
+      // const { data } = await api.get<AboutPageServiceType>(
+      //   `/about`,
+      //   {
+      //     headers: { 'Content-Type': 'application/json' }
+      //   }
+      // )
 
-    return data
+      return about
+    } catch (error) {
+      error instanceof Error && serviceErrorMessage(error)
+    }
   }
 }
