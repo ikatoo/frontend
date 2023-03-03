@@ -1,4 +1,10 @@
+import styled from 'styled-components'
 import tw from 'tailwind-styled-components'
+
+const clampSpan = styled.span`
+  font-size: clamp(1rem, 3vw, 3rem);
+  line-height: 1;
+`
 
 export default {
   Wrapper: tw.div`
@@ -25,10 +31,10 @@ export default {
     flex
     flex-col
   `,
-  Title: tw.span`
+  Title: tw(clampSpan)`
     ml-4
-    text-5xl
     font-body
+    text-5xl
     text-mck_aqua
   `,
   MainBackground: tw.div`
