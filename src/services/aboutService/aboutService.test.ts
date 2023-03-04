@@ -5,7 +5,6 @@ import { aboutPageMock } from '../../mocks/aboutPageMock'
 
 describe('About page fetch data', () => {
   test('should get about page data', async () => {
-    expect(true).toBe(true)
     const result = await aboutService.get()
 
     expect(result).toEqual(aboutPageMock)

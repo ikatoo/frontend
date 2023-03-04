@@ -1,4 +1,4 @@
-import { about } from '../../pages/About/mock'
+import { aboutPageMock } from '../../mocks/aboutPageMock'
 import { AboutPageServiceType } from '../../types/AboutPage'
 import api from '../api'
 
@@ -52,7 +52,7 @@ export default {
       //   }
       // )
 
-      return about
+      return aboutPageMock
     } catch (error) {
       error instanceof Error && serviceErrorMessage(error)
     }
