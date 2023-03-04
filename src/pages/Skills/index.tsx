@@ -6,20 +6,20 @@ import skillsService from '../../services/skillsService'
 import { SkillsPageServiceType } from '../../types/SkillsPage'
 import Styles from './styles'
 
-export type SkillsProps = {
-  title: string
-  description: string
-  skills: {
-    skillTitle: string
-    rankPercent: number
-  }[]
-  lastJobs: {
-    yearMonthStart: string
-    yearMonthEnd?: string
-    jobTitle: string
-    jobDescription: string
-  }[]
-}
+// export type SkillsProps = {
+//   title: string
+//   description: string
+//   skills: {
+//     skillTitle: string
+//     rankPercent: number
+//   }[]
+//   lastJobs: {
+//     yearMonthStart: string
+//     yearMonthEnd?: string
+//     jobTitle: string
+//     jobDescription: string
+//   }[]
+// }
 
 export const Skills = () => {
   const [data, setData] = useState<SkillsPageServiceType>()
@@ -63,7 +63,13 @@ export const Skills = () => {
               <Styles.Jobs>
                 {data?.lastJobs.map(
                   (
-                    { jobTitle, jobDescription, yearMonthStart, yearMonthEnd },
+                    {
+                      jobTitle,
+                      jobDescription,
+                      yearMonthStart,
+                      yearMonthEnd,
+                      link
+                    },
                     index
                   ) => {
                     const content: CardProps = {
@@ -72,7 +78,11 @@ export const Skills = () => {
                       content: jobDescription
                     }
 
-                    return <Card stretch key={index} {...content} />
+                    return (
+                      <a href={link} key={index}>
+                        <Card stretch {...content} />
+                      </a>
+                    )
                   }
                 )}
               </Styles.Jobs>

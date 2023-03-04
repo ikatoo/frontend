@@ -8,6 +8,7 @@ export type LastJob = {
   jobDescription: string
   yearMonthStart: string
   yearMonthEnd?: string
+  link: string
 }
 
 export type SkillsPageServiceType = {

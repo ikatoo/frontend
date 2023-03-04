@@ -16,21 +16,16 @@ export const skillsPageMock = {
     {
       jobTitle: 'Calm Organizador de Criptomoedas',
       jobDescription: 'Projeto pessoal para estudo.',
-      yearMonthStart: '2022 - 03'
+      yearMonthStart: '2022 - 03',
+      link: 'https://github.com/mckatoo/calm'
     },
     {
       jobTitle: 'Uniesi - Centro Universitário de Itapira',
       jobDescription:
         'Responsável pela infraestrutura local e suporte dos serviços dispostos pela mantenedora UNIP.',
       yearMonthStart: '2013 - 06',
-      yearMonthEnd: '2021 - 07'
-    },
-    {
-      jobTitle: 'Itacom Veículos',
-      jobDescription:
-        'Desenvolvimento do módulo venda de veículos do sistema de gerenciamento geral.',
-      yearMonthStart: '2003 - 10',
-      yearMonthEnd: '2003 - 12'
+      yearMonthEnd: '2021 - 07',
+      link: 'https://uniesi.edu.br'
     }
   ]
 }
