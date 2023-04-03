@@ -1,17 +1,5 @@
-import { aboutPageMock } from '../../mocks/aboutPageMock'
 import { AboutPageServiceType } from '../../types/AboutPage'
 import api from '../api'
-
-const getHeaders = () => {
-  const token = localStorage.getItem('IKATOO_AuthToken') ?? ''
-
-  return {
-    headers: {
-      Authorization: `bearer ${token}`,
-      ContentType: 'application/json'
-    }
-  }
-}
 
 const serviceErrorMessage = (error: Error) => {
   console.log('----------------')
@@ -20,39 +8,47 @@ const serviceErrorMessage = (error: Error) => {
 }
 
 export default {
-  create: async ({
-    title,
-    description
-  }: Omit<Partial<AboutPageServiceType>, 'id'>) => {
-    await api.post(
-      '/about',
-      {
-        title,
-        description
-      },
-      getHeaders()
-    )
+  create: async (pageData: Partial<AboutPageServiceType>) => {
+    const token = localStorage.getItem('IKATOO_AuthToken') ?? ''
+    const { data, status } = await api.post('/about', {
+      data: pageData,
+      headers: {
+        Authorization: `bearer ${token}`,
+        ContentType: 'application/json'
+      }
+    })
+    const json =
+      typeof data === 'string' && data !== '' ? JSON.parse(data) : data
+
+    return { data: json, status }
   },
-  update: async ({ title, description }: Partial<AboutPageServiceType>) => {
-    await api.put(
-      '/about',
-      {
-        title,
-        description
-      },
-      getHeaders()
-    )
+  patch: async (pageData: Partial<AboutPageServiceType>) => {
+    const token = localStorage.getItem('IKATOO_AuthToken') ?? ''
+    const { data, status } = await api.patch('/about', {
+      data: pageData,
+      headers: {
+        Authorization: `bearer ${token}`,
+        ContentType: 'application/json'
+      }
+    })
+    const json =
+      typeof data === 'string' && data !== '' ? JSON.parse(data) : data
+
+    return { data: json, status }
   },
   get: async () => {
+    const token = localStorage.getItem('IKATOO_AuthToken') ?? ''
     try {
-      // const { data } = await api.get<AboutPageServiceType>(
-      //   `/about`,
-      //   {
-      //     headers: { 'Content-Type': 'application/json' }
-      //   }
-      // )
+      const { data, status } = await api.get<AboutPageServiceType>('about', {
+        headers: {
+          Authorization: `bearer ${token}`,
+          ContentType: 'application/json'
+        }
+      })
+      const json =
+        typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
-      return aboutPageMock
+      return { data: json, status }
     } catch (error) {
       error instanceof Error && serviceErrorMessage(error)
     }
