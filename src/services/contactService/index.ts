@@ -1,8 +1,8 @@
-import { SkillsPageProps } from '../../types/SkillsPageService'
+import { ContactPageProps } from '../../types/ContactPage'
 import api from '../api'
 
 export default {
-  create: async (pageData: Partial<SkillsPageProps>) => {
+  create: async (pageData: Partial<ContactPageProps>) => {
     const token = localStorage.getItem('IKATOO_AuthToken') ?? ''
     const { data, status } = await api.post('skill', {
       data: pageData,
@@ -16,7 +16,7 @@ export default {
 
     return { data: json, status }
   },
-  patch: async (pageData: Partial<SkillsPageProps>) => {
+  patch: async (pageData: Partial<ContactPageProps>) => {
     const token = localStorage.getItem('IKATOO_AuthToken') ?? ''
     const { data, status } = await api.patch('skill', {
       data: pageData,
@@ -33,7 +33,7 @@ export default {
   get: async () => {
     const token = localStorage.getItem('IKATOO_AuthToken') ?? ''
     try {
-      const { data, status } = await api.get<SkillsPageProps>('skill', {
+      const { data, status } = await api.get<ContactPageProps>('skill', {
         headers: {
           Authorization: `bearer ${token}`,
           ContentType: 'application/json'

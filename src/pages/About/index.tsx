@@ -3,10 +3,10 @@ import IconCloud from '../../components/IconCloud'
 import { TextContainer } from '../../components/TextContainer'
 import aboutService from '../../services/aboutService'
 import Styles from './styles'
-import { AboutPageServiceType } from '../../types/AboutPage'
+import { AboutPageServiceProps } from '../../types/AboutPage'
 
 export const About = () => {
-  const [data, setData] = useState<AboutPageServiceType>()
+  const [data, setData] = useState<AboutPageServiceProps>()
 
   useEffect(() => {
     const getData = async () => {

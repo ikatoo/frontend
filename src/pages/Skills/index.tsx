@@ -2,7 +2,7 @@ import {} from 'react-router-dom'
 import Card, { CardProps } from '../../components/Card'
 import ProgressBar from '../../components/ProgressBar'
 import { TextContainer } from '../../components/TextContainer'
-import { mockSkillsPageData } from './mock'
+import skillsPageMock from '../../mocks/skillsPageMock'
 import Styles from './styles'
 
 export type SkillsProps = {
@@ -22,7 +22,7 @@ export type SkillsProps = {
 }
 
 export const Skills = () => {
-  const skillsPage = mockSkillsPageData
+  const skillsPage = skillsPageMock
 
   const { description, title, skills, lastJobs } = skillsPage
 
