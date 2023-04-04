@@ -1,4 +1,4 @@
-import { SkillsPageProps } from '../../types/SkillsPageService'
+import { SkillsPageProps } from '../../types/SkillsPage'
 import api from '../api'
 
 export default {
