@@ -1,5 +1,6 @@
 export type SkillsPageProps = {
   title: string
+  description: string
   skills: {
     skillTitle: string
     rankPercent: number
