@@ -9,7 +9,7 @@ const clampSpan = styled.span`
 export default {
   Wrapper: tw.div`
     flex
-    flex-col"
+    flex-col
   `,
   HtmlBackground: tw.div`
     font-indie_flower
