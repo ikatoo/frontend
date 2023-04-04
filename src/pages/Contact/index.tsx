@@ -1,10 +1,10 @@
 import Map from '../../components/Map'
 import { TextContainer } from '../../components/TextContainer'
-import mock from './mock'
+import contactPageMock from '../../mocks/contactPageMock'
 import Styles from './styles'
 
 export const Contact = () => {
-  const contact = mock
+  const contact = contactPageMock
   const { description, title, localization } = contact
 
   return (

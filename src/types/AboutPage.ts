@@ -1,4 +1,4 @@
-export type AboutPageServiceType = {
+export type AboutPageServiceProps = {
   title: string
   description: string
   skills: { title: string }[]

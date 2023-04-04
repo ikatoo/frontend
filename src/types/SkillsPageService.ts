@@ -1,4 +1,4 @@
-export type SkillsPageServiceType = {
+export type SkillsPageProps = {
   title: string
   skills: {
     skillTitle: string

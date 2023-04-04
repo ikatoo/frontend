@@ -1,8 +1,8 @@
-import { AboutPageServiceType } from '../../types/AboutPage'
+import { AboutPageServiceProps } from '../../types/AboutPage'
 import api from '../api'
 
 export default {
-  create: async (pageData: Partial<AboutPageServiceType>) => {
+  create: async (pageData: Partial<AboutPageServiceProps>) => {
     const token = localStorage.getItem('IKATOO_AuthToken') ?? ''
     const { data, status } = await api.post('/about', {
       data: pageData,
@@ -16,7 +16,7 @@ export default {
 
     return { data: json, status }
   },
-  patch: async (pageData: Partial<AboutPageServiceType>) => {
+  patch: async (pageData: Partial<AboutPageServiceProps>) => {
     const token = localStorage.getItem('IKATOO_AuthToken') ?? ''
     const { data, status } = await api.patch('/about', {
       data: pageData,
@@ -33,7 +33,7 @@ export default {
   get: async () => {
     const token = localStorage.getItem('IKATOO_AuthToken') ?? ''
     try {
-      const { data, status } = await api.get<AboutPageServiceType>('about', {
+      const { data, status } = await api.get<AboutPageServiceProps>('about', {
         headers: {
           Authorization: `bearer ${token}`,
           ContentType: 'application/json'
