@@ -10,8 +10,8 @@ export const About = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const _data = await aboutService.get()
-      !!_data && setData(_data)
+      const result = await aboutService.get()
+      setData(result?.data)
     }
     getData()
   }, [])
