@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import IconCloud from '../../components/IconCloud'
 import { TextContainer } from '../../components/TextContainer'
 import aboutService from '../../services/aboutService'
-import Styles from './styles'
 import { AboutPageServiceProps } from '../../types/AboutPage'
+import Styles from './styles'
 
 export const About = () => {
   const [data, setData] = useState<AboutPageServiceProps>()
