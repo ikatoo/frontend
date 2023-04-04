@@ -22,4 +22,10 @@ describe('skills page fetch data', () => {
 
     expect(result?.status).toEqual(204)
   })
+
+  test('should delete skills page data', async () => {
+    const result = await skillsService.delete()
+
+    expect(result?.status).toEqual(204)
+  })
 })
