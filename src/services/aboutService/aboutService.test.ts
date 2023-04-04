@@ -22,4 +22,10 @@ describe('About page fetch data', () => {
 
     expect(result?.status).toEqual(204)
   })
+
+  test('should delete about page data', async () => {
+    const result = await aboutService.delete()
+
+    expect(result?.status).toEqual(204)
+  })
 })
