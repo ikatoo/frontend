@@ -1,12 +1,6 @@
 import { AboutPageServiceType } from '../../types/AboutPage'
 import api from '../api'
 
-const serviceErrorMessage = (error: Error) => {
-  console.log('----------------')
-  console.log('Service error:', error)
-  console.log('----------------')
-}
-
 export default {
   create: async (pageData: Partial<AboutPageServiceType>) => {
     const token = localStorage.getItem('IKATOO_AuthToken') ?? ''
@@ -50,7 +44,7 @@ export default {
 
       return { data: json, status }
     } catch (error) {
-      error instanceof Error && serviceErrorMessage(error)
+      if (error instanceof Error) throw error
     }
   }
 }
