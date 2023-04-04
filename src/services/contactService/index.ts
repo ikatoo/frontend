@@ -4,7 +4,7 @@ import api from '../api'
 export default {
   create: async (pageData: Partial<ContactPageProps>) => {
     const token = localStorage.getItem('IKATOO_AuthToken') ?? ''
-    const { data, status } = await api.post('skill', {
+    const { data, status } = await api.post('contact', {
       data: pageData,
       headers: {
         Authorization: `bearer ${token}`,
@@ -18,7 +18,7 @@ export default {
   },
   patch: async (pageData: Partial<ContactPageProps>) => {
     const token = localStorage.getItem('IKATOO_AuthToken') ?? ''
-    const { data, status } = await api.patch('skill', {
+    const { data, status } = await api.patch('contact', {
       data: pageData,
       headers: {
         Authorization: `bearer ${token}`,
@@ -33,7 +33,7 @@ export default {
   get: async () => {
     const token = localStorage.getItem('IKATOO_AuthToken') ?? ''
     try {
-      const { data, status } = await api.get<ContactPageProps>('skill', {
+      const { data, status } = await api.get<ContactPageProps>('contact', {
         headers: {
           Authorization: `bearer ${token}`,
           ContentType: 'application/json'
