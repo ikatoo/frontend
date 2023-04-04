@@ -1,30 +1,51 @@
+import { useEffect, useState } from 'react'
 import {} from 'react-router-dom'
 import Card, { CardProps } from '../../components/Card'
 import ProgressBar from '../../components/ProgressBar'
 import { TextContainer } from '../../components/TextContainer'
-import skillsPageMock from '../../mocks/skillsPageMock'
+import skillsService from '../../services/skillsService'
 import Styles from './styles'
+
+type SkillProps = {
+  skillTitle: string
+  rankPercent: number
+}
+
+type JobProps = {
+  yearMonthStart: string
+  yearMonthEnd?: string
+  jobTitle: string
+  jobDescription: string
+  link: string
+}
 
 export type SkillsProps = {
   title: string
   description: string
-  skills: {
-    skillTitle: string
-    rankPercent: number
-  }[]
-  lastJobs: {
-    yearMonthStart: string
-    yearMonthEnd?: string
-    jobTitle: string
-    jobDescription: string
-    link: string
-  }[]
+  skills: SkillProps[]
+  lastJobs: JobProps[]
 }
 
 export const Skills = () => {
-  const skillsPage = skillsPageMock
+  // const skillsPage = skillsPageMock
 
-  const { description, title, skills, lastJobs } = skillsPage
+  // const { description, title, skills, lastJobs } = skillsPage
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [skills, setSkills] = useState<SkillProps[]>([])
+  const [lastJobs, setLastJobs] = useState<JobProps[]>([])
+
+  useEffect(() => {
+    const getInitialData = async () => {
+      const initialData = (await skillsService.get())?.data
+      initialData?.title && setTitle(initialData.title)
+      initialData?.description && setDescription(initialData.description)
+      initialData?.skills && setSkills(initialData.skills)
+      initialData?.lastJobs && setLastJobs(initialData.lastJobs)
+    }
+
+    getInitialData()
+  }, [])
 
   return (
     <Styles.Wrapper>

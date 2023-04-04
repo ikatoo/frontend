@@ -2,41 +2,52 @@ import { useEffect, useState } from 'react'
 import IconCloud from '../../components/IconCloud'
 import { TextContainer } from '../../components/TextContainer'
 import aboutService from '../../services/aboutService'
-import { AboutPageServiceProps } from '../../types/AboutPage'
 import Styles from './styles'
 
+type Skill = {
+  title: string
+}
+
 export const About = () => {
-  const [data, setData] = useState<AboutPageServiceProps>()
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [skills, setSkills] = useState<Skill[]>([])
+  const [illustrationURL, setIllustrationURL] = useState('')
+  const [illustrationALT, setIllustrationALT] = useState('')
 
   useEffect(() => {
-    const getData = async () => {
-      const result = await aboutService.get()
-      setData(result?.data)
+    const getInitialData = async () => {
+      const initialData = (await aboutService.get())?.data
+      initialData?.title && setTitle(initialData.title)
+      initialData?.description && setDescription(initialData.description)
+      initialData?.skills && setSkills(initialData.skills)
+      initialData?.illustrationURL &&
+        setIllustrationURL(initialData.illustrationURL)
+      initialData?.illustrationALT &&
+        setIllustrationALT(initialData.illustrationALT)
     }
-    getData()
+
+    getInitialData()
   }, [])
 
   return (
     <Styles.Wrapper>
       <Styles.Text>
-        {!!data?.title && (
-          <TextContainer title={data?.title}>
-            <div dangerouslySetInnerHTML={{ __html: data?.description }} />
+        {!!title && (
+          <TextContainer title={title}>
+            <div dangerouslySetInnerHTML={{ __html: description }} />
           </TextContainer>
         )}
       </Styles.Text>
 
-      {data?.skills.length ? (
+      {skills.length ? (
         <Styles.Skills>
-          <IconCloud slugs={data.skills.map((skill) => skill.title)} />
+          <IconCloud slugs={skills.map((skill) => skill.title)} />
         </Styles.Skills>
       ) : (
-        !!data?.illustrationURL && (
+        !!illustrationURL && (
           <Styles.ImageWrapper>
-            <img
-              src={data?.illustrationURL}
-              alt={data?.illustrationALT ?? ''}
-            />
+            <img src={illustrationURL} alt={illustrationALT ?? ''} />
           </Styles.ImageWrapper>
         )
       )}
