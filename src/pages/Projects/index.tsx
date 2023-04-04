@@ -1,5 +1,5 @@
 import Card, { CardProps } from '../../components/Card'
-import { mockProjects } from './mock'
+import projectsMock from '../../mocks/projectsMock'
 import Styles from './styles'
 
 export type ProjectProps = {
@@ -9,7 +9,7 @@ export type ProjectProps = {
 }
 
 export const Projects = () => {
-  const projects = mockProjects
+  const projects = projectsMock
 
   type LinkMatcherProps = {
     githubLink?: string

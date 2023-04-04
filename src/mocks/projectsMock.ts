@@ -1,6 +1,4 @@
-import { ProjectProps } from '.'
-
-export const mockProjects: ProjectProps[] = [
+export default [
   {
     snapshot: '/images/snap-calm.png',
     description: {

@@ -1,14 +1,14 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 
 import Card from '.'
-import { mockProjects } from '../../pages/Projects/mock'
+import projectsMock from '../../mocks/projectsMock'
 
 export default {
   title: 'Components/Card',
   component: Card,
   args: {
-    ...mockProjects[1].description,
-    image: mockProjects[1].snapshot
+    ...projectsMock[1].description,
+    image: projectsMock[1].snapshot
   }
 } as ComponentMeta<typeof Card>
 
