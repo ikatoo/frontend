@@ -36,7 +36,7 @@ export default {
           ContentType: 'application/json'
         }
       })
-      const json =
+      const json: typeof data =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
       return { data: json, status }
