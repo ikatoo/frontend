@@ -17,7 +17,11 @@ export const useIcons = (slugs: string[]) => {
   const [icons, setIcons] = useState<FetchSimpleIconsProps>()
 
   useEffect(() => {
-    fetchSimpleIcons({ slugs }).then(setIcons)
+    const getIcons = async () => {
+      const icons = await fetchSimpleIcons({ slugs })
+      setIcons(icons ?? [])
+    }
+    getIcons()
   }, [slugs])
 
   if (icons) {
