@@ -15,6 +15,27 @@ describe('Skills Page', () => {
       expect(leftColumn).toHaveTextContent(
         skillsPageMock.description.slice(3, 10)
       )
+      const rightColumn = leftColumn?.nextSibling
+      const studyBlock = rightColumn?.firstChild
+      expect(studyBlock).toHaveTextContent(/estudo/i)
+      for (const skill of skillsPageMock.skills) {
+        expect(studyBlock).toHaveTextContent(skill.skillTitle)
+      }
+      const lastJobsBlock = studyBlock?.nextSibling
+      const lastJobsTitle = lastJobsBlock?.firstChild
+      expect(lastJobsTitle).toHaveTextContent(/Últimos Trabalhos/i)
+      const jobsWrapper = lastJobsTitle?.nextSibling
+      expect(jobsWrapper?.childNodes).toHaveLength(
+        skillsPageMock.lastJobs.length
+      )
+      for (let index = 0; index < skillsPageMock.lastJobs.length; index++) {
+        const job = skillsPageMock.lastJobs[index]
+        const jobElement = jobsWrapper?.childNodes[index]
+        expect(jobElement).toHaveTextContent(job.jobTitle)
+        expect(jobElement).toHaveTextContent(job.jobDescription)
+        expect(jobElement).toHaveTextContent(job.yearMonthStart)
+        expect(jobElement).toHaveAttribute('href', job.link)
+      }
     })
   })
 })
