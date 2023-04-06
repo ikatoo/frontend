@@ -27,9 +27,6 @@ export type SkillsProps = {
 }
 
 export const Skills = () => {
-  // const skillsPage = skillsPageMock
-
-  // const { description, title, skills, lastJobs } = skillsPage
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [skills, setSkills] = useState<SkillProps[]>([])
