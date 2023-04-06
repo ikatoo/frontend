@@ -18,14 +18,16 @@ export const Contact = () => {
       </Styles.Description>
 
       {!!localization && (
-        <Map
-          center={localization}
-          label={{
-            text: 'Milton Carlos Katoo',
-            className: '-mt-10 bg-slate-700 p-1 rounded',
-            color: 'white'
-          }}
-        />
+        <div data-testid="google-maps">
+          <Map
+            center={localization}
+            label={{
+              text: 'Milton Carlos Katoo',
+              className: '-mt-10 bg-slate-700 p-1 rounded',
+              color: 'white'
+            }}
+          />
+        </div>
       )}
     </Styles.Wrapper>
   )
