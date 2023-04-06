@@ -9,14 +9,14 @@ type IconCloudProps = {
 const IconCloud = ({ slugs }: IconCloudProps) => {
   const { icons } = useIcons(slugs)
 
-  return (
-    icons && (
-      <Cloud id="canvas">
-        {icons?.map((icon, index) => (
-          <div key={index}>{icon}</div>
-        ))}
-      </Cloud>
-    )
+  return icons ? (
+    <Cloud id="canvas">
+      {icons?.map((icon, index) => (
+        <div key={index}>{icon}</div>
+      ))}
+    </Cloud>
+  ) : (
+    <></>
   )
 }
 
