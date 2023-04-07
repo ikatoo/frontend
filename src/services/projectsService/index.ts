@@ -52,7 +52,7 @@ export default {
           ContentType: 'application/json'
         }
       })
-      const json =
+      const json: ProjectProps[] =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
       return { data: json, status }
@@ -68,7 +68,7 @@ export default {
           ContentType: 'application/json'
         }
       })
-      const json =
+      const json: ProjectProps =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
       return { data: json, status }
@@ -87,7 +87,7 @@ export default {
           }
         }
       )
-      const json =
+      const json: ProjectProps[] =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
       return { data: json, status }
