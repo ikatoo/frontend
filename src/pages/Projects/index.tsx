@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react'
 import Card, { CardProps } from '../../components/Card'
-import projectsMock from '../../mocks/projectsMock'
 import Styles from './styles'
+import projectsService from '../../services/projectsService'
 
 export type ProjectProps = {
   snapshot: string
@@ -8,13 +9,22 @@ export type ProjectProps = {
   githubLink?: string
 }
 
-export const Projects = () => {
-  const projects = projectsMock
+type LinkMatcherProps = {
+  githubLink?: string
+  children: JSX.Element
+}
 
-  type LinkMatcherProps = {
-    githubLink?: string
-    children: JSX.Element
-  }
+export const Projects = () => {
+  const [projects, setProjects] = useState<ProjectProps[]>([])
+
+  useEffect(() => {
+    const getInitialData = async () => {
+      const initialData = (await projectsService.get())?.data
+      !!initialData && setProjects(initialData)
+    }
+
+    getInitialData()
+  }, [])
 
   const LinkMatcher = ({ githubLink, children }: LinkMatcherProps) =>
     !githubLink ? <div>{children}</div> : <a href={githubLink}>{children}</a>
