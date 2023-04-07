@@ -36,7 +36,7 @@ export default {
           ContentType: 'application/json'
         }
       })
-      const json: typeof data =
+      const json: SkillsPageProps =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
       return { data: json, status }
