@@ -22,8 +22,6 @@
     "build-storybook": "NODE_OPTIONS=--openssl-legacy-provider build-storybook"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "35.3.2",
-    "@ckeditor/ckeditor5-react": "5.0.3",
     "@react-google-maps/api": "2.13.1",
     "@styled-icons/boxicons-logos": "10.46.0",
     "@styled-icons/boxicons-regular": "10.46.0",
