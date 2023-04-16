@@ -1,8 +1,4 @@
-import { CKEditor } from '@ckeditor/ckeditor5-react'
-import { EditorConfig } from '@ckeditor/ckeditor5-core/src/editor/editorconfig'
-
 import Styles from './styles'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 export type EditorProps = {
   placeholder: string
@@ -17,12 +13,9 @@ export type EditorProps = {
 }
 
 const TextEditor = (props: EditorProps) => {
-  const config: EditorConfig = {
-    // tabIndex,
-    extraPlugins: [],
-    placeholder: props.placeholder
-    // applicationTitle: false
-  }
+  // const onChange = (data: string) => {
+  //   !!props.onChange && props.onChange(data)
+  // }
 
   return (
     <Styles.Wrapper disabled={props.disabled} error={!!props.error}>
@@ -34,17 +27,7 @@ const TextEditor = (props: EditorProps) => {
           {props.label}
         </Styles.Label>
       )}
-      <Styles.EditorWrapper>
-        <CKEditor
-          id={`ck_${props.name}`}
-          editor={ClassicEditor}
-          data={props.initialValue}
-          config={config}
-          onChange={(_event, editor) => {
-            !!props.onChange && props.onChange(editor.getData())
-          }}
-        />
-      </Styles.EditorWrapper>
+      <Styles.EditorWrapper>{/* editor */}</Styles.EditorWrapper>
       {!!props.error && <Styles.Error>{props.error}</Styles.Error>}
     </Styles.Wrapper>
   )
