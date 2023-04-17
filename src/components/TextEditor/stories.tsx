@@ -13,13 +13,7 @@ export const Default: ComponentStory<typeof TextEditor> = () => {
     <div className="w-full grid">
       <textarea value={data} onChange={(e) => setData(e.target.value)} />
       <h1>{data}</h1>
-      <TextEditor
-        label="Editor"
-        name="editor"
-        placeholder="Editor"
-        initialValue={data}
-        onChange={setData}
-      />
+      <TextEditor label="Editor" initialValue={data} onChange={setData} />
     </div>
   )
 }
