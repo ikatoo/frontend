@@ -78,8 +78,6 @@ export const AdminAbout = () => {
                 initialValue={description}
                 label="Descrição"
                 labelColor="white"
-                name="description"
-                placeholder="Descrição"
                 onChange={(value) => setDescription(value)}
                 tabIndex={2}
               />
