@@ -1,5 +1,5 @@
 {
   "src/**/*": [
-    "yarn lint --fix"
+    "npm run lint --fix"
   ]
 }
