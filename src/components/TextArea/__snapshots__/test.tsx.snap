@@ -85,4 +85,4 @@ exports[`<TextArea /> > Renders with error 1`] = `
     Error message
   </p>
 </div>
-`
+`;

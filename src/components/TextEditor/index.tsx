@@ -1,3 +1,4 @@
+import { Editor } from '@monaco-editor/react'
 import Styles from './styles'
 
 export type EditorProps = {
@@ -13,9 +14,9 @@ export type EditorProps = {
 }
 
 const TextEditor = (props: EditorProps) => {
-  // const onChange = (data: string) => {
-  //   !!props.onChange && props.onChange(data)
-  // }
+  const onChange = (value: string | undefined) => {
+    !!props.onChange && props.onChange(value ?? '')
+  }
 
   return (
     <Styles.Wrapper disabled={props.disabled} error={!!props.error}>
@@ -27,7 +28,15 @@ const TextEditor = (props: EditorProps) => {
           {props.label}
         </Styles.Label>
       )}
-      <Styles.EditorWrapper>{/* editor */}</Styles.EditorWrapper>
+      {props.initialValue}
+      <Styles.EditorWrapper>
+        <Editor
+          height="200px"
+          defaultLanguage="html"
+          defaultValue={props.initialValue}
+          onChange={onChange}
+        />
+      </Styles.EditorWrapper>
       {!!props.error && <Styles.Error>{props.error}</Styles.Error>}
     </Styles.Wrapper>
   )

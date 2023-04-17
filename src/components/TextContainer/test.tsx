@@ -69,8 +69,7 @@ describe('<TextContainer>', () => {
 
     const wrapper = htmlBackground?.parentElement
     expect(wrapper).toHaveClass(`
-      flex
-      flex-col
+      w-[-webkit-fill-available]
     `)
   })
 })

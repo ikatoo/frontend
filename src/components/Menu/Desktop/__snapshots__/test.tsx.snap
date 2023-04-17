@@ -163,4 +163,4 @@ exports[`Menu Component > should render menu on desktop 1`] = `
     </div>
   </menu>
 </div>
-`
+`;
