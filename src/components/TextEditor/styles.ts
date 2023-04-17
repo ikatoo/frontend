@@ -6,7 +6,7 @@ import theme from '../../theme'
 
 type LabelProps = Pick<EditorProps, 'labelColor'>
 
-type WrapperProps = Pick<EditorProps, 'disabled'> & { error?: boolean }
+type WrapperProps = { error?: boolean }
 
 const EditorWrapper = styled.div`
   ${() => css`
@@ -19,10 +19,6 @@ const EditorWrapper = styled.div`
 
     &:focus-within {
       box-shadow: 0 0 0.5rem ${theme.colors.primary};
-    }
-
-    .jodit-react-container {
-      width: 100%;
     }
   `}
 `
@@ -58,9 +54,8 @@ const wrapperModifiers = {
 }
 
 const Wrapper = styled.div<WrapperProps>`
-  ${({ error, disabled }) => css`
+  ${({ error }) => css`
     ${error && wrapperModifiers.error()}
-    ${disabled && wrapperModifiers.disabled()}
   `}
 `
 
