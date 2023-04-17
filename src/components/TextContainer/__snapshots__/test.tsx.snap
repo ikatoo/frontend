@@ -53,4 +53,4 @@ exports[`<TextContainer> > matches snapshot 1`] = `
   "queryByText": [Function],
   "queryByTitle": [Function],
 }
-`
+`;
