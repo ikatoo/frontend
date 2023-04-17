@@ -27,6 +27,10 @@ const TextEditor = (props: EditorProps) => {
           defaultLanguage="html"
           defaultValue={props.initialValue}
           onChange={onChange}
+          onMount={(editor, monaco) => {
+            console.log('editor', editor)
+            console.log('monaco', monaco)
+          }}
         />
       </Styles.EditorWrapper>
       {!!props.error && <Styles.Error>{props.error}</Styles.Error>}
