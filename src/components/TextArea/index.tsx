@@ -1,4 +1,4 @@
-import React, { TextareaHTMLAttributes, useEffect, useState } from 'react'
+import React, { TextareaHTMLAttributes, useState } from 'react'
 
 import Styles from './styles'
 
@@ -24,10 +24,6 @@ const TextArea = ({
 }: TextAreaProps) => {
   const [value, setValue] = useState(initialValue)
 
-  useEffect(() => {
-    setValue(initialValue)
-  }, [initialValue])
-
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.currentTarget.value
     setValue(newValue)
@@ -42,8 +38,8 @@ const TextArea = ({
           {label}
         </Styles.Label>
       )}
-      <Styles.ElementWrapper>
-        <Styles.Element
+      <Styles.TextAreaWrapper>
+        <Styles.TextArea
           onChange={onChange}
           value={value}
           disabled={disabled}
@@ -51,7 +47,7 @@ const TextArea = ({
           {...(label ? { id: name } : {})}
           {...props}
         />
-      </Styles.ElementWrapper>
+      </Styles.TextAreaWrapper>
       {!!error && <Styles.Error>{error}</Styles.Error>}
     </Styles.Wrapper>
   )
