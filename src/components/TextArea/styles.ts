@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components'
-import tw from 'tailwind-styled-components'
 
 import { TextAreaProps } from '.'
 import theme from '../../theme'
@@ -8,8 +7,10 @@ type LabelProps = Pick<TextAreaProps, 'labelColor'>
 
 type WrapperProps = Pick<TextAreaProps, 'disabled'> & { error?: boolean }
 
-const ElementWrapper = styled.div`
+const TextAreaWrapper = styled.div`
   ${() => css`
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     background: ${theme.colors.lightGray};
@@ -24,7 +25,7 @@ const ElementWrapper = styled.div`
   `}
 `
 
-const Element = styled.textarea`
+const TextArea = styled.textarea`
   color: ${theme.colors.black};
   font-family: ${theme.font.family};
   font-size: ${theme.font.sizes.large};
@@ -32,6 +33,11 @@ const Element = styled.textarea`
   background: transparent;
   border: 0;
   outline: none;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  resize: none;
+  box-sizing: border-box;
   &:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 ${theme.spacings.small} ${theme.colors.lightGray}
       inset;
@@ -60,7 +66,7 @@ const Error = styled.p`
 
 const wrapperModifiers = {
   error: () => css`
-    ${ElementWrapper} {
+    ${TextAreaWrapper} {
       border-color: ${theme.colors.red};
     }
 
@@ -70,7 +76,7 @@ const wrapperModifiers = {
   `,
   disabled: () => css`
     ${Label},
-    ${Element} {
+    ${TextArea} {
       cursor: not-allowed;
       color: ${theme.colors.gray};
 
@@ -83,23 +89,18 @@ const wrapperModifiers = {
 
 const Wrapper = styled.div<WrapperProps>`
   ${({ error, disabled }) => css`
+    width: 100%;
+    height: 100%;
+
     ${error && wrapperModifiers.error()}
     ${disabled && wrapperModifiers.disabled()}
   `}
 `
 
 export default {
-  Wrapper: tw(Wrapper)`
-    max-w-full
-    h-full
-    max-h-full
-  `,
+  Wrapper,
   Error,
   Label,
-  Element: tw(Element)`
-    w-full
-    max-h-[50vh]
-    overflow-y-auto
-  `,
-  ElementWrapper
+  TextArea,
+  TextAreaWrapper
 }
