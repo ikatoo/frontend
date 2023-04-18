@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
 import Button from '../../../components/Button'
-import TextEditor from '../../../components/TextEditor'
 import { FormContainer } from '../../../components/FormContainer'
 import { TextContainer } from '../../../components/TextContainer'
+import TextEditor from '../../../components/TextEditor'
 import TextInput from '../../../components/TextInput'
 // import { useAlert } from '../../../hooks/useAlert'
 // import aboutService from '../../../services/aboutService'
@@ -67,7 +67,7 @@ export const AdminAbout = () => {
                 label="Título"
                 name="title"
                 placeholder="Título"
-                onBlur={(event) => setTitle(event.currentTarget.value)}
+                onInputChange={(value) => setTitle(value)}
                 tabIndex={1}
                 autoFocus
               />
@@ -78,7 +78,7 @@ export const AdminAbout = () => {
                 initialValue={description}
                 label="Descrição"
                 labelColor="white"
-                onChange={(value) => setDescription(value)}
+                onEditorChange={(value) => setDescription(value)}
                 tabIndex={2}
               />
             </Styles.TextWrapper>

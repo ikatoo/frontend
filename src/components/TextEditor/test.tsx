@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { describe, expect, test, vi } from 'vitest'
 import TextEditor from '.'
 import theme from '../../theme'
+import userEvent from '@testing-library/user-event'
 
 describe('<TextEditor />', () => {
   test('should render the component with default properties', async () => {
@@ -10,15 +10,16 @@ describe('<TextEditor />', () => {
     const onChange = vi.fn()
     render(
       <TextEditor
+        name="editor"
         initialValue={value}
-        onChange={onChange}
+        onEditorChange={onChange}
         label="Description"
       />
     )
 
     const label = screen.getByText('Description')
     const wrapper = label.parentElement
-    const editor = screen.getByText(/loading.../i)
+    const editor = screen.getByRole('textbox')
 
     expect(label).toBeInTheDocument()
     expect(label).toHaveStyle('color: #00021f')
@@ -28,7 +29,7 @@ describe('<TextEditor />', () => {
   })
 
   test('should render components with white label color', () => {
-    render(<TextEditor label="teste" labelColor="white" />)
+    render(<TextEditor name="editor" label="teste" labelColor="white" />)
 
     const label = screen.getByText('teste')
 
@@ -38,7 +39,7 @@ describe('<TextEditor />', () => {
 
   test('should render components with error', () => {
     const error = 'this is error'
-    render(<TextEditor label="teste" error={error} />)
+    render(<TextEditor name="editor" label="teste" error={error} />)
 
     const errorElement = screen.getByText(error)
     expect(errorElement).toBeInTheDocument()
@@ -48,11 +49,17 @@ describe('<TextEditor />', () => {
     })
   })
 
-  test.skip('should gain focus when tab', async () => {
-    render(<TextEditor label="teste" initialValue="teste" tabIndex={1} />)
+  test('should gain focus when tab', async () => {
+    render(
+      <TextEditor
+        name="editor"
+        label="teste"
+        initialValue="teste"
+        tabIndex={1}
+      />
+    )
 
-    const labelElement = screen.getByText('teste')
-    const editorElement = labelElement.nextElementSibling
+    const editorElement = screen.getByRole('textbox')
 
     expect(document.body).toHaveFocus()
     userEvent.tab()
@@ -61,15 +68,22 @@ describe('<TextEditor />', () => {
     })
   })
 
-  test.skip('should focused when click on label', async () => {
-    render(<TextEditor label="teste" initialValue="teste" tabIndex={1} />)
+  test('should focused when click on label', async () => {
+    render(
+      <TextEditor
+        name="editor"
+        label="teste"
+        initialValue="teste"
+        tabIndex={1}
+      />
+    )
 
     const labelElement = screen.getByText('teste')
-    // const editorElement = labelElement.nextElementSibling
+    const editorElement = screen.getByRole('textbox')
 
     userEvent.click(labelElement)
-    // await waitFor(() => {
-    //   expect(editorElement).toHaveFocus()
-    // })
+    await waitFor(() => {
+      expect(editorElement).toHaveFocus()
+    })
   })
 })
