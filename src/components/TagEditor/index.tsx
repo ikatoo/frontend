@@ -1,8 +1,9 @@
+import { Close } from '@styled-icons/material-outlined'
 import { useState } from 'react'
 import TextInput from '../TextInput'
 import Styles from './styles'
 
-type Tag = {
+export type Tag = {
   title: string
 }
 
@@ -26,11 +27,25 @@ const TagEditor = (props: TagEditorProps) => {
         {tags.map((tag) => (
           <Styles.Tag data-testid="tag-testid" key={tag.title}>
             {tag.title}
-            <Styles.DeleteButton onClick={() => deleteTag(tag.title)} />
+            <Styles.DeleteButton onClick={() => deleteTag(tag.title)}>
+              <Close size={16} />
+            </Styles.DeleteButton>
           </Styles.Tag>
         ))}
       </Styles.TagsWrapper>
-      <TextInput name={props.name} label={props.title} labelColor="white" />
+      <form
+        onSubmit={(event) => {
+          event.preventDefault()
+          const tagInput = document.getElementsByName(props.name)[0]
+          const newTag = tagInput.getAttribute('value')
+
+          if (!!newTag && newTag.length && !tags.includes({ title: newTag })) {
+            setTags([...tags, { title: newTag }])
+          }
+        }}
+      >
+        <TextInput name={props.name} label={props.title} labelColor="white" />
+      </form>
     </>
   )
 }
