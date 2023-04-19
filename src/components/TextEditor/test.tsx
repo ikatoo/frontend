@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { describe, expect, test, vi } from 'vitest'
 import TextEditor from '.'
 import theme from '../../theme'
-import userEvent from '@testing-library/user-event'
 
 describe('<TextEditor />', () => {
   test('should render the component with default properties', async () => {
@@ -85,5 +85,26 @@ describe('<TextEditor />', () => {
     await waitFor(() => {
       expect(editorElement).toHaveFocus()
     })
+  })
+
+  test('should call onChange function when change data in textbox', () => {
+    const onChange = vi.fn()
+    render(
+      <TextEditor
+        name="editor"
+        label="teste"
+        initialValue=""
+        tabIndex={1}
+        onEditorChange={onChange}
+      />
+    )
+
+    const textareaElement = screen.getByRole('textbox')
+
+    userEvent.click(textareaElement)
+    expect(onChange).toHaveBeenCalledTimes(0)
+
+    userEvent.keyboard('12345')
+    expect(onChange).toHaveBeenCalledTimes(5)
   })
 })
