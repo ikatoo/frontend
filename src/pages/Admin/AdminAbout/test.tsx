@@ -6,9 +6,15 @@ describe('ADMIN: About page', () => {
     render(<AdminAbout />)
 
     expect(screen.getByLabelText(/título/i)).toBeInTheDocument()
-    // expect(screen.getByLabelText(/Descrição/i)).toBeInTheDocument()
-    // expect(screen.getByLabelText(/habilidades/i)).toBeInTheDocument()
-    // expect(screen.getByRole('img')).toHaveAttribute('src', aboutPageMock.illustrationURL)
-    // expect(screen.getByRole('img')).toHaveAttribute('alt', aboutPageMock.illustrationURL)
+    expect(screen.getByLabelText(/Descrição/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/habilidades/i)).toBeInTheDocument()
+    // expect(screen.getByRole('img')).toHaveAttribute(
+    //   'src',
+    //   aboutPageMock.illustrationURL
+    // )
+    // expect(screen.getByRole('img')).toHaveAttribute(
+    //   'alt',
+    //   aboutPageMock.illustrationURL
+    // )
   })
 })
