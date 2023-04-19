@@ -7,6 +7,7 @@ import TextEditor from '../../../components/TextEditor'
 import TextInput from '../../../components/TextInput'
 // import { useAlert } from '../../../hooks/useAlert'
 // import aboutService from '../../../services/aboutService'
+import TagEditor, { Tag } from '../../../components/TagEditor'
 import Styles from './styles'
 
 export const AdminAbout = () => {
@@ -16,6 +17,7 @@ export const AdminAbout = () => {
   // const [id, setId] = useState<string>()
   const [title, setTitle] = useState<string>()
   const [description, setDescription] = useState<string>()
+  const [skills] = useState<Tag[]>([])
 
   useEffect(() => {
     // const getInitialData = async () => {
@@ -75,12 +77,17 @@ export const AdminAbout = () => {
 
             <Styles.TextWrapper>
               <TextEditor
+                name="editor"
                 initialValue={description}
                 label="Descrição"
                 labelColor="white"
                 onEditorChange={(value) => setDescription(value)}
                 tabIndex={2}
               />
+            </Styles.TextWrapper>
+
+            <Styles.TextWrapper>
+              <TagEditor name="skills" title="Skills" initalValue={skills} />
             </Styles.TextWrapper>
 
             <Styles.Actions>
