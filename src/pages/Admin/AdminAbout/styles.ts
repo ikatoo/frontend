@@ -1,4 +1,11 @@
+import styled from 'styled-components'
 import tw from 'tailwind-styled-components'
+
+const Legend = styled.fieldset`
+  legend {
+    padding: 0 0.2rem;
+  }
+`
 
 export default {
   Wrapper: tw.div`
@@ -33,5 +40,12 @@ export default {
     flex
     flex-col
     gap-2
+  `,
+  FieldSet: tw(Legend)`
+    border-solid
+    border-mck_gray_light
+    border-2
+    rounded
+    p-2
   `
 }
