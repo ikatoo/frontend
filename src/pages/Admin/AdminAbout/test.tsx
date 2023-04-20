@@ -8,7 +8,7 @@ describe('ADMIN: About page', () => {
     expect(screen.getByLabelText(/título/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/Descrição/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/habilidades/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/images/i)).toBeInTheDocument()
+    expect(screen.getByRole('group')).toContain(/images/i)
     // expect(screen.getByLabelText(/imagem/i)).toBeInTheDocument()
     // expect(screen.getByLabelText(/imagem url/i)).toBeInTheDocument()
     // expect(screen.getByRole('img')).toHaveAttribute(
