@@ -59,11 +59,24 @@ describe('<TagEditor />', () => {
     ]
     render(<TagEditor name="tags" title="Tags" initalValue={tags} />)
     const inputElement = screen.getByRole('textbox')
-    const tagElements = await screen.findAllByTestId('tag-testid')
+    const tagElements = screen.queryAllByTestId('tag-testid')
 
     expect(tagElements).toHaveLength(tags.length)
     userEvent.type(inputElement, `${tags[0].title}{enter}`)
 
-    expect(await screen.findAllByTestId('tag-testid')).toHaveLength(1)
+    expect(screen.queryAllByTestId('tag-testid')).toHaveLength(1)
+  })
+
+  test('should not add tag when this is empty', async () => {
+    render(<TagEditor name="tags" title="Tags" initalValue={[]} />)
+    const inputElement = screen.getByRole('textbox')
+
+    expect(screen.queryAllByTestId('tag-testid')).toHaveLength(0)
+
+    userEvent.type(inputElement, '{enter}')
+    expect(screen.queryAllByTestId('tag-testid')).toHaveLength(0)
+
+    userEvent.type(inputElement, '  {enter}')
+    expect(screen.queryAllByTestId('tag-testid')).toHaveLength(0)
   })
 })
