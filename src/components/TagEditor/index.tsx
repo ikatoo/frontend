@@ -1,5 +1,5 @@
 import { Close } from '@styled-icons/material-outlined'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import TextInput from '../TextInput'
 import Styles from './styles'
 
@@ -21,6 +21,16 @@ const TagEditor = (props: TagEditorProps) => {
     setTags(newTag)
   }
 
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const tagInput = document.getElementsByName(props.name)[0]
+    const newTag = tagInput.getAttribute('value')
+    const exist = !!tags.find((tag) => tag.title === newTag)
+    if (!!newTag && newTag.length && !exist) {
+      setTags([...tags, { title: newTag }])
+    }
+  }
+
   return (
     <>
       <Styles.TagsWrapper>
@@ -33,17 +43,7 @@ const TagEditor = (props: TagEditorProps) => {
           </Styles.Tag>
         ))}
       </Styles.TagsWrapper>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault()
-          const tagInput = document.getElementsByName(props.name)[0]
-          const newTag = tagInput.getAttribute('value')
-
-          if (!!newTag && newTag.length && !tags.includes({ title: newTag })) {
-            setTags([...tags, { title: newTag }])
-          }
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <TextInput name={props.name} label={props.title} labelColor="white" />
       </form>
     </>
