@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react'
 import Button from '../../../components/Button'
 import { FormContainer } from '../../../components/FormContainer'
 import { TextContainer } from '../../../components/TextContainer'
-import TextEditor from '../../../components/TextEditor'
 import TextInput from '../../../components/TextInput'
 // import { useAlert } from '../../../hooks/useAlert'
 // import aboutService from '../../../services/aboutService'
 import TagEditor, { Tag } from '../../../components/TagEditor'
+import TextArea from '../../../components/TextArea'
 import Styles from './styles'
 
 export const AdminAbout = () => {
@@ -18,6 +18,8 @@ export const AdminAbout = () => {
   const [title, setTitle] = useState<string>()
   const [description, setDescription] = useState<string>()
   const [skills] = useState<Tag[]>([])
+  const [illustrationURL, setIllustrationURL] = useState('')
+  const [illustrationALT, setIllustrationALT] = useState('')
 
   useEffect(() => {
     // const getInitialData = async () => {
@@ -70,24 +72,50 @@ export const AdminAbout = () => {
                 name="title"
                 placeholder="Título"
                 onInputChange={(value) => setTitle(value)}
-                tabIndex={1}
                 autoFocus
               />
             </Styles.TextWrapper>
 
             <Styles.TextWrapper>
-              <TextEditor
+              <TextArea
                 name="editor"
                 initialValue={description}
                 label="Descrição"
                 labelColor="white"
-                onEditorChange={(value) => setDescription(value)}
-                tabIndex={2}
+                onTextAreaChange={(value) => setDescription(value)}
               />
             </Styles.TextWrapper>
 
             <Styles.TextWrapper>
-              <TagEditor name="skills" title="Skills" initalValue={skills} />
+              <TagEditor
+                name="skills"
+                title="Habilidades"
+                initalValue={skills}
+              />
+            </Styles.TextWrapper>
+
+            <Styles.TextWrapper>
+              <Styles.FieldSet>
+                <legend role="label">Imagem</legend>
+                <TextInput
+                  name="illustrationURL"
+                  placeholder="https://domain.com/image.jpg"
+                  label="Imagem URL"
+                  labelColor="white"
+                  initialValue={illustrationURL}
+                  onInputChange={(value) => setIllustrationURL(value)}
+                  autoFocus
+                />
+                <TextInput
+                  name="illustrationALT"
+                  placeholder="short image description"
+                  label="Imagem ALT"
+                  labelColor="white"
+                  initialValue={illustrationALT}
+                  onInputChange={(value) => setIllustrationALT(value)}
+                  autoFocus
+                />
+              </Styles.FieldSet>
             </Styles.TextWrapper>
 
             <Styles.Actions>
