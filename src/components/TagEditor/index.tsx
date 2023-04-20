@@ -26,7 +26,7 @@ const TagEditor = (props: TagEditorProps) => {
     const tagInput = document.getElementsByName(props.name)[0]
     const newTag = tagInput.getAttribute('value')
     const exist = !!tags.find((tag) => tag.title === newTag)
-    if (!!newTag && newTag.length && !exist) {
+    if (!!newTag?.trim() && newTag.length && !exist) {
       setTags([...tags, { title: newTag }])
     }
   }
