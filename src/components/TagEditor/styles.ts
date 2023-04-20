@@ -1,5 +1,9 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import theme from '../../theme'
+
+type AlertProps = {
+  isEnabled: boolean
+}
 
 export default {
   TagsWrapper: styled.div`
@@ -16,5 +20,17 @@ export default {
     margin: 4px;
     padding: 2px;
     white-space: nowrap;
+  `,
+  Alert: styled.span<AlertProps>`
+    background: ${theme.colors.red};
+    transform: translateY(-100%);
+    transition: transform 0.3s ease-in-out;
+
+    ${({ isEnabled }) =>
+      isEnabled &&
+      css`
+        transition-delay: 4s;
+        transform: translateY(0);
+      `}
   `
 }
