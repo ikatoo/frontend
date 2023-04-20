@@ -44,7 +44,12 @@ const TagEditor = (props: TagEditorProps) => {
         ))}
       </Styles.TagsWrapper>
       <form onSubmit={handleSubmit}>
-        <TextInput name={props.name} label={props.title} labelColor="white" />
+        <TextInput
+          name={props.name}
+          label={props.title}
+          labelColor="white"
+          autoFocus
+        />
       </form>
     </>
   )
