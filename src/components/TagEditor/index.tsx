@@ -1,5 +1,5 @@
 import { Close } from '@styled-icons/material-outlined'
-import { FormEvent, useState } from 'react'
+import { ChangeEvent, KeyboardEvent, useState } from 'react'
 import TextInput from '../TextInput'
 import Styles from './styles'
 
@@ -15,19 +15,35 @@ type TagEditorProps = {
 
 const TagEditor = (props: TagEditorProps) => {
   const [tags, setTags] = useState<Tag[]>(props.initalValue ?? [])
+  const [newTag, setNewTag] = useState('')
+  const [alert, setAlert] = useState('')
 
   const deleteTag = (title: string) => {
     const newTag = tags.filter((tag) => tag.title !== title)
     setTags(newTag)
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const tagInput = document.getElementsByName(props.name)[0]
-    const newTag = tagInput.getAttribute('value')
+  const addTag = () => {
     const exist = !!tags.find((tag) => tag.title === newTag)
     if (!!newTag?.trim() && newTag.length && !exist) {
       setTags([...tags, { title: newTag }])
+      setNewTag('')
+    } else if (exist) {
+      setAlert(`${newTag} alread exist.`)
+    }
+  }
+
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setNewTag(event.currentTarget.value)
+  }
+
+  const handleOnKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    const { key } = event
+    const isTriggerKey =
+      key === ',' || key === 'Enter' || (event.shiftKey && key === 'Enter')
+    if (isTriggerKey) {
+      addTag()
+      event.preventDefault()
     }
   }
 
@@ -43,14 +59,17 @@ const TagEditor = (props: TagEditorProps) => {
           </Styles.Tag>
         ))}
       </Styles.TagsWrapper>
-      <form onSubmit={handleSubmit}>
-        <TextInput
-          name={props.name}
-          label={props.title}
-          labelColor="white"
-          autoFocus
-        />
-      </form>
+      <TextInput
+        onKeyDown={handleOnKeyDown}
+        onChange={handleOnChange}
+        placeholder={`Press "," | "Enter" | "Shift+Enter" to add ${props.title}`}
+        value={newTag}
+        name={props.name}
+        label={props.title}
+        labelColor="white"
+        autoFocus
+      />
+      <Styles.Alert isEnabled={!!alert.length}>{alert}</Styles.Alert>
     </>
   )
 }
