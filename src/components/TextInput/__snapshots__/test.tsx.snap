@@ -1,17 +1,13 @@
 // Vitest Snapshot v1
 
 exports[`<TextField /> > Renders with error 1`] = `
-.c7 {
+.c3 {
   display: inline-block;
   vertical-align: middle;
   overflow: hidden;
 }
 
-.c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+.c1 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -21,13 +17,15 @@ exports[`<TextField /> > Renders with error 1`] = `
   padding: 0 0.4rem;
   border: 0.2rem solid;
   border-color: #e5e7eb;
+  position: relative;
+  z-index: 1;
 }
 
-.c4:focus-within {
+.c1:focus-within {
   box-shadow: 0 0 0.5rem #1e293b;
 }
 
-.c8 {
+.c4 {
   color: #00021f;
   font-family: 'Oswald','Helvetica','Arial','sans-serif';
   font-size: 0.9rem;
@@ -39,24 +37,24 @@ exports[`<TextField /> > Renders with error 1`] = `
   width: 100%;
 }
 
-.c8:-webkit-autofill {
+.c4:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 0.6rem #e5e7eb inset;
   -webkit-filter: none;
   filter: none;
 }
 
-.c8:-webkit-autofill::first-line {
+.c4:-webkit-autofill::first-line {
   font-family: 'Oswald','Helvetica','Arial','sans-serif';
   font-size: 0.9rem;
 }
 
-.c2 {
+.c0 {
   font-size: 0.9rem;
   color: #00021f;
   cursor: pointer;
 }
 
-.c6 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -67,43 +65,52 @@ exports[`<TextField /> > Renders with error 1`] = `
   order: 0;
 }
 
-.c6 > svg {
+.c2 > svg {
   width: 1.2rem;
   height: 100%;
 }
 
-.c9 {
-  color: #ff2a2a;
-  font-size: 0.6rem;
-}
-
-.c0 .c3 {
-  border-color: #ff2a2a;
-}
-
-.c0 .c5,
-.c0 .c1 {
-  color: #ff2a2a;
+.c5 {
+  width: auto;
+  background: #ff2a2a;
+  opacity: 0%;
+  position: relative;
+  left: 0px;
+  top: -25px;
+  z-index: 0;
+  pointer-events: auto;
+  border-radius: 0 0 4px 4px;
+  padding: 2px 4px;
+  -webkit-transition-duration: 0s;
+  transition-duration: 0s;
+  -webkit-transition-delay: 0s;
+  transition-delay: 0s;
+  -webkit-transition-delay: 0.2s;
+  transition-delay: 0.2s;
+  -webkit-transition-duration: 0.2s;
+  transition-duration: 0.2s;
+  top: 0px;
+  opacity: 100%;
 }
 
 <div
-  class="c0"
+  class=""
 >
   <label
-    class="c1 c2"
+    class="c0"
     for="username"
   >
     TextField
   </label>
   <div
-    class="c3 c4"
+    class="c1"
   >
     <div
-      class="c5 c6"
+      class="c2"
     >
       <svg
         aria-hidden="true"
-        class="c7"
+        class="c3"
         data-testid="icon"
         fill="currentColor"
         focusable="false"
@@ -120,17 +127,17 @@ exports[`<TextField /> > Renders with error 1`] = `
       </svg>
     </div>
     <input
-      class="c8"
+      class="c4"
       id="username"
       name="username"
       type="text"
       value=""
     />
   </div>
-  <p
-    class="c9"
+  <span
+    class="c5"
   >
     Error message
-  </p>
+  </span>
 </div>
 `;
