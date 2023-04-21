@@ -7,17 +7,19 @@ type IconPositionProps = Pick<TextInputProps, 'iconPosition'>
 
 type LabelProps = Pick<TextInputProps, 'labelColor'>
 
-type WrapperProps = Pick<TextInputProps, 'disabled'> & { error?: boolean }
+type WrapperProps = Pick<TextInputProps, 'disabled'>
 
 const InputWrapper = styled.div`
   ${() => css`
-    display: flex;
+    /* display: flex; */
     align-items: center;
     background: ${theme.colors.lightGray};
     border-radius: 0.2rem;
     padding: 0 ${theme.spacings.xsmall};
     border: 0.2rem solid;
     border-color: ${theme.colors.lightGray};
+    position: relative;
+    z-index: 1;
 
     &:focus-within {
       box-shadow: 0 0 0.5rem ${theme.colors.primary};
@@ -69,10 +71,28 @@ const Icon = styled.div<IconPositionProps>`
   `}
 `
 
-const Error = styled.p`
-  ${() => css`
-    color: ${theme.colors.red};
-    font-size: ${theme.font.sizes.xsmall};
+const Error = styled.span<{ isEnabled: boolean }>`
+  ${({ isEnabled }) => css`
+    width: auto;
+    background: ${theme.colors.red};
+    opacity: 0%;
+    position: relative;
+    left: 0px;
+    top: -25px;
+    z-index: 0;
+    pointer-events: auto;
+    border-radius: 0 0 4px 4px;
+    padding: 2px 4px;
+    transition-duration: 0s;
+    transition-delay: 0s;
+
+    ${!!isEnabled &&
+    css`
+      transition-delay: 0.2s;
+      transition-duration: 0.2s;
+      top: 0px;
+      opacity: 100%;
+    `}
   `}
 `
 
@@ -102,8 +122,7 @@ const wrapperModifiers = {
 }
 
 const Wrapper = styled.div<WrapperProps>`
-  ${({ error, disabled }) => css`
-    ${error && wrapperModifiers.error()}
+  ${({ disabled }) => css`
     ${disabled && wrapperModifiers.disabled()}
   `}
 `
