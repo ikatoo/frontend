@@ -21,16 +21,30 @@ export default {
     padding: 2px;
     white-space: nowrap;
   `,
+  InputWrapper: styled.div`
+    position: relative;
+    z-index: 1;
+  `,
   Alert: styled.span<AlertProps>`
     background: ${theme.colors.red};
-    transform: translateY(-100%);
-    transition: transform 0.3s ease-in-out;
+    opacity: 0%;
+    position: relative;
+    left: 0px;
+    top: -25px;
+    z-index: 0;
+    pointer-events: auto;
+    border-radius: 0 0 4px 4px;
+    padding: 2px 4px;
+    transition-duration: 0s;
+    transition-delay: 0s;
 
     ${({ isEnabled }) =>
       isEnabled &&
       css`
-        transition-delay: 4s;
-        transform: translateY(0);
+        transition-delay: 0.2s;
+        transition-duration: 0.2s;
+        top: 0px;
+        opacity: 100%;
       `}
   `
 }

@@ -38,6 +38,7 @@ const TagEditor = (props: TagEditorProps) => {
   }
 
   const handleOnKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    setAlert('')
     const { key } = event
     const isTriggerKey =
       key === ',' || key === 'Enter' || (event.shiftKey && key === 'Enter')
@@ -68,8 +69,8 @@ const TagEditor = (props: TagEditorProps) => {
         label={props.title}
         labelColor="white"
         autoFocus
+        error={alert}
       />
-      <Styles.Alert isEnabled={!!alert.length}>{alert}</Styles.Alert>
     </>
   )
 }

@@ -36,7 +36,7 @@ const TextInput = ({
   }
 
   return (
-    <Styles.Wrapper disabled={disabled} error={!!error}>
+    <Styles.Wrapper disabled={disabled}>
       {!!label && (
         <Styles.Label labelColor={labelColor} htmlFor={name}>
           {label}
@@ -57,7 +57,7 @@ const TextInput = ({
           {...props}
         />
       </Styles.InputWrapper>
-      {!!error && <Styles.Error>{error}</Styles.Error>}
+      <Styles.Error isEnabled={!!error}>{error}</Styles.Error>
     </Styles.Wrapper>
   )
 }
