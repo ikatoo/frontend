@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, useState } from 'react'
+import { InputHTMLAttributes, useEffect, useState } from 'react'
 
 import Styles from './styles'
 
@@ -26,7 +26,11 @@ const TextInput = ({
   onInputChange,
   ...props
 }: TextInputProps) => {
-  const [value, setValue] = useState(initialValue)
+  const [value, setValue] = useState('')
+
+  useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue])
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget.value

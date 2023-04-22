@@ -19,6 +19,15 @@ export const Default: ComponentStory<typeof TextArea> = (args) => (
   </div>
 )
 
+export const withInitialValue: ComponentStory<typeof TextArea> = (args) => (
+  <div className="w-80 p-15">
+    <TextArea {...args} />
+  </div>
+)
+withInitialValue.args = {
+  initialValue: 'initial value'
+}
+
 export const withError: ComponentStory<typeof TextArea> = (args) => (
   <div className="w-80 p-15">
     <TextArea {...args} />
