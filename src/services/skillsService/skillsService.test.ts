@@ -1,9 +1,15 @@
-import { describe, test } from 'vitest'
+import { beforeEach, describe, expect, test } from 'vitest'
 
 import skillsService from '.'
 import skillsPageMock from '../../mocks/skillsPageMock'
+import { mswServer } from '../../helpers/tests/mswServer'
+import skillsHandler from '../../mocks/handlers/skillsHandler'
 
 describe('skills page fetch data', () => {
+  beforeEach(() => {
+    mswServer.use(...skillsHandler)
+  })
+
   test('should get skills page data', async () => {
     const result = await skillsService.get()
 
