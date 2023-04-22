@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { Projects } from '.'
-import projects from '../../mocks/handlers/projects'
+import projects from '../../mocks/handlers/projectsHandler'
 
 export default {
   title: 'Pages/Projects',

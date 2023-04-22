@@ -1,9 +1,15 @@
-import { describe, test } from 'vitest'
+import { beforeEach, describe, test } from 'vitest'
 
 import aboutService from '.'
+import { mswServer } from '../../helpers/tests/mswServer'
 import aboutPageMock from '../../mocks/aboutPageMock'
+import aboutHandler from '../../mocks/handlers/aboutHandler'
 
 describe('About page fetch data', () => {
+  beforeEach(() => {
+    mswServer.use(...aboutHandler)
+  })
+
   test('should get about page data', async () => {
     const result = await aboutService.get()
 

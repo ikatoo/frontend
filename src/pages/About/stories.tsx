@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { About } from '.'
-import about from '../../mocks/handlers/about'
+import about from '../../mocks/handlers/aboutHandler'
 
 export default {
   title: 'Pages/About',

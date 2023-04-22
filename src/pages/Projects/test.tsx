@@ -1,9 +1,15 @@
 import { render, waitFor } from '@testing-library/react'
-import { describe } from 'vitest'
+import { beforeEach, describe, expect, test } from 'vitest'
 import { Projects } from '.'
 import projectsMock from '../../mocks/projectsMock'
+import { mswServer } from '../../helpers/tests/mswServer'
+import projectsHandler from '../../mocks/handlers/projectsHandler'
 
 describe('Projects Page', () => {
+  beforeEach(() => {
+    mswServer.use(...projectsHandler)
+  })
+
   test('renders the projects page with data from the server', async () => {
     const { container } = render(<Projects />)
 

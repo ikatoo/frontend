@@ -1,9 +1,15 @@
 import { render, waitFor } from '@testing-library/react'
-import { describe } from 'vitest'
+import { beforeEach, describe, expect, test } from 'vitest'
 import { Skills } from '.'
+import { mswServer } from '../../helpers/tests/mswServer'
+import skillsHandler from '../../mocks/handlers/skillsHandler'
 import skillsPageMock from '../../mocks/skillsPageMock'
 
 describe('Skills Page', () => {
+  beforeEach(() => {
+    mswServer.use(...skillsHandler)
+  })
+
   test('renders the skill page with data from the server', async () => {
     const { container } = render(<Skills />)
 
