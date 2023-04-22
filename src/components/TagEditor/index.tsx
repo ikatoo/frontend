@@ -1,5 +1,5 @@
 import { Close } from '@styled-icons/material-outlined'
-import { ChangeEvent, KeyboardEvent, useState } from 'react'
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react'
 import TextInput from '../TextInput'
 import Styles from './styles'
 
@@ -14,9 +14,13 @@ type TagEditorProps = {
 }
 
 const TagEditor = (props: TagEditorProps) => {
-  const [tags, setTags] = useState<Tag[]>(props.initalValue ?? [])
+  const [tags, setTags] = useState<Tag[]>([])
   const [newTag, setNewTag] = useState('')
   const [alert, setAlert] = useState('')
+
+  useEffect(() => {
+    setTags(props.initalValue ?? [])
+  }, [props.initalValue])
 
   const deleteTag = (title: string) => {
     const newTag = tags.filter((tag) => tag.title !== title)

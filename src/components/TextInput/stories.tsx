@@ -21,6 +21,15 @@ export const Default: ComponentStory<typeof TextInput> = (args) => (
   </div>
 )
 
+export const withInitialValue: ComponentStory<typeof TextInput> = (args) => (
+  <div style={{ maxWidth: 300, padding: 15 }}>
+    <TextInput {...args} />
+  </div>
+)
+withInitialValue.args = {
+  initialValue: 'This is a initial value'
+}
+
 export const withError: ComponentStory<typeof TextInput> = (args) => (
   <div style={{ maxWidth: 300, padding: 15 }}>
     <TextInput {...args} />
