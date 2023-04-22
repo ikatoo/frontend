@@ -1,7 +1,6 @@
 import { afterAll, afterEach, beforeAll } from 'vitest'
 import { setupServer } from 'msw/node'
 import { handlers } from './src/mocks/handlers'
-import { fetch } from 'cross-fetch'
 
 global.fetch = fetch
 
