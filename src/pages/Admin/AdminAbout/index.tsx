@@ -2,61 +2,65 @@ import { useEffect, useState } from 'react'
 
 import Button from '../../../components/Button'
 import { FormContainer } from '../../../components/FormContainer'
-import { TextContainer } from '../../../components/TextContainer'
-import TextInput from '../../../components/TextInput'
-// import { useAlert } from '../../../hooks/useAlert'
-// import aboutService from '../../../services/aboutService'
 import TagEditor, { Tag } from '../../../components/TagEditor'
 import TextArea from '../../../components/TextArea'
+import { TextContainer } from '../../../components/TextContainer'
+import TextInput from '../../../components/TextInput'
+import { useAlert } from '../../../hooks/useAlert'
+import aboutService from '../../../services/aboutService'
 import Styles from './styles'
 
 export const AdminAbout = () => {
-  const auth = { user: { id: '' } }
-  // const { setAlert } = useAlert()
+  const { setAlert } = useAlert()
 
-  // const [id, setId] = useState<string>()
-  const [title, setTitle] = useState<string>()
-  const [description, setDescription] = useState<string>()
-  const [skills] = useState<Tag[]>([])
+  const [title, setTitle] = useState<string>('')
+  const [description, setDescription] = useState<string>('')
+  const [skills, setSkills] = useState<Tag[]>([])
   const [illustrationURL, setIllustrationURL] = useState('')
   const [illustrationALT, setIllustrationALT] = useState('')
 
   useEffect(() => {
-    // const getInitialData = async () => {
-    //   if (auth.user?.id) {
-    //     const initialData = await aboutService.get(auth.user?.id ?? '')
-    //     if (initialData) {
-    //       setId(initialData.id)
-    //       setTitle(initialData.title)
-    //       setDescription(initialData.description)
-    //     }
-    //   }
-    // }
-    // getInitialData()
-  }, [auth.user?.id])
+    const getInitialData = async () => {
+      const result = await aboutService.get()
+      const initialData = result?.data
+      if (initialData) {
+        setTitle(initialData.title)
+        setDescription(initialData.description)
+        setSkills(initialData.skills)
+        initialData.illustrationALT &&
+          setIllustrationALT(initialData.illustrationALT)
+        initialData.illustrationURL &&
+          setIllustrationURL(initialData.illustrationURL)
+      }
+    }
+    getInitialData()
+  }, [])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    // if (!id) {
-    //   aboutService.create({
-    //     title: title,
-    //     description: description,
-    //     user_id: auth.user?.id
-    //   })
-    //   setAlert({
-    //     title: 'Success on create about page.',
-    //     type: 'message'
-    //   })
-    // } else {
-    //   aboutService.update({
-    //     id: id,
-    //     title: title,
-    //     description: description,
-    //     user_id: auth.user?.id
-    //   })
-    //   setAlert({ title: 'Success on update about page.', type: 'message' })
-    // }
+    if (!title.length) {
+      aboutService.create({
+        title,
+        description,
+        skills,
+        illustrationALT,
+        illustrationURL
+      })
+      setAlert({
+        title: 'Success on create about page.',
+        type: 'message'
+      })
+    } else {
+      aboutService.patch({
+        title: title,
+        description: description,
+        skills,
+        illustrationALT,
+        illustrationURL
+      })
+      setAlert({ title: 'Success on update about page.', type: 'message' })
+    }
   }
 
   return (
@@ -81,6 +85,7 @@ export const AdminAbout = () => {
                 name="editor"
                 initialValue={description}
                 label="Descrição"
+                placeholder="Descrição"
                 labelColor="white"
                 onTextAreaChange={(value) => setDescription(value)}
               />
@@ -108,7 +113,7 @@ export const AdminAbout = () => {
                 />
                 <TextInput
                   name="illustrationALT"
-                  placeholder="short image description"
+                  placeholder="Uma breve descrição da imagem"
                   label="Imagem ALT"
                   labelColor="white"
                   initialValue={illustrationALT}
