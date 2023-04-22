@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { Contact } from '.'
-import contact from '../../mocks/handlers/contact'
+import contact from '../../mocks/handlers/contactHandler'
 
 export default {
   title: 'Pages/Contact',

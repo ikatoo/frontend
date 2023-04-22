@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { Skills } from '.'
-import skills from '../../mocks/handlers/skills'
+import skills from '../../mocks/handlers/skillsHandler'
 
 export default {
   title: 'Pages/Skills',
