@@ -59,6 +59,7 @@ const TextInput = ({
           name={name}
           {...(label ? { id: name } : {})}
           {...props}
+          tabIndex={props.tabIndex ?? 0}
         />
       </Styles.InputWrapper>
       <Styles.Error isEnabled={!!error}>{error}</Styles.Error>

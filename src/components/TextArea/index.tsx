@@ -50,6 +50,7 @@ const TextArea = ({
           name={name}
           {...(label ? { id: name } : {})}
           {...props}
+          tabIndex={props.tabIndex ?? 0}
         />
       </Styles.TextAreaWrapper>
       {!!error && <Styles.Error>{error}</Styles.Error>}
