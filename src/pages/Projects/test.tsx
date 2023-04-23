@@ -1,9 +1,9 @@
 import { render, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, test } from 'vitest'
 import { Projects } from '.'
-import projectsMock from '../../mocks/projectsMock'
-import { mswServer } from '../../helpers/tests/mswServer'
 import projectsHandler from '../../mocks/handlers/projectsHandler'
+import { mswServer } from '../../mocks/msw/mswServer'
+import projectsMock from '../../mocks/projectsMock'
 
 describe('Projects Page', () => {
   beforeEach(() => {

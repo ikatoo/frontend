@@ -5,6 +5,6 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     include: ['src/**/test.{ts,tsx}', 'src/**/*.test.{ts,tsx}'],
-    setupFiles: ['src/helpers/tests/mswSetup.ts', './vitestGlobalReact.ts']
+    setupFiles: ['src/mocks/msw/mswSetup.ts', './vitestGlobalReact.ts']
   }
 })

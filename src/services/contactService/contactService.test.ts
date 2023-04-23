@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, test } from 'vitest'
 
 import contactService from '.'
-import { mswServer } from '../../helpers/tests/mswServer'
 import contactPageMock from '../../mocks/contactPageMock'
 import contactHandler from '../../mocks/handlers/contactHandler'
+import { mswServer } from '../../mocks/msw/mswServer'
 
 describe('contact page fetch data', () => {
   beforeEach(() => {

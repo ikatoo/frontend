@@ -1,9 +1,9 @@
 import { beforeEach, describe, test } from 'vitest'
 
 import aboutService from '.'
-import { mswServer } from '../../helpers/tests/mswServer'
 import aboutPageMock from '../../mocks/aboutPageMock'
 import aboutHandler from '../../mocks/handlers/aboutHandler'
+import { mswServer } from '../../mocks/msw/mswServer'
 
 describe('About page fetch data', () => {
   beforeEach(() => {

@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, test } from 'vitest'
 
 import projectsService from '.'
-import { mswServer } from '../../helpers/tests/mswServer'
 import projectsHandler from '../../mocks/handlers/projectsHandler'
+import { mswServer } from '../../mocks/msw/mswServer'
 import projectsMock from '../../mocks/projectsMock'
 
 describe('projects page fetch data', () => {
