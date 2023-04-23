@@ -11,6 +11,7 @@ type TagEditorProps = {
   name: string
   title: string
   initalValue?: Tag[]
+  tabIndex?: number
 }
 
 const TagEditor = (props: TagEditorProps) => {
@@ -72,8 +73,8 @@ const TagEditor = (props: TagEditorProps) => {
         name={props.name}
         label={props.title}
         labelColor="white"
-        autoFocus
         error={alert}
+        tabIndex={props.tabIndex ?? 0}
       />
     </>
   )
