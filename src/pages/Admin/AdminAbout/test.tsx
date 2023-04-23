@@ -1,21 +1,12 @@
 import { render, screen, waitFor } from '@testing-library/react'
-import { rest } from 'msw'
-import { beforeEach, describe, expect, test } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { AdminAbout } from '.'
-import env from '../../../helpers/env'
-import { mswServer } from '../../../helpers/tests/mswServer'
 import aboutPageMock from '../../../mocks/aboutPageMock'
+import mockAboutService from '../../../mocks/msw/services/mockAboutService'
 
 describe('ADMIN: About page', () => {
-  beforeEach(() => {
-    mswServer.use(
-      rest.get(`${env.VITE_API_URL}/about`, (_req, res, ctx) => {
-        return res(ctx.status(200))
-      })
-    )
-  })
-
   test('should render all fields', () => {
+    mockAboutService(200)
     render(<AdminAbout />)
 
     expect(screen.getByLabelText(/título/i)).toBeInTheDocument()
@@ -27,11 +18,7 @@ describe('ADMIN: About page', () => {
   })
 
   test('should load data at render', async () => {
-    mswServer.use(
-      rest.get(`${env.VITE_API_URL}/about`, (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json(aboutPageMock))
-      })
-    )
+    mockAboutService(200, aboutPageMock)
 
     render(<AdminAbout />)
 

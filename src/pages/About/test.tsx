@@ -1,9 +1,9 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { About } from '.'
-import { mswServer } from '../../helpers/tests/mswServer'
 import aboutPageMock from '../../mocks/aboutPageMock'
 import aboutHandler from '../../mocks/handlers/aboutHandler'
+import { mswServer } from '../../mocks/msw/mswServer'
 
 vi.mock('../../components/IconCloud')
 
