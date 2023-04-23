@@ -1,8 +1,8 @@
 import { render, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, test } from 'vitest'
 import { Skills } from '.'
-import { mswServer } from '../../helpers/tests/mswServer'
 import skillsHandler from '../../mocks/handlers/skillsHandler'
+import { mswServer } from '../../mocks/msw/mswServer'
 import skillsPageMock from '../../mocks/skillsPageMock'
 
 describe('Skills Page', () => {
