@@ -109,7 +109,6 @@ export const AdminAbout = () => {
                   labelColor="white"
                   initialValue={illustrationURL}
                   onInputChange={(value) => setIllustrationURL(value)}
-                  autoFocus
                 />
                 <TextInput
                   name="illustrationALT"
@@ -118,15 +117,12 @@ export const AdminAbout = () => {
                   labelColor="white"
                   initialValue={illustrationALT}
                   onInputChange={(value) => setIllustrationALT(value)}
-                  autoFocus
                 />
               </Styles.FieldSet>
             </Styles.TextWrapper>
 
             <Styles.Actions>
-              <Button tabIndex={3} styleType="primary">
-                Salvar
-              </Button>
+              <Button styleType="primary">Salvar</Button>
             </Styles.Actions>
           </Styles.Form>
         </FormContainer>
