@@ -1,9 +1,9 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, test } from 'vitest'
 import { Contact } from '.'
-import { mswServer } from '../../helpers/tests/mswServer'
 import contactPageMock from '../../mocks/contactPageMock'
 import contactHandler from '../../mocks/handlers/contactHandler'
+import { mswServer } from '../../mocks/msw/mswServer'
 
 describe('Contact Page', () => {
   beforeEach(() => {
