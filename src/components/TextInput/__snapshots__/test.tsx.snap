@@ -130,6 +130,7 @@ exports[`<TextField /> > Renders with error 1`] = `
       class="c4"
       id="username"
       name="username"
+      tabindex="0"
       type="text"
       value=""
     />
