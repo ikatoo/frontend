@@ -2,12 +2,11 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, test } from 'vitest'
 import { AdminAbout } from '.'
 import aboutPageMock from '../../../mocks/aboutPageMock'
-import mockAboutService from '../../../mocks/msw/services/mockAboutService'
-import userEvent from '@testing-library/user-event'
+import mswUse from '../../../mocks/msw/services/mswUse'
 
 describe('ADMIN: About page', () => {
   beforeEach(() => {
-    mockAboutService(200)
+    mswUse([{ url: `${env.VITE_API_URL}/about`, method: 'get', status: 200 }])
   })
 
   test('should render all fields', async () => {
@@ -22,7 +21,14 @@ describe('ADMIN: About page', () => {
   })
 
   test('should load data at render', async () => {
-    mockAboutService(200, aboutPageMock)
+    mswUse([
+      {
+        url: `${env.VITE_API_URL}/about`,
+        method: 'get',
+        status: 200,
+        result: aboutPageMock
+      }
+    ])
 
     render(<AdminAbout />)
 
