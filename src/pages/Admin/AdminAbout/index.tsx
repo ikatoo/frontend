@@ -127,6 +127,7 @@ export const AdminAbout = () => {
 
             <Styles.Actions>
               <Button styleType="primary">Salvar</Button>
+              <Button styleType="secondary">Limpar Formulário</Button>
             </Styles.Actions>
           </Styles.Form>
         </FormContainer>
