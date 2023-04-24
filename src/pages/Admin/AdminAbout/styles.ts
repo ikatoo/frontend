@@ -35,6 +35,7 @@ export default {
     items-center
     justify-center
     m-4
+    gap-2
   `,
   Form: tw.form`
     flex
