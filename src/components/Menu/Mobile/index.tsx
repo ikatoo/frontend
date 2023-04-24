@@ -31,7 +31,8 @@ const MobileMenu = ({ social, links }: SideMenuProps) => {
           <Logo mobileSize />
         </Styles.IconWrapper>
         <Styles.IconWrapper onClick={() => setIsClosed(!isClosed)}>
-          {isClosed ? <MenuButton /> : <CloseButton />}
+          {isClosed && <MenuButton />}
+          {!isClosed && <CloseButton />}
         </Styles.IconWrapper>
       </Styles.MobileBar>
 
