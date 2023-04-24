@@ -5,7 +5,7 @@ import aboutPageMock from '../../../mocks/aboutPageMock'
 import mockAboutService from '../../../mocks/msw/services/mockAboutService'
 
 describe('ADMIN: About page', () => {
-  test('should render all fields', () => {
+  test('should render all fields', async () => {
     mockAboutService(200)
     render(<AdminAbout />)
 
@@ -22,21 +22,19 @@ describe('ADMIN: About page', () => {
 
     render(<AdminAbout />)
 
-    await waitFor(() => {
-      screen.getByPlaceholderText(/título/i)
-    })
-    // const titleInput = screen.getByPlaceholderText(/título/i)
-    // const descriptionInput = screen.getByPlaceholderText('Descrição')
-    // const skills = screen
-    //   .queryAllByTestId('tag-testid')
-    //   .map((element) => ({ title: element.textContent }))
-    // const illustrationALTInput = screen.getByPlaceholderText(
-    //   'Uma breve descrição da imagem'
-    // )
-    // const illustrationURLTInput = screen.getByPlaceholderText(
-    //   'https://domain.com/image.jpg'
-    // )
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { skills, description, ...fields } = aboutPageMock
 
-    // expect(titleInput).toHaveValue(aboutPageMock.title)
+    await waitFor(async () => {
+      expect(screen.getByRole('form')).toHaveFormValues(fields)
+      expect(screen.getByPlaceholderText('Descrição')).toHaveTextContent(
+        description
+      )
+      expect(
+        screen
+          .getAllByTestId('tag-testid')
+          .map((skill) => ({ title: skill.textContent }))
+      ).toEqual(skills)
+    })
   })
 })
