@@ -8,6 +8,7 @@ import { TextContainer } from '../../../components/TextContainer'
 import TextInput from '../../../components/TextInput'
 import { useAlert } from '../../../hooks/useAlert'
 import aboutService from '../../../services/aboutService'
+import { AboutPageServiceProps } from '../../../types/AboutPage'
 import Styles from './styles'
 
 export const AdminAbout = () => {
@@ -18,28 +19,28 @@ export const AdminAbout = () => {
   const [skills, setSkills] = useState<Tag[]>([])
   const [illustrationURL, setIllustrationURL] = useState('')
   const [illustrationALT, setIllustrationALT] = useState('')
+  const [initialData, setInitialData] = useState<AboutPageServiceProps>()
 
   useEffect(() => {
     const getInitialData = async () => {
       const result = await aboutService.get()
-      const initialData = result?.data
-      if (initialData) {
-        setTitle(initialData.title)
-        setDescription(initialData.description)
-        setSkills(initialData.skills)
-        initialData.illustrationALT &&
-          setIllustrationALT(initialData.illustrationALT)
-        initialData.illustrationURL &&
-          setIllustrationURL(initialData.illustrationURL)
-      }
+      setInitialData(result?.data)
     }
     getInitialData()
   }, [])
 
+  useEffect(() => {
+    setTitle(initialData?.title ?? '')
+    setDescription(initialData?.description ?? '')
+    setSkills(initialData?.skills ?? [])
+    setIllustrationALT(initialData?.illustrationALT ?? '')
+    setIllustrationURL(initialData?.illustrationURL ?? '')
+  }, [initialData])
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    if (!title.length) {
+    if (!initialData) {
       aboutService.create({
         title,
         description,
