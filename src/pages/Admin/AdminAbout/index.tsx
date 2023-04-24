@@ -67,7 +67,11 @@ export const AdminAbout = () => {
     <Styles.Wrapper>
       <TextContainer title={'Informações sobre você.'}>
         <FormContainer>
-          <Styles.Form onSubmit={handleSubmit} method="post">
+          <Styles.Form
+            onSubmit={handleSubmit}
+            method="post"
+            name="aboutPageForm"
+          >
             <Styles.TextWrapper>
               <TextInput
                 initialValue={title}
