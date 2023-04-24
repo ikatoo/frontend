@@ -89,6 +89,7 @@ exports[`<TextArea /> > Renders with error 1`] = `
       class="c5"
       id="username"
       name="username"
+      tabindex="0"
     />
   </div>
   <p
