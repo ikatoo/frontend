@@ -17,8 +17,8 @@ describe('<Button />', () => {
     render(<Button styleType="primary" />)
     const button = screen.getByRole('button')
 
-    expect(button).toHaveClass('text-mck_aqua')
-    expect(button).toHaveClass('bg-slate-800')
+    expect(button).toHaveClass('text-white')
+    expect(button).toHaveClass('bg-blue-800')
     expect(button).toHaveClass('hover:bg-mck_aqua')
     expect(button).toHaveClass('hover:text-slate-800')
     expect(button).toHaveClass('focus:bg-blue-700')
@@ -29,8 +29,8 @@ describe('<Button />', () => {
     render(<Button styleType="secondary" />)
     const button = screen.getByRole('button')
 
-    expect(button).toHaveClass('text-white')
-    expect(button).toHaveClass('bg-blue-800')
+    expect(button).toHaveClass('text-mck_aqua')
+    expect(button).toHaveClass('bg-slate-800')
     expect(button).toHaveClass('hover:bg-mck_aqua')
     expect(button).toHaveClass('hover:text-slate-800')
     expect(button).toHaveClass('focus:bg-blue-700')
@@ -50,8 +50,8 @@ describe('<Button />', () => {
   })
 
   it('should render button and match with snapshot', () => {
-    const { container } = render(<Button block />)
+    render(<Button block />)
 
-    expect(container.firstChild).toMatchSnapshot()
+    expect(screen).toMatchSnapshot()
   })
 })
