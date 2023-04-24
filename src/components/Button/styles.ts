@@ -2,16 +2,16 @@ import tw from 'tailwind-styled-components'
 
 const type = {
   primary: `
-    text-mck_aqua
-    bg-slate-800
+    text-white
+    bg-blue-800
     hover:bg-mck_aqua
     hover:text-slate-800
     focus:bg-blue-700
     active:bg-blue-800
   `,
   secondary: `
-    text-white
-    bg-blue-800
+    text-mck_aqua
+    bg-slate-800
     hover:bg-mck_aqua
     hover:text-slate-800
     focus:bg-blue-700
