@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, test } from 'vitest'
 
 import skillsService from '.'
-import skillsPageMock from '../../mocks/skillsPageMock'
 import skillsHandler from '../../mocks/handlers/skillsHandler'
 import { mswServer } from '../../mocks/msw/mswServer'
+import '../../mocks/msw/mswSetup'
+import skillsPageMock from '../../mocks/skillsPageMock'
 
 describe('skills page fetch data', () => {
   beforeEach(() => {

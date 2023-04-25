@@ -1,16 +1,13 @@
 import { render, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, test } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 import { Projects } from '.'
-import projectsHandler from '../../mocks/handlers/projectsHandler'
-import { mswServer } from '../../mocks/msw/mswServer'
 import projectsMock from '../../mocks/projectsMock'
+import api from '../../services/api'
 
 describe('Projects Page', () => {
-  beforeEach(() => {
-    mswServer.use(...projectsHandler)
-  })
-
   test('renders the projects page with data from the server', async () => {
+    api.get = vi.fn().mockResolvedValue({ data: projectsMock })
+
     const { container } = render(<Projects />)
 
     await waitFor(() => {

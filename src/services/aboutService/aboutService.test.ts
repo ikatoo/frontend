@@ -4,6 +4,7 @@ import aboutService from '.'
 import aboutPageMock from '../../mocks/aboutPageMock'
 import aboutHandler from '../../mocks/handlers/aboutHandler'
 import { mswServer } from '../../mocks/msw/mswServer'
+import '../../mocks/msw/mswSetup'
 
 describe('About page fetch data', () => {
   beforeEach(() => {

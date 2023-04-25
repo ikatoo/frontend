@@ -1,13 +1,20 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { vi } from 'vitest'
 import TagEditor from '.'
 import aboutPageMock from '../../mocks/aboutPageMock'
 
 describe('<TagEditor />', () => {
   it('should render the component', () => {
     const title = 'Tags'
+    const onChangeTags = vi.fn()
     render(
-      <TagEditor name="tags" title={title} initalValue={aboutPageMock.skills} />
+      <TagEditor
+        name="tags"
+        title={title}
+        initalValue={aboutPageMock.skills}
+        onChangeTags={onChangeTags}
+      />
     )
 
     const inputElement = screen.getByRole('textbox')
@@ -21,8 +28,14 @@ describe('<TagEditor />', () => {
   })
 
   test('should remove tag when click in delete button', () => {
+    const onChangeTags = vi.fn()
     render(
-      <TagEditor name="tags" title="Tags" initalValue={aboutPageMock.skills} />
+      <TagEditor
+        name="tags"
+        title="Tags"
+        initalValue={aboutPageMock.skills}
+        onChangeTags={onChangeTags}
+      />
     )
 
     const tagForRemove = screen.queryByText('javascript')
@@ -31,6 +44,7 @@ describe('<TagEditor />', () => {
     buttonElement && userEvent.click(buttonElement)
     const tagElements = screen.queryAllByTestId('tag-testid')
 
+    expect(onChangeTags).toHaveBeenCalledTimes(1)
     expect(tagForRemove).not.toBeInTheDocument()
     expect(tagElements).toHaveLength(aboutPageMock.skills.length - 1)
   })
