@@ -12,6 +12,7 @@ type TagEditorProps = {
   title: string
   initalValue?: Tag[]
   tabIndex?: number
+  onChangeTags?: (tags: Tag[]) => void
 }
 
 const TagEditor = (props: TagEditorProps) => {
@@ -24,14 +25,17 @@ const TagEditor = (props: TagEditorProps) => {
   }, [props.initalValue])
 
   const deleteTag = (title: string) => {
-    const newTag = tags.filter((tag) => tag.title !== title)
-    setTags(newTag)
+    const newTags = tags.filter((tag) => tag.title !== title)
+    setTags(newTags)
+    props.onChangeTags && props.onChangeTags(newTags)
   }
 
   const addTag = () => {
     const exist = !!tags.find((tag) => tag.title === newTag)
     if (!!newTag?.trim() && newTag.length && !exist) {
-      setTags([...tags, { title: newTag }])
+      const newTags = [...tags, { title: newTag }]
+      setTags(newTags)
+      props.onChangeTags && props.onChangeTags(newTags)
       setNewTag('')
     } else if (exist) {
       setAlert(`${newTag} alread exist.`)

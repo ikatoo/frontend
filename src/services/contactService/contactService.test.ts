@@ -4,6 +4,7 @@ import contactService from '.'
 import contactPageMock from '../../mocks/contactPageMock'
 import contactHandler from '../../mocks/handlers/contactHandler'
 import { mswServer } from '../../mocks/msw/mswServer'
+import '../../mocks/msw/mswSetup'
 
 describe('contact page fetch data', () => {
   beforeEach(() => {

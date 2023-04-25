@@ -1,18 +1,15 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { beforeEach, describe, expect, test } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 import { AdminAbout } from '.'
-import env from '../../../helpers/env'
 import { AlertProvider } from '../../../hooks/useAlert'
 import aboutPageMock from '../../../mocks/aboutPageMock'
-import mswUse from '../../../mocks/msw/services/mswUse'
+import api from '../../../services/api'
 
 describe('ADMIN: About page', () => {
-  beforeEach(() => {
-    mswUse([{ url: `${env.VITE_API_URL}/about`, method: 'get', status: 200 }])
-  })
+  test('should render all fields', () => {
+    api.get = vi.fn().mockResolvedValue({})
 
-  test('should render all fields', async () => {
     render(<AdminAbout />)
 
     expect(screen.getByLabelText(/título/i)).toBeInTheDocument()
@@ -21,17 +18,14 @@ describe('ADMIN: About page', () => {
     expect(screen.getByRole('group')).toContain(/images/i)
     expect(screen.getByLabelText(/imagem url/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/imagem alt/i)).toBeInTheDocument()
+
+    api.get = vi.fn()
   })
 
   test('should load data at render', async () => {
-    mswUse([
-      {
-        url: `${env.VITE_API_URL}/about`,
-        method: 'get',
-        status: 200,
-        result: aboutPageMock
-      }
-    ])
+    api.get = vi.fn().mockResolvedValue({
+      data: aboutPageMock
+    })
 
     render(<AdminAbout />)
 
@@ -49,9 +43,13 @@ describe('ADMIN: About page', () => {
         .getAllByTestId('tag-testid')
         .map((skill) => ({ title: skill.textContent }))
     ).toEqual(skills)
+
+    api.get = vi.fn()
   })
 
   test('should change focus on press tab key', () => {
+    api.get = vi.fn().mockResolvedValue({})
+
     render(<AdminAbout />)
 
     const titleInput = screen.getByRole('textbox', { name: /título/i })
@@ -84,15 +82,15 @@ describe('ADMIN: About page', () => {
   })
 
   test('should call submit with data when save button is clicked', async () => {
-    mswUse([
-      { url: `${env.VITE_API_URL}/about`, method: 'get', status: 200 },
-      { url: `${env.VITE_API_URL}/about`, method: 'post', status: 201 }
-    ])
-    render(
-      <AlertProvider>
-        <AdminAbout />
-      </AlertProvider>
-    )
+    api.get = vi.fn().mockResolvedValue({})
+
+    await waitFor(() => {
+      render(
+        <AlertProvider>
+          <AdminAbout />
+        </AlertProvider>
+      )
+    })
 
     const titleInput = screen.getByRole('textbox', { name: /título/i })
     const descriptionInput = screen.getByRole('textbox', { name: /Descrição/i })
@@ -104,9 +102,6 @@ describe('ADMIN: About page', () => {
       name: /Imagem ALT/i
     })
     const submitButton = screen.getByRole('button', { name: /salvar/i })
-    // const clearButton = screen.getByRole('button', {
-    //   name: /limpar formulário/i
-    // })
 
     userEvent.type(titleInput, aboutPageMock.title)
     userEvent.type(descriptionInput, aboutPageMock.description)
@@ -122,18 +117,31 @@ describe('ADMIN: About page', () => {
       )
     })
 
-    userEvent.click(submitButton)
+    api.post = vi.fn().mockResolvedValue({})
+
+    await waitFor(() => {
+      userEvent.click(submitButton)
+    })
+
+    expect(api.post).toBeCalledTimes(1)
+    expect(api.post).toHaveBeenCalledWith('/about', {
+      data: aboutPageMock,
+      headers: {
+        Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
+        ContentType: 'application/json'
+      }
+    })
   })
 
-  test('should show save message when submit first data', () => {
-    render(<AdminAbout />)
-  })
+  // test('should show save message when submit first data', () => {
+  //   render(<AdminAbout />)
+  // })
 
-  test('should show update message when submit a new data', () => {
-    render(<AdminAbout />)
-  })
+  // test('should show update message when submit a new data', () => {
+  //   render(<AdminAbout />)
+  // })
 
-  test('should clear all text inputs and set focus on first text input', () => {
-    render(<AdminAbout />)
-  })
+  // test('should clear all text inputs and set focus on first text input', () => {
+  //   render(<AdminAbout />)
+  // })
 })

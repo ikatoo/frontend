@@ -1,16 +1,13 @@
 import { render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, test } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 import { Contact } from '.'
 import contactPageMock from '../../mocks/contactPageMock'
-import contactHandler from '../../mocks/handlers/contactHandler'
-import { mswServer } from '../../mocks/msw/mswServer'
+import api from '../../services/api'
 
 describe('Contact Page', () => {
-  beforeEach(() => {
-    mswServer.use(...contactHandler)
-  })
-
   test('renders the contact page with data from the server', async () => {
+    api.get = vi.fn().mockResolvedValue({ data: contactPageMock })
+
     const { container } = render(<Contact />)
 
     await waitFor(() => {
