@@ -101,6 +101,7 @@ export const AdminAbout = () => {
                 name="skills"
                 title="Habilidades"
                 initalValue={skills}
+                onChangeTags={setSkills}
               />
             </Styles.TextWrapper>
 
