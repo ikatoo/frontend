@@ -9,7 +9,8 @@ export default {
   TagsWrapper: styled.div`
     line-height: 30px;
   `,
-  DeleteButton: styled.button`
+  DeleteButton: styled.a`
+    cursor: pointer;
     svg {
       color: ${theme.colors.lightGray};
     }
