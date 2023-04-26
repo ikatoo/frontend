@@ -128,7 +128,8 @@ export const AdminAbout = () => {
             </Styles.TextWrapper>
 
             <Styles.Actions>
-              <Button styleType="primary">Salvar</Button>
+              {!initialData && <Button styleType="primary">Salvar</Button>}
+              {!!initialData && <Button styleType="primary">Atualizar</Button>}
               <Button styleType="secondary">Limpar Formulário</Button>
             </Styles.Actions>
           </Styles.Form>
