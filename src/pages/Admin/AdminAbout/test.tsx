@@ -191,16 +191,13 @@ describe('ADMIN: About page', () => {
         { title: 'ci/cd' }
       ]
     }
-    console.log('newAboutPageMock', newAboutPageMock)
 
-    await waitFor(() => {
-      render(
-        <AlertProvider>
-          <Alert />
-          <AdminAbout />
-        </AlertProvider>
-      )
-    })
+    render(
+      <AlertProvider>
+        <Alert />
+        <AdminAbout />
+      </AlertProvider>
+    )
 
     userEvent.type(
       screen.getByRole('textbox', { name: /título/i }),
@@ -218,29 +215,49 @@ describe('ADMIN: About page', () => {
       screen.getByRole('textbox', { name: /imagem url/i }),
       newAboutPageMock.illustrationURL
     )
+
+    await waitFor(() => {
+      expect(screen.queryAllByTestId('tag-testid')).toHaveLength(
+        aboutPageMock.skills.length
+      )
+    })
+
     const tagForRemove = screen.queryByText('javascript')
     const deleteSkillButton = tagForRemove?.lastElementChild
     deleteSkillButton && userEvent.click(deleteSkillButton)
+    expect(screen.queryAllByTestId('tag-testid')).toHaveLength(
+      aboutPageMock.skills.length - 1
+    )
+
+    await waitFor(() => {
+      expect(screen.queryByText('javascript')).not.toBeInTheDocument()
+    })
+
     userEvent.type(
       screen.getByRole('textbox', { name: /habilidades/i }),
       `ci/cd,`
     )
 
     await waitFor(() => {
-      userEvent.click(screen.getByRole('button', { name: /atualizar/i }))
+      expect(screen.getByRole('form')).toHaveFormValues(newAboutPageMock)
     })
+
+    userEvent.click(screen.getByRole('button', { name: /atualizar/i }))
 
     expect(
       screen.getByText('Success on update about page.')
     ).toBeInTheDocument()
 
-    expect(api.patch).toBeCalledTimes(1)
-    expect(api.patch).toHaveBeenCalledWith('/about', {
-      data: newAboutPageMock,
-      headers: {
-        Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
-        ContentType: 'application/json'
-      }
+    expect(api.patch).toHaveBeenCalledTimes(1)
+
+    await waitFor(() => {
+      expect(api.patch).toBeCalledWith('/about', {
+        data: newAboutPageMock,
+        headers: {
+          Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
+          ContentType: 'application/json'
+        }
+      })
     })
   })
 
