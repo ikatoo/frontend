@@ -30,11 +30,13 @@ export const AdminAbout = () => {
   }, [])
 
   useEffect(() => {
-    setTitle(initialData?.title ?? '')
-    setDescription(initialData?.description ?? '')
-    setSkills(initialData?.skills ?? [])
-    setIllustrationALT(initialData?.illustrationALT ?? '')
-    setIllustrationURL(initialData?.illustrationURL ?? '')
+    initialData?.title && setTitle(initialData.title)
+    initialData?.description && setDescription(initialData.description)
+    initialData?.skills && setSkills(initialData.skills)
+    initialData?.illustrationALT &&
+      setIllustrationALT(initialData.illustrationALT)
+    initialData?.illustrationURL &&
+      setIllustrationURL(initialData.illustrationURL)
   }, [initialData])
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -62,6 +64,10 @@ export const AdminAbout = () => {
       })
       setAlert({ title: 'Success on update about page.', type: 'message' })
     }
+  }
+
+  const onChangeTags = (values: Tag[]) => {
+    setSkills(values)
   }
 
   return (
@@ -101,7 +107,7 @@ export const AdminAbout = () => {
                 name="skills"
                 title="Habilidades"
                 initalValue={skills}
-                onChangeTags={setSkills}
+                onChangeTags={onChangeTags}
               />
             </Styles.TextWrapper>
 
