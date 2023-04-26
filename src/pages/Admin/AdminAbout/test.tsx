@@ -2,6 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, test, vi } from 'vitest'
 import { AdminAbout } from '.'
+import Alert from '../../../components/Alert'
 import { AlertProvider } from '../../../hooks/useAlert'
 import aboutPageMock from '../../../mocks/aboutPageMock'
 import api from '../../../services/api'
@@ -122,6 +123,49 @@ describe('ADMIN: About page', () => {
     await waitFor(() => {
       userEvent.click(submitButton)
     })
+  })
+
+  test('should show save message when submit first data', async () => {
+    api.get = vi.fn().mockResolvedValue({})
+    api.post = vi.fn().mockResolvedValue({})
+
+    await waitFor(() => {
+      render(
+        <AlertProvider>
+          <Alert />
+          <AdminAbout />
+        </AlertProvider>
+      )
+    })
+
+    userEvent.type(
+      screen.getByRole('textbox', { name: /título/i }),
+      aboutPageMock.title
+    )
+    userEvent.type(
+      screen.getByRole('textbox', { name: /descrição/i }),
+      aboutPageMock.description
+    )
+    userEvent.type(
+      screen.getByRole('textbox', { name: /imagem alt/i }),
+      aboutPageMock.illustrationALT
+    )
+    userEvent.type(
+      screen.getByRole('textbox', { name: /imagem url/i }),
+      aboutPageMock.illustrationURL
+    )
+    aboutPageMock.skills.forEach((skill) => {
+      userEvent.type(
+        screen.getByRole('textbox', { name: /habilidades/i }),
+        `${skill.title},`
+      )
+    })
+    await waitFor(() => {
+      userEvent.click(screen.getByRole('button', { name: /salvar/i }))
+      expect(
+        screen.getByText('Success on create about page.')
+      ).toBeInTheDocument()
+    })
 
     expect(api.post).toBeCalledTimes(1)
     expect(api.post).toHaveBeenCalledWith('/about', {
@@ -133,13 +177,72 @@ describe('ADMIN: About page', () => {
     })
   })
 
-  // test('should show save message when submit first data', () => {
-  //   render(<AdminAbout />)
-  // })
+  test('should show update message when submit a new data', async () => {
+    api.get = vi.fn().mockResolvedValue({ data: aboutPageMock })
+    api.patch = vi.fn().mockResolvedValue({})
 
-  // test('should show update message when submit a new data', () => {
-  //   render(<AdminAbout />)
-  // })
+    const newAboutPageMock = {
+      title: 'new title',
+      description: 'new description',
+      illustrationALT: 'new image alt',
+      illustrationURL: 'new image url',
+      skills: [
+        ...aboutPageMock.skills.filter((skill) => skill.title !== 'javascript'),
+        { title: 'ci/cd' }
+      ]
+    }
+    console.log('newAboutPageMock', newAboutPageMock)
+
+    await waitFor(() => {
+      render(
+        <AlertProvider>
+          <Alert />
+          <AdminAbout />
+        </AlertProvider>
+      )
+    })
+
+    userEvent.type(
+      screen.getByRole('textbox', { name: /título/i }),
+      newAboutPageMock.title
+    )
+    userEvent.type(
+      screen.getByRole('textbox', { name: /descrição/i }),
+      newAboutPageMock.description
+    )
+    userEvent.type(
+      screen.getByRole('textbox', { name: /imagem alt/i }),
+      newAboutPageMock.illustrationALT
+    )
+    userEvent.type(
+      screen.getByRole('textbox', { name: /imagem url/i }),
+      newAboutPageMock.illustrationURL
+    )
+    const tagForRemove = screen.queryByText('javascript')
+    const deleteSkillButton = tagForRemove?.lastElementChild
+    deleteSkillButton && userEvent.click(deleteSkillButton)
+    userEvent.type(
+      screen.getByRole('textbox', { name: /habilidades/i }),
+      `ci/cd,`
+    )
+
+    await waitFor(() => {
+      userEvent.click(screen.getByRole('button', { name: /atualizar/i }))
+    })
+
+    expect(
+      screen.getByText('Success on update about page.')
+    ).toBeInTheDocument()
+
+    expect(api.patch).toBeCalledTimes(1)
+    expect(api.patch).toHaveBeenCalledWith('/about', {
+      data: newAboutPageMock,
+      headers: {
+        Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
+        ContentType: 'application/json'
+      }
+    })
+  })
 
   // test('should clear all text inputs and set focus on first text input', () => {
   //   render(<AdminAbout />)
