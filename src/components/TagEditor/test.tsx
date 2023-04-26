@@ -47,11 +47,22 @@ describe('<TagEditor />', () => {
     expect(onChangeTags).toHaveBeenCalledTimes(1)
     expect(tagForRemove).not.toBeInTheDocument()
     expect(tagElements).toHaveLength(aboutPageMock.skills.length - 1)
+    const newSkills = [
+      ...aboutPageMock.skills.filter((skill) => skill.title !== 'javascript')
+    ]
+    expect(onChangeTags).toBeCalledTimes(1)
+    expect(onChangeTags).toBeCalledWith(newSkills)
   })
 
-  test('should add tag when key enter is pressed inner text input', () => {
+  test('should add tag when key enter is pressed inner text input', async () => {
+    const onChange = vi.fn()
     render(
-      <TagEditor name="tags" title="Tags" initalValue={aboutPageMock.skills} />
+      <TagEditor
+        name="tags"
+        title="Tags"
+        initalValue={aboutPageMock.skills}
+        onChangeTags={onChange}
+      />
     )
     const tagForAdd = 'new tag'
     const inputElement = screen.getByRole('textbox')
@@ -63,6 +74,9 @@ describe('<TagEditor />', () => {
     userEvent.type(inputElement, '{enter}')
 
     expect(screen.queryByText('new tag')).toBeInTheDocument()
+    const newSkills = [...aboutPageMock.skills, { title: 'new tag' }]
+    expect(onChange).toBeCalledTimes(1)
+    expect(onChange).toBeCalledWith(newSkills)
   })
 
   test('should not add tag when this tag already exist', () => {
