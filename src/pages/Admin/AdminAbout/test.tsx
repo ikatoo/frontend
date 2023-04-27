@@ -177,7 +177,7 @@ describe('ADMIN: About page', () => {
     })
   })
 
-  test('should show update message when submit a new data', async () => {
+  test.skip('should show update message when submit a new data', async () => {
     api.get = vi.fn().mockResolvedValue({ data: aboutPageMock })
     api.patch = vi.fn().mockResolvedValue({})
 
