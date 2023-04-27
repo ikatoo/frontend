@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
-import { useAlert } from '../../hooks/useAlert'
 import CloseButton from '../CloseButton'
 import ProgressBar from '../ProgressBar'
 import Styles from './styles'
+import { useAlert } from 'src/hooks/useAlert'
 
 const Alert = () => {
   const alert = useAlert()
