@@ -6,5 +6,10 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['src/**/test.{ts,tsx}', 'src/**/*.test.{ts,tsx}'],
     setupFiles: ['./vitestGlobalReact.ts']
+  },
+  resolve: {
+    alias: {
+      src: `${__dirname}/src`
+    }
   }
 })
