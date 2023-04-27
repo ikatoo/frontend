@@ -13,6 +13,8 @@
     "lint": "eslint src --max-warnings=0",
     "test": "vitest",
     "coverage": "vitest run --coverage",
+    "playwright": "playwright test",
+    "playwright:ui": "playwright test --ui",
     "dev": "vite",
     "build": "tsc && vite build",
     "typecheck": "tsc --project tsconfig.json --noEmit",
@@ -39,6 +41,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",
+    "@playwright/test": "^1.32.3",
     "@storybook/addon-actions": "^6.5.13",
     "@storybook/addon-essentials": "^6.5.13",
     "@storybook/addon-interactions": "^6.5.13",
