@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import tw from 'tailwind-styled-components'
 
-const clampSpan = styled.span`
+const clampSpan = styled.h1`
   font-size: clamp(1rem, 3vw, 3rem);
   line-height: 1;
 `
