@@ -7,6 +7,7 @@ type ButtonProps = {
   icon?: JSX.Element
   block?: boolean
   tabIndex?: number
+  asLink?: boolean
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
 const Button = ({
@@ -14,10 +15,16 @@ const Button = ({
   icon,
   styleType = 'default',
   block = false,
-  tabIndex
+  tabIndex,
+  ...props
 }: ButtonProps) => {
   return (
-    <Styles.Wrapper tabIndex={tabIndex} $block={block} $type={styleType}>
+    <Styles.Wrapper
+      {...props}
+      tabIndex={tabIndex}
+      $block={block}
+      $styleType={styleType}
+    >
       {!!icon && <Styles.IconWrapper>{icon}</Styles.IconWrapper>}
       {children}
     </Styles.Wrapper>

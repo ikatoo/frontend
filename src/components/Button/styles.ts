@@ -32,8 +32,8 @@ export default {
     gap-4
     px-7
     py-3
-    ${(props: { $type: 'primary' | 'secondary' | 'default' }) =>
-      type[props.$type]}
+    ${(props: { $styleType: 'primary' | 'secondary' | 'default' }) =>
+      type[props.$styleType]}
     focus:outline-none
     font-medium
     text-sm
