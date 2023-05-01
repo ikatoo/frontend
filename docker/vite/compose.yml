@@ -1,0 +1,8 @@
+services:
+
+  frontend:
+    build:
+      context: ../..
+      dockerfile: ./docker/vite/Dockerfile
+    ports:
+      - 3333:80
