@@ -11,5 +11,9 @@ services:
     build:
       context: ../..
       dockerfile: ./docker/playwright/Dockerfile
+    user: pwuser
+    working_dir: /home/pwuser/test
+    volumes:
+      - ../../e2e:.
     # ports:
     #   - 3333:80
