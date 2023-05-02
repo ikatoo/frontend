@@ -1,11 +1,16 @@
-FROM mcr.microsoft.com/playwright:v1.33.0-jammy
+FROM node:18.13-bullseye-slim
+
+RUN useradd -m pwuser
 
 USER pwuser
 
 WORKDIR /home/pwuser/tests
 
-RUN npm init playwright@latest
+RUN mkdir tests && \
+  npm i @playwright/test && \
+  npx playwright install --with-deps --force
 
-COPY --chown=pwuser:pwuser e2e playwright.config.ts /home/pwuser/tests/
+COPY playwright.config.ts .
 
-RUN npx playwright test
+CMD npx playwright test
+
