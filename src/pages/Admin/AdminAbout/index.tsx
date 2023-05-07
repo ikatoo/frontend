@@ -70,11 +70,17 @@ export const AdminAbout = () => {
     setSkills(values)
   }
 
+  const handleReset = () => {
+    setDescription('')
+    setSkills([])
+  }
+
   return (
     <Styles.Wrapper>
       <TextContainer title={'Informações sobre você.'}>
         <FormContainer>
           <Styles.Form
+            onReset={handleReset}
             onSubmit={handleSubmit}
             method="post"
             name="aboutPageForm"

@@ -1,13 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import aboutPageMock from 'src/mocks/aboutPageMock'
+import api from 'src/services/api'
 import { describe, expect, test, vi } from 'vitest'
 import { AdminAbout } from '.'
 import Alert from '../../../components/Alert'
 import { AlertProvider } from '../../../hooks/useAlert'
-// import aboutPageMock from '../../../mocks/aboutPageMock'
-import api from 'src/services/api'
-import aboutPageMock from 'src/mocks/aboutPageMock'
-// import api from '../../../services/api'
 
 describe('ADMIN: About page', () => {
   test('should render all fields', () => {
@@ -46,8 +44,6 @@ describe('ADMIN: About page', () => {
         .getAllByTestId('tag-testid')
         .map((skill) => ({ title: skill.textContent }))
     ).toEqual(skills)
-
-    api.get = vi.fn()
   })
 
   test('should change focus on press tab key', () => {
@@ -263,7 +259,36 @@ describe('ADMIN: About page', () => {
     })
   })
 
-  // test('should clear all text inputs and set focus on first text input', () => {
-  //   render(<AdminAbout />)
-  // })
+  test('should clear all text inputs and set focus on first text input', async () => {
+    api.get = vi.fn().mockResolvedValue({
+      data: aboutPageMock
+    })
+
+    render(<AdminAbout />)
+
+    const { skills, description, ...fields } = aboutPageMock
+
+    await waitFor(() => {
+      expect(screen.getByRole('form')).toHaveFormValues(fields)
+    })
+
+    expect(screen.getByPlaceholderText('Descrição')).toHaveTextContent(
+      description
+    )
+    expect(
+      screen
+        .getAllByTestId('tag-testid')
+        .map((skill) => ({ title: skill.textContent }))
+    ).toEqual(skills)
+
+    const clearButton = screen.getByRole('button', {
+      name: /limpar formulário/i
+    })
+
+    userEvent.click(clearButton)
+
+    expect(screen.getByPlaceholderText('Descrição')).toHaveTextContent('')
+    expect(screen.queryByTestId('tag-testid')).not.toBeInTheDocument()
+    expect(screen.getByRole('form')).toHaveFormValues({})
+  })
 })
