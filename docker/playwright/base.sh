@@ -11,13 +11,14 @@ clear_containers ()
 create_container ()
 {
 docker run -t -i -d --name playwright \
-  -p 9323:9323 \
   -v .:/tests/ \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   -e DISPLAY=$DISPLAY \
   -w /tests \
   --user pwuser \
-  mcr.microsoft.com/playwright:v1.33.0-jammy \
+  --ipc=host \
+  --net=host \
+  mcr.microsoft.com/playwright:v1.32.3-jammy \
   bash
 }
 
