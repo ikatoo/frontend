@@ -4,10 +4,8 @@ import { describe, expect, test, vi } from 'vitest'
 import { AdminAbout } from '.'
 import Alert from '../../../components/Alert'
 import { AlertProvider } from '../../../hooks/useAlert'
-// import aboutPageMock from '../../../mocks/aboutPageMock'
 import api from 'src/services/api'
 import aboutPageMock from 'src/mocks/aboutPageMock'
-// import api from '../../../services/api'
 
 describe('ADMIN: About page', () => {
   test('should render all fields', () => {
