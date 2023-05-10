@@ -48,7 +48,6 @@
     "@storybook/testing-library": "^0.1.0",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "13.4.0",
-    "@types/ckeditor__ckeditor5-build-classic": "29.0.1",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@types/styled-components": "5.1.26",
