@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import {} from 'react-router-dom'
-import Card, { CardProps } from '../../components/Card'
+import JobsCards from 'src/components/JobsCards'
 import ProgressBar from '../../components/ProgressBar'
 import { TextContainer } from '../../components/TextContainer'
 import skillsService from '../../services/skillsService'
@@ -69,42 +69,7 @@ export const Skills = () => {
             </Styles.Progress>
           )}
 
-          {!!lastJobs.length && (
-            <Styles.JobsWrapper>
-              <Styles.Subtitle>Últimos Trabalhos</Styles.Subtitle>
-              <Styles.Jobs>
-                {lastJobs.map(
-                  (
-                    {
-                      jobTitle,
-                      jobDescription,
-                      yearMonthStart,
-                      yearMonthEnd,
-                      link
-                    },
-                    index
-                  ) => {
-                    const content: CardProps = {
-                      title: jobTitle,
-                      subTitle: `${yearMonthStart} | ${yearMonthEnd || 'Hoje'}`,
-                      content: jobDescription
-                    }
-
-                    return (
-                      <a
-                        href={link}
-                        target="_blank"
-                        rel="noreferrer"
-                        key={index}
-                      >
-                        <Card stretch {...content} />
-                      </a>
-                    )
-                  }
-                )}
-              </Styles.Jobs>
-            </Styles.JobsWrapper>
-          )}
+          <JobsCards jobs={lastJobs} title="Últimos Trabalhos" />
         </Styles.Skills>
       )}
     </Styles.Wrapper>

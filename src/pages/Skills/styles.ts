@@ -30,20 +30,8 @@ export default {
     flex-col
     gap-4
   `,
-  Jobs: tw.div`
-    w-full
-    flex
-    flex-wrap
-    justify-center
-    gap-4
-  `,
   Subtitle: tw.h2`
     text-mck_aqua
     text-2xl
-  `,
-  JobsWrapper: tw.div`
-    flex
-    flex-col
-    gap-6
   `
 }
