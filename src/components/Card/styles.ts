@@ -26,13 +26,16 @@ export default {
   `,
   Title: tw.h1`
     text-lg
+    font-bold
   `,
   Subtitle: tw.h2`
     text-xs
     font-medium
     italic
-  `,
+    `,
   Content: tw.div`
     overflow-clip
+    text-xs
+    font-medium
   `
 }
