@@ -2,6 +2,7 @@ export type Job = {
   jobTitle: string
   jobDescription: string
   yearMonthStart: string
+  yearMonthEnd?: string
   link: string
 }
 

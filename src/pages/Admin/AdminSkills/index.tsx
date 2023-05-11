@@ -18,6 +18,11 @@ export const AdminSkills = () => {
   const [description, setDescription] = useState<string>('')
   const [skills, setSkills] = useState<Tag[]>([])
   const [lastJobs, setLastJobs] = useState<Job[] | []>([])
+  const [jobTitle, setJobTitle] = useState('')
+  const [jobStart, setJobStart] = useState('')
+  const [jobEnd, setJobEnd] = useState('')
+  const [jobLink, setJobLink] = useState('')
+  const [jobDescription, setJobDescription] = useState('')
   const [initialData, setInitialData] = useState<SkillsPageProps>()
 
   useEffect(() => {
@@ -74,6 +79,19 @@ export const AdminSkills = () => {
     setSkills(values)
   }
 
+  const addJob = () => {
+    setLastJobs([
+      ...lastJobs,
+      {
+        jobTitle,
+        jobDescription,
+        link: jobLink,
+        yearMonthStart: jobStart,
+        yearMonthEnd: jobEnd
+      }
+    ])
+  }
+
   return (
     <Styles.Wrapper>
       <TextContainer title={'Informações sobre você.'}>
@@ -97,7 +115,7 @@ export const AdminSkills = () => {
 
             <Styles.TextWrapper>
               <TextArea
-                name="editor"
+                name="description"
                 initialValue={description}
                 label="Descrição"
                 placeholder="Descrição"
@@ -116,25 +134,51 @@ export const AdminSkills = () => {
             </Styles.TextWrapper>
 
             <Styles.TextWrapper>
-              {/* <Styles.FieldSet>
-                <legend role="label">Imagem</legend>
+              <Styles.FieldSet>
+                <legend role="label">Últimos Trabalhos</legend>
                 <TextInput
-                  name="illustrationURL"
-                  placeholder="https://domain.com/image.jpg"
-                  label="Imagem URL"
+                  name="jobTitle"
+                  placeholder="Nome da empresa ou projeto em que trabalhou."
+                  label="Nome da empresa ou projeto"
                   labelColor="white"
-                  initialValue={illustrationURL}
-                  onInputChange={(value) => setIllustrationURL(value)}
+                  initialValue={jobTitle}
+                  onInputChange={(value) => setJobTitle(value)}
                 />
                 <TextInput
-                  name="illustrationALT"
-                  placeholder="Uma breve descrição da imagem"
-                  label="Imagem ALT"
+                  name="jobStart"
+                  placeholder="mm/YYYY"
+                  label="Início"
                   labelColor="white"
-                  initialValue={illustrationALT}
-                  onInputChange={(value) => setIllustrationALT(value)}
+                  initialValue={jobStart}
+                  onInputChange={(value) => setJobStart(value)}
                 />
-              </Styles.FieldSet> */}
+                <TextInput
+                  name="jobEnd"
+                  placeholder="mm/YYYY"
+                  label="Fim"
+                  labelColor="white"
+                  initialValue={jobEnd}
+                  onInputChange={(value) => setJobEnd(value)}
+                />
+                <TextInput
+                  name="jobLink"
+                  label="Link para referência"
+                  placeholder="Ex: https://github.com/seu_repo/seu_projeto ou https://empresa_em_que_trabalhou.com.br"
+                  labelColor="white"
+                  initialValue={jobLink}
+                  onInputChange={(value) => setJobLink(value)}
+                />
+                <TextInput
+                  name="jobDescription"
+                  label="Breve Descrição"
+                  labelColor="white"
+                  initialValue={jobDescription}
+                  onInputChange={(value) => setJobDescription(value)}
+                />
+                <Button type="button" onClick={addJob}>
+                  ADICIONAR TRABALHO
+                </Button>
+              </Styles.FieldSet>
             </Styles.TextWrapper>
 
             <Styles.Actions>

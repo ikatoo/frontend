@@ -78,9 +78,9 @@ describe('<TextArea />', () => {
   })
 
   it('Is accessible by tab', () => {
-    render(<TextArea label="TextArea" name="TextArea" />)
+    render(<TextArea label="TextAreaLabel" name="TextAreaName" />)
 
-    const input = screen.getByLabelText('TextArea')
+    const input = screen.getByLabelText('TextAreaLabel')
     expect(document.body).toHaveFocus()
 
     userEvent.tab()
