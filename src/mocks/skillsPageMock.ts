@@ -7,10 +7,10 @@ export default {
   <p>Atualmente estou desempregado procurando novas oportunidades.</p>
   <p>Visite meu perfil no <a target="_blank" href="https://linkedin.com/in/mckatoo">LinkedIn</a> para mais detalhes ou entre em <a href="/contact">contato</a> comigo.`,
   skills: [
-    { skillTitle: 'Back-end', rankPercent: 40 },
-    { skillTitle: 'Modelagem de dados', rankPercent: 30 },
-    { skillTitle: 'Front-end', rankPercent: 20 },
-    { skillTitle: 'CI/CD', rankPercent: 10 }
+    { skillTitle: 'Back-end' },
+    { skillTitle: 'Modelagem de dados' },
+    { skillTitle: 'Front-end' },
+    { skillTitle: 'CI/CD' }
   ],
   lastJobs: [
     {

@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import api from 'src/services/api'
 import { describe, expect, test, vi } from 'vitest'
 import { AdminSkills } from '.'
+import skillsPageMock from 'src/mocks/skillsPageMock'
 
 describe('ADMIN: Skills page', () => {
   beforeEach(() => {
@@ -33,30 +34,25 @@ describe('ADMIN: Skills page', () => {
     ).toBeInTheDocument()
   })
 
-  // test('should load data at render', async () => {
-  //   api.get = vi.fn().mockResolvedValue({
-  //     data: skillsPageMock
-  //   })
+  test('should load data at render', async () => {
+    api.get = vi.fn().mockResolvedValue({
+      data: skillsPageMock
+    })
 
-  //   render(<AdminSkills />)
+    render(<AdminSkills />)
 
-  //   const { skills, description, ...fields } = skillsPageMock
+    const { title, skills, description } = skillsPageMock
 
-  //   await waitFor(() => {
-  //     expect(screen.getByRole('form')).toHaveFormValues(fields)
-  //   })
+    await waitFor(() => {
+      expect(screen.getByRole('form')).toHaveFormValues({ title, description })
+    })
 
-  //   expect(screen.getByPlaceholderText('Descrição')).toHaveTextContent(
-  //     description
-  //   )
-  //   expect(
-  //     screen
-  //       .getAllByTestId('tag-testid')
-  //       .map((skill) => ({ title: skill.textContent }))
-  //   ).toEqual(skills)
-
-  //   api.get = vi.fn()
-  // })
+    expect(
+      screen
+        .getAllByTestId('tag-testid')
+        .map((skill) => ({ skillTitle: skill.textContent }))
+    ).toEqual(skills)
+  })
 
   // test('should change focus on press tab key', () => {
   //   api.get = vi.fn().mockResolvedValue({})
