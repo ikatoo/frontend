@@ -1,3 +1,10 @@
+export type Job = {
+  jobTitle: string
+  jobDescription: string
+  yearMonthStart: string
+  link: string
+}
+
 export type SkillsPageProps = {
   title: string
   description: string
@@ -5,10 +12,5 @@ export type SkillsPageProps = {
     skillTitle: string
     rankPercent: number
   }[]
-  lastJobs: {
-    jobTitle: string
-    jobDescription: string
-    yearMonthStart: string
-    link: string
-  }[]
+  lastJobs: Job[]
 }
