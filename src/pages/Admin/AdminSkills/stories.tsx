@@ -1,18 +1,33 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react'
-import { AdminAbout } from '.'
-import about from '../../../mocks/handlers/aboutHandler'
+import type { Meta, StoryObj } from '@storybook/react'
+import skillsHandler from 'src/mocks/handlers/skillsHandler'
+import { AdminSkills } from '../AdminSkills'
 
-export default {
-  title: 'Pages/Privates/AdminAbout',
-  component: AdminAbout,
-  decorators: [(Story) => <div className="bg-mck_black_light">{Story()}</div>]
-} as ComponentMeta<typeof AdminAbout>
+const meta: Meta<typeof AdminSkills> = {
+  title: 'Pages/Privates/AdminSkills',
+  component: AdminSkills
+}
 
-export const Default = {} as ComponentStory<typeof AdminAbout>
+export default meta
+type Story = StoryObj<typeof AdminSkills>
 
-export const withData = {} as ComponentStory<typeof AdminAbout>
-withData.parameters = {
+export const Default: Story = {
+  render: () => (
+    <div className="bg-mck_black_light">
+      <AdminSkills />
+    </div>
+  )
+}
+
+export const WithData: Story = {
+  render: () => (
+    <div className="bg-mck_black_light">
+      <AdminSkills />
+    </div>
+  )
+}
+
+WithData.parameters = {
   msw: {
-    handlers: about
+    handlers: skillsHandler
   }
 }

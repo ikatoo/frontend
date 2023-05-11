@@ -10,6 +10,7 @@ import TextInput from 'src/components/TextInput'
 import { useAlert } from 'src/hooks/useAlert'
 import skillsService from 'src/services/skillsService'
 import { Job, SkillsPageProps } from 'src/types/SkillsPage'
+import JobsCards from 'src/components/JobsCards'
 
 export const AdminSkills = () => {
   const { setAlert } = useAlert()
@@ -36,8 +37,8 @@ export const AdminSkills = () => {
   }, [])
 
   useEffect(() => {
-    setTitle(`${initialData?.title}`)
-    setDescription(`${initialData?.description}`)
+    setTitle(initialData?.title ?? '')
+    setDescription(initialData?.description ?? '')
     setSkills(
       initialData?.skills.map((skill) => ({ title: skill.skillTitle })) ?? []
     )
@@ -175,6 +176,9 @@ export const AdminSkills = () => {
                   initialValue={jobDescription}
                   onInputChange={(value) => setJobDescription(value)}
                 />
+
+                <JobsCards jobs={lastJobs} title="Últimos Trabalhos" />
+
                 <Button type="button" onClick={addJob}>
                   ADICIONAR TRABALHO
                 </Button>

@@ -52,6 +52,8 @@ describe('ADMIN: Skills page', () => {
         .getAllByTestId('tag-testid')
         .map((skill) => ({ skillTitle: skill.textContent }))
     ).toEqual(skills)
+
+    // lastJobs
   })
 
   // test('should change focus on press tab key', () => {
