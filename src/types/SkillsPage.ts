@@ -11,7 +11,6 @@ export type SkillsPageProps = {
   description: string
   skills: {
     skillTitle: string
-    rankPercent: number
   }[]
   lastJobs: Job[]
 }

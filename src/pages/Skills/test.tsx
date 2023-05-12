@@ -37,7 +37,10 @@ describe('Skills Page', () => {
         expect(jobElement).toHaveTextContent(job.jobTitle)
         expect(jobElement).toHaveTextContent(job.jobDescription)
         expect(jobElement).toHaveTextContent(job.yearMonthStart)
-        expect(jobElement).toHaveAttribute('href', job.link)
+        expect(jobElement?.firstChild?.firstChild).toHaveAttribute(
+          'href',
+          job.link
+        )
       }
     })
   })

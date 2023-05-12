@@ -8,7 +8,6 @@ import Styles from './styles'
 
 type SkillProps = {
   skillTitle: string
-  rankPercent: number
 }
 
 type JobProps = {
@@ -59,12 +58,13 @@ export const Skills = () => {
           {!!skills.length && (
             <Styles.Progress>
               <Styles.Subtitle>Estudo</Styles.Subtitle>
-              {skills.map(({ skillTitle, rankPercent }, index) => (
-                <ProgressBar
-                  key={index}
-                  label={skillTitle}
-                  percent={rankPercent}
-                />
+              {skills.map(({ skillTitle }, index) => (
+                // <ProgressBar
+                //   key={index}
+                //   label={skillTitle}
+                //   percent={rankPercent}
+                // />
+                <ProgressBar key={index} label={skillTitle} percent={0} />
               ))}
             </Styles.Progress>
           )}
