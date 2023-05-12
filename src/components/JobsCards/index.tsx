@@ -7,39 +7,41 @@ type JobsCardsProps = {
   jobs: Job[]
   title: string
   showRemoveButton?: boolean
-  removeJob?: () => void
+  removeJobFunction?: (job: Job) => void
 }
 
 const JobsCards = (props: JobsCardsProps) => {
+  const removeJob = (job: Job) => {
+    props.removeJobFunction && props.removeJobFunction(job)
+  }
+
   return (
     <Styles.JobsWrapper>
       <Styles.Subtitle>{props.title}</Styles.Subtitle>
       <Styles.Jobs>
-        {props.jobs.map(
-          (
-            { jobTitle, jobDescription, yearMonthStart, yearMonthEnd, link },
-            index
-          ) => {
-            const content: CardProps = {
-              title: jobTitle,
-              subTitle: `${yearMonthStart} | ${yearMonthEnd || 'Hoje'}`,
-              content: jobDescription
-            }
-
-            return (
-              <div key={index}>
-                {props.showRemoveButton && (
-                  <Styles.ButtonWrapper>
-                    <Styles.RemoveJobButton onClick={props.removeJob}>
-                      <Delete />
-                    </Styles.RemoveJobButton>
-                  </Styles.ButtonWrapper>
-                )}
-                <Card link={link} {...content} />
-              </div>
-            )
+        {props.jobs.map((job, index) => {
+          const content: CardProps = {
+            title: job.jobTitle,
+            subTitle: `${job.yearMonthStart} | ${job.yearMonthEnd || 'Hoje'}`,
+            content: job.jobDescription
           }
-        )}
+
+          return (
+            <div key={index} data-testid="job-testid">
+              {props.showRemoveButton && (
+                <Styles.ButtonWrapper>
+                  <Styles.RemoveJobButton
+                    data-testid="remove_button-testid"
+                    onClick={() => removeJob(job)}
+                  >
+                    <Delete />
+                  </Styles.RemoveJobButton>
+                </Styles.ButtonWrapper>
+              )}
+              <Card link={job.link} {...content} />
+            </div>
+          )
+        })}
       </Styles.Jobs>
     </Styles.JobsWrapper>
   )

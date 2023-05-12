@@ -93,6 +93,11 @@ export const AdminSkills = () => {
     ])
   }
 
+  const removeJob = (job: Job) => {
+    const jobs = lastJobs.filter((_job) => _job !== job)
+    setLastJobs(jobs)
+  }
+
   return (
     <Styles.Wrapper>
       <TextContainer title={'Informações sobre você.'}>
@@ -177,7 +182,12 @@ export const AdminSkills = () => {
                   onInputChange={(value) => setJobDescription(value)}
                 />
 
-                <JobsCards jobs={lastJobs} title="Últimos Trabalhos" />
+                <JobsCards
+                  jobs={lastJobs}
+                  title="Últimos Trabalhos"
+                  showRemoveButton
+                  removeJobFunction={removeJob}
+                />
 
                 <Button type="button" onClick={addJob}>
                   ADICIONAR TRABALHO
