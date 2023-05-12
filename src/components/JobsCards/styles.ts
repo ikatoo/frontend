@@ -17,8 +17,14 @@ export default {
     flex-1
     gap-4
   `,
-  CloseButton: tw.div`
+  ButtonWrapper: tw.div`
+    relative
+    cursor-pointer
+  `,
+  RemoveJobButton: tw.div`
     absolute
+    right-0
+    text-mck_red
     w-7
     h-7
     m-1

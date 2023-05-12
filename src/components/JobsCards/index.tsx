@@ -1,12 +1,13 @@
+import { Delete } from '@styled-icons/material-outlined'
 import { Job } from 'src/types/SkillsPage'
-import Styles from './styles'
 import Card, { CardProps } from '../Card'
-import CloseButton from '../CloseButton'
+import Styles from './styles'
 
 type JobsCardsProps = {
   jobs: Job[]
   title: string
   showRemoveButton?: boolean
+  removeJob?: () => void
 }
 
 const JobsCards = (props: JobsCardsProps) => {
@@ -26,14 +27,16 @@ const JobsCards = (props: JobsCardsProps) => {
             }
 
             return (
-              <a href={link} target="_blank" rel="noreferrer" key={index}>
+              <div key={index}>
                 {props.showRemoveButton && (
-                  <Styles.CloseButton>
-                    <CloseButton />
-                  </Styles.CloseButton>
+                  <Styles.ButtonWrapper>
+                    <Styles.RemoveJobButton onClick={props.removeJob}>
+                      <Delete />
+                    </Styles.RemoveJobButton>
+                  </Styles.ButtonWrapper>
                 )}
-                <Card {...content} />
-              </a>
+                <Card link={link} {...content} />
+              </div>
             )
           }
         )}

@@ -21,7 +21,14 @@ export const Default: Story = {
 export const With_Remove_Button: Story = {
   render: () => (
     <>
-      <JobsCards showRemoveButton jobs={skillsPageMock.lastJobs} title="Jobs" />
+      <JobsCards
+        showRemoveButton
+        removeJob={() => {
+          console.log('removed')
+        }}
+        jobs={skillsPageMock.lastJobs}
+        title="Jobs"
+      />
     </>
   )
 }
