@@ -41,7 +41,7 @@ describe('ADMIN: Skills page', () => {
 
     render(<AdminSkills />)
 
-    const { title, skills, description } = skillsPageMock
+    const { title, skills, description, lastJobs } = skillsPageMock
 
     await waitFor(() => {
       expect(screen.getByRole('form')).toHaveFormValues({ title, description })
@@ -53,7 +53,21 @@ describe('ADMIN: Skills page', () => {
         .map((skill) => ({ skillTitle: skill.textContent }))
     ).toEqual(skills)
 
-    // lastJobs
+    const jobsElements = screen.getAllByTestId('job-testid')
+    const jobs = jobsElements.map((job) => {
+      const jobTitle = job.getElementsByTagName('h1').item(0)?.textContent
+      const jobDescription = job
+        .getElementsByClassName('overflow-clip text-xs font-medium')
+        .item(0)?.textContent
+      const h2 = job.getElementsByTagName('h2').item(0)?.textContent
+      const yearMonthStart = h2?.split(' | ')[0]
+      const yearMonthEnd =
+        h2?.split(' | ')[1] === 'Hoje' ? undefined : h2?.split(' | ')[1]
+      const link = job.getElementsByTagName('a').item(0)?.getAttribute('href')
+
+      return { jobTitle, jobDescription, yearMonthStart, yearMonthEnd, link }
+    })
+    expect(jobs).toEqual(lastJobs)
   })
 
   // test('should change focus on press tab key', () => {
