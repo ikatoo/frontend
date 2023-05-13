@@ -2,3 +2,6 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 npx --no-install lint-staged --allow-empty
+npm run test run
+npm run typecheck
+npm run build-storybook
