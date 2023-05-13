@@ -1,5 +1,5 @@
 {
-  "src/**/*": [
-    "npm run lint --fix"
+  "src/**/*.{ts,tsx}": [
+    "npm run lint"
   ]
 }
