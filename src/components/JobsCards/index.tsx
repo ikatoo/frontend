@@ -5,7 +5,7 @@ import Styles from './styles'
 
 type JobsCardsProps = {
   jobs: Job[]
-  title: string
+  title?: string
   showRemoveButton?: boolean
   removeJobFunction?: (job: Job) => void
 }
@@ -17,7 +17,7 @@ const JobsCards = (props: JobsCardsProps) => {
 
   return (
     <Styles.JobsWrapper>
-      <Styles.Subtitle>{props.title}</Styles.Subtitle>
+      {props.title && <Styles.Subtitle>{props.title}</Styles.Subtitle>}
       <Styles.Jobs>
         {props.jobs.map((job, index) => {
           const content: CardProps = {
