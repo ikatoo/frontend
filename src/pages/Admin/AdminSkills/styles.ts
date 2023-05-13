@@ -7,6 +7,13 @@ const Legend = styled.fieldset`
   }
 `
 
+const InlineButton = styled.div`
+  button {
+    height: 2.6rem;
+    padding: 0;
+  }
+`
+
 export default {
   Wrapper: tw.div`
     flex
@@ -43,10 +50,31 @@ export default {
     gap-2
   `,
   FieldSet: tw(Legend)`
+    max-w-full
+    flex
+    flex-wrap
     border-solid
     border-mck_gray_light
     border-2
     rounded
     p-2
+  `,
+  DateWrapper: tw.div`
+    max-w-[100px]
+    min-w-[100px]
+  `,
+  Full: tw.div`
+    flex
+    flex-row
+    w-full
+    min-w-full
+    max-w-full
+    gap-2
+  `,
+  Fill: tw.div`
+    w-full
+  `,
+  InlineButton: tw(InlineButton)`
+    self-center
   `
 }

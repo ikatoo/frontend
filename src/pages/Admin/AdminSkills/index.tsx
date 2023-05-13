@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
-import Styles from './styles'
 import Button from 'src/components/Button'
 import { FormContainer } from 'src/components/FormContainer'
+import JobsCards from 'src/components/JobsCards'
 import TagEditor, { Tag } from 'src/components/TagEditor'
 import TextArea from 'src/components/TextArea'
 import { TextContainer } from 'src/components/TextContainer'
@@ -10,7 +10,7 @@ import TextInput from 'src/components/TextInput'
 import { useAlert } from 'src/hooks/useAlert'
 import skillsService from 'src/services/skillsService'
 import { Job, SkillsPageProps } from 'src/types/SkillsPage'
-import JobsCards from 'src/components/JobsCards'
+import Styles from './styles'
 
 export const AdminSkills = () => {
   const { setAlert } = useAlert()
@@ -142,56 +142,76 @@ export const AdminSkills = () => {
             <Styles.TextWrapper>
               <Styles.FieldSet>
                 <legend role="label">Últimos Trabalhos</legend>
-                <TextInput
-                  name="jobTitle"
-                  placeholder="Nome da empresa ou projeto em que trabalhou."
-                  label="Nome da empresa ou projeto"
-                  labelColor="white"
-                  initialValue={jobTitle}
-                  onInputChange={(value) => setJobTitle(value)}
-                />
-                <TextInput
-                  name="jobStart"
-                  placeholder="mm/YYYY"
-                  label="Início"
-                  labelColor="white"
-                  initialValue={jobStart}
-                  onInputChange={(value) => setJobStart(value)}
-                />
-                <TextInput
-                  name="jobEnd"
-                  placeholder="mm/YYYY"
-                  label="Fim"
-                  labelColor="white"
-                  initialValue={jobEnd}
-                  onInputChange={(value) => setJobEnd(value)}
-                />
-                <TextInput
-                  name="jobLink"
-                  label="Link para referência"
-                  placeholder="Ex: https://github.com/seu_repo/seu_projeto ou https://empresa_em_que_trabalhou.com.br"
-                  labelColor="white"
-                  initialValue={jobLink}
-                  onInputChange={(value) => setJobLink(value)}
-                />
-                <TextInput
-                  name="jobDescription"
-                  label="Breve Descrição"
-                  labelColor="white"
-                  initialValue={jobDescription}
-                  onInputChange={(value) => setJobDescription(value)}
-                />
+                <Styles.Full>
+                  <Styles.Fill>
+                    <TextInput
+                      name="jobTitle"
+                      placeholder="Nome da empresa ou projeto em que trabalhou."
+                      label="Nome da empresa ou projeto"
+                      labelColor="white"
+                      initialValue={jobTitle}
+                      onInputChange={(value) => setJobTitle(value)}
+                    />
+                  </Styles.Fill>
+                  <Styles.DateWrapper>
+                    <TextInput
+                      name="jobStart"
+                      placeholder="mm/YYYY"
+                      label="Início"
+                      labelColor="white"
+                      initialValue={jobStart}
+                      onInputChange={(value) => setJobStart(value)}
+                    />
+                  </Styles.DateWrapper>
+                  <Styles.DateWrapper>
+                    <TextInput
+                      name="jobEnd"
+                      placeholder="mm/YYYY"
+                      label="Fim"
+                      labelColor="white"
+                      initialValue={jobEnd}
+                      onInputChange={(value) => setJobEnd(value)}
+                    />
+                  </Styles.DateWrapper>
+                </Styles.Full>
+                <Styles.Full>
+                  <Styles.Fill>
+                    <TextInput
+                      name="jobLink"
+                      label="Link para referência"
+                      placeholder="Ex: https://github.com/seu_repo/seu_projeto ou https://empresa_em_que_trabalhou.com.br"
+                      labelColor="white"
+                      initialValue={jobLink}
+                      onInputChange={(value) => setJobLink(value)}
+                    />
+                  </Styles.Fill>
+                </Styles.Full>
+                <Styles.Full>
+                  <Styles.Fill>
+                    <TextInput
+                      name="jobDescription"
+                      label="Breve Descrição"
+                      labelColor="white"
+                      initialValue={jobDescription}
+                      onInputChange={(value) => setJobDescription(value)}
+                    />
+                  </Styles.Fill>
+                  <Styles.InlineButton>
+                    <Button
+                      styleType="secondary"
+                      type="button"
+                      onClick={addJob}
+                    >
+                      ADICIONAR TRABALHO
+                    </Button>
+                  </Styles.InlineButton>
+                </Styles.Full>
 
                 <JobsCards
                   jobs={lastJobs}
-                  title="Últimos Trabalhos"
                   showRemoveButton
                   removeJobFunction={removeJob}
                 />
-
-                <Button type="button" onClick={addJob}>
-                  ADICIONAR TRABALHO
-                </Button>
               </Styles.FieldSet>
             </Styles.TextWrapper>
 
