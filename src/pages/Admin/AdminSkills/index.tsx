@@ -191,6 +191,7 @@ export const AdminSkills = () => {
                     <TextInput
                       name="jobDescription"
                       label="Breve Descrição"
+                      maxLength={100}
                       labelColor="white"
                       initialValue={jobDescription}
                       onInputChange={(value) => setJobDescription(value)}

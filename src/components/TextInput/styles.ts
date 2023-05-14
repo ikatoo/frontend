@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components'
 
+import tw from 'tailwind-styled-components'
 import { TextInputProps } from '.'
 import theme from '../../theme'
 
@@ -11,7 +12,7 @@ type WrapperProps = Pick<TextInputProps, 'disabled'>
 
 const InputWrapper = styled.div`
   ${() => css`
-    /* display: flex; */
+    display: flex;
     align-items: center;
     background: ${theme.colors.lightGray};
     border-radius: 0.2rem;
@@ -127,11 +128,18 @@ const Wrapper = styled.div<WrapperProps>`
   `}
 `
 
+const Length = tw.span`
+  absolute
+  right-0
+  -top-6
+`
+
 export default {
   Wrapper,
   Error,
   Icon,
   Label,
   Input,
-  InputWrapper
+  InputWrapper,
+  Length
 }

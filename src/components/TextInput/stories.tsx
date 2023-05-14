@@ -38,3 +38,12 @@ export const withError: ComponentStory<typeof TextInput> = (args) => (
 withError.args = {
   error: 'Ops...something is wrong'
 }
+
+export const With_MaxLengh: ComponentStory<typeof TextInput> = (args) => (
+  <div style={{ maxWidth: 300, padding: 15 }}>
+    <TextInput {...args} />
+  </div>
+)
+With_MaxLengh.args = {
+  maxLength: 10
+}

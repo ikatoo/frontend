@@ -120,4 +120,23 @@ describe('<TextField />', () => {
     userEvent.tab()
     expect(input).not.toHaveFocus()
   })
+
+  it('When maxLength is setted show the rest lenght in the top right', async () => {
+    render(
+      <TextField
+        maxLength={10}
+        initialValue="123asd"
+        label="TextField"
+        name="TextField"
+        disabled
+      />
+    )
+
+    const input = screen.getByLabelText('TextField')
+
+    await waitFor(() => {
+      const counter = input.parentElement?.getElementsByTagName('span')[0]
+      expect(counter).toHaveTextContent('4')
+    })
+  })
 })

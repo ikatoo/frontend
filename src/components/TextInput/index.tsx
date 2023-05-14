@@ -50,6 +50,10 @@ const TextInput = ({
         {!!icon && (
           <Styles.Icon iconPosition={iconPosition}>{icon}</Styles.Icon>
         )}
+
+        {!!props.maxLength && (
+          <Styles.Length>{props.maxLength - value.length}</Styles.Length>
+        )}
         <Styles.Input
           type="text"
           onChange={onChange}
