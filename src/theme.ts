@@ -12,12 +12,12 @@ export default {
     normal: 400,
     bold: 600,
     sizes: {
-      xsmall: '0.6rem',
-      small: '0.7rem',
-      medium: '0.8rem',
-      large: '0.9rem',
-      xlarge: '1.0rem',
-      xxlarge: '1.4rem',
+      xsmall: '0.8rem',
+      small: '0.9rem',
+      medium: '1rem',
+      large: '1.2rem',
+      xlarge: '1.4rem',
+      xxlarge: '1.8rem',
       huge: '2.8rem'
     }
   },
