@@ -1,5 +1,5 @@
 import { CaretLeft, CaretRight } from '@styled-icons/boxicons-regular'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import * as Styles from './styles'
 
 type MonthProps = {
@@ -7,14 +7,10 @@ type MonthProps = {
 }
 
 const Month = ({ date = new Date() }: MonthProps) => {
-  const [now, setNow] = useState(date)
+  const [now, setNow] = useState(date ?? new Date())
 
-  useEffect(() => {
-    setNow(date)
-  }, [date])
-
-  const month = now.getMonth()
-  const year = now.getFullYear()
+  const month = now?.getMonth() ?? new Date().getMonth()
+  const year = now?.getFullYear() ?? new Date().getFullYear()
   const lastDayOfMonth = new Date(year, month + 1, 0)
   const monthLength = lastDayOfMonth.getDate()
   const firstDayOfMonth = new Date(year, month, 1)
@@ -64,11 +60,35 @@ const Month = ({ date = new Date() }: MonthProps) => {
 
   return (
     <Styles.Calendar>
-      <Styles.MonthHeader>
-        <CaretLeft size={32} />
-        {now.toDateString().split(' ')[1]}
-        <CaretRight size={32} />
-      </Styles.MonthHeader>
+      <Styles.Header>
+        <Styles.ChangeMonth
+          onClick={() => {
+            setNow(new Date(year, month - 1, 1))
+          }}
+        >
+          <CaretLeft size={32} />
+        </Styles.ChangeMonth>
+
+        <Styles.YearMonth>
+          {now
+            ?.toLocaleDateString(undefined, {
+              month: 'long'
+            })
+            .toLocaleUpperCase() + ' / '}
+          {now
+            ?.toLocaleDateString(undefined, {
+              year: 'numeric'
+            })
+            .toLocaleUpperCase()}
+        </Styles.YearMonth>
+        <Styles.ChangeMonth
+          onClick={() => {
+            setNow(new Date(year, month + 1, 1))
+          }}
+        >
+          <CaretRight size={32} />
+        </Styles.ChangeMonth>
+      </Styles.Header>
       <table>
         <thead>
           <tr>

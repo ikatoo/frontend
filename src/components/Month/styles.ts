@@ -1,5 +1,6 @@
 import theme from 'src/theme'
 import styled, { css } from 'styled-components'
+import tw from 'tailwind-styled-components'
 
 export const Calendar = styled.div`
   border: 0 0 2.5rem;
@@ -19,7 +20,7 @@ export const Calendar = styled.div`
   }
 `
 
-export const MonthHeader = styled.div`
+export const Header = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -30,6 +31,17 @@ export const MonthHeader = styled.div`
   color: ${theme.colors.lightGray};
   padding: 0.5rem 0;
   font-size: ${theme.font.sizes.xlarge};
+`
+
+export const ChangeMonth = tw.span`
+  cursor-pointer
+`
+
+export const YearMonth = tw.span`
+  cursor-pointer
+  flex
+  flex-col
+  text-center
 `
 
 export const WeekHeader = styled.th`
