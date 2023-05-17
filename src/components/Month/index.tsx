@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import * as Styles from './styles'
 
 type MonthProps = {
-  date: Date
+  date?: Date
 }
 
 const Month = ({ date = new Date() }: MonthProps) => {
