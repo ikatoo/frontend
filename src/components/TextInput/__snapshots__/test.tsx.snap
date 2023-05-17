@@ -32,7 +32,7 @@ exports[`<TextField /> > Renders with error 1`] = `
 .c4 {
   color: #00021f;
   font-family: 'Oswald','Helvetica','Arial','sans-serif';
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   padding: 0.4rem 0;
   padding-left: 0.4rem;
   background: transparent;
@@ -49,11 +49,11 @@ exports[`<TextField /> > Renders with error 1`] = `
 
 .c4:-webkit-autofill::first-line {
   font-family: 'Oswald','Helvetica','Arial','sans-serif';
-  font-size: 0.9rem;
+  font-size: 1.2rem;
 }
 
 .c0 {
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   color: #00021f;
   cursor: pointer;
 }
