@@ -16,3 +16,11 @@ export const Default: Story = {
     </div>
   )
 }
+
+export const MonthAndYearOnly: Story = {
+  render: () => (
+    <div className="w-full">
+      <Month monthAndYearOnly />
+    </div>
+  )
+}

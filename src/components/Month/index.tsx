@@ -1,12 +1,15 @@
 import { CaretLeft, CaretRight } from '@styled-icons/boxicons-regular'
 import { useState } from 'react'
 import * as Styles from './styles'
+import MonthAndYear from './MonthAndYear'
+import Days from './Days'
 
 type MonthProps = {
   date?: Date
+  monthAndYearOnly?: boolean
 }
 
-const Month = ({ date = new Date() }: MonthProps) => {
+const Month = ({ date = new Date(), monthAndYearOnly }: MonthProps) => {
   const [now, setNow] = useState(date ?? new Date())
 
   const month = now?.getMonth() ?? new Date().getMonth()
@@ -70,11 +73,12 @@ const Month = ({ date = new Date() }: MonthProps) => {
         </Styles.ChangeMonth>
 
         <Styles.YearMonth>
-          {now
-            ?.toLocaleDateString(undefined, {
-              month: 'long'
-            })
-            .toLocaleUpperCase() + ' / '}
+          {!monthAndYearOnly &&
+            now
+              ?.toLocaleDateString(undefined, {
+                month: 'long'
+              })
+              .toLocaleUpperCase() + ' / '}
           {now
             ?.toLocaleDateString(undefined, {
               year: 'numeric'
@@ -89,20 +93,12 @@ const Month = ({ date = new Date() }: MonthProps) => {
           <CaretRight size={32} />
         </Styles.ChangeMonth>
       </Styles.Header>
-      <table>
-        <thead>
-          <tr>
-            {weekHeader.map((day, index) => (
-              <Styles.WeekHeader key={index + day}>{day}</Styles.WeekHeader>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {weeks.map((week, weekIndex) => (
-            <tr key={weekIndex}>{week.map((day) => day)}</tr>
-          ))}
-        </tbody>
-      </table>
+
+      {monthAndYearOnly ? (
+        <MonthAndYear now={now} />
+      ) : (
+        <Days weekHeader={weekHeader} weeks={weeks} />
+      )}
     </Styles.Calendar>
   )
 }
