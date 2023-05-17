@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components'
 
 export const Calendar = styled.div`
   border: 0 0 2.5rem;
-  padding: 0 0.5rem;
   border: 0.2rem solid ${theme.colors.lightGray};
   width: 100%;
   min-width: fit-content;
