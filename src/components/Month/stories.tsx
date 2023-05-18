@@ -20,7 +20,12 @@ export const Default: Story = {
 export const MonthAndYearOnly: Story = {
   render: () => (
     <div className="w-full">
-      <Month monthAndYearOnly />
+      <Month
+        monthAndYearOnly
+        onClick={(date) => {
+          alert(date)
+        }}
+      />
     </div>
   )
 }

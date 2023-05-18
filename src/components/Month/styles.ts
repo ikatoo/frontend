@@ -57,6 +57,7 @@ export const Day = styled.td<DayProps>`
   background-color: ${theme.colors.lightGray};
   color: ${theme.colors.black};
   font-weight: ${theme.font.bold};
+  cursor: pointer;
 
   ${({ disabled }) => css`
     ${disabled &&
@@ -64,4 +65,8 @@ export const Day = styled.td<DayProps>`
       font-weight: ${theme.font.light};
     `}
   `}
+`
+
+export const Month = styled.td`
+  cursor: pointer;
 `

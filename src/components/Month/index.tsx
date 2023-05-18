@@ -7,9 +7,14 @@ import Days from './Days'
 type MonthProps = {
   date?: Date
   monthAndYearOnly?: boolean
+  onClick?: (date: Date) => void
 }
 
-const Month = ({ date = new Date(), monthAndYearOnly }: MonthProps) => {
+const Month = ({
+  date = new Date(),
+  monthAndYearOnly,
+  onClick
+}: MonthProps) => {
   const [now, setNow] = useState(date ?? new Date())
 
   const month = now?.getMonth() ?? new Date().getMonth()
@@ -54,7 +59,13 @@ const Month = ({ date = new Date(), monthAndYearOnly }: MonthProps) => {
       Array.from({ length: 7 }, () => {
         day++
         return (
-          <Styles.Day disabled={days[day]?.getMonth() !== month} key={day}>
+          <Styles.Day
+            onClick={() => {
+              !!onClick && onClick(days[day])
+            }}
+            disabled={days[day]?.getMonth() !== month}
+            key={day}
+          >
             {days[day]?.getDate()}
           </Styles.Day>
         )
@@ -95,7 +106,12 @@ const Month = ({ date = new Date(), monthAndYearOnly }: MonthProps) => {
       </Styles.Header>
 
       {monthAndYearOnly ? (
-        <MonthAndYear now={now} />
+        <MonthAndYear
+          now={now}
+          onClick={(date) => {
+            !!onClick && onClick(date)
+          }}
+        />
       ) : (
         <Days weekHeader={weekHeader} weeks={weeks} />
       )}
