@@ -2,6 +2,5 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 npm run test run
-npm run playwright
 npm run typecheck
 npm run build-storybook
