@@ -72,14 +72,25 @@ const Month = ({
       })
   )
 
+  const preview = () => {
+    setNow(
+      monthAndYearOnly
+        ? new Date(year - 1, month, 1)
+        : new Date(year, month - 1, 1)
+    )
+  }
+  const next = () => {
+    setNow(
+      monthAndYearOnly
+        ? new Date(year + 1, month, 1)
+        : new Date(year, month + 1, 1)
+    )
+  }
+
   return (
     <Styles.Calendar>
       <Styles.Header>
-        <Styles.ChangeMonth
-          onClick={() => {
-            setNow(new Date(year, month - 1, 1))
-          }}
-        >
+        <Styles.ChangeMonth onClick={preview}>
           <CaretLeft size={32} />
         </Styles.ChangeMonth>
 
@@ -96,11 +107,7 @@ const Month = ({
             })
             .toLocaleUpperCase()}
         </Styles.YearMonth>
-        <Styles.ChangeMonth
-          onClick={() => {
-            setNow(new Date(year, month + 1, 1))
-          }}
-        >
+        <Styles.ChangeMonth onClick={next}>
           <CaretRight size={32} />
         </Styles.ChangeMonth>
       </Styles.Header>
