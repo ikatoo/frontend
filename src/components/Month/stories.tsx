@@ -12,7 +12,11 @@ type Story = StoryObj<typeof Month>
 export const Default: Story = {
   render: () => (
     <div className="w-full">
-      <Month />
+      <Month
+        onClick={(date) => {
+          alert(date)
+        }}
+      />
     </div>
   )
 }

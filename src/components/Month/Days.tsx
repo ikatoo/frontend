@@ -43,22 +43,12 @@ const Days = ({ now, onClick }: DaysProps) => {
   })
 
   let day = -1
-  const weeks: JSX.Element[][] = Array.from(
+  const weeks: Date[][] = Array.from(
     { length: Math.ceil(days.length / 7) },
     () =>
       Array.from({ length: 7 }, () => {
         day++
-        return (
-          <Styles.Day
-            onClick={() => {
-              !!onClick && onClick(days[day])
-            }}
-            disabled={days[day]?.getMonth() !== month}
-            key={day}
-          >
-            {days[day]?.getDate()}
-          </Styles.Day>
-        )
+        return days[day]
       })
   )
 
@@ -74,7 +64,19 @@ const Days = ({ now, onClick }: DaysProps) => {
         </thead>
         <tbody>
           {weeks.map((week, weekIndex) => (
-            <tr key={weekIndex}>{week.map((day) => day)}</tr>
+            <tr key={weekIndex}>
+              {week.map((day, dayIndex) => (
+                <Styles.Day
+                  onClick={() => {
+                    !!onClick && onClick(day)
+                  }}
+                  disabled={day?.getMonth() !== month}
+                  key={dayIndex + weekIndex}
+                >
+                  {day?.getDate()}
+                </Styles.Day>
+              ))}
+            </tr>
           ))}
         </tbody>
       </table>

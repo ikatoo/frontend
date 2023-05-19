@@ -7,7 +7,7 @@ type MonthAndYearProps = {
 
 const MonthAndYear = ({ now, onClick }: MonthAndYearProps) => {
   let month = -1
-  const months = Array.from({ length: 4 }, () =>
+  const months: Date[][] = Array.from({ length: 4 }, () =>
     Array.from({ length: 3 }, () => {
       month++
       return new Date(now.getFullYear(), month, 1)
