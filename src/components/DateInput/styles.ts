@@ -35,6 +35,7 @@ const InputWrapper = styled.div`
     border-color: ${theme.colors.lightGray};
     position: relative;
     z-index: 1;
+    cursor: pointer;
 
     &:focus-within {
       box-shadow: 0 0 0.5rem ${theme.colors.primary};

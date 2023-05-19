@@ -5,7 +5,7 @@ import Month from '../Month'
 import Styles from './styles'
 
 export type DateInputProps = {
-  onInputChange?: (value: string) => void
+  onDateChange?: (value: string) => void
   label?: string
   labelColor?: 'black' | 'white'
   initialValue?: string
@@ -13,6 +13,7 @@ export type DateInputProps = {
   disabled?: boolean
   error?: string
   name: string
+  monthAndYearOnly?: boolean
 } & InputHTMLAttributes<HTMLInputElement>
 
 const DateInput = ({
@@ -23,20 +24,26 @@ const DateInput = ({
   initialValue = '',
   error,
   disabled = false,
-  onInputChange,
+  onDateChange,
+  monthAndYearOnly,
   ...props
 }: DateInputProps) => {
   const [value, setValue] = useState('')
+  const [calendarHidden, setCalendarHidden] = useState(true)
 
   useEffect(() => {
     setValue(initialValue)
   }, [initialValue])
 
+  useEffect(() => {
+    !!onDateChange && onDateChange(value)
+  }, [onDateChange, value])
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget.value
     setValue(newValue)
 
-    !!onInputChange && onInputChange(newValue)
+    !!onDateChange && onDateChange(newValue)
   }
 
   const icon = <Calendar />
@@ -48,7 +55,7 @@ const DateInput = ({
           {label}
         </Styles.Label>
       )}
-      <Styles.InputWrapper>
+      <Styles.InputWrapper onClick={() => setCalendarHidden(!calendarHidden)}>
         {!!icon && (
           <Styles.Icon iconPosition={iconPosition}>{icon}</Styles.Icon>
         )}
@@ -64,8 +71,25 @@ const DateInput = ({
           {...props}
           tabIndex={props.tabIndex ?? 0}
         />
-        <Month />
       </Styles.InputWrapper>
+      {!calendarHidden && (
+        <div
+          onBlur={() => {
+            setCalendarHidden(true)
+          }}
+        >
+          <Month
+            monthAndYearOnly={monthAndYearOnly}
+            onClick={(date) =>
+              setValue(
+                date.toLocaleDateString(undefined, {
+                  dateStyle: 'short'
+                })
+              )
+            }
+          />
+        </div>
+      )}
       <Styles.Error isEnabled={!!error}>{error}</Styles.Error>
     </Styles.Wrapper>
   )

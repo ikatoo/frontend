@@ -9,6 +9,18 @@ const meta: Meta<typeof DateInput> = {
 export default meta
 type Story = StoryObj<typeof DateInput>
 
-export const Primary: Story = {
-  render: () => <DateInput name="Initial Date" />
+export const Default: Story = {
+  render: () => (
+    <DateInput name="Initial Date" onDateChange={(date) => console.log(date)} />
+  )
+}
+
+export const Month_and_Year: Story = {
+  render: () => (
+    <DateInput
+      monthAndYearOnly
+      name="Initial Date"
+      onDateChange={(date) => console.log(date)}
+    />
+  )
 }
