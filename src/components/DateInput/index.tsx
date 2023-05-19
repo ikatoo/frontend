@@ -48,6 +48,15 @@ const DateInput = ({
 
   const icon = <Calendar />
 
+  const dateFormat: Intl.DateTimeFormatOptions = monthAndYearOnly
+    ? {
+        month: '2-digit',
+        year: 'numeric'
+      }
+    : {
+        dateStyle: 'short'
+      }
+
   return (
     <Styles.Wrapper disabled={disabled}>
       {!!label && (
@@ -81,11 +90,7 @@ const DateInput = ({
           <Month
             monthAndYearOnly={monthAndYearOnly}
             onClick={(date) =>
-              setValue(
-                date.toLocaleDateString(undefined, {
-                  dateStyle: 'short'
-                })
-              )
+              setValue(date.toLocaleDateString(undefined, dateFormat))
             }
           />
         </div>

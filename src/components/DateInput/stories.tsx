@@ -11,7 +11,11 @@ type Story = StoryObj<typeof DateInput>
 
 export const Default: Story = {
   render: () => (
-    <DateInput name="Initial Date" onDateChange={(date) => console.log(date)} />
+    <DateInput
+      placeholder="dd/mm/YYYY"
+      name="Initial Date"
+      onDateChange={(date) => console.log(date)}
+    />
   )
 }
 
@@ -19,6 +23,7 @@ export const Month_and_Year: Story = {
   render: () => (
     <DateInput
       monthAndYearOnly
+      placeholder="mm/YYYY"
       name="Initial Date"
       onDateChange={(date) => console.log(date)}
     />
