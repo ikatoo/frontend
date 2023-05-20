@@ -3,6 +3,7 @@ import { InputHTMLAttributes, useEffect, useState } from 'react'
 import { Calendar } from '@styled-icons/boxicons-regular'
 import Month from '../Month'
 import Styles from './styles'
+import Dropdown from '../Dropdown'
 
 export type DateInputProps = {
   onDateChange?: (value: string) => void
@@ -29,7 +30,6 @@ const DateInput = ({
   ...props
 }: DateInputProps) => {
   const [value, setValue] = useState('')
-  const [calendarHidden, setCalendarHidden] = useState(true)
 
   useEffect(() => {
     setValue(initialValue)
@@ -64,37 +64,35 @@ const DateInput = ({
           {label}
         </Styles.Label>
       )}
-      <Styles.InputWrapper onClick={() => setCalendarHidden(!calendarHidden)}>
-        {!!icon && (
-          <Styles.Icon iconPosition={iconPosition}>{icon}</Styles.Icon>
-        )}
+      <Dropdown
+        width="100%"
+        title={
+          <Styles.InputWrapper>
+            {!!icon && (
+              <Styles.Icon iconPosition={iconPosition}>{icon}</Styles.Icon>
+            )}
 
-        <Styles.Input
-          type="text"
-          onChange={onChange}
-          value={value}
-          iconPosition={iconPosition}
-          disabled={disabled}
-          name={name}
-          {...(label ? { id: name } : {})}
-          {...props}
-          tabIndex={props.tabIndex ?? 0}
+            <Styles.Input
+              type="text"
+              onChange={onChange}
+              value={value}
+              iconPosition={iconPosition}
+              disabled={disabled}
+              name={name}
+              {...(label ? { id: name } : {})}
+              {...props}
+              tabIndex={props.tabIndex ?? 0}
+            />
+          </Styles.InputWrapper>
+        }
+      >
+        <Month
+          monthAndYearOnly={monthAndYearOnly}
+          onClick={(date) =>
+            setValue(date.toLocaleDateString(undefined, dateFormat))
+          }
         />
-      </Styles.InputWrapper>
-      {!calendarHidden && (
-        <div
-          onBlur={() => {
-            setCalendarHidden(true)
-          }}
-        >
-          <Month
-            monthAndYearOnly={monthAndYearOnly}
-            onClick={(date) =>
-              setValue(date.toLocaleDateString(undefined, dateFormat))
-            }
-          />
-        </div>
-      )}
+      </Dropdown>
       <Styles.Error isEnabled={!!error}>{error}</Styles.Error>
     </Styles.Wrapper>
   )

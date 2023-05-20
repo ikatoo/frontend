@@ -49,11 +49,11 @@ const Input = styled.input<IconPositionProps>`
     font-family: ${theme.font.family};
     font-size: ${theme.font.sizes.large};
     padding: ${theme.spacings.xsmall} 0;
-    padding-${iconPosition}: ${theme.spacings.xsmall};
+    ${!!iconPosition && css`padding-${iconPosition}: ${theme.spacings.xsmall};`}
     background: transparent;
     border: 0;
     outline: none;
-    width: ${iconPosition === 'right' ? `calc(100% - 2.2rem)` : `100%`};
+    /* width: ${iconPosition === 'right' ? `calc(100% - 2.2rem)` : `100%`}; */
     &:-webkit-autofill {
       -webkit-box-shadow: 0 0 0 ${theme.spacings.small}
         ${theme.colors.lightGray} inset;

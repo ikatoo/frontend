@@ -3,7 +3,15 @@ import DateInput from '.'
 
 const meta: Meta<typeof DateInput> = {
   title: 'Components/DateInput',
-  component: DateInput
+  component: DateInput,
+  argTypes: {
+    iconPosition: {
+      options: ['left', 'right'],
+      control: {
+        type: 'select'
+      }
+    }
+  }
 }
 
 export default meta
@@ -14,6 +22,7 @@ export const Default: Story = {
     <DateInput
       placeholder="dd/mm/YYYY"
       name="Initial Date"
+      iconPosition="right"
       onDateChange={(date) => console.log(date)}
     />
   )
