@@ -59,10 +59,6 @@ export default {
     rounded
     p-2
   `,
-  DateWrapper: tw.div`
-    max-w-[100px]
-    min-w-[100px]
-  `,
   Full: tw.div`
     flex
     flex-row
@@ -73,8 +69,22 @@ export default {
   `,
   Fill: tw.div`
     w-full
+    flex
+    flex-col
+    md:flex-row
+    gap-2
+
   `,
   InlineButton: tw(InlineButton)`
     self-center
+  `,
+  DatesWrapper: tw.div`
+    flex
+    flex-row
+    gap-2
+    min-w-[18.5rem]
+  `,
+  JobTitle: tw.div`
+    min-w-[18.5rem]
   `
 }

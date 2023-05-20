@@ -1,13 +1,13 @@
 // Vitest Snapshot v1
 
 exports[`<TextField /> > Renders with error 1`] = `
-.c3 {
+.c4 {
   display: inline-block;
   vertical-align: middle;
   overflow: hidden;
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -25,11 +25,11 @@ exports[`<TextField /> > Renders with error 1`] = `
   z-index: 1;
 }
 
-.c1:focus-within {
+.c2:focus-within {
   box-shadow: 0 0 0.5rem #1e293b;
 }
 
-.c4 {
+.c5 {
   color: #00021f;
   font-family: 'Oswald','Helvetica','Arial','sans-serif';
   font-size: 1.2rem;
@@ -41,24 +41,24 @@ exports[`<TextField /> > Renders with error 1`] = `
   width: 100%;
 }
 
-.c4:-webkit-autofill {
+.c5:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 0.6rem #e5e7eb inset;
   -webkit-filter: none;
   filter: none;
 }
 
-.c4:-webkit-autofill::first-line {
+.c5:-webkit-autofill::first-line {
   font-family: 'Oswald','Helvetica','Arial','sans-serif';
   font-size: 1.2rem;
 }
 
-.c0 {
+.c1 {
   font-size: 1.2rem;
   color: #00021f;
   cursor: pointer;
 }
 
-.c2 {
+.c3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -69,12 +69,12 @@ exports[`<TextField /> > Renders with error 1`] = `
   order: 0;
 }
 
-.c2 > svg {
+.c3 > svg {
   width: 1.2rem;
   height: 100%;
 }
 
-.c5 {
+.c6 {
   width: auto;
   background: #ff2a2a;
   opacity: 0%;
@@ -97,24 +97,28 @@ exports[`<TextField /> > Renders with error 1`] = `
   opacity: 100%;
 }
 
+.c0 {
+  width: 100%;
+}
+
 <div
-  class=""
+  class="c0"
 >
   <label
-    class="c0"
+    class="c1"
     for="username"
   >
     TextField
   </label>
   <div
-    class="c1"
+    class="c2"
   >
     <div
-      class="c2"
+      class="c3"
     >
       <svg
         aria-hidden="true"
-        class="c3"
+        class="c4"
         data-testid="icon"
         fill="currentColor"
         focusable="false"
@@ -131,7 +135,7 @@ exports[`<TextField /> > Renders with error 1`] = `
       </svg>
     </div>
     <input
-      class="c4"
+      class="c5"
       id="username"
       name="username"
       tabindex="0"
@@ -140,7 +144,7 @@ exports[`<TextField /> > Renders with error 1`] = `
     />
   </div>
   <span
-    class="c5"
+    class="c6"
   >
     Error message
   </span>

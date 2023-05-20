@@ -123,6 +123,7 @@ const wrapperModifiers = {
 }
 
 const Wrapper = styled.div<WrapperProps>`
+  width: 100%;
   ${({ disabled }) => css`
     ${disabled && wrapperModifiers.disabled()}
   `}

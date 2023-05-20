@@ -11,6 +11,7 @@ import { useAlert } from 'src/hooks/useAlert'
 import skillsService from 'src/services/skillsService'
 import { Job, SkillsPageProps } from 'src/types/SkillsPage'
 import Styles from './styles'
+import DateInput from 'src/components/DateInput'
 
 export const AdminSkills = () => {
   const { setAlert } = useAlert()
@@ -144,35 +145,41 @@ export const AdminSkills = () => {
                 <legend role="label">Últimos Trabalhos</legend>
                 <Styles.Full>
                   <Styles.Fill>
-                    <TextInput
-                      name="jobTitle"
-                      placeholder="Nome da empresa ou projeto em que trabalhou."
-                      label="Nome da empresa ou projeto"
-                      labelColor="white"
-                      initialValue={jobTitle}
-                      onInputChange={(value) => setJobTitle(value)}
-                    />
+                    <Styles.JobTitle>
+                      <TextInput
+                        name="jobTitle"
+                        placeholder="Nome da empresa ou projeto em que trabalhou."
+                        label="Nome da empresa ou projeto"
+                        labelColor="white"
+                        initialValue={jobTitle}
+                        onInputChange={(value) => setJobTitle(value)}
+                      />
+                    </Styles.JobTitle>
+                    <Styles.DatesWrapper>
+                      <DateInput
+                        monthAndYearOnly
+                        name="jobStart"
+                        placeholder="mm/YYYY"
+                        label="Início"
+                        labelColor="white"
+                        initialValue={jobStart}
+                        onDateChange={(date) => {
+                          setJobStart(date)
+                        }}
+                      />
+                      <DateInput
+                        monthAndYearOnly
+                        name="jobEnd"
+                        placeholder="mm/YYYY"
+                        label="Fim"
+                        labelColor="white"
+                        initialValue={jobEnd}
+                        onDateChange={(date) => {
+                          setJobEnd(date)
+                        }}
+                      />
+                    </Styles.DatesWrapper>
                   </Styles.Fill>
-                  <Styles.DateWrapper>
-                    <TextInput
-                      name="jobStart"
-                      placeholder="mm/YYYY"
-                      label="Início"
-                      labelColor="white"
-                      initialValue={jobStart}
-                      onInputChange={(value) => setJobStart(value)}
-                    />
-                  </Styles.DateWrapper>
-                  <Styles.DateWrapper>
-                    <TextInput
-                      name="jobEnd"
-                      placeholder="mm/YYYY"
-                      label="Fim"
-                      labelColor="white"
-                      initialValue={jobEnd}
-                      onInputChange={(value) => setJobEnd(value)}
-                    />
-                  </Styles.DateWrapper>
                 </Styles.Full>
                 <Styles.Full>
                   <Styles.Fill>
