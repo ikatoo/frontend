@@ -34,21 +34,23 @@ export default {
     py-3
     ${(props: { $styleType: 'primary' | 'secondary' | 'default' }) =>
       type[props.$styleType]}
-    focus:outline-none
     font-medium
     text-sm
     leading-snug
     uppercase
     rounded
-    shadow-md
-    hover:shadow-lg
-    focus:shadow-lg
+    shadow-mck_black
+    shadow
+    hover:shadow-md
+    focus:shadow-md
     focus:ring-0
-    active:shadow-lg
+    active:shadow-md
     transition
     duration-150
     ease-in-out
     ${(props: { $block: boolean }) => !!props.$block && 'w-full'}
+    disabled:bg-mck_black
+    disabled:text-mck_gray_dark
   `,
   IconWrapper: tw.div`
     flex

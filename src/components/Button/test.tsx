@@ -54,4 +54,15 @@ describe('<Button />', () => {
 
     expect(screen).toMatchSnapshot()
   })
+
+  it('should render disabled button', () => {
+    render(<Button disabled />)
+
+    const button = screen.getByRole('button')
+
+    expect(button).toHaveAttribute('disabled')
+    expect(button).toHaveClass(
+      'disabled:bg-mck_black disabled:text-mck_gray_dark'
+    )
+  })
 })
