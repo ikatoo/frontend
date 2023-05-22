@@ -101,7 +101,7 @@ export const AdminSkills = () => {
 
   return (
     <Styles.Wrapper>
-      <TextContainer title={'Informações sobre você.'}>
+      <TextContainer title={'Suas habilidades e experiências.'}>
         <FormContainer>
           <Styles.Form
             onSubmit={handleSubmit}
@@ -209,6 +209,12 @@ export const AdminSkills = () => {
                       styleType="secondary"
                       type="button"
                       onClick={addJob}
+                      disabled={
+                        !jobTitle.length ||
+                        !jobDescription.length ||
+                        !jobStart.length ||
+                        !jobLink.length
+                      }
                     >
                       ADICIONAR TRABALHO
                     </Button>

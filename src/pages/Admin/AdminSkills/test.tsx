@@ -1,12 +1,21 @@
 import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import skillsPageMock from 'src/mocks/skillsPageMock'
 import api from 'src/services/api'
 import { describe, expect, test, vi } from 'vitest'
 import { AdminSkills } from '.'
-import skillsPageMock from 'src/mocks/skillsPageMock'
 
 describe('ADMIN: Skills page', () => {
   beforeEach(() => {
     api.get = vi.fn()
+  })
+
+  test('should render page with title', () => {
+    api.get = vi.fn().mockResolvedValue({})
+    render(<AdminSkills />)
+
+    const title = screen.getByRole('heading', { level: 1 })
+    expect(title).toHaveTextContent('Suas habilidades e experiências.')
   })
 
   test('should render all fields', () => {
@@ -14,24 +23,29 @@ describe('ADMIN: Skills page', () => {
 
     render(<AdminSkills />)
 
-    expect(screen.getByRole('textbox', { name: /título/i })).toBeInTheDocument()
-    expect(screen.getByLabelText('Descrição')).toBeInTheDocument()
-    expect(screen.getByLabelText(/habilidades/i)).toBeInTheDocument()
-    expect(screen.getByRole('group')).toContain(/últimos trabalhos/i)
-    expect(
-      screen.getByRole('textbox', { name: /Nome da empresa ou projeto/i })
-    ).toBeInTheDocument()
-    expect(screen.getByRole('textbox', { name: /início/i })).toBeInTheDocument()
-    expect(screen.getByRole('textbox', { name: /fim/i })).toBeInTheDocument()
-    expect(
-      screen.getByRole('textbox', { name: 'Link para referência' })
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('textbox', { name: /breve descrição/i })
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('button', { name: /adicionar trabalho/i })
-    ).toBeInTheDocument()
+    const title = screen.getByLabelText('Título')
+    const description = screen.getByLabelText('Descrição')
+    const skills = screen.getByLabelText('Habilidades')
+    const jobsFieldset = screen.getByRole('group')
+    const jobTitle = screen.getByLabelText('Nome da empresa ou projeto')
+    const jobStart = screen.getByLabelText('Início')
+    const jobEnd = screen.getByLabelText('Fim')
+    const jobLink = screen.getByLabelText('Link para referência')
+    const jobDescription = screen.getByLabelText('Breve Descrição')
+    const addJob = screen.getByRole('button', {
+      name: /adicionar trabalho/i
+    })
+
+    expect(title).toBeInTheDocument()
+    expect(description).toBeInTheDocument()
+    expect(skills).toBeInTheDocument()
+    expect(jobsFieldset).toContain(/últimos trabalhos/i)
+    expect(jobTitle).toBeInTheDocument()
+    expect(jobStart).toBeInTheDocument()
+    expect(jobEnd).toBeInTheDocument()
+    expect(jobLink).toBeInTheDocument()
+    expect(jobDescription).toBeInTheDocument()
+    expect(addJob).toHaveAttribute('disabled')
   })
 
   test('should load data at render', async () => {
@@ -43,8 +57,10 @@ describe('ADMIN: Skills page', () => {
 
     const { title, skills, description, lastJobs } = skillsPageMock
 
+    const form = screen.getByRole('form')
+
     await waitFor(() => {
-      expect(screen.getByRole('form')).toHaveFormValues({ title, description })
+      expect(form).toHaveFormValues({ title, description })
     })
 
     expect(
@@ -70,39 +86,50 @@ describe('ADMIN: Skills page', () => {
     expect(jobs).toEqual(lastJobs)
   })
 
-  // test('should change focus on press tab key', () => {
-  //   api.get = vi.fn().mockResolvedValue({})
+  test.skip('should change focus on press tab key', () => {
+    api.get = vi.fn().mockResolvedValue({})
 
-  //   render(<AdminSkills />)
+    render(<AdminSkills />)
 
-  //   const titleInput = screen.getByRole('textbox', { name: /título/i })
-  //   const descriptionInput = screen.getByRole('textbox', { name: /Descrição/i })
-  //   const skillsInput = screen.getByRole('textbox', { name: /Habilidades/i })
-  //   const illustrationURLInput = screen.getByRole('textbox', {
-  //     name: /Imagem URL/i
-  //   })
-  //   const illustrationALTInput = screen.getByRole('textbox', {
-  //     name: /Imagem ALT/i
-  //   })
-  //   const submitButton = screen.getByRole('button', { name: /salvar/i })
-  //   const clearButton = screen.getByRole('button', {
-  //     name: /limpar formulário/i
-  //   })
+    const title = screen.getByLabelText('Título')
+    const description = screen.getByLabelText('Descrição')
+    const skills = screen.getByLabelText('Habilidades')
+    const jobTitle = screen.getByLabelText('Nome da empresa ou projeto')
+    const jobStart = screen.getByLabelText('Início')
+    const jobEnd = screen.getByLabelText('Fim')
+    const jobLink = screen.getByLabelText('Link para referência')
+    const jobDescription = screen.getByLabelText('Breve Descrição')
+    const addJob = screen.getByRole('button', {
+      name: /adicionar trabalho/i
+    })
 
-  //   expect(titleInput).toHaveFocus()
-  //   userEvent.tab()
-  //   expect(descriptionInput).toHaveFocus()
-  //   userEvent.tab()
-  //   expect(skillsInput).toHaveFocus()
-  //   userEvent.tab()
-  //   expect(illustrationURLInput).toHaveFocus()
-  //   userEvent.tab()
-  //   expect(illustrationALTInput).toHaveFocus()
-  //   userEvent.tab()
-  //   expect(submitButton).toHaveFocus()
-  //   userEvent.tab()
-  //   expect(clearButton).toHaveFocus()
-  // })
+    const submitButton = screen.getByRole('button', { name: /salvar/i })
+    const clearButton = screen.getByRole('button', {
+      name: /limpar formulário/i
+    })
+
+    expect(title).toHaveFocus()
+    userEvent.tab()
+    expect(description).toHaveFocus()
+    userEvent.tab()
+    expect(skills).toHaveFocus()
+    userEvent.tab()
+    expect(jobTitle).toHaveFocus()
+    userEvent.tab()
+    expect(jobStart).toHaveFocus()
+    userEvent.tab()
+    expect(jobEnd).toHaveFocus()
+    userEvent.tab()
+    expect(jobLink).toHaveFocus()
+    userEvent.tab()
+    expect(jobDescription).toHaveFocus()
+    userEvent.tab()
+    expect(addJob).toHaveFocus()
+    userEvent.tab()
+    expect(submitButton).toHaveFocus()
+    userEvent.tab()
+    expect(clearButton).toHaveFocus()
+  })
 
   // test('should call submit with data when save button is clicked', async () => {
   //   api.get = vi.fn().mockResolvedValue({})
