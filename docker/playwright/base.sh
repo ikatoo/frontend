@@ -14,6 +14,7 @@ docker run -t -i -d --name playwright \
   -v .:/tests/ \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   -e DISPLAY=$DISPLAY \
+  -e CI=true \
   -w /tests \
   --user pwuser \
   --ipc=host \
