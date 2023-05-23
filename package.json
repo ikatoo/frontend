@@ -14,6 +14,7 @@
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "playwright": "bash docker/playwright/test.sh",
+    "playwright:ci": "bash docker/playwright/test.sh",
     "playwright:ui": "bash docker/playwright/ui.sh",
     "playwright:codegen": "bash docker/playwright/codegen.sh",
     "docker:vite:up": "docker compose -f docker/vite/compose.yml up -d",
