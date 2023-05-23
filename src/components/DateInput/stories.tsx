@@ -4,6 +4,11 @@ import DateInput from '.'
 const meta: Meta<typeof DateInput> = {
   title: 'Components/DateInput',
   component: DateInput,
+  parameters: {
+    backgrounds: {
+      default: 'dark'
+    }
+  },
   argTypes: {
     iconPosition: {
       options: ['left', 'right'],
@@ -20,6 +25,8 @@ type Story = StoryObj<typeof DateInput>
 export const Default: Story = {
   render: () => (
     <DateInput
+      label="Date"
+      labelColor="white"
       placeholder="dd/mm/YYYY"
       name="Initial Date"
       iconPosition="right"

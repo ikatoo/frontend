@@ -30,6 +30,7 @@ const DateInput = ({
   ...props
 }: DateInputProps) => {
   const [value, setValue] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     setValue(initialValue)
@@ -65,6 +66,8 @@ const DateInput = ({
         </Styles.Label>
       )}
       <Dropdown
+        handleIsOpen={setIsOpen}
+        initialIsOpenState={isOpen}
         width="100%"
         title={
           <Styles.InputWrapper>
@@ -88,9 +91,10 @@ const DateInput = ({
       >
         <Month
           monthAndYearOnly={monthAndYearOnly}
-          onClick={(date) =>
+          onClick={(date) => {
             setValue(date.toLocaleDateString(undefined, dateFormat))
-          }
+            setIsOpen(false)
+          }}
         />
       </Dropdown>
       <Styles.Error isEnabled={!!error}>{error}</Styles.Error>
