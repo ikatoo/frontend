@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import Button from 'src/components/Button'
+import DateInput from 'src/components/DateInput'
 import { FormContainer } from 'src/components/FormContainer'
 import JobsCards from 'src/components/JobsCards'
 import TagEditor, { Tag } from 'src/components/TagEditor'
@@ -11,7 +12,6 @@ import { useAlert } from 'src/hooks/useAlert'
 import skillsService from 'src/services/skillsService'
 import { Job, SkillsPageProps } from 'src/types/SkillsPage'
 import Styles from './styles'
-import DateInput from 'src/components/DateInput'
 
 export const AdminSkills = () => {
   const { setAlert } = useAlert()
@@ -92,11 +92,24 @@ export const AdminSkills = () => {
         yearMonthEnd: jobEnd
       }
     ])
+    setJobTitle('')
+    setJobDescription('')
+    setJobLink('')
+    setJobStart('')
+    setJobEnd('')
   }
 
   const removeJob = (job: Job) => {
     const jobs = lastJobs.filter((_job) => _job !== job)
     setLastJobs(jobs)
+  }
+
+  const clearFields = () => {
+    setJobTitle('')
+    setJobDescription('')
+    setJobLink('')
+    setJobStart('')
+    setJobEnd('')
   }
 
   return (
@@ -105,6 +118,7 @@ export const AdminSkills = () => {
         <FormContainer>
           <Styles.Form
             onSubmit={handleSubmit}
+            onReset={clearFields}
             method="post"
             name="skillsPageForm"
           >
@@ -115,7 +129,7 @@ export const AdminSkills = () => {
                 label="Título"
                 name="title"
                 placeholder="Título"
-                onInputChange={(value) => setTitle(value)}
+                onInputChange={setTitle}
                 autoFocus
               />
             </Styles.TextWrapper>
@@ -127,7 +141,7 @@ export const AdminSkills = () => {
                 label="Descrição"
                 placeholder="Descrição"
                 labelColor="white"
-                onTextAreaChange={(value) => setDescription(value)}
+                onTextAreaChange={setDescription}
               />
             </Styles.TextWrapper>
 
@@ -152,7 +166,7 @@ export const AdminSkills = () => {
                         label="Nome da empresa ou projeto"
                         labelColor="white"
                         initialValue={jobTitle}
-                        onInputChange={(value) => setJobTitle(value)}
+                        onInputChange={setJobTitle}
                       />
                     </Styles.JobTitle>
                     <Styles.DatesWrapper>
@@ -163,9 +177,7 @@ export const AdminSkills = () => {
                         label="Início"
                         labelColor="white"
                         initialValue={jobStart}
-                        onDateChange={(date) => {
-                          setJobStart(date)
-                        }}
+                        onDateChange={setJobStart}
                       />
                       <DateInput
                         monthAndYearOnly
@@ -174,9 +186,7 @@ export const AdminSkills = () => {
                         label="Fim"
                         labelColor="white"
                         initialValue={jobEnd}
-                        onDateChange={(date) => {
-                          setJobEnd(date)
-                        }}
+                        onDateChange={setJobEnd}
                       />
                     </Styles.DatesWrapper>
                   </Styles.Fill>
@@ -189,7 +199,7 @@ export const AdminSkills = () => {
                       placeholder="Ex: https://github.com/seu_repo/seu_projeto ou https://empresa_em_que_trabalhou.com.br"
                       labelColor="white"
                       initialValue={jobLink}
-                      onInputChange={(value) => setJobLink(value)}
+                      onInputChange={setJobLink}
                     />
                   </Styles.Fill>
                 </Styles.Full>
@@ -201,14 +211,16 @@ export const AdminSkills = () => {
                       maxLength={100}
                       labelColor="white"
                       initialValue={jobDescription}
-                      onInputChange={(value) => setJobDescription(value)}
+                      onInputChange={setJobDescription}
                     />
                   </Styles.Fill>
                   <Styles.InlineButton>
                     <Button
                       styleType="secondary"
                       type="button"
-                      onClick={addJob}
+                      onClick={() => {
+                        addJob()
+                      }}
                       disabled={
                         !jobTitle.length ||
                         !jobDescription.length ||
