@@ -4,6 +4,7 @@ import skillsPageMock from 'src/mocks/skillsPageMock'
 import api from 'src/services/api'
 import { describe, expect, test, vi } from 'vitest'
 import { AdminSkills } from '.'
+import skillsService from 'src/services/skillsService'
 
 describe('ADMIN: Skills page', () => {
   beforeEach(() => {
@@ -129,6 +130,46 @@ describe('ADMIN: Skills page', () => {
     expect(submitButton).toHaveFocus()
     userEvent.tab()
     expect(clearButton).toHaveFocus()
+  })
+
+  test('should clear fields of the last jobs group on add jobs', async () => {
+    skillsService.get = vi.fn().mockResolvedValue({})
+
+    render(<AdminSkills />)
+
+    const jobTitleInput = screen.getByLabelText('Nome da empresa ou projeto')
+    const jobStartInput = screen.getByLabelText('Início')
+    const jobEndInput = screen.getByLabelText('Fim')
+    const jobLinkInput = screen.getByLabelText('Link para referência')
+    const jobDescriptionInput = screen.getByLabelText('Breve Descrição')
+    const addJobButton = screen.getByRole('button', {
+      name: 'ADICIONAR TRABALHO'
+    })
+
+    const job = skillsPageMock.lastJobs[1]
+
+    const jobStartArray = job.yearMonthStart.split(' - ')
+    const jobEndArray = job.yearMonthEnd?.split(' - ')
+
+    userEvent.type(jobTitleInput, job.jobTitle)
+    userEvent.type(
+      jobStartInput,
+      jobStartArray.reverse().toString().replaceAll(',', '/')
+    )
+    jobEndArray &&
+      userEvent.type(
+        jobEndInput,
+        jobEndArray.reverse().toString().replaceAll(',', '/')
+      )
+    userEvent.type(jobLinkInput, job.link)
+    userEvent.type(jobDescriptionInput, job.jobDescription)
+    userEvent.click(addJobButton)
+
+    expect(jobTitleInput).toHaveValue('')
+    expect(jobStartInput).toHaveValue('')
+    expect(jobEndInput).toHaveValue('')
+    expect(jobLinkInput).toHaveValue('')
+    expect(jobDescriptionInput).toHaveValue('')
   })
 
   // test('should call submit with data when save button is clicked', async () => {
