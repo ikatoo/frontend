@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 import tw from 'tailwind-styled-components'
 
 export const Calendar = styled.div`
+  background-color: ${theme.colors.white};
   border: 0 0 2.5rem;
   border: 0.2rem solid ${theme.colors.lightGray};
   width: 100%;
