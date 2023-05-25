@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-npm run test run
-npm run playwright:ci </dev/tty
-npm run typecheck
-npm run build-storybook
