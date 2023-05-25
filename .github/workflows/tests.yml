@@ -9,6 +9,8 @@ jobs:
   tests:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      VITE_PORT: 3000
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -33,17 +35,29 @@ jobs:
       - name: Build
         run: npm run build
 
-  tests_e2e:
-    name: Run end-to-end tests
-    env:
-      VITE_PORT: 3000
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-node@v3
+
       - name: Install dependencies
         run: npm ci
+
       - name: Install playwright browsers
         run: npx playwright install --with-deps
+
       - name: Run tests
         run: npx playwright test
+
+      - name: Send email when failure tests
+        if: ${{ failure() }}
+        env:
+          MAILGUN_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+        run: |
+          echo "Tests failed! Sending notification email..."
+          echo "To: mckatoo@gmail.com" > email.txt
+          echo "From: mckatoo@gmail.com" >> email.txt
+          echo "Subject: Tests failed" >> email.txt
+          echo "Content-Type: text/plain; charset=utf-8" >> email.txt
+          echo "" >> email.txt
+          echo "Your repository tests failed. Please check and fix the code." >> email.txt
+          cat email.txt | sendmail -t
