@@ -5,6 +5,8 @@ import api from 'src/services/api'
 import { describe, expect, test, vi } from 'vitest'
 import { AdminSkills } from '.'
 import skillsService from 'src/services/skillsService'
+import { AlertProvider } from 'src/hooks/useAlert'
+import { stringToDateFormat } from 'src/helpers/date'
 
 describe('ADMIN: Skills page', () => {
   beforeEach(() => {
@@ -170,6 +172,47 @@ describe('ADMIN: Skills page', () => {
     expect(jobEndInput).toHaveValue('')
     expect(jobLinkInput).toHaveValue('')
     expect(jobDescriptionInput).toHaveValue('')
+  })
+
+  test('should add jobs when click on add job button', async () => {
+    skillsService.get = vi.fn().mockResolvedValue({})
+    skillsService.create = vi.fn().mockResolvedValue({ data: {}, status: 201 })
+    skillsService.patch = vi.fn().mockResolvedValue({ data: {}, status: 204 })
+
+    render(
+      <AlertProvider>
+        <AdminSkills />
+      </AlertProvider>
+    )
+
+    const jobTitleInput = screen.getByLabelText('Nome da empresa ou projeto')
+    const jobStartInput = screen.getByLabelText('Início')
+    const jobEndInput = screen.getByLabelText('Fim')
+    const jobLinkInput = screen.getByLabelText('Link para referência')
+    const jobDescriptionInput = screen.getByLabelText('Breve Descrição')
+    const addJobButton = screen.getByRole('button', {
+      name: 'ADICIONAR TRABALHO'
+    })
+    const saveButton = screen.getByRole('button', { name: /salvar/i })
+
+    skillsPageMock.lastJobs.forEach((job) => {
+      userEvent.type(jobTitleInput, job.jobTitle)
+      userEvent.type(jobStartInput, stringToDateFormat(job.yearMonthStart))
+      job.yearMonthEnd &&
+        userEvent.type(jobEndInput, stringToDateFormat(job.yearMonthEnd))
+      userEvent.type(jobLinkInput, job.link)
+      userEvent.type(jobDescriptionInput, job.jobDescription)
+      userEvent.click(addJobButton)
+    })
+
+    userEvent.click(saveButton)
+
+    expect(skillsService.create).toHaveBeenCalledWith({
+      title: '',
+      description: '',
+      skills: [],
+      lastJobs: skillsPageMock.lastJobs
+    })
   })
 
   // test('should call submit with data when save button is clicked', async () => {
