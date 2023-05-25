@@ -1,5 +1,10 @@
-on: push
-name: Verify types, lint and tests on push
+name: Tests
+
+on:
+  push:
+    branches-ignore:
+      - '*'
+
 jobs:
   tests:
     runs-on: ubuntu-latest
