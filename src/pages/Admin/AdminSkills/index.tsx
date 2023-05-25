@@ -12,14 +12,15 @@ import { useAlert } from 'src/hooks/useAlert'
 import skillsService from 'src/services/skillsService'
 import { Job, SkillsPageProps } from 'src/types/SkillsPage'
 import Styles from './styles'
+import { dateToStringFormat } from 'src/helpers/date'
 
 export const AdminSkills = () => {
   const { setAlert } = useAlert()
 
   const [title, setTitle] = useState<string>('')
+  const [lastJobs, setLastJobs] = useState<Job[] | []>([])
   const [description, setDescription] = useState<string>('')
   const [skills, setSkills] = useState<Tag[]>([])
-  const [lastJobs, setLastJobs] = useState<Job[] | []>([])
   const [jobTitle, setJobTitle] = useState('')
   const [jobStart, setJobStart] = useState('')
   const [jobEnd, setJobEnd] = useState('')
@@ -44,35 +45,36 @@ export const AdminSkills = () => {
       initialData?.skills.map((skill) => ({ title: skill.skillTitle })) ?? []
     )
     setLastJobs(initialData?.lastJobs ?? [])
-  }, [initialData])
+  }, [initialData, setLastJobs])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
+    const mappedLastJobs = lastJobs.map((job) => ({
+      ...job,
+      yearMonthEnd: job.yearMonthEnd
+        ? dateToStringFormat(job.yearMonthEnd)
+        : undefined,
+      yearMonthStart: dateToStringFormat(job.yearMonthStart)
+    }))
+
+    const data = {
+      title,
+      description,
+      skills: skills.map((skill) => ({
+        skillTitle: skill.title
+      })),
+      lastJobs: mappedLastJobs
+    }
+
     if (!initialData) {
-      skillsService.create({
-        title,
-        description,
-        skills: skills.map((skill) => ({
-          skillTitle: skill.title,
-          rankPercent: 0
-        })),
-        lastJobs
-      })
+      skillsService.create(data)
       setAlert({
         title: 'Success on create skills page.',
         type: 'message'
       })
     } else {
-      skillsService.patch({
-        title: title,
-        description: description,
-        skills: skills.map((skill) => ({
-          skillTitle: skill.title,
-          rankPercent: 0
-        })),
-        lastJobs
-      })
+      skillsService.patch(data)
       setAlert({ title: 'Success on update skills page.', type: 'message' })
     }
   }
