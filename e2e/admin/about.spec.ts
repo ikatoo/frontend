@@ -39,6 +39,6 @@ test.describe('ADMIN - About page', () => {
     await page
       .getByPlaceholder('Uma breve descrição da imagem')
       .fill('description for image')
-    await page.getByPlaceholder('Uma breve descrição da imagemaaa').press('Enter')
+    await page.getByPlaceholder('Uma breve descrição da imagem').press('Enter')
   })
 })
