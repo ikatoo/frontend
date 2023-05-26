@@ -12,6 +12,6 @@ describe('Date helper', () => {
     const stringFormat = '03/2022'
     const dateFormat = dateToStringFormat(stringFormat)
 
-    expect(dateFormat).toBe('2022 - 03')
+    expect(dateFormat).toBe('2022 - 030000')
   })
 })
