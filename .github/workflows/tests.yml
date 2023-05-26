@@ -50,13 +50,14 @@ jobs:
 
       - name: Enviar email em caso de falha
         if: ${{ failure() }}
-        env:
-          SMTP_SERVER: smtp.office365.com
-          SMTP_PORT: 587
-          SMTP_USERNAME: mckatoo@outlook.com
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          MAIL_FROM: mckatoo@outlook.com
-          MAIL_TO: mckatoo@gmail.com
-          MAIL_SUBJECT: Testes falharam
-          MAIL_BODY: Os testes do seu repositório falharam. Por favor, verifique e corrija o código.
-        uses: dawidd6/action-send-mail@v2
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.office365.com
+          server_port: 587
+          username: mckatoo@outlook.com
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: Github Actions job result
+          to: mckatoo@gmail.com
+          from: iKatoo Repository
+          body: Os testes do repositório ${{github.repository}} falharam. Por favor, verifique e corrija o código.
+          # html_body: file://README.html
