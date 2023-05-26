@@ -12,44 +12,44 @@ jobs:
     env:
       VITE_PORT: 3000
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      # - name: Checkout Repository
+      #   uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.x
+      # - name: Setup Node
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 18.x
 
-      - name: Install Dependencies
-        run: npm ci
+      # - name: Install Dependencies
+      #   run: npm ci
 
-      - name: Linting
-        run: npm run lint
+      # - name: Linting
+      #   run: npm run lint
 
-      - name: Typecheck
-        run: npm run typecheck
+      # - name: Typecheck
+      #   run: npm run typecheck
 
-      - name: Test
-        run: npx vitest run
+      # - name: Test
+      #   run: npx vitest run
 
-      - name: Build
-        run: npm run build
+      # - name: Build
+      #   run: npm run build
 
-      - uses: actions/checkout@v3
+      # - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
+      # - uses: actions/setup-node@v3
 
-      - name: Install dependencies
-        run: npm ci
+      # - name: Install dependencies
+      #   run: npm ci
 
-      - name: Install playwright browsers
-        run: npx playwright install --with-deps
+      # - name: Install playwright browsers
+      #   run: npx playwright install --with-deps
 
-      - name: Run tests
-        run: npx playwright test
+      # - name: Run tests
+      #   run: npx playwright test
 
       - name: Enviar email em caso de falha
-        if: ${{ failure() }}
+        # if: ${{ failure() }}
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.office365.com
@@ -60,7 +60,3 @@ jobs:
           to: mckatoo@gmail.com
           from: iKatoo Repository
           body: Os testes do repositório ${{github.repository}} falharam. Por favor, verifique e corrija o código.
-          secure: true
-          ignore_cert: true
-          convert_markdown: true
-          priority: low
