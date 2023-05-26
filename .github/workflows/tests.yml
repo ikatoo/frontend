@@ -48,16 +48,15 @@ jobs:
       - name: Run tests
         run: npx playwright test
 
-      - name: Send email when failure tests
+      - name: Enviar email em caso de falha
         if: ${{ failure() }}
         env:
-          MAILGUN_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
-        run: |
-          echo "Tests failed! Sending notification email..."
-          echo "To: mckatoo@gmail.com" > email.txt
-          echo "From: mckatoo@gmail.com" >> email.txt
-          echo "Subject: Tests failed" >> email.txt
-          echo "Content-Type: text/plain; charset=utf-8" >> email.txt
-          echo "" >> email.txt
-          echo "Your repository tests failed. Please check and fix the code." >> email.txt
-          cat email.txt | sendmail -t
+          SMTP_SERVER: smtp.office365.com
+          SMTP_PORT: 587
+          SMTP_USERNAME: mckatoo@outlook.com
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          MAIL_FROM: mckatoo@outlook.com
+          MAIL_TO: mckatoo@outlook.com
+          MAIL_SUBJECT: Testes falharam
+          MAIL_BODY: Os testes do seu repositório falharam. Por favor, verifique e corrija o código.
+        uses: dawidd6/action-send-mail@v2
