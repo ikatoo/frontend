@@ -52,8 +52,9 @@ jobs:
         if: ${{ failure() }}
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: smtp.office365.com
-          server_port: 587
+          connection_url: smtp+starttls://mckatoo@outlook.com:${{ secrets.SMTP_PASSWORD }}@smtp.office365.com:587
+          # server_address: smtp.office365.com
+          # server_port: 587
           username: mckatoo@outlook.com
           password: ${{ secrets.SMTP_PASSWORD }}
           subject: Github Actions job result
