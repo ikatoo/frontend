@@ -52,13 +52,15 @@ jobs:
         if: ${{ failure() }}
         uses: dawidd6/action-send-mail@v3
         with:
-          connection_url: smtp+starttls://mckatoo@outlook.com:${{ secrets.SMTP_PASSWORD }}@smtp.office365.com:587
-          # server_address: smtp.office365.com
-          # server_port: 587
+          server_address: smtp.office365.com
+          server_port: 587
           username: mckatoo@outlook.com
           password: ${{ secrets.SMTP_PASSWORD }}
           subject: Github Actions job result
           to: mckatoo@gmail.com
           from: iKatoo Repository
           body: Os testes do repositório ${{github.repository}} falharam. Por favor, verifique e corrija o código.
-          # html_body: file://README.html
+          secure: true
+          ignore_cert: true
+          convert_markdown: true
+          priority: low
