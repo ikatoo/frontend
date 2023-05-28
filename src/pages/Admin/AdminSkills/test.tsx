@@ -7,6 +7,7 @@ import { AdminSkills } from '.'
 import skillsService from 'src/services/skillsService'
 import { AlertProvider } from 'src/hooks/useAlert'
 import { stringToDateFormat } from 'src/helpers/date'
+import Alert from 'src/components/Alert'
 
 describe('ADMIN: Skills page', () => {
   beforeEach(() => {
@@ -89,7 +90,7 @@ describe('ADMIN: Skills page', () => {
     expect(jobs).toEqual(lastJobs)
   })
 
-  test.skip('should change focus on press tab key', () => {
+  test('should change focus on press tab key', () => {
     api.get = vi.fn().mockResolvedValue({})
 
     render(<AdminSkills />)
@@ -102,13 +103,10 @@ describe('ADMIN: Skills page', () => {
     const jobEnd = screen.getByLabelText('Fim')
     const jobLink = screen.getByLabelText('Link para referência')
     const jobDescription = screen.getByLabelText('Breve Descrição')
-    const addJob = screen.getByRole('button', {
-      name: /adicionar trabalho/i
-    })
 
     const submitButton = screen.getByRole('button', { name: /salvar/i })
     const clearButton = screen.getByRole('button', {
-      name: /limpar formulário/i
+      name: 'Limpar'
     })
 
     expect(title).toHaveFocus()
@@ -126,8 +124,6 @@ describe('ADMIN: Skills page', () => {
     expect(jobLink).toHaveFocus()
     userEvent.tab()
     expect(jobDescription).toHaveFocus()
-    userEvent.tab()
-    expect(addJob).toHaveFocus()
     userEvent.tab()
     expect(submitButton).toHaveFocus()
     userEvent.tab()
@@ -215,186 +211,186 @@ describe('ADMIN: Skills page', () => {
     })
   })
 
-  // test('should call submit with data when save button is clicked', async () => {
-  //   api.get = vi.fn().mockResolvedValue({})
+  test('should call submit with data when save button is clicked', async () => {
+    skillsService.get = vi.fn().mockResolvedValue({})
+    skillsService.create = vi.fn().mockResolvedValue({ data: {}, status: 201 })
 
-  //   await waitFor(() => {
-  //     render(
-  //       <AlertProvider>
-  //         <AdminSkills />
-  //       </AlertProvider>
-  //     )
-  //   })
+    render(
+      <AlertProvider>
+        <AdminSkills />
+      </AlertProvider>
+    )
 
-  //   const titleInput = screen.getByRole('textbox', { name: /título/i })
-  //   const descriptionInput = screen.getByRole('textbox', { name: /Descrição/i })
-  //   // const skillsInput = screen.getByRole('textbox', { name: /Habilidades/i })
-  //   // const illustrationURLInput = screen.getByRole('textbox', {
-  //   //   name: /Imagem URL/i
-  //   // })
-  //   // const illustrationALTInput = screen.getByRole('textbox', {
-  //   //   name: /Imagem ALT/i
-  //   // })
-  //   const submitButton = screen.getByRole('button', { name: /salvar/i })
+    const titleInput = screen.getByLabelText('Título')
+    const descriptionInput = screen.getByLabelText('Descrição')
+    const skillsInput = screen.getByLabelText('Habilidades')
+    const jobTitleInput = screen.getByLabelText('Nome da empresa ou projeto')
+    const jobStartInput = screen.getByLabelText('Início')
+    const jobEndInput = screen.getByLabelText('Fim')
+    const jobLinkInput = screen.getByLabelText('Link para referência')
+    const jobDescriptionInput = screen.getByLabelText('Breve Descrição')
+    const addJobButton = screen.getByRole('button', {
+      name: 'ADICIONAR TRABALHO'
+    })
 
-  //   userEvent.type(titleInput, skillsPageMock.title)
-  //   userEvent.type(descriptionInput, skillsPageMock.description)
-  //   // userEvent.type(illustrationALTInput, skillsPageMock.illustrationALT)
-  //   // userEvent.type(illustrationURLInput, skillsPageMock.illustrationURL)
-  //   // skillsPageMock.skills.forEach((skill) => {
-  //   //   userEvent.type(skillsInput, `${skill.title},`)
-  //   // })
+    const submitButton = screen.getByRole('button', { name: /salvar/i })
 
-  //   await waitFor(() => {
-  //     expect(screen.queryAllByTestId('tag-testid')).toHaveLength(
-  //       skillsPageMock.skills.length
-  //     )
-  //   })
+    userEvent.type(titleInput, skillsPageMock.title)
+    userEvent.type(descriptionInput, skillsPageMock.description)
+    skillsPageMock.skills.forEach((skill) => {
+      userEvent.type(skillsInput, `${skill.skillTitle},`)
+    })
+    skillsPageMock.lastJobs.forEach((job) => {
+      userEvent.type(jobTitleInput, job.jobTitle)
+      userEvent.type(jobStartInput, stringToDateFormat(job.yearMonthStart))
+      job.yearMonthEnd &&
+        userEvent.type(jobEndInput, stringToDateFormat(job.yearMonthEnd))
+      userEvent.type(jobLinkInput, job.link)
+      userEvent.type(jobDescriptionInput, job.jobDescription)
+      userEvent.click(addJobButton)
+    })
 
-  //   api.post = vi.fn().mockResolvedValue({})
+    await waitFor(() => {
+      expect(screen.queryAllByTestId('tag-testid')).toHaveLength(
+        skillsPageMock.skills.length
+      )
+    })
 
-  //   await waitFor(() => {
-  //     userEvent.click(submitButton)
-  //   })
-  // })
+    await waitFor(() => {
+      expect(screen.queryAllByTestId('job-testid')).toHaveLength(
+        skillsPageMock.lastJobs.length
+      )
+    })
 
-  // test('should show save message when submit first data', async () => {
-  //   api.get = vi.fn().mockResolvedValue({})
-  //   api.post = vi.fn().mockResolvedValue({})
+    userEvent.click(submitButton)
 
-  //   await waitFor(() => {
-  //     render(
-  //       <AlertProvider>
-  //         <Alert />
-  //         <AdminSkills />
-  //       </AlertProvider>
-  //     )
-  //   })
+    expect(skillsService.create).toHaveBeenCalledTimes(1)
+    expect(skillsService.create).toHaveBeenCalledWith(skillsPageMock)
+  })
 
-  //   userEvent.type(
-  //     screen.getByRole('textbox', { name: /título/i }),
-  //     skillsPageMock.title
-  //   )
-  //   userEvent.type(
-  //     screen.getByRole('textbox', { name: /descrição/i }),
-  //     skillsPageMock.description
-  //   )
-  //   // userEvent.type(
-  //   //   screen.getByRole('textbox', { name: /imagem alt/i }),
-  //   //   skillsPageMock.illustrationALT
-  //   // )
-  //   // userEvent.type(
-  //   //   screen.getByRole('textbox', { name: /imagem url/i }),
-  //   //   skillsPageMock.illustrationURL
-  //   // )
-  //   // skillsPageMock.skills.forEach((skill) => {
-  //   //   userEvent.type(
-  //   //     screen.getByRole('textbox', { name: /habilidades/i }),
-  //   //     `${skill.title},`
-  //   //   )
-  //   // })
-  //   await waitFor(() => {
-  //     userEvent.click(screen.getByRole('button', { name: /salvar/i }))
-  //     expect(
-  //       screen.getByText('Success on create skills page.')
-  //     ).toBeInTheDocument()
-  //   })
+  test('should show save message when submit data', async () => {
+    skillsService.get = vi.fn().mockResolvedValue({})
+    skillsService.create = vi.fn().mockResolvedValue({ data: {}, status: 201 })
 
-  //   expect(api.post).toBeCalledTimes(1)
-  //   expect(api.post).toHaveBeenCalledWith('/skills', {
-  //     data: skillsPageMock,
-  //     headers: {
-  //       Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
-  //       ContentType: 'application/json'
-  //     }
-  //   })
-  // })
+    await waitFor(() => {
+      render(
+        <AlertProvider>
+          <Alert />
+          <AdminSkills />
+        </AlertProvider>
+      )
+    })
 
-  // test.skip('should show update message when submit a new data', async () => {
-  //   api.get = vi.fn().mockResolvedValue({ data: skillsPageMock })
-  //   api.patch = vi.fn().mockResolvedValue({})
+    const titleInput = screen.getByLabelText('Título')
+    const descriptionInput = screen.getByLabelText('Descrição')
+    const saveButton = screen.getByRole('button', { name: /salvar/i })
 
-  //   const newSkillsPageMock = {
-  //     title: 'new title',
-  //     description: 'new description',
-  //     illustrationALT: 'new image alt',
-  //     illustrationURL: 'new image url'
-  //     // skills: [
-  //     //   ...skillsPageMock.skills.filter((skill) => skill.title !== 'javascript'),
-  //     //   { title: 'ci/cd' }
-  //     // ]
-  //   }
+    userEvent.type(titleInput, skillsPageMock.title)
+    userEvent.type(descriptionInput, skillsPageMock.description)
+    userEvent.click(saveButton)
 
-  //   render(
-  //     <AlertProvider>
-  //       <Alert />
-  //       <AdminSkills />
-  //     </AlertProvider>
-  //   )
+    await waitFor(() => {
+      expect(
+        screen.getByText('Success on create skills page.')
+      ).toBeInTheDocument()
+    })
+  })
 
-  //   userEvent.type(
-  //     screen.getByRole('textbox', { name: /título/i }),
-  //     newSkillsPageMock.title
-  //   )
-  //   userEvent.type(
-  //     screen.getByRole('textbox', { name: /descrição/i }),
-  //     newSkillsPageMock.description
-  //   )
-  //   userEvent.type(
-  //     screen.getByRole('textbox', { name: /imagem alt/i }),
-  //     newSkillsPageMock.illustrationALT
-  //   )
-  //   userEvent.type(
-  //     screen.getByRole('textbox', { name: /imagem url/i }),
-  //     newSkillsPageMock.illustrationURL
-  //   )
+  test('should show update message when submit a new data', async () => {
+    skillsService.get = vi.fn().mockResolvedValue({
+      data: skillsPageMock,
+      status: 200
+    })
+    skillsService.create = vi.fn().mockResolvedValue({ data: {}, status: 201 })
 
-  //   await waitFor(() => {
-  //     expect(screen.queryAllByTestId('tag-testid')).toHaveLength(
-  //       skillsPageMock.skills.length
-  //     )
-  //   })
+    const newSkillsPageMock = {
+      title: 'new title',
+      description: 'new description'
+    }
 
-  //   const tagForRemove = screen.queryByText('javascript')
-  //   const deleteSkillButton = tagForRemove?.lastElementChild
-  //   deleteSkillButton && userEvent.click(deleteSkillButton)
-  //   expect(screen.queryAllByTestId('tag-testid')).toHaveLength(
-  //     skillsPageMock.skills.length - 1
-  //   )
+    render(
+      <AlertProvider>
+        <Alert />
+        <AdminSkills />
+      </AlertProvider>
+    )
 
-  //   await waitFor(() => {
-  //     expect(screen.queryByText('javascript')).not.toBeInTheDocument()
-  //   })
+    const titleInput = screen.getByLabelText('Título')
+    const descriptionInput = screen.getByLabelText('Descrição')
 
-  //   userEvent.type(
-  //     screen.getByRole('textbox', { name: /habilidades/i }),
-  //     `ci/cd,`
-  //   )
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: 'Atualizar' })
+      ).toBeInTheDocument()
+    })
 
-  //   await waitFor(() => {
-  //     expect(screen.getByRole('form')).toHaveFormValues(newSkillsPageMock)
-  //   })
+    const updateButton = screen.getByRole('button', { name: 'Atualizar' })
 
-  //   userEvent.click(screen.getByRole('button', { name: /atualizar/i }))
+    userEvent.type(titleInput, newSkillsPageMock.title)
+    userEvent.type(descriptionInput, newSkillsPageMock.description)
+    userEvent.click(updateButton)
 
-  //   expect(
-  //     screen.getByText('Success on update skills page.')
-  //   ).toBeInTheDocument()
+    await waitFor(() => {
+      expect(
+        screen.getByText('Success on update skills page.')
+      ).toBeInTheDocument()
+    })
+  })
 
-  //   expect(api.patch).toHaveBeenCalledTimes(1)
+  test('should clear all text inputs, skills tags, jobs cards and set focus in the first text input when click on Clear Button', async () => {
+    skillsService.get = vi.fn().mockResolvedValue({
+      data: skillsPageMock,
+      status: 200
+    })
 
-  //   await waitFor(() => {
-  //     expect(api.patch).toBeCalledWith('/skills', {
-  //       data: newSkillsPageMock,
-  //       headers: {
-  //         Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
-  //         ContentType: 'application/json'
-  //       }
-  //     })
-  //   })
-  // })
+    render(<AdminSkills />)
 
-  // test('should clear all text inputs and set focus on first text input', () => {
-  //   render(<AdminSkills />)
-  // })
+    const titleInput = screen.getByLabelText('Título')
+    const descriptionInput = screen.getByLabelText('Descrição')
+
+    await waitFor(() => {
+      const skillTags = screen
+        .getAllByTestId('tag-testid')
+        .map((tag) => ({ skillTitle: tag.textContent }))
+      expect(skillTags).toEqual(skillsPageMock.skills)
+
+      const jobCards = screen.getAllByTestId('job-testid').map((card) => {
+        const h2 = card
+          .getElementsByTagName('h2')
+          .item(0)
+          ?.textContent?.split(' | ')
+          .filter((value) => value !== 'Hoje')
+
+        return {
+          jobTitle: card.getElementsByTagName('h1').item(0)?.textContent,
+          jobDescription: card.getElementsByTagName('h2').item(0)?.nextSibling
+            ?.textContent,
+          yearMonthStart:
+            (!!h2 && h2[0]) ??
+            card.getElementsByTagName('h2').item(0)?.textContent,
+          yearMonthEnd: !!h2 && h2[1],
+          link: card.getElementsByTagName('a').item(0)?.getAttribute('href')
+        }
+      })
+      expect(jobCards).toEqual(skillsPageMock.lastJobs)
+    })
+    expect(titleInput).toHaveValue(skillsPageMock.title)
+    expect(descriptionInput).toHaveValue(skillsPageMock.description)
+
+    const clearButton = screen.getByRole('button', { name: 'Limpar' })
+    userEvent.click(clearButton)
+
+    const allInputText = screen.getAllByRole('textbox')
+    allInputText.forEach((input) => {
+      expect(input).toHaveValue('')
+    })
+
+    await waitFor(() => {
+      const allSkillTags = screen.queryAllByTestId('tag-testid')
+      const allJobCards = screen.queryAllByTestId('job-testid')
+      expect(allSkillTags).toHaveLength(0)
+      expect(allJobCards).toHaveLength(0)
+      expect(titleInput).toHaveFocus()
+    })
+  })
 })

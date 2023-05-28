@@ -1,9 +1,10 @@
-import { InputHTMLAttributes, useEffect, useState } from 'react'
+import { InputHTMLAttributes, useEffect, useRef, useState } from 'react'
 
 import Styles from './styles'
 
 export type TextInputProps = {
   onInputChange?: (value: string) => void
+  focus?: boolean
   label?: string
   labelColor?: 'black' | 'white'
   initialValue?: string
@@ -16,6 +17,7 @@ export type TextInputProps = {
 
 const TextInput = ({
   icon,
+  focus,
   iconPosition = 'left',
   label,
   labelColor = 'black',
@@ -27,10 +29,15 @@ const TextInput = ({
   ...props
 }: TextInputProps) => {
   const [value, setValue] = useState('')
+  const ref = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     setValue(initialValue)
   }, [initialValue])
+
+  useEffect(() => {
+    !!focus && ref.current?.focus()
+  }, [focus])
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget.value
@@ -55,6 +62,7 @@ const TextInput = ({
           <Styles.Length>{props.maxLength - value.length}</Styles.Length>
         )}
         <Styles.Input
+          ref={ref}
           type="text"
           onChange={onChange}
           value={value}

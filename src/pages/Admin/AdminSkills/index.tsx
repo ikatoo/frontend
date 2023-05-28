@@ -8,11 +8,11 @@ import TagEditor, { Tag } from 'src/components/TagEditor'
 import TextArea from 'src/components/TextArea'
 import { TextContainer } from 'src/components/TextContainer'
 import TextInput from 'src/components/TextInput'
+import { dateToStringFormat } from 'src/helpers/date'
 import { useAlert } from 'src/hooks/useAlert'
 import skillsService from 'src/services/skillsService'
 import { Job, SkillsPageProps } from 'src/types/SkillsPage'
 import Styles from './styles'
-import { dateToStringFormat } from 'src/helpers/date'
 
 export const AdminSkills = () => {
   const { setAlert } = useAlert()
@@ -27,6 +27,7 @@ export const AdminSkills = () => {
   const [jobLink, setJobLink] = useState('')
   const [jobDescription, setJobDescription] = useState('')
   const [initialData, setInitialData] = useState<SkillsPageProps>()
+  const [focus, setFocus] = useState(true)
 
   useEffect(() => {
     const getInitialData = async () => {
@@ -79,7 +80,7 @@ export const AdminSkills = () => {
     }
   }
 
-  const onChangeTags = (values: Tag[]) => {
+  const onChangeSkills = (values: Tag[]) => {
     setSkills(values)
   }
 
@@ -106,12 +107,21 @@ export const AdminSkills = () => {
     setLastJobs(jobs)
   }
 
-  const clearFields = () => {
+  const clearJobFields = () => {
     setJobTitle('')
     setJobDescription('')
     setJobLink('')
     setJobStart('')
     setJobEnd('')
+  }
+
+  const handleReset = () => {
+    clearJobFields()
+    setTitle('')
+    setDescription('')
+    setSkills([])
+    setLastJobs([])
+    setFocus(true)
   }
 
   return (
@@ -120,19 +130,23 @@ export const AdminSkills = () => {
         <FormContainer>
           <Styles.Form
             onSubmit={handleSubmit}
-            onReset={clearFields}
+            onReset={handleReset}
             method="post"
             name="skillsPageForm"
           >
             <Styles.TextWrapper>
               <TextInput
+                focus={focus}
+                onBlur={() => {
+                  setFocus(false)
+                }}
                 initialValue={title}
                 labelColor="white"
                 label="Título"
                 name="title"
                 placeholder="Título"
                 onInputChange={setTitle}
-                autoFocus
+                autoFocus={focus}
               />
             </Styles.TextWrapper>
 
@@ -152,7 +166,7 @@ export const AdminSkills = () => {
                 name="skills"
                 title="Habilidades"
                 initalValue={skills}
-                onChangeTags={onChangeTags}
+                onChangeTags={onChangeSkills}
               />
             </Styles.TextWrapper>
 
@@ -244,10 +258,13 @@ export const AdminSkills = () => {
             </Styles.TextWrapper>
 
             <Styles.Actions>
-              {!initialData && <Button styleType="primary">Salvar</Button>}
-              {!!initialData && <Button styleType="primary">Atualizar</Button>}
+              {!initialData ? (
+                <Button styleType="primary">Salvar</Button>
+              ) : (
+                <Button styleType="primary">Atualizar</Button>
+              )}
               <Button styleType="secondary" type="reset">
-                Limpar Formulário
+                Limpar
               </Button>
             </Styles.Actions>
           </Styles.Form>
