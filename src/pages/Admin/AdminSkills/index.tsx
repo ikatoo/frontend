@@ -70,6 +70,7 @@ export const AdminSkills = () => {
 
     if (!initialData) {
       skillsService.create(data)
+      setInitialData(data)
       setAlert({
         title: 'Success on create skills page.',
         type: 'message'

@@ -214,6 +214,7 @@ describe('ADMIN: Skills page', () => {
   test('should call submit with data when save button is clicked', async () => {
     skillsService.get = vi.fn().mockResolvedValue({})
     skillsService.create = vi.fn().mockResolvedValue({ data: {}, status: 201 })
+    skillsService.patch = vi.fn().mockResolvedValue({ data: {}, status: 201 })
 
     render(
       <AlertProvider>
@@ -233,7 +234,7 @@ describe('ADMIN: Skills page', () => {
       name: 'ADICIONAR TRABALHO'
     })
 
-    const submitButton = screen.getByRole('button', { name: /salvar/i })
+    const saveButton = screen.getByRole('button', { name: /salvar/i })
 
     userEvent.type(titleInput, skillsPageMock.title)
     userEvent.type(descriptionInput, skillsPageMock.description)
@@ -262,10 +263,15 @@ describe('ADMIN: Skills page', () => {
       )
     })
 
-    userEvent.click(submitButton)
+    userEvent.click(saveButton)
 
     expect(skillsService.create).toHaveBeenCalledTimes(1)
     expect(skillsService.create).toHaveBeenCalledWith(skillsPageMock)
+
+    const updateButton = screen.getByRole('button', { name: 'Atualizar' })
+    userEvent.click(updateButton)
+    expect(skillsService.patch).toHaveBeenCalledTimes(1)
+    expect(skillsService.patch).toHaveBeenCalledWith(skillsPageMock)
   })
 
   test('should show save message when submit data', async () => {
