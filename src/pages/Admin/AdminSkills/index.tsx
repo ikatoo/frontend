@@ -28,12 +28,14 @@ export const AdminSkills = () => {
   const [jobDescription, setJobDescription] = useState('')
   const [initialData, setInitialData] = useState<SkillsPageProps>()
   const [focus, setFocus] = useState(true)
+  const [initialDataIsEmpty, setInitialDataIsEmpty] = useState(true)
 
   useEffect(() => {
     const getInitialData = async () => {
       const result = await skillsService.get()
-      if (result) {
+      if (result?.data) {
         setInitialData(result.data)
+        setInitialDataIsEmpty(false)
       }
     }
     getInitialData()
@@ -68,9 +70,9 @@ export const AdminSkills = () => {
       lastJobs: mappedLastJobs
     }
 
-    if (!initialData) {
+    if (!initialData && !!initialDataIsEmpty) {
       skillsService.create(data)
-      setInitialData(data)
+      setInitialDataIsEmpty(false)
       setAlert({
         title: 'Success on create skills page.',
         type: 'message'
@@ -259,7 +261,7 @@ export const AdminSkills = () => {
             </Styles.TextWrapper>
 
             <Styles.Actions>
-              {!initialData ? (
+              {initialDataIsEmpty ? (
                 <Button styleType="primary">Salvar</Button>
               ) : (
                 <Button styleType="primary">Atualizar</Button>

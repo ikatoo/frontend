@@ -234,8 +234,6 @@ describe('ADMIN: Skills page', () => {
       name: 'ADICIONAR TRABALHO'
     })
 
-    const saveButton = screen.getByRole('button', { name: /salvar/i })
-
     userEvent.type(titleInput, skillsPageMock.title)
     userEvent.type(descriptionInput, skillsPageMock.description)
     skillsPageMock.skills.forEach((skill) => {
@@ -263,8 +261,8 @@ describe('ADMIN: Skills page', () => {
       )
     })
 
+    const saveButton = screen.getByRole('button', { name: 'Salvar' })
     userEvent.click(saveButton)
-
     expect(skillsService.create).toHaveBeenCalledTimes(1)
     expect(skillsService.create).toHaveBeenCalledWith(skillsPageMock)
 
