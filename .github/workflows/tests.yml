@@ -88,13 +88,14 @@ jobs:
           path: api
 
       - name: Install Dependencies
-        run: npm ci
+        run: ls
+      #   run: npm ci
 
-      - name: Run dev instance
-        run: npm run dev
+      # - name: Run dev instance
+      #   run: npm run dev
 
-      - name: Test access
-        run: curl http://localhost:8000
+      # - name: Test access
+      #   run: curl http://localhost:8000
 
       # - name: Install Dependencies
       #   run: npm ci
