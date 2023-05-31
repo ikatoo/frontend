@@ -87,9 +87,12 @@ jobs:
           repository: ikatoo/backend
           path: api
 
+      - name: Enter in de directory of the backend
+        run: cd api
+
       - name: Install Dependencies
         run: ls
-      #   run: npm ci
+        # run: npm ci
 
       # - name: Run dev instance
       #   run: npm run dev
