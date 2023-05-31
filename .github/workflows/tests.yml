@@ -77,8 +77,9 @@ jobs:
       ports:
         - 8000
       volumes:
-        - .:/api
+        - api:/api
       options: --cpus 1
+
     steps:
       - name: Checkout Backend Repository
         uses: actions/checkout@v3
