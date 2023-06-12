@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, test } from 'vitest'
 
+import 'mocks/msw/mswSetup'
+import skillsPageMock from 'mocks/skillsPageMock/result.json'
 import skillsService from '.'
 import skillsHandler from '../../mocks/handlers/skillsHandler'
 import { mswServer } from '../../mocks/msw/mswServer'

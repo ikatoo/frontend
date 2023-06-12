@@ -5,7 +5,7 @@ import { AdminAbout } from '.'
 import Alert from '../../../components/Alert'
 import { AlertProvider } from '../../../hooks/useAlert'
 import api from 'src/services/api'
-import aboutPageMock from 'src/mocks/aboutPageMock'
+import aboutPageMock from 'mocks/aboutPageMock/result.json'
 
 describe('ADMIN: About page', () => {
   test('should render all fields', () => {

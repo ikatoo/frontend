@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import JobsCards from '.'
-import skillsPageMock from 'src/mocks/skillsPageMock'
+import skillsPageMock from 'mocks/skillsPageMock/result.json'
 import { vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 
