@@ -1,19 +1,13 @@
-import { beforeEach, describe, expect, test } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 
 import 'mocks/msw/mswSetup'
 import skillsPageMock from 'mocks/skillsPageMock/result.json'
 import skillsService from '.'
-import skillsHandler from '../../mocks/handlers/skillsHandler'
-import { mswServer } from '../../mocks/msw/mswServer'
-import '../../mocks/msw/mswSetup'
-import skillsPageMock from '../../mocks/skillsPageMock'
+import api from '../api'
 
 describe('skills page fetch data', () => {
-  beforeEach(() => {
-    mswServer.use(...skillsHandler)
-  })
-
   test('should get skills page data', async () => {
+    api.get = vi.fn().mockResolvedValue({ data: skillsPageMock, status: 200 })
     const result = await skillsService.get()
 
     expect(result?.data).toEqual(skillsPageMock)
@@ -21,18 +15,21 @@ describe('skills page fetch data', () => {
   })
 
   test('should create skills page data', async () => {
+    api.post = vi.fn().mockResolvedValue({ data: {}, status: 201 })
     const result = await skillsService.create(skillsPageMock)
 
     expect(result?.status).toEqual(201)
   })
 
   test('should update skills page data', async () => {
+    api.patch = vi.fn().mockResolvedValue({ data: {}, status: 204 })
     const result = await skillsService.patch(skillsPageMock)
 
     expect(result?.status).toEqual(204)
   })
 
   test('should delete skills page data', async () => {
+    api.delete = vi.fn().mockResolvedValue({ data: {}, status: 204 })
     const result = await skillsService.delete()
 
     expect(result?.status).toEqual(204)
