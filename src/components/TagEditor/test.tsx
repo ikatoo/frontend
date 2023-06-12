@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 import TagEditor from '.'
-import aboutPageMock from '../../mocks/aboutPageMock'
+import aboutPageMock from 'mocks/aboutPageMock/result.json'
 
 describe('<TagEditor />', () => {
   it('should render the component', () => {

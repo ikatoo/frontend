@@ -1,6 +1,6 @@
 import { rest } from 'msw'
-import env from '../../helpers/env'
-import aboutPageMock from '../aboutPageMock'
+import aboutPageMock from '../aboutPageMock/result.json'
+import { env } from 'process'
 
 export default [
   rest.get(`${env.VITE_API_URL}/about`, (_req, res, ctx) => {
