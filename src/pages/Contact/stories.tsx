@@ -1,16 +1,21 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Contact } from '.'
-import contact from '../../mocks/handlers/contactHandler'
+import contactHandler from 'shared/msw/handlers/contactHandler'
 
-export default {
+const meta: Meta<typeof Contact> = {
   title: 'Pages/Contact',
   component: Contact,
   decorators: [(Story) => <div className="bg-mck_black_light">{Story()}</div>],
   parameters: {
     msw: {
-      handlers: contact
+      handlers: contactHandler
     }
   }
-} as ComponentMeta<typeof Contact>
+}
 
-export const Default = {} as ComponentStory<typeof Contact>
+export default meta
+type Story = StoryObj<typeof Contact>
+
+export const Default: Story = {
+  render: () => <Contact />
+}

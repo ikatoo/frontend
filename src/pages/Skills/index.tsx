@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import {} from 'react-router-dom'
 import JobsCards from 'src/components/JobsCards'
+import { Job } from 'src/types/SkillsPage'
 import ProgressBar from '../../components/ProgressBar'
 import { TextContainer } from '../../components/TextContainer'
 import skillsService from '../../services/skillsService'
@@ -10,26 +11,18 @@ type SkillProps = {
   skillTitle: string
 }
 
-type JobProps = {
-  yearMonthStart: string
-  yearMonthEnd?: string
-  jobTitle: string
-  jobDescription: string
-  link: string
-}
-
 export type SkillsProps = {
   title: string
   description: string
   skills: SkillProps[]
-  lastJobs: JobProps[]
+  lastJobs: Job[]
 }
 
 export const Skills = () => {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [skills, setSkills] = useState<SkillProps[]>([])
-  const [lastJobs, setLastJobs] = useState<JobProps[]>([])
+  const [lastJobs, setLastJobs] = useState<Job[]>([])
 
   useEffect(() => {
     const getInitialData = async () => {

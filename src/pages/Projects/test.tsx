@@ -1,7 +1,7 @@
 import { render, waitFor } from '@testing-library/react'
 import { describe, expect, test, vi } from 'vitest'
 import { Projects } from '.'
-import projectsMock from 'mocks/projectsMock/result.json'
+import projectsMock from 'shared/mocks/projectsMock/result.json'
 import api from '../../services/api'
 
 describe('Projects Page', () => {

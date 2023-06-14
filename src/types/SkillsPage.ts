@@ -1,8 +1,8 @@
 export type Job = {
   jobTitle: string
   jobDescription: string
-  yearMonthStart: string
-  yearMonthEnd?: string
+  yearMonthStart: string | undefined
+  yearMonthEnd?: string | undefined
   link: string
 }
 

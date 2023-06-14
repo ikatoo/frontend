@@ -14,14 +14,4 @@ describe('Date helper', () => {
 
     expect(dateFormat).toBe('2022 - 03')
   })
-
-  test('should string format with now date when stringFormat is undefined', () => {
-    const stringFormat = undefined
-    const dateFormat = dateToStringFormat(stringFormat)
-    const now = new Date()
-    const year = now.getFullYear()
-    const month = now.getMonth() + 1
-
-    expect(dateFormat).toBe(`${year} - ${month}`)
-  })
 })

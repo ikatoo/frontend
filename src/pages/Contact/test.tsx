@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, test, vi } from 'vitest'
 import { Contact } from '.'
-import contactPageMock from 'mocks/contactPageMock/result.json'
+import contactPageMock from 'shared/mocks/contactPageMock/result.json'
 import api from '../../services/api'
 
 describe('Contact Page', () => {
