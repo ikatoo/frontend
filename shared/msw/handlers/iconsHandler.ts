@@ -1,5 +1,5 @@
 import { rest } from 'msw'
-import simpleIconsJSONMock from '../simpleIconsJSONMock'
+import simpleIconsJSONMock from 'shared/mocks/simpleIconsJSONMock'
 
 export default [
   rest.get(

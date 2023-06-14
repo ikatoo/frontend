@@ -3,13 +3,7 @@ const stringToDateFormat = (dateString: string) => {
 }
 
 const dateToStringFormat = (date: string | undefined) => {
-  if (!date) {
-    const newDate = new Date().toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'numeric'
-    })
-    return newDate.split('/').reverse().toString().replaceAll(',', ' - ')
-  }
+  if (!date || !date.length) return
   return date.split('/').reverse().toString().replaceAll(',', ' - ')
 }
 

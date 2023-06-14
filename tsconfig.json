@@ -23,12 +23,16 @@
     "paths": {
       "*": [
         "./*"
-      ]
+      ],
+      "shared/*": [
+        "./shared/*"
+      ],
     }
   },
   "include": [
     "src",
-    "src/pages/.tsx"
+    "src/pages/.tsx",
+    "shared"
   ],
   "references": [
     {

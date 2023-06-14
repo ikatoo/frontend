@@ -45,7 +45,7 @@ export const AdminSkills = () => {
     setTitle(initialData?.title ?? '')
     setDescription(initialData?.description ?? '')
     setSkills(
-      initialData?.skills.map((skill) => ({ title: skill.skillTitle })) ?? []
+      initialData?.skills?.map((skill) => ({ title: skill.skillTitle })) ?? []
     )
     setLastJobs(initialData?.lastJobs ?? [])
   }, [initialData, setLastJobs])
@@ -55,9 +55,7 @@ export const AdminSkills = () => {
 
     const mappedLastJobs = lastJobs.map((job) => ({
       ...job,
-      yearMonthEnd: job.yearMonthEnd
-        ? dateToStringFormat(job.yearMonthEnd)
-        : undefined,
+      yearMonthEnd: dateToStringFormat(job.yearMonthEnd),
       yearMonthStart: dateToStringFormat(job.yearMonthStart)
     }))
 

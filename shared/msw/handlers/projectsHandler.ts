@@ -1,6 +1,6 @@
 import { rest } from 'msw'
-import env from '../../helpers/env'
-import projectsMock from '../projectsMock'
+import projectsMock from 'shared/mocks/projectsMock/result.json'
+import env from 'src/helpers/env'
 
 export default [
   rest.get(`${env.VITE_API_URL}/projects`, (_req, res, ctx) => {

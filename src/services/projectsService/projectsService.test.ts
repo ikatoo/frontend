@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
-import 'mocks/msw/mswSetup'
-import projectsMock from 'mocks/projectsMock/result.json'
+import projectsMock from 'shared/mocks/projectsMock/result.json'
 import projectsService from '.'
 import api from '../api'
 

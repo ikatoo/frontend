@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
 import TagEditor from '.'
-import aboutPageMock from '../../mocks/aboutPageMock'
 
 const meta: Meta<typeof TagEditor> = {
   title: 'Components/TagEditor',

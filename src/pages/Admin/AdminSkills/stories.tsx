@@ -1,33 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import skillsHandler from 'src/mocks/handlers/skillsHandler'
+import skillsHandler from 'shared/msw/handlers/skillsHandler'
 import { AdminSkills } from '../AdminSkills'
 
 const meta: Meta<typeof AdminSkills> = {
   title: 'Pages/Privates/AdminSkills',
-  component: AdminSkills
+  component: AdminSkills,
+  decorators: [(Story) => <div className="bg-mck_black_light">{Story()}</div>]
 }
 
 export default meta
 type Story = StoryObj<typeof AdminSkills>
 
 export const Default: Story = {
-  render: () => (
-    <div className="bg-mck_black_light">
-      <AdminSkills />
-    </div>
-  )
+  parameters: {
+    msw: {
+      handlers: [skillsHandler[0]]
+    }
+  }
 }
 
 export const WithData: Story = {
-  render: () => (
-    <div className="bg-mck_black_light">
-      <AdminSkills />
-    </div>
-  )
-}
-
-WithData.parameters = {
-  msw: {
-    handlers: skillsHandler
+  parameters: {
+    msw: {
+      handlers: [skillsHandler[1]]
+    }
   }
 }

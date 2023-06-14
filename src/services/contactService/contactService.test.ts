@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
-import contactPageMock from 'mocks/contactPageMock/result.json'
+import contactPageMock from 'shared/mocks/contactPageMock/result.json'
 import contactService from '.'
 import api from '../api'
 

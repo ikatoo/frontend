@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import projectsMock from 'shared/mocks/projectsMock/result.json'
 import Card from '.'
-import projectsMock from 'src/mocks/projectsMock'
 
 const meta: Meta<typeof Card> = {
   title: 'Components/Card',
