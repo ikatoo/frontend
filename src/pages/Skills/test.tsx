@@ -1,7 +1,7 @@
 import { render, waitFor } from '@testing-library/react'
 import { describe, expect, test, vi } from 'vitest'
 import { Skills } from '.'
-import skillsPageMock from 'mocks/skillsPageMock/result.json'
+import skillsPageMock from 'shared/mocks/skillsPageMock/result.json'
 import api from '../../services/api'
 
 describe('Skills Page', () => {

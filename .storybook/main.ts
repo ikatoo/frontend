@@ -1,18 +1,18 @@
-import { StorybookConfig } from "@storybook/react-vite";
-
+import type { StorybookConfig } from '@storybook/react-vite'
 const config: StorybookConfig = {
-  stories: ["../src/**/stories.tsx"],
-  addons: ["@storybook/addon-links", "@storybook/addon-essentials", "@storybook/addon-interactions"],
+  core: { builder: "@storybook/builder-vite" },
+  stories: ['../src/**/?(*.)stories.@(ts|tsx)'],
+  addons: [
+    '@storybook/addon-links',
+    '@storybook/addon-essentials',
+    '@storybook/addon-interactions',
+  ],
   framework: {
-    name: "@storybook/react-vite",
+    name: '@storybook/react-vite',
     options: {}
   },
-  features: {
-    "storyStoreV7": true
-  },
   docs: {
-    autodocs: true
+    autodocs: 'tag'
   }
-};
-
+}
 export default config

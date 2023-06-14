@@ -1,6 +1,6 @@
 import { rest } from 'msw'
-import env from '../../helpers/env'
-import contactPageMock from '../contactPageMock'
+import contactPageMock from 'shared/mocks/contactPageMock/result.json'
+import env from 'src/helpers/env'
 
 export default [
   rest.get(`${env.VITE_API_URL}/contact`, (_req, res, ctx) => {

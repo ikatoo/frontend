@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import skillsPageMock from 'src/mocks/skillsPageMock'
-import JobsCards from '.'
+import skillsPageMock from 'shared/mocks/skillsPageMock/result.json'
 import { Job } from 'src/types/SkillsPage'
+import JobsCards from '.'
 
 const meta: Meta<typeof JobsCards> = {
   title: 'Components/JobsCards',

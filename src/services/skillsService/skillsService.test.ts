@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
-import 'mocks/msw/mswSetup'
-import skillsPageMock from 'mocks/skillsPageMock/result.json'
+import skillsPageMock from 'shared/mocks/skillsPageMock/result.json'
 import skillsService from '.'
 import api from '../api'
 

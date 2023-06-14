@@ -1,6 +1,6 @@
 import { describe, test, vi } from 'vitest'
 
-import aboutPageMock from 'mocks/aboutPageMock/result.json'
+import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
 import aboutService from '.'
 import api from '../api'
 
