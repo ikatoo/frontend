@@ -19,17 +19,17 @@ jobs:
         with:
           node-version: 18.x
 
-      # - name: Install Dependencies
-      #   run: npm ci
+      - name: Install Dependencies
+        run: npm ci
 
-      # - name: Linting
-      #   run: npm run lint
+      - name: Linting
+        run: npm run lint
 
-      # - name: Typecheck
-      #   run: npm run typecheck
+      - name: Typecheck
+        run: npm run typecheck
 
-      # - name: Test
-      #   run: npx vitest run
+      - name: Test
+        run: npx vitest run
 
       - name: Enviar email em caso de falha
         if: ${{ failure() }}
@@ -49,49 +49,17 @@ jobs:
     runs-on: ubuntu-latest
     env:
       VITE_PORT: 3000
-      PORT: 8000
-      HOST: localhost
-      POSTGRES_PASSWORD: passteste
-      POSTGRES_USER: userteste
-      POSTGRES_DBNAME: dbteste
-      POSTGRES_PORT: 5432
-      POSTGRES_HOSTNAME: postgres
-
-    services:
-      postgres:
-        image: postgres:14-alpine
-        env:
-          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-          POSTGRES_USER: ${POSTGRES_USER}
-          POSTGRES_DB: ${POSTGRES_DBNAME}
-
-      api:
-        build: .
-        env:
-          NODE_ENV: development
-          PORT: $PORT
-          HOST: $HOST
-          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
-          POSTGRES_USER: $POSTGRES_USER
-          POSTGRES_DBNAME: $POSTGRES_DBNAME
-          POSTGRES_PORT: $POSTGRES_PORT
-          POSTGRES_HOSTNAME: $POSTGRES_HOSTNAME
-        ports:
-          - 8000
-        options: --cpus 1
+      VITE_API_URL: https://backend-development-1651.up.railway.app
 
     steps:
-      - name: Test access
-        run: curl http://localhost:8000
+      - name: Install Dependencies
+        run: npm ci
 
-      # - name: Install Dependencies
-      #   run: npm ci
+      - name: Install playwright browsers
+        run: npx playwright install --with-deps
 
-      # - name: Install playwright browsers
-      #   run: npx playwright install --with-deps
-
-      # - name: Run tests
-      #   run: npx playwright test
+      - name: Run tests
+        run: npx playwright test
 
       - name: Enviar email em caso de falha
         if: ${{ failure() }}
