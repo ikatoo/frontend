@@ -73,39 +73,3 @@ jobs:
           to: mckatoo@gmail.com
           from: iKatoo Repository
           body: Os testes E2E do repositório ${{github.repository}} falharam. Por favor, verifique e corrija o código.
-
-  build:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    env:
-      VITE_PORT: 3000
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.x
-
-      # - name: Install Dependencies
-      #   run: npm ci
-
-      # - name: Build
-      #   run: npm run build
-
-      # - name: Storybook Build
-      #   run: npm run build-storybook
-
-      - name: Enviar email em caso de falha
-        if: ${{ failure() }}
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.office365.com
-          server_port: 587
-          username: mckatoo@outlook.com
-          password: ${{ secrets.SMTP_PASSWORD }}
-          subject: Github Actions job result
-          to: mckatoo@gmail.com
-          from: iKatoo Repository
-          body: Build do repositório ${{github.repository}} falhou. Por favor, verifique e corrija o código.
