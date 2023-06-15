@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{github.ref_name}}
 
       - name: Setup Node
         uses: actions/setup-node@v3
@@ -42,7 +44,7 @@ jobs:
           subject: Github Actions job result
           to: mckatoo@gmail.com
           from: iKatoo Repository
-          body: Os testes UNITÁRIOS do repositório ${{github.repository}} falharam. Por favor, verifique e corrija o código.
+          body: Os testes UNITÁRIOS do repositório <a href="https://${{github.repository}}/tree/${{github.ref_name}}">${{github.repository}}</a> falharam. Por favor, verifique e corrija o código.
 
   e2e_tests:
     timeout-minutes: 60
@@ -52,6 +54,11 @@ jobs:
       VITE_API_URL: https://backend-development-1651.up.railway.app
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{github.ref_name}}
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -77,4 +84,4 @@ jobs:
           subject: Github Actions job result
           to: mckatoo@gmail.com
           from: iKatoo Repository
-          body: Os testes E2E do repositório ${{github.repository}} falharam. Por favor, verifique e corrija o código.
+          html_body: Os testes E2E do em <a href="https://${{github.repository}}/tree/${{github.ref_name}}">${{github.repository}}</a> falharam. Por favor, verifique e corrija o código.
