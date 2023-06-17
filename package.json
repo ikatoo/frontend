@@ -12,6 +12,7 @@
   "scripts": {
     "lint": "eslint src --max-warnings=0",
     "test": "vitest",
+    "test:run": "vitest run",
     "coverage": "vitest run --coverage",
     "playwright": "bash docker/playwright/test.sh",
     "playwright:ci": "bash docker/playwright/test.sh",
