@@ -3,26 +3,14 @@ import api from '../api'
 
 export default {
   create: async (pageData: Partial<ProjectProps>) => {
-    const { data, status } = await api.post('project', {
-      data: pageData,
-      headers: {
-        Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
-        ContentType: 'application/json'
-      }
-    })
+    const { data, status } = await api.post('project', pageData)
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
     return { data: json, status }
   },
   patch: async (id: number, pageData: Partial<ProjectProps>) => {
-    const { data, status } = await api.patch(`project/id/${id}`, {
-      data: pageData,
-      headers: {
-        Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
-        ContentType: 'application/json'
-      }
-    })
+    const { data, status } = await api.patch(`project/id/${id}`, pageData)
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
@@ -30,12 +18,7 @@ export default {
   },
   delete: async (id: number) => {
     try {
-      const { data, status } = await api.delete(`project/id/${id}`, {
-        headers: {
-          Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
-          ContentType: 'application/json'
-        }
-      })
+      const { data, status } = await api.delete(`project/id/${id}`)
       const json =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
@@ -46,12 +29,7 @@ export default {
   },
   get: async () => {
     try {
-      const { data, status } = await api.get<ProjectProps[]>('projects', {
-        headers: {
-          Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
-          ContentType: 'application/json'
-        }
-      })
+      const { data, status } = await api.get<ProjectProps[]>('projects')
       const json: ProjectProps[] =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
@@ -62,12 +40,7 @@ export default {
   },
   getByID: async (id: number) => {
     try {
-      const { data, status } = await api.get<ProjectProps>(`project/id/${id}`, {
-        headers: {
-          Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
-          ContentType: 'application/json'
-        }
-      })
+      const { data, status } = await api.get<ProjectProps>(`project/id/${id}`)
       const json: ProjectProps =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
@@ -79,13 +52,7 @@ export default {
   getByTitle: async (title: string) => {
     try {
       const { data, status } = await api.get<ProjectProps[]>(
-        `projects/title/${title}`,
-        {
-          headers: {
-            Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
-            ContentType: 'application/json'
-          }
-        }
+        `projects/title/${title}`
       )
       const json: ProjectProps[] =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
