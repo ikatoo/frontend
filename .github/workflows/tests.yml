@@ -5,6 +5,10 @@ on:
     branches: 
       - '*'
 
+env:
+  VITE_PORT: 3000
+  VITE_API_URL: https://backend-development-1651.up.railway.app
+
 jobs:
   unit_tests:
     runs-on: ubuntu-latest
