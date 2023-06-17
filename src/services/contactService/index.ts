@@ -3,26 +3,14 @@ import api from '../api'
 
 export default {
   create: async (pageData: Partial<ContactPageProps>) => {
-    const { data, status } = await api.post('contact', {
-      data: pageData,
-      headers: {
-        Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
-        ContentType: 'application/json'
-      }
-    })
+    const { data, status } = await api.post('contact', pageData)
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
     return { data: json, status }
   },
   patch: async (pageData: Partial<ContactPageProps>) => {
-    const { data, status } = await api.patch('contact', {
-      data: pageData,
-      headers: {
-        Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
-        ContentType: 'application/json'
-      }
-    })
+    const { data, status } = await api.patch('contact', pageData)
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
@@ -30,12 +18,7 @@ export default {
   },
   get: async () => {
     try {
-      const { data, status } = await api.get<ContactPageProps>('contact', {
-        headers: {
-          Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
-          ContentType: 'application/json'
-        }
-      })
+      const { data, status } = await api.get<ContactPageProps>('contact')
       const json: ContactPageProps =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
@@ -46,12 +29,7 @@ export default {
   },
   delete: async () => {
     try {
-      const { data, status } = await api.delete('contact', {
-        headers: {
-          Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
-          ContentType: 'application/json'
-        }
-      })
+      const { data, status } = await api.delete('contact')
       const json =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
