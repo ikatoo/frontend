@@ -168,13 +168,7 @@ describe('ADMIN: About page', () => {
     })
 
     expect(api.post).toBeCalledTimes(1)
-    expect(api.post).toHaveBeenCalledWith('/about', {
-      data: aboutPageMock,
-      headers: {
-        Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
-        ContentType: 'application/json'
-      }
-    })
+    expect(api.post).toHaveBeenCalledWith('/about', aboutPageMock)
   })
 
   test.skip('should show update message when submit a new data', async () => {
