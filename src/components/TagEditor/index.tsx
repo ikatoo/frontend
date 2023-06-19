@@ -63,7 +63,10 @@ const TagEditor = (props: TagEditorProps) => {
         {tags.map((tag) => (
           <Styles.Tag data-testid="tag-testid" key={tag.title}>
             {tag.title}
-            <Styles.DeleteButton onClick={() => deleteTag(tag.title)}>
+            <Styles.DeleteButton
+              title={`Remove ${tag.title} skill.`}
+              onClick={() => deleteTag(tag.title)}
+            >
               <Close size={16} />
             </Styles.DeleteButton>
           </Styles.Tag>

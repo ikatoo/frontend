@@ -1,11 +1,12 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
+import aboutService from 'src/services/aboutService'
+import api from 'src/services/api'
 import { describe, expect, test, vi } from 'vitest'
 import { AdminAbout } from '.'
 import Alert from '../../../components/Alert'
 import { AlertProvider } from '../../../hooks/useAlert'
-import api from 'src/services/api'
-import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
 
 describe('ADMIN: About page', () => {
   test('should render all fields', () => {
@@ -127,7 +128,6 @@ describe('ADMIN: About page', () => {
 
   test('should show save message when submit first data', async () => {
     api.get = vi.fn().mockResolvedValue({})
-    api.post = vi.fn().mockResolvedValue({})
 
     await waitFor(() => {
       render(
@@ -160,6 +160,8 @@ describe('ADMIN: About page', () => {
         `${skill.title},`
       )
     })
+
+    api.post = vi.fn().mockResolvedValue({})
     await waitFor(() => {
       userEvent.click(screen.getByRole('button', { name: /salvar/i }))
       expect(
@@ -171,9 +173,36 @@ describe('ADMIN: About page', () => {
     expect(api.post).toHaveBeenCalledWith('/about', aboutPageMock)
   })
 
-  test.skip('should show update message when submit a new data', async () => {
-    api.get = vi.fn().mockResolvedValue({ data: aboutPageMock })
-    api.patch = vi.fn().mockResolvedValue({})
+  test('should show update message when submit a new data', async () => {
+    aboutService.get = vi
+      .fn()
+      .mockResolvedValue({ data: aboutPageMock, status: 200 })
+
+    render(
+      <AlertProvider>
+        <Alert />
+        <AdminAbout />
+      </AlertProvider>
+    )
+
+    await waitFor(() => {
+      expect(screen.queryAllByTestId('tag-testid')).toHaveLength(
+        aboutPageMock.skills.length
+      )
+    })
+
+    aboutService.patch = vi.fn().mockResolvedValue({ data: {}, status: 204 })
+    userEvent.click(screen.getByRole('button', { name: /atualizar/i }))
+
+    expect(
+      screen.getByText('Success on update about page.')
+    ).toBeInTheDocument()
+  })
+
+  test('should call path function with a new data', async () => {
+    aboutService.get = vi
+      .fn()
+      .mockResolvedValue({ data: aboutPageMock, status: 200 })
 
     const newAboutPageMock = {
       title: 'new title',
@@ -193,66 +222,47 @@ describe('ADMIN: About page', () => {
       </AlertProvider>
     )
 
-    userEvent.type(
-      screen.getByRole('textbox', { name: /título/i }),
-      newAboutPageMock.title
-    )
-    userEvent.type(
-      screen.getByRole('textbox', { name: /descrição/i }),
-      newAboutPageMock.description
-    )
-    userEvent.type(
-      screen.getByRole('textbox', { name: /imagem alt/i }),
-      newAboutPageMock.illustrationALT
-    )
-    userEvent.type(
-      screen.getByRole('textbox', { name: /imagem url/i }),
-      newAboutPageMock.illustrationURL
-    )
-
     await waitFor(() => {
       expect(screen.queryAllByTestId('tag-testid')).toHaveLength(
         aboutPageMock.skills.length
       )
     })
 
+    const title = screen.getByRole('textbox', { name: /título/i })
+    userEvent.clear(title)
+    userEvent.type(title, newAboutPageMock.title)
+
+    const description = screen.getByRole('textbox', { name: /descrição/i })
+    userEvent.clear(description)
+    userEvent.type(description, newAboutPageMock.description)
+
+    const imageALT = screen.getByRole('textbox', { name: /imagem alt/i })
+    userEvent.clear(imageALT)
+    userEvent.type(imageALT, newAboutPageMock.illustrationALT)
+
+    const imageURL = screen.getByRole('textbox', { name: /imagem url/i })
+    userEvent.clear(imageURL)
+    userEvent.type(imageURL, newAboutPageMock.illustrationURL)
+
     const tagForRemove = screen.queryByText('javascript')
-    const deleteSkillButton = tagForRemove?.lastElementChild
-    deleteSkillButton && userEvent.click(deleteSkillButton)
-    expect(screen.queryAllByTestId('tag-testid')).toHaveLength(
-      aboutPageMock.skills.length - 1
+    const deleteSkillButton = tagForRemove?.lastElementChild as Element
+    expect(deleteSkillButton).toHaveAttribute(
+      'title',
+      'Remove javascript skill.'
     )
-
-    await waitFor(() => {
-      expect(screen.queryByText('javascript')).not.toBeInTheDocument()
-    })
-
+    userEvent.click(deleteSkillButton)
     userEvent.type(
       screen.getByRole('textbox', { name: /habilidades/i }),
       `ci/cd,`
     )
 
-    await waitFor(() => {
-      expect(screen.getByRole('form')).toHaveFormValues(newAboutPageMock)
-    })
-
+    aboutService.patch = vi.fn().mockResolvedValue({ data: {}, status: 204 })
     userEvent.click(screen.getByRole('button', { name: /atualizar/i }))
 
-    expect(
-      screen.getByText('Success on update about page.')
-    ).toBeInTheDocument()
-
-    expect(api.patch).toHaveBeenCalledTimes(1)
-
     await waitFor(() => {
-      expect(api.patch).toBeCalledWith('/about', {
-        data: newAboutPageMock,
-        headers: {
-          Authorization: `bearer ${localStorage.getItem('IKATOO_AuthToken')}`,
-          ContentType: 'application/json'
-        }
-      })
+      expect(aboutService.patch).toHaveBeenCalledTimes(1)
     })
+    expect(aboutService.patch).toHaveBeenCalledWith(newAboutPageMock)
   })
 
   // test('should clear all text inputs and set focus on first text input', () => {
