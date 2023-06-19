@@ -20,6 +20,7 @@ export const AdminAbout = () => {
   const [illustrationURL, setIllustrationURL] = useState('')
   const [illustrationALT, setIllustrationALT] = useState('')
   const [initialData, setInitialData] = useState<AboutPageServiceProps>()
+  const [titleFocused, setTitleFocused] = useState(true)
 
   useEffect(() => {
     const getInitialData = async () => {
@@ -66,6 +67,15 @@ export const AdminAbout = () => {
     }
   }
 
+  const onReset = () => {
+    setTitle('')
+    setDescription('')
+    setSkills([])
+    setIllustrationURL('')
+    setIllustrationALT('')
+    setTitleFocused(true)
+  }
+
   const onChangeTags = (values: Tag[]) => {
     setSkills(values)
   }
@@ -76,18 +86,23 @@ export const AdminAbout = () => {
         <FormContainer>
           <Styles.Form
             onSubmit={handleSubmit}
+            onReset={onReset}
             method="post"
             name="aboutPageForm"
           >
             <Styles.TextWrapper>
               <TextInput
                 initialValue={title}
+                focus={titleFocused}
+                onBlur={() => {
+                  setTitleFocused(false)
+                }}
                 labelColor="white"
                 label="Título"
                 name="title"
                 placeholder="Título"
                 onInputChange={(value) => setTitle(value)}
-                autoFocus
+                autoFocus={titleFocused}
               />
             </Styles.TextWrapper>
 

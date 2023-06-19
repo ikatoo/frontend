@@ -265,7 +265,53 @@ describe('ADMIN: About page', () => {
     expect(aboutService.patch).toHaveBeenCalledWith(newAboutPageMock)
   })
 
-  // test('should clear all text inputs and set focus on first text input', () => {
-  //   render(<AdminAbout />)
-  // })
+  test('should clear all text inputs', async () => {
+    aboutService.get = vi
+      .fn()
+      .mockResolvedValue({ data: aboutPageMock, status: 200 })
+    render(<AdminAbout />)
+
+    await waitFor(() => {
+      expect(screen.queryAllByTestId('tag-testid')).toHaveLength(
+        aboutPageMock.skills.length
+      )
+    })
+
+    const clearButton = screen.getByRole('button', {
+      name: 'Limpar Formulário'
+    })
+
+    userEvent.click(clearButton)
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('Título')).toHaveValue('')
+      expect(screen.getByLabelText('Descrição')).toHaveValue('')
+      expect(screen.getByLabelText('Habilidades')).toHaveValue('')
+      expect(screen.getByLabelText('Imagem URL')).toHaveValue('')
+      expect(screen.getByLabelText('Imagem ALT')).toHaveValue('')
+    })
+  })
+
+  test('should set focus on first text input after click on clear button', async () => {
+    aboutService.get = vi
+      .fn()
+      .mockResolvedValue({ data: aboutPageMock, status: 200 })
+    render(<AdminAbout />)
+
+    await waitFor(() => {
+      expect(screen.queryAllByTestId('tag-testid')).toHaveLength(
+        aboutPageMock.skills.length
+      )
+    })
+
+    const clearButton = screen.getByRole('button', {
+      name: 'Limpar Formulário'
+    })
+
+    userEvent.click(clearButton)
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('Título')).toHaveFocus()
+    })
+  })
 })
