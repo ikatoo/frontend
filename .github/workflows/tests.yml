@@ -2,8 +2,9 @@ name: Tests
 
 on:
   push:
-    branches: 
-      - '*'
+    branches:
+      - "*"
+  workflow_dispatch:
 
 env:
   VITE_PORT: 3000
