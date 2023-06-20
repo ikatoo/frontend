@@ -30,7 +30,15 @@ export const With_Data: Story = {
     msw: {
       handlers: [
         rest.get(`${env.VITE_API_URL}/projects`, (_req, res, ctx) => {
-          return res(ctx.status(200), ctx.json(projectsPageMock))
+          return res(
+            ctx.status(200),
+            ctx.json([
+              ...projectsPageMock,
+              ...projectsPageMock,
+              ...projectsPageMock,
+              ...projectsPageMock
+            ])
+          )
         })
       ]
     }

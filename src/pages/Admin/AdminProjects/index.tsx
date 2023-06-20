@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
 import Button from 'src/components/Button'
+import Card from 'src/components/Card'
+import DateInput from 'src/components/DateInput'
 import { FormContainer } from 'src/components/FormContainer'
-import TagEditor from 'src/components/TagEditor'
-import TextArea from 'src/components/TextArea'
 import { TextContainer } from 'src/components/TextContainer'
 import TextInput from 'src/components/TextInput'
 import { useAlert } from 'src/hooks/useAlert'
@@ -16,9 +16,9 @@ export const AdminProjects = () => {
 
   const [snapshot, setSnapshot] = useState('')
   const [title, setTitle] = useState('')
-  const [subTitle, setSubTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [githubLink, setGithubLink] = useState('')
+  const [lastUpdate, setLastUpdate] = useState('')
+  const [description, setDescription] = useState('')
+  const [refLink, setRefLink] = useState('')
   const [initialData, setInitialData] = useState<ProjectProps[]>()
   const [titleFocused, setTitleFocused] = useState(true)
 
@@ -42,11 +42,11 @@ export const AdminProjects = () => {
     if (!initialData) {
       projectsService.create({
         description: {
-          content,
+          content: description,
           title,
-          subTitle
+          subTitle: lastUpdate
         },
-        githubLink,
+        githubLink: refLink,
         snapshot
       })
       setAlert({
@@ -56,11 +56,11 @@ export const AdminProjects = () => {
     } else {
       projectsService.patch(7, {
         description: {
-          content,
+          content: description,
           title,
-          subTitle
+          subTitle: lastUpdate
         },
-        githubLink,
+        githubLink: refLink,
         snapshot
       })
       setAlert({ title: 'Success on update projects page.', type: 'message' })
@@ -74,6 +74,10 @@ export const AdminProjects = () => {
     // setIllustrationURL('')
     // setIllustrationALT('')
     // setTitleFocused(true)
+  }
+
+  const upload = () => {
+    throw new Error('Function not implemented.')
   }
 
   // const onChangeTags = (values: Tag[]) => {
@@ -90,73 +94,104 @@ export const AdminProjects = () => {
             method="post"
             name="projectsPageForm"
           >
-            <Styles.TextWrapper>
-              <TextInput
-                initialValue={title}
-                focus={titleFocused}
-                onBlur={() => {
-                  setTitleFocused(false)
-                }}
-                labelColor="white"
-                label="Título"
-                name="title"
-                placeholder="Título"
-                onInputChange={(value) => setTitle(value)}
-                autoFocus={titleFocused}
-              />
-            </Styles.TextWrapper>
+            <Styles.Full>
+              <Styles.Fill>
+                <Styles.Title>
+                  <TextInput
+                    name="title"
+                    placeholder="Nome do projeto ou portfolio."
+                    label="Título"
+                    labelColor="white"
+                    initialValue={title}
+                    onInputChange={setTitle}
+                    focus={titleFocused}
+                    onBlur={() => {
+                      setTitleFocused(false)
+                    }}
+                    autoFocus={titleFocused}
+                  />
+                </Styles.Title>
+                <Styles.DatesWrapper>
+                  <DateInput
+                    monthAndYearOnly
+                    name="lastUpdate"
+                    placeholder="mm/YYYY"
+                    label="Última atualização"
+                    labelColor="white"
+                    initialValue={lastUpdate}
+                    onDateChange={setLastUpdate}
+                  />
+                </Styles.DatesWrapper>
+              </Styles.Fill>
+            </Styles.Full>
 
-            <Styles.TextWrapper>
-              <TextArea
-                name="editor"
-                initialValue={description}
-                label="Descrição"
-                placeholder="Descrição"
-                labelColor="white"
-                onTextAreaChange={(value) => setDescription(value)}
-              />
-            </Styles.TextWrapper>
+            <TextInput
+              name="description"
+              placeholder="Motivação, caracteristicas ou funcionalidades com até 100 caracteres."
+              maxLength={100}
+              label="Breve Descrição"
+              labelColor="white"
+              initialValue={description}
+              onInputChange={setDescription}
+            />
 
-            <Styles.TextWrapper>
-              <TagEditor
-                name="skills"
-                title="Habilidades"
-                initalValue={skills}
-                onChangeTags={onChangeTags}
-              />
-            </Styles.TextWrapper>
-
-            <Styles.TextWrapper>
-              <Styles.FieldSet>
-                <legend role="label">Imagem</legend>
+            <Styles.Full>
+              <Styles.Fill>
                 <TextInput
-                  name="illustrationURL"
-                  placeholder="https://domain.com/image.jpg"
-                  label="Imagem URL"
+                  name="snapshot"
+                  placeholder="Faça upload de imagem para ilustrar seu projeto ou portforio."
+                  label="Snapshot ou ilustração"
                   labelColor="white"
-                  initialValue={illustrationURL}
-                  onInputChange={(value) => setIllustrationURL(value)}
+                  initialValue={snapshot}
+                  onInputChange={setSnapshot}
                 />
-                <TextInput
-                  name="illustrationALT"
-                  placeholder="Uma breve descrição da imagem"
-                  label="Imagem ALT"
-                  labelColor="white"
-                  initialValue={illustrationALT}
-                  onInputChange={(value) => setIllustrationALT(value)}
-                />
-              </Styles.FieldSet>
-            </Styles.TextWrapper>
+                <Styles.InlineButton>
+                  <Button
+                    styleType="secondary"
+                    type="button"
+                    onClick={upload}
+                    disabled={!snapshot.length}
+                  >
+                    UPLOAD
+                  </Button>
+                </Styles.InlineButton>
+              </Styles.Fill>
+            </Styles.Full>
+
+            <TextInput
+              name="link"
+              placeholder="Ex: https://github.com/seu_repo/seu_projeto ou https://site.com.br"
+              label="Link para referência"
+              labelColor="white"
+              initialValue={refLink}
+              onInputChange={setRefLink}
+            />
 
             <Styles.Actions>
-              {!initialData && <Button styleType="primary">Salvar</Button>}
-              {!!initialData && <Button styleType="primary">Atualizar</Button>}
+              <Button styleType="primary">Adicionar</Button>
               <Button styleType="secondary" type="reset">
                 Limpar Formulário
               </Button>
             </Styles.Actions>
           </Styles.Form>
         </FormContainer>
+
+        {!!initialData?.length && (
+          <Styles.FieldSet>
+            <legend role="label">Últimos Trabalhos</legend>
+            {initialData.map((card, index) => (
+              <Styles.CardWrapper key={index}>
+                <Card
+                  title={card.description.title}
+                  subTitle={card.description.subTitle}
+                  content={card.description.content}
+                  image={card.snapshot}
+                  link={card.githubLink}
+                />
+              </Styles.CardWrapper>
+            ))}
+          </Styles.FieldSet>
+        )}
       </TextContainer>
     </Styles.Wrapper>
   )
