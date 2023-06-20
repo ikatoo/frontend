@@ -7,6 +7,13 @@ const Legend = styled.fieldset`
   }
 `
 
+const InlineButton = styled.div`
+  button {
+    height: 2.6rem;
+    padding: 0 1.75rem;
+  }
+`
+
 export default {
   Wrapper: tw.div`
     flex
@@ -25,10 +32,6 @@ export default {
     pt-4
     pr-4
   `,
-  TextWrapper: tw.div`
-    py-2
-    text-mck_gray_light
-  `,
   Actions: tw.div`
     flex
     w-full
@@ -42,11 +45,49 @@ export default {
     flex-col
     gap-2
   `,
+  Full: tw.div`
+    flex
+    flex-row
+    w-full
+    min-w-full
+    max-w-full
+    gap-2
+  `,
+  Fill: tw.div`
+    w-full
+    flex
+    flex-col
+    md:flex-row
+    gap-2
+
+  `,
+  Title: tw.div`
+    w-full
+    min-w-[18.5rem]
+  `,
+  DatesWrapper: tw.div`
+    flex
+    flex-row
+    gap-2
+    min-w-[18.5rem]
+  `,
+  InlineButton: tw(InlineButton)`
+    self-center
+  `,
   FieldSet: tw(Legend)`
+    max-w-full
+    flex
+    flex-wrap
+    justify-evenly
+    items-center
+    gap-10
     border-solid
     border-mck_gray_light
     border-2
     rounded
     p-2
+  `,
+  CardWrapper: tw.div`
+    max-w-xs
   `
 }
