@@ -1,16 +1,19 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 // import userEvent from '@testing-library/user-event'
-// import projectsPageMock from 'shared/mocks/projectsMock/result.json'
-import api from 'src/services/api'
-// import projectsService from 'src/services/projectsService'
+import projectsPageMock from 'shared/mocks/projectsMock/result.json'
+import projectsService from 'src/services/projectsService'
 import { describe, expect, test, vi } from 'vitest'
 import { AdminProjects } from '.'
 // import Alert from '../../../components/Alert'
 // import { AlertProvider } from '../../../hooks/useAlert'
 
 describe('ADMIN: projects page', () => {
-  test('should render all fields', () => {
-    api.get = vi.fn().mockResolvedValue({})
+  afterEach(() => {
+    projectsService.get = vi.fn()
+  })
+
+  test('should render all fields', async () => {
+    projectsService.get = vi.fn().mockResolvedValue({})
 
     render(<AdminProjects />)
 
@@ -20,34 +23,37 @@ describe('ADMIN: projects page', () => {
     expect(screen.getByLabelText('Snapshot ou ilustração')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'UPLOAD' })).toBeInTheDocument()
     expect(screen.getByLabelText('Link para referência')).toBeInTheDocument()
-
-    api.get = vi.fn()
   })
 
-  // test('should load data at render', async () => {
-  //   api.get = vi.fn().mockResolvedValue({
-  //     data: projectsPageMock
-  //   })
+  test('should load data at render', async () => {
+    projectsService.get = vi.fn().mockResolvedValue({
+      data: projectsPageMock,
+      status: 200
+    })
 
-  //   render(<AdminProjects />)
+    render(<AdminProjects />)
 
-  //   const { skills, description, ...fields } = projectsPageMock
+    await waitFor(() => {
+      expect(screen.getAllByRole('link')).toHaveLength(projectsPageMock.length)
+    })
 
-  //   await waitFor(() => {
-  //     expect(screen.getByRole('form')).toHaveFormValues(fields)
-  //   })
+    const projectElements = screen.getAllByRole('link')
 
-  //   expect(screen.getByPlaceholderText('Descrição')).toHaveTextContent(
-  //     description
-  //   )
-  //   expect(
-  //     screen
-  //       .getAllByTestId('tag-testid')
-  //       .map((skill) => ({ title: skill.textContent }))
-  //   ).toEqual(skills)
+    const projects: typeof projectsPageMock = projectElements.map((card) => ({
+      description: {
+        title: card.getElementsByTagName('h1').item(0)?.textContent ?? '',
+        subTitle: card.getElementsByTagName('h2').item(0)?.textContent ?? '',
+        content:
+          card.getElementsByTagName('h2').item(0)?.nextElementSibling
+            ?.textContent ?? ''
+      },
+      githubLink: card.getAttribute('href') ?? '',
+      snapshot:
+        card.getElementsByTagName('img').item(0)?.getAttribute('src') ?? ''
+    }))
 
-  //   api.get = vi.fn()
-  // })
+    expect(projects).toEqual(projectsPageMock)
+  })
 
   // test('should change focus on press tab key', () => {
   //   api.get = vi.fn().mockResolvedValue({})
