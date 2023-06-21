@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import projectsPageMock from 'shared/mocks/projectsMock/result.json'
+import { stringToDateFormat } from 'src/helpers/date'
 import projectsService from 'src/services/projectsService'
 import { describe, expect, test, vi } from 'vitest'
 import { AdminProjects } from '.'
@@ -105,45 +106,45 @@ describe('ADMIN: projects page', () => {
     expect(clearButton).toHaveFocus()
   })
 
-  test.todo(
-    'should call submit with data when save button is clicked',
-    async () => {
-      //   api.get = vi.fn().mockResolvedValue({})
-      //   await waitFor(() => {
-      //     render(
-      //       <AlertProvider>
-      //         <AdminProjects />
-      //       </AlertProvider>
-      //     )
-      //   })
-      //   const titleInput = screen.getByRole('textbox', { name: /título/i })
-      //   const descriptionInput = screen.getByRole('textbox', { name: /Descrição/i })
-      //   const skillsInput = screen.getByRole('textbox', { name: /Habilidades/i })
-      //   const illustrationURLInput = screen.getByRole('textbox', {
-      //     name: /Imagem URL/i
-      //   })
-      //   const illustrationALTInput = screen.getByRole('textbox', {
-      //     name: /Imagem ALT/i
-      //   })
-      //   const submitButton = screen.getByRole('button', { name: /salvar/i })
-      //   userEvent.type(titleInput, projectsPageMock.title)
-      //   userEvent.type(descriptionInput, projectsPageMock.description)
-      //   userEvent.type(illustrationALTInput, projectsPageMock.illustrationALT)
-      //   userEvent.type(illustrationURLInput, projectsPageMock.illustrationURL)
-      //   projectsPageMock.skills.forEach((skill) => {
-      //     userEvent.type(skillsInput, `${skill.title},`)
-      //   })
-      //   await waitFor(() => {
-      //     expect(screen.queryAllByTestId('tag-testid')).toHaveLength(
-      //       projectsPageMock.skills.length
-      //     )
-      //   })
-      //   api.post = vi.fn().mockResolvedValue({})
-      //   await waitFor(() => {
-      //     userEvent.click(submitButton)
-      //   })
-    }
-  )
+  test('should call post method with data when save button is clicked', async () => {
+    projectsService.get = vi.fn().mockResolvedValue({})
+    render(<AdminProjects />)
+
+    const mock = projectsPageMock[0]
+
+    const titleInput = screen.getByRole('textbox', { name: 'Título' })
+    const lastUpdateInput = screen.getByRole('textbox', {
+      name: 'Última atualização'
+    })
+    const descriptionInput = screen.getByRole('textbox', {
+      name: 'Breve Descrição'
+    })
+    const snapshotInput = screen.getByRole('textbox', {
+      name: /Snapshot ou Ilustração/i
+    })
+    // const uploadButton = screen.getByRole('button', { name: 'UPLOAD' })
+    // const linkInput = screen.getByRole('textbox', {
+    //   name: 'Link para referência'
+    // })
+    // const saveButton = screen.getByRole('button', {
+    //   name: /adicionar/i
+    // })
+
+    userEvent.type(titleInput, mock.description.title)
+    userEvent.type(
+      lastUpdateInput,
+      stringToDateFormat(mock.description.subTitle.split(': ')[1])
+    )
+    userEvent.type(descriptionInput, mock.description.content)
+    userEvent.type(snapshotInput, mock.snapshot)
+    // userEvent.click(uploadButton)
+    // userEvent.type(linkInput, mock.githubLink)
+
+    // projectsService.create = vi
+    //   .fn()
+    //   .mockResolvedValue({ data: {}, status: 201 })
+    // userEvent.click(saveButton)
+  })
 
   test.todo('should show save message when submit first data', async () => {
     //   api.get = vi.fn().mockResolvedValue({})
