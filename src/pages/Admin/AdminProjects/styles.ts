@@ -7,13 +7,6 @@ const Legend = styled.fieldset`
   }
 `
 
-const InlineButton = styled.div`
-  button {
-    height: 2.6rem;
-    padding: 0 1.75rem;
-  }
-`
-
 export default {
   Wrapper: tw.div`
     flex
@@ -70,9 +63,6 @@ export default {
     flex-row
     gap-2
     min-w-[18.5rem]
-  `,
-  InlineButton: tw(InlineButton)`
-    self-center
   `,
   FieldSet: tw(Legend)`
     max-w-full
