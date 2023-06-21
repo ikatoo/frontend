@@ -6,6 +6,7 @@ import DateInput from 'src/components/DateInput'
 import { FormContainer } from 'src/components/FormContainer'
 import { TextContainer } from 'src/components/TextContainer'
 import TextInput from 'src/components/TextInput'
+import UploadInput from 'src/components/UploadInput'
 import { useAlert } from 'src/hooks/useAlert'
 import { ProjectProps } from 'src/pages/Projects'
 import projectsService from 'src/services/projectsService'
@@ -137,24 +138,13 @@ export const AdminProjects = () => {
 
             <Styles.Full>
               <Styles.Fill>
-                <TextInput
+                <UploadInput
                   name="snapshot"
                   placeholder="Faça upload de imagem para ilustrar seu projeto ou portforio."
                   label="Snapshot ou ilustração"
                   labelColor="white"
-                  initialValue={snapshot}
-                  onInputChange={setSnapshot}
+                  uploadFn={upload}
                 />
-                <Styles.InlineButton>
-                  <Button
-                    styleType="secondary"
-                    type="button"
-                    onClick={upload}
-                    disabled={!snapshot.length}
-                  >
-                    UPLOAD
-                  </Button>
-                </Styles.InlineButton>
               </Styles.Fill>
             </Styles.Full>
 
