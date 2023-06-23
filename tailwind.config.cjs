@@ -19,7 +19,8 @@ module.exports = {
         mck_gray_light: 'rgb(229 231 235)',
         mck_gray_dark: 'rgb(31 41 55)',
         mck_primary: 'rgb(30 41 59)',
-        mck_secondary: '#233d5a'
+        mck_secondary: '#233d5a',
+        mck_light: '#BDC4DE'
       }
     }
   },
