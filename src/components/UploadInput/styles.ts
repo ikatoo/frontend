@@ -1,36 +1,42 @@
-import theme from 'src/theme'
 import styled from 'styled-components'
 import tw from 'tailwind-styled-components'
 
-const StyledInlineButton = styled.div`
-  button {
-    height: 2.6rem;
-    padding: 0 1.75rem;
-    width: 100%;
-  }
+const ButtonInsideLabel = styled.label`
+  /* button {
+    pointer-events: none;
+    z-index: 90;
+  } */
 `
 
 export default {
-  Hidden: tw.div`
-    hidden
+  Container: tw.div`
+    bg-blue-400
   `,
-  InlineButton: tw(StyledInlineButton)`
-    w-full
-    md:w-fit
-    self-center
-  `,
-  FileArea: tw.label`
-    bg-slate-300
-    block
+  UploadHide: tw.input`
+    bg-red-400
     cursor-pointer
-    `,
-  DropZone: styled.div`
-    padding: 1.25rem 0.75rem;
-    background-color: aqua;
-    /* py-3
-    px-5
-    h-full
-    w-full
-    bg-mck_primary */
-  `
+    absolute
+    opacity-0
+  `,
+  UploadLabel: tw(ButtonInsideLabel)`
+    bg-yellow-400
+    absolute
+    max-w-3xl
+    aspect-auto
+    p-5
+    border-dashed
+    border-mck_light
+    border
+    flex
+    justify-center
+    flex-col
+    md:flex-row
+    text-center
+    rounded-lg
+    items-center
+    gap-2
+    cursor-pointer
+    pointer-events-none
+  `,
+  Message: tw.span``
 }
