@@ -60,6 +60,7 @@ const UploadInput = ({
     <Styles.Container>
       <input
         hidden
+        disabled={disabled}
         ref={inputRef}
         type="file"
         name={props.name}
@@ -71,11 +72,12 @@ const UploadInput = ({
         onClick={handleDropAreaClick}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
+        disabled={disabled}
       >
         <Styles.Error>{error}</Styles.Error>
         {!error.length && <span>{label}</span>}
       </Styles.DropArea>
-      <Button styleType="primary" onClick={props.uploadFn}>
+      <Button disabled={disabled} styleType="primary" onClick={props.uploadFn}>
         UPLOAD
       </Button>
     </Styles.Container>

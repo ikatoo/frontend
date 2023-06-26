@@ -23,3 +23,10 @@ export const Default: Story = {
     </div>
   )
 }
+
+export const Disabled: Story = {
+  args: {
+    name: 'test',
+    disabled: true
+  }
+}
