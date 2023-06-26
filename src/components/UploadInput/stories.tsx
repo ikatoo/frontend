@@ -14,7 +14,6 @@ export const Default: Story = {
     <div className="min-w-full max-w-full w-full flex flex-col md:flex-row gap-2">
       <UploadInput
         name="snapshot"
-        placeholder="Faça upload de imagem para ilustrar seu projeto ou portforio."
         label="Snapshot ou ilustração"
         labelColor="black"
         uploadFn={() => {
