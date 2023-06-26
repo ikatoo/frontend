@@ -1,11 +1,23 @@
 import theme from 'src/theme'
 import styled, { css } from 'styled-components'
 import tw from 'tailwind-styled-components'
+import { UploadInputProps } from '.'
 
 const Container = styled.div`
   button {
     height: 75%;
   }
+`
+
+const DropArea = styled.div<Pick<UploadInputProps, 'disabled'>>`
+  cursor: pointer;
+  background-color: ${theme.colors.light};
+  ${({ disabled }) =>
+    !!disabled &&
+    css`
+      cursor: not-allowed;
+      background-color: ${theme.colors.lightGray};
+    `}
 `
 
 export default {
@@ -16,14 +28,12 @@ export default {
     md:flex-row
     gap-2
   `,
-  DropArea: tw.div`
-    bg-mck_light
+  DropArea: tw(DropArea)`
     border-2
     border-dashed
     text-center
     p-4
     rounded
-    cursor-pointer
   `,
   Error: styled.span`
     width: auto;
