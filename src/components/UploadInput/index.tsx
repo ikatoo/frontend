@@ -73,6 +73,7 @@ const UploadInput = ({
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         disabled={disabled}
+        labelColor={labelColor}
       >
         <Styles.Error>{error}</Styles.Error>
         {!error.length && <span>{label}</span>}
