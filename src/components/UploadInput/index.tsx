@@ -4,14 +4,19 @@ import Styles from './styles'
 
 export type UploadInputProps = {
   name: string
-  placeholder: string
-  label: string
-  labelColor: string
+  label?: string
+  labelColor?: 'black' | 'white'
+  disabled?: boolean
   onUploadChange?: (file: File) => void
   uploadFn?: () => void
 }
 
-const UploadInput = (props: UploadInputProps) => {
+const UploadInput = ({
+  labelColor = 'black',
+  disabled = false,
+  label = 'Click or Drop & Down a file here',
+  ...props
+}: UploadInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const [error, setError] = useState('')
@@ -57,8 +62,8 @@ const UploadInput = (props: UploadInputProps) => {
         hidden
         ref={inputRef}
         type="file"
-        name="file"
-        id="file"
+        name={props.name}
+        id={props.name}
         accept="image/*"
         onChange={handleInputChange}
       />
@@ -68,7 +73,7 @@ const UploadInput = (props: UploadInputProps) => {
         onDragOver={handleDragOver}
       >
         <Styles.Error>{error}</Styles.Error>
-        {!error.length && <span>{props.label}</span>}
+        {!error.length && <span>{label}</span>}
       </Styles.DropArea>
       <Button styleType="primary" onClick={props.uploadFn}>
         UPLOAD
