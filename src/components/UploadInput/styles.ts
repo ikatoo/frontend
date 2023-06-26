@@ -1,42 +1,44 @@
-import styled from 'styled-components'
+import theme from 'src/theme'
+import styled, { css } from 'styled-components'
 import tw from 'tailwind-styled-components'
 
-const ButtonInsideLabel = styled.label`
-  /* button {
-    pointer-events: none;
-    z-index: 90;
-  } */
+const Container = styled.div`
+  button {
+    height: 75%;
+  }
 `
 
 export default {
-  Container: tw.div`
-    bg-blue-400
-  `,
-  UploadHide: tw.input`
-    bg-red-400
-    cursor-pointer
-    absolute
-    opacity-0
-  `,
-  UploadLabel: tw(ButtonInsideLabel)`
-    bg-yellow-400
-    absolute
-    max-w-3xl
-    aspect-auto
-    p-5
-    border-dashed
-    border-mck_light
-    border
+  Container: tw(Container)`
     flex
-    justify-center
     flex-col
-    md:flex-row
-    text-center
-    rounded-lg
     items-center
+    md:flex-row
     gap-2
-    cursor-pointer
-    pointer-events-none
   `,
-  Message: tw.span``
+  DropArea: tw.div`
+    bg-mck_light
+    border-2
+    border-dashed
+    text-center
+    p-4
+    rounded
+    cursor-pointer
+  `,
+  Error: styled.span`
+    width: auto;
+    color: ${theme.colors.red};
+    opacity: 0%;
+    transition-duration: 0s;
+    transition-delay: 0s;
+
+    ${(props) =>
+      !!props.children &&
+      css`
+        transition-delay: 0.2s;
+        transition-duration: 0.2s;
+        top: 0px;
+        opacity: 100%;
+      `}
+  `
 }
