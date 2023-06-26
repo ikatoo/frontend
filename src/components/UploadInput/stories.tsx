@@ -16,8 +16,13 @@ export const Default: Story = {
         name="snapshot"
         label="Snapshot ou ilustração"
         labelColor="black"
+        onUploadChange={(file) => {
+          console.log('file name', file.name)
+          console.log('file type', file.type)
+          console.log('file size', file.size)
+        }}
         uploadFn={() => {
-          console.log('click')
+          console.log('upload function')
         }}
       />
     </div>
