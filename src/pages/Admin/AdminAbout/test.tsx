@@ -2,7 +2,6 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
 import aboutService from 'src/services/aboutService'
-import api from 'src/services/api'
 import { describe, expect, test, vi } from 'vitest'
 import { AdminAbout } from '.'
 import Alert from '../../../components/Alert'
@@ -10,7 +9,7 @@ import { AlertProvider } from '../../../hooks/useAlert'
 
 describe('ADMIN: About page', () => {
   test('should render all fields', () => {
-    api.get = vi.fn().mockResolvedValue({})
+    aboutService.get = vi.fn().mockResolvedValue({})
 
     render(<AdminAbout />)
 
@@ -20,13 +19,12 @@ describe('ADMIN: About page', () => {
     expect(screen.getByRole('group')).toContain(/images/i)
     expect(screen.getByLabelText(/imagem url/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/imagem alt/i)).toBeInTheDocument()
-
-    api.get = vi.fn()
   })
 
   test('should load data at render', async () => {
-    api.get = vi.fn().mockResolvedValue({
-      data: aboutPageMock
+    aboutService.get = vi.fn().mockResolvedValue({
+      data: aboutPageMock,
+      status: 200
     })
 
     render(<AdminAbout />)
@@ -45,12 +43,10 @@ describe('ADMIN: About page', () => {
         .getAllByTestId('tag-testid')
         .map((skill) => ({ title: skill.textContent }))
     ).toEqual(skills)
-
-    api.get = vi.fn()
   })
 
   test('should change focus on press tab key', () => {
-    api.get = vi.fn().mockResolvedValue({})
+    aboutService.get = vi.fn().mockResolvedValue({})
 
     render(<AdminAbout />)
 
@@ -84,7 +80,7 @@ describe('ADMIN: About page', () => {
   })
 
   test('should call submit with data when save button is clicked', async () => {
-    api.get = vi.fn().mockResolvedValue({})
+    aboutService.get = vi.fn().mockResolvedValue({})
 
     await waitFor(() => {
       render(
@@ -119,15 +115,17 @@ describe('ADMIN: About page', () => {
       )
     })
 
-    api.post = vi.fn().mockResolvedValue({})
+    aboutService.create = vi.fn().mockResolvedValue({ data: {}, status: 201 })
+    userEvent.click(submitButton)
 
     await waitFor(() => {
-      userEvent.click(submitButton)
+      expect(aboutService.create).toHaveBeenCalledTimes(1)
+      expect(aboutService.create).toHaveBeenCalledWith(aboutPageMock)
     })
   })
 
   test('should show save message when submit first data', async () => {
-    api.get = vi.fn().mockResolvedValue({})
+    aboutService.get = vi.fn().mockResolvedValue({})
 
     await waitFor(() => {
       render(
@@ -161,16 +159,14 @@ describe('ADMIN: About page', () => {
       )
     })
 
-    api.post = vi.fn().mockResolvedValue({})
+    aboutService.create = vi.fn().mockResolvedValue({})
+    userEvent.click(screen.getByRole('button', { name: /salvar/i }))
+
     await waitFor(() => {
-      userEvent.click(screen.getByRole('button', { name: /salvar/i }))
       expect(
         screen.getByText('Success on create about page.')
       ).toBeInTheDocument()
     })
-
-    expect(api.post).toBeCalledTimes(1)
-    expect(api.post).toHaveBeenCalledWith('/about', aboutPageMock)
   })
 
   test('should show update message when submit a new data', async () => {
@@ -194,9 +190,11 @@ describe('ADMIN: About page', () => {
     aboutService.patch = vi.fn().mockResolvedValue({ data: {}, status: 204 })
     userEvent.click(screen.getByRole('button', { name: /atualizar/i }))
 
-    expect(
-      screen.getByText('Success on update about page.')
-    ).toBeInTheDocument()
+    await waitFor(() => {
+      expect(
+        screen.getByText('Success on update about page.')
+      ).toBeInTheDocument()
+    })
   })
 
   test('should call path function with a new data', async () => {
