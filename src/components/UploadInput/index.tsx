@@ -20,40 +20,43 @@ const UploadInput = ({
   const inputRef = useRef<HTMLInputElement>(null)
 
   const [error, setError] = useState('')
+  const [newLabel, setNewLabel] = useState(label)
 
   useEffect(() => {
     !!error.length && Promise.resolve(setTimeout(() => setError(''), 5000))
   }, [error.length])
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+  }
 
   const onInputChange = (item: File) => {
     if (!item) return
     if (!item?.type.startsWith('image/')) {
       return setError('Image only.')
     }
+    setNewLabel(`${item.name} - ${(item.size / 1_000_000).toFixed(3)}MB`)
+
     props.onUploadChange && props.onUploadChange(item)
   }
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
-    const { files } = event.dataTransfer
-    const item = files.item(0)
-    !!item && onInputChange(item)
-  }
-
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault()
-  }
-
-  const handleDropAreaClick = () => {
-    const inputElement = inputRef.current
-    inputElement && inputElement.click()
+    const file = event.dataTransfer.items[0].getAsFile()
+    console.log('file ====>', file)
+    file?.size && onInputChange(file)
   }
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
     const inputElement = inputRef.current
     const item = inputElement?.files?.item(0)
-    !!item && onInputChange(item)
+    item?.size && onInputChange(item)
+  }
+
+  const handleClickDropArea = () => {
+    const inputElement = inputRef.current
+    inputElement && inputElement.click()
   }
 
   return (
@@ -69,14 +72,14 @@ const UploadInput = ({
         onChange={handleInputChange}
       />
       <Styles.DropArea
-        onClick={handleDropAreaClick}
+        onClick={handleClickDropArea}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         disabled={disabled}
         labelColor={labelColor}
       >
         <Styles.Error>{error}</Styles.Error>
-        {!error.length && <span>{label}</span>}
+        {!error.length && <span>{newLabel}</span>}
       </Styles.DropArea>
       <Button disabled={disabled} styleType="primary" onClick={props.uploadFn}>
         UPLOAD

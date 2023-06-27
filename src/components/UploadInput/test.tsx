@@ -9,7 +9,13 @@ describe('<UploadInput />', () => {
     expect(component).toBeInTheDocument()
   })
 
-  it.todo('should render a disabled component')
+  it('should render a disabled component', () => {
+    render(<UploadInput disabled name="test" label="file here" />)
+    const component =
+      screen.getByText('file here').parentElement?.parentElement?.firstChild
+
+    expect(component).toBeDisabled()
+  })
   it.todo('should disabled upload button while input file is empty')
   it.todo('should update label with name and size of the choosed file')
   it.todo('should call function when choose file')
