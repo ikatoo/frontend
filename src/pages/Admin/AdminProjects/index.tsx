@@ -15,7 +15,7 @@ import Styles from './styles'
 export const AdminProjects = () => {
   const { setAlert } = useAlert()
 
-  const [snapshot, setSnapshot] = useState('')
+  // const [snapshot, setSnapshot] = useState('')
   const [title, setTitle] = useState('')
   const [lastUpdate, setLastUpdate] = useState('')
   const [description, setDescription] = useState('')
@@ -47,8 +47,8 @@ export const AdminProjects = () => {
           title,
           subTitle: lastUpdate
         },
-        githubLink: refLink,
-        snapshot
+        githubLink: refLink
+        // snapshot
       })
       setAlert({
         title: 'Success on create projects page.',
@@ -61,8 +61,8 @@ export const AdminProjects = () => {
           title,
           subTitle: lastUpdate
         },
-        githubLink: refLink,
-        snapshot
+        githubLink: refLink
+        // snapshot
       })
       setAlert({ title: 'Success on update projects page.', type: 'message' })
     }
@@ -138,13 +138,7 @@ export const AdminProjects = () => {
 
             <Styles.Full>
               <Styles.Fill>
-                <UploadInput
-                  name="snapshot"
-                  placeholder="Faça upload de imagem para ilustrar seu projeto ou portforio."
-                  label="Snapshot ou ilustração"
-                  labelColor="white"
-                  uploadFn={upload}
-                />
+                <UploadInput name="snapshot" uploadFn={upload} />
               </Styles.Fill>
             </Styles.Full>
 
