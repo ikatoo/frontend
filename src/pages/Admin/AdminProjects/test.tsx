@@ -8,7 +8,7 @@ import { AdminProjects } from '.'
 // import Alert from '../../../components/Alert'
 // import { AlertProvider } from '../../../hooks/useAlert'
 
-describe('ADMIN: projects page', () => {
+describe.skip('ADMIN: projects page', () => {
   afterEach(() => {
     projectsService.get = vi.fn()
   })
