@@ -23,6 +23,14 @@ const UploadInput = ({
   const [newLabel, setNewLabel] = useState(label)
 
   useEffect(() => {
+    const test = navigator.userAgentData
+    console.log('test --==--== |||', test)
+    const isLinux = /linux/i.test(`${navigator.userAgentData?.platform}`)
+    // const isEdge = navigator.userAgent.indexOf('Edge') > -1
+    console.log('isLinux', isLinux)
+  }, [])
+
+  useEffect(() => {
     !!error.length && Promise.resolve(setTimeout(() => setError(''), 5000))
   }, [error.length])
 
