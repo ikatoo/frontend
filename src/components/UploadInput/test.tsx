@@ -24,4 +24,7 @@ describe('<UploadInput />', () => {
     'should the label show an error message when the chosen file is not an image'
   )
   it.todo('should enable upload button when file is choose')
+  it.todo(
+    'should use native input interface when so is linux and navigator is edge'
+  )
 })
