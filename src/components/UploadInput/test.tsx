@@ -16,14 +16,27 @@ describe('<UploadInput />', () => {
 
     expect(component).toBeDisabled()
   })
-  it.todo('should disabled upload button while input file is empty')
+
+  it('should disabled upload button while input file is empty', () => {
+    render(<UploadInput name="test" />)
+
+    const uploadButton = screen.getByRole('button')
+
+    expect(uploadButton).toBeDisabled()
+  })
+
   it.todo('should update label with name and size of the choosed file')
+
   it.todo('should call function when choose file')
+
   it.todo('should call function when press upload button')
+
   it.todo(
     'should the label show an error message when the chosen file is not an image'
   )
+
   it.todo('should enable upload button when file is choose')
+
   it.todo(
     'should use native input interface when so is linux and navigator is edge'
   )
