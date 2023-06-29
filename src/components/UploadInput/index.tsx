@@ -21,13 +21,12 @@ const UploadInput = ({
 
   const [error, setError] = useState('')
   const [newLabel, setNewLabel] = useState(label)
+  const [isValidEnv, setIsValidEnv] = useState(true)
 
   useEffect(() => {
-    const test = navigator.userAgentData
-    console.log('test --==--== |||', test)
     const isLinux = /linux/i.test(`${navigator.userAgentData?.platform}`)
-    // const isEdge = navigator.userAgent.indexOf('Edge') > -1
-    console.log('isLinux', isLinux)
+    const isEdge = /edge/i.test(`${navigator.userAgentData?.brands[2].brand}`)
+    isLinux && isEdge && setIsValidEnv(false)
   }, [])
 
   useEffect(() => {
@@ -43,6 +42,7 @@ const UploadInput = ({
     if (!item?.type.startsWith('image/')) {
       return setError('Image only.')
     }
+    console.log('size ===>', item.size)
     setNewLabel(`${item.name} - ${(item.size / 1_000_000).toFixed(3)}MB`)
 
     props.onUploadChange && props.onUploadChange(item)
@@ -67,19 +67,27 @@ const UploadInput = ({
     inputElement && inputElement.click()
   }
 
+  const disableOnDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+  }
+
   return (
-    <Styles.Container>
+    <Styles.Container onDrop={disableOnDrop}>
       <input
-        hidden
+        hidden={isValidEnv}
         disabled={disabled}
         ref={inputRef}
         type="file"
         name={props.name}
         id={props.name}
         accept="image/*"
+        onDragEnter={(e) => e.preventDefault()}
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={(e) => e.preventDefault()}
         onChange={handleInputChange}
       />
       <Styles.DropArea
+        hidden={!isValidEnv}
         onClick={handleClickDropArea}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
