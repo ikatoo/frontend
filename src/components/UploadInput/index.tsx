@@ -22,6 +22,7 @@ const UploadInput = ({
   const [error, setError] = useState('')
   const [newLabel, setNewLabel] = useState(label)
   const [isValidEnv, setIsValidEnv] = useState(true)
+  const [uploadEnabled, setUploadEnabled] = useState(false)
 
   useEffect(() => {
     const isLinux = /linux/i.test(`${navigator.userAgentData?.platform}`)
@@ -97,7 +98,11 @@ const UploadInput = ({
         <Styles.Error>{error}</Styles.Error>
         {!error.length && <span>{newLabel}</span>}
       </Styles.DropArea>
-      <Button disabled={disabled} styleType="primary" onClick={props.uploadFn}>
+      <Button
+        disabled={!uploadEnabled}
+        styleType="primary"
+        onClick={props.uploadFn}
+      >
         UPLOAD
       </Button>
     </Styles.Container>
