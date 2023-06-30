@@ -121,9 +121,79 @@ describe('<UploadInput />', () => {
     })
   })
 
-  it.todo('should call function when choose file')
+  it('should call function when change file', async () => {
+    const onChangeFileFn = vi.fn()
+    render(
+      <UploadInput
+        name="test"
+        label="drop image here"
+        onChangeFile={onChangeFileFn}
+      />
+    )
+    expect(onChangeFileFn).toHaveBeenCalledTimes(0)
 
-  it.todo('should call function when press upload button')
+    const file: DataTransferItem = {
+      kind: 'file',
+      type: 'image/png',
+      getAsFile: vi
+        .fn()
+        .mockReturnValue(
+          new File(['file'], 'image.png', { type: 'image/png' })
+        ),
+      getAsString: vi.fn(),
+      webkitGetAsEntry: vi.fn()
+    }
+
+    const dropArea = screen.getByText('drop image here')
+      .parentElement as HTMLElement
+
+    fireEvent.drop(dropArea, {
+      dataTransfer: {
+        items: [file]
+      }
+    })
+
+    await waitFor(() => {
+      expect(onChangeFileFn).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  it('should call function when press upload button', async () => {
+    const onUploadFn = vi.fn()
+    render(
+      <UploadInput name="test" label="drop image here" uploadFn={onUploadFn} />
+    )
+    expect(onUploadFn).toHaveBeenCalledTimes(0)
+
+    const uploadButton = screen.getByRole('button')
+
+    const file: DataTransferItem = {
+      kind: 'file',
+      type: 'image/png',
+      getAsFile: vi
+        .fn()
+        .mockReturnValue(
+          new File(['file'], 'image.png', { type: 'image/png' })
+        ),
+      getAsString: vi.fn(),
+      webkitGetAsEntry: vi.fn()
+    }
+
+    const dropArea = screen.getByText('drop image here')
+      .parentElement as HTMLElement
+
+    fireEvent.drop(dropArea, {
+      dataTransfer: {
+        items: [file]
+      }
+    })
+
+    fireEvent.click(uploadButton)
+
+    await waitFor(() => {
+      expect(onUploadFn).toHaveBeenCalledTimes(1)
+    })
+  })
 
   it.todo(
     'should the label show an error message when the chosen file is not an image'

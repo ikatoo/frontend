@@ -7,7 +7,7 @@ export type UploadInputProps = {
   label?: string
   labelColor?: 'black' | 'white'
   disabled?: boolean
-  onUploadChange?: (file: File) => void
+  onChangeFile?: (file: File) => void
   uploadFn?: () => void
 }
 
@@ -46,7 +46,7 @@ const UploadInput = ({
     }
     setNewLabel(`${item.name} - ${(item.size / 1_000_000).toFixed(3)}MB`)
 
-    props.onUploadChange && props.onUploadChange(item)
+    props.onChangeFile && props.onChangeFile(item)
   }
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
