@@ -55,6 +55,34 @@ describe('<UploadInput />', () => {
     })
   })
 
+  it('should update label with name and size of the choosed file and enable upload button', async () => {
+    render(<UploadInput name="test" label="drop image here" />)
+
+    const file: DataTransferItem = {
+      kind: 'file',
+      type: 'image/png',
+      getAsFile: vi
+        .fn()
+        .mockReturnValue(new File(['file'], 'test.png', { type: 'image/png' })),
+      getAsString: vi.fn(),
+      webkitGetAsEntry: vi.fn()
+    }
+
+    const dropArea = screen.getByText('drop image here')
+      .parentElement as HTMLElement
+
+    fireEvent.drop(dropArea, {
+      dataTransfer: {
+        items: [file]
+      }
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText('test.png - 0.000MB')).toBeInTheDocument()
+      expect(screen.getByRole('button')).toBeEnabled()
+    })
+  })
+
   it('should disable upload button and show default label when cancel choice of the image file', async () => {
     render(<UploadInput name="test" label="drop image here" />)
 
@@ -81,8 +109,6 @@ describe('<UploadInput />', () => {
       }
     })
 
-    await screen.findByText('image.png - 0.000MB')
-
     fireEvent.change(hiddenInput, {
       target: {}
     })
@@ -94,8 +120,6 @@ describe('<UploadInput />', () => {
       ).toBeInTheDocument()
     })
   })
-
-  it.todo('should update label with name and size of the choosed file')
 
   it.todo('should call function when choose file')
 
