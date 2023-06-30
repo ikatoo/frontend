@@ -43,7 +43,7 @@ const UploadInput = ({
     if (!item?.type.startsWith('image/')) {
       return setError('Image only.')
     }
-    console.log('size ===>', item.size)
+    setUploadEnabled(!!item.size)
     setNewLabel(`${item.name} - ${(item.size / 1_000_000).toFixed(3)}MB`)
 
     props.onUploadChange && props.onUploadChange(item)
@@ -51,9 +51,10 @@ const UploadInput = ({
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
-    const file = event.dataTransfer.items[0].getAsFile()
-    console.log('file ====>', file)
-    file?.size && onInputChange(file)
+    if (event.dataTransfer.items) {
+      const file = event.dataTransfer.items[0].getAsFile()
+      file?.size && onInputChange(file)
+    }
   }
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
