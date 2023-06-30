@@ -38,12 +38,12 @@ const UploadInput = ({
     event.preventDefault()
   }
 
-  const onInputChange = (item: File) => {
-    if (!item) return
+  const onInputChange = (item: File | null | undefined) => {
+    setUploadEnabled(!!item?.size)
+    if (!item) return setNewLabel('Click or Drop & Down a file here')
     if (!item?.type.startsWith('image/')) {
       return setError('Image only.')
     }
-    setUploadEnabled(!!item.size)
     setNewLabel(`${item.name} - ${(item.size / 1_000_000).toFixed(3)}MB`)
 
     props.onUploadChange && props.onUploadChange(item)
@@ -61,7 +61,7 @@ const UploadInput = ({
     event.preventDefault()
     const inputElement = inputRef.current
     const item = inputElement?.files?.item(0)
-    item?.size && onInputChange(item)
+    onInputChange(item)
   }
 
   const handleClickDropArea = () => {

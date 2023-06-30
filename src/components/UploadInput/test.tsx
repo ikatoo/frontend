@@ -51,12 +51,49 @@ describe('<UploadInput />', () => {
       }
     })
     await waitFor(() => {
-      // expect(screen.getByText('image.png - 0.000MB')).toBeInTheDocument()
       expect(uploadButton).not.toBeDisabled()
     })
   })
 
-  it.todo('should disable upload button when not choose a image file')
+  it('should disable upload button and show default label when cancel choice of the image file', async () => {
+    render(<UploadInput name="test" label="drop image here" />)
+
+    const uploadButton = screen.getByRole('button')
+    const file: DataTransferItem = {
+      kind: 'file',
+      type: 'image/png',
+      getAsFile: vi
+        .fn()
+        .mockReturnValue(
+          new File(['file'], 'image.png', { type: 'image/png' })
+        ),
+      getAsString: vi.fn(),
+      webkitGetAsEntry: vi.fn()
+    }
+
+    const dropArea = screen.getByText('drop image here')
+      .parentElement as HTMLElement
+    const hiddenInput = dropArea.previousElementSibling as HTMLElement
+
+    fireEvent.drop(dropArea, {
+      dataTransfer: {
+        items: [file]
+      }
+    })
+
+    await screen.findByText('image.png - 0.000MB')
+
+    fireEvent.change(hiddenInput, {
+      target: {}
+    })
+
+    await waitFor(() => {
+      expect(uploadButton).toBeDisabled()
+      expect(
+        screen.getByText('Click or Drop & Down a file here')
+      ).toBeInTheDocument()
+    })
+  })
 
   it.todo('should update label with name and size of the choosed file')
 
