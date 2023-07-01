@@ -235,9 +235,39 @@ describe('<UploadInput />', () => {
     expect(screen.getByText('drop image here')).toBeInTheDocument()
   })
 
-  it.todo('should not enable upload button when droped file is not valid')
+  it('should not enable upload button when droped file is not valid', () => {
+    render(<UploadInput name="test" label="drop image here" />)
+
+    const file: DataTransferItem = {
+      kind: 'file',
+      type: 'image/png',
+      getAsFile: vi
+        .fn()
+        .mockReturnValue(
+          new File(['file'], 'image.txt', { type: 'text/plain' })
+        ),
+      getAsString: vi.fn(),
+      webkitGetAsEntry: vi.fn()
+    }
+
+    const dropArea = screen.getByText('drop image here')
+      .parentElement as HTMLElement
+
+    act(() => {
+      fireEvent.drop(dropArea, {
+        dataTransfer: {
+          items: [file]
+        }
+      })
+    })
+    const uploadButton = screen.getByRole('button')
+
+    expect(uploadButton).toBeDisabled()
+  })
 
   it.todo(
     'should use native input interface when so is linux and navigator is edge'
   )
+
+  it.todo('should not change value of the input if file is not a image')
 })

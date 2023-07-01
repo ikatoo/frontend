@@ -38,22 +38,27 @@ const UploadInput = ({
     event.preventDefault()
   }
 
-  const onInputChange = (item: File | null | undefined) => {
-    setUploadEnabled(!!item?.size)
-    if (!item) return setNewLabel('Click or Drop & Down a file here')
-    if (!item?.type.startsWith('image/')) {
+  const onInputChange = (file: File | null | undefined) => {
+    if (!file || !file.size) {
+      setUploadEnabled(false)
+      setNewLabel('Click or Drop & Down a file here')
+      return
+    }
+    if (!file?.type.startsWith('image/')) {
+      setUploadEnabled(false)
       return setError('Image only.')
     }
-    setNewLabel(`${item.name} - ${(item.size / 1_000_000).toFixed(3)}MB`)
+    setUploadEnabled(true)
+    setNewLabel(`${file.name} - ${(file.size / 1_000_000).toFixed(3)}MB`)
 
-    props.onChangeFile && props.onChangeFile(item)
+    props.onChangeFile && props.onChangeFile(file)
   }
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
     if (event.dataTransfer.items) {
       const file = event.dataTransfer.items[0].getAsFile()
-      file?.size && onInputChange(file)
+      onInputChange(file)
     }
   }
 
