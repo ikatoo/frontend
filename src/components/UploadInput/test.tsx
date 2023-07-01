@@ -265,9 +265,32 @@ describe('<UploadInput />', () => {
     expect(uploadButton).toBeDisabled()
   })
 
-  it.todo(
-    'should use native input interface when so is linux and navigator is edge'
-  )
+  it('should use native input interface when so is linux and navigator is edge', () => {
+    navigator.userAgentData = {
+      platform: 'Linux',
+      brands: [
+        {
+          brand: 'brand1',
+          version: '1'
+        },
+        {
+          brand: 'brand2',
+          version: '1'
+        },
+        {
+          brand: 'edge',
+          version: '1'
+        }
+      ]
+    }
+
+    render(<UploadInput name="test" label="drop image here" />)
+    const dropArea = screen.getByText('drop image here').parentElement
+    const input = dropArea?.previousElementSibling
+
+    expect(dropArea).not.toBeVisible()
+    expect(input).toBeVisible()
+  })
 
   it.todo('should not change value of the input if file is not a image')
 })
