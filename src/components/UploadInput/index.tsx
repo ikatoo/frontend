@@ -31,7 +31,7 @@ const UploadInput = ({
   }, [])
 
   useEffect(() => {
-    !!error.length && Promise.resolve(setTimeout(() => setError(''), 5000))
+    !!error.length && setTimeout(() => setError(''), 5000)
   }, [error.length])
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
