@@ -1,8 +1,15 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
 import UploadInput from '.'
 
 describe('<UploadInput />', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it('should render the component', () => {
     render(<UploadInput name="test" label="file here" />)
     const component = screen.getByText('file here')
@@ -195,9 +202,40 @@ describe('<UploadInput />', () => {
     })
   })
 
-  it.todo(
-    'should the label show an error message when the chosen file is not an image'
-  )
+  it('should the label show an error message when the chosen file is not an image', () => {
+    render(<UploadInput name="test" label="drop image here" />)
+
+    const file: DataTransferItem = {
+      kind: 'file',
+      type: 'image/png',
+      getAsFile: vi
+        .fn()
+        .mockReturnValue(
+          new File(['file'], 'image.txt', { type: 'text/plain' })
+        ),
+      getAsString: vi.fn(),
+      webkitGetAsEntry: vi.fn()
+    }
+
+    const dropArea = screen.getByText('drop image here')
+      .parentElement as HTMLElement
+
+    act(() => {
+      fireEvent.drop(dropArea, {
+        dataTransfer: {
+          items: [file]
+        }
+      })
+    })
+
+    expect(screen.getByText('Image only.')).toBeInTheDocument()
+    act(() => {
+      vi.advanceTimersByTime(5000)
+    })
+    expect(screen.getByText('drop image here')).toBeInTheDocument()
+  })
+
+  it.todo('should not enable upload button when droped file is not valid')
 
   it.todo(
     'should use native input interface when so is linux and navigator is edge'
