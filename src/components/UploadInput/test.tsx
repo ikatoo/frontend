@@ -207,7 +207,7 @@ describe('<UploadInput />', () => {
 
     const file: DataTransferItem = {
       kind: 'file',
-      type: 'image/png',
+      type: 'text/plain',
       getAsFile: vi
         .fn()
         .mockReturnValue(
@@ -240,7 +240,7 @@ describe('<UploadInput />', () => {
 
     const file: DataTransferItem = {
       kind: 'file',
-      type: 'image/png',
+      type: 'text/plain',
       getAsFile: vi
         .fn()
         .mockReturnValue(
@@ -292,5 +292,31 @@ describe('<UploadInput />', () => {
     expect(input).toBeVisible()
   })
 
-  it.todo('should not change value of the input if file is not a image')
+  it('should not change value of the input', () => {
+    render(<UploadInput name="test" label="drop image here" />)
+
+    const file: DataTransferItem = {
+      kind: 'file',
+      type: 'image/png',
+      getAsFile: vi
+        .fn()
+        .mockReturnValue(
+          new File(['file'], 'image.png', { type: 'image/png' })
+        ),
+      getAsString: vi.fn(),
+      webkitGetAsEntry: vi.fn()
+    }
+
+    const dropArea = screen.getByText('drop image here')
+      .parentElement as HTMLElement
+    const hiddenInput = dropArea.previousElementSibling as HTMLElement
+
+    fireEvent.drop(dropArea, {
+      dataTransfer: {
+        items: [file]
+      }
+    })
+
+    expect(hiddenInput).toHaveValue('')
+  })
 })
