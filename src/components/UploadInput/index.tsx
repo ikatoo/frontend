@@ -7,6 +7,7 @@ export type UploadInputProps = {
   label?: string
   labelColor?: 'black' | 'white'
   disabled?: boolean
+  showUploadButton?: boolean
   onChangeFile?: (file: File) => void
   uploadFn?: () => void
 }
@@ -15,6 +16,7 @@ const UploadInput = ({
   labelColor = 'black',
   disabled = false,
   label = 'Click or Drop & Down a file here',
+  showUploadButton = false,
   ...props
 }: UploadInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -104,13 +106,15 @@ const UploadInput = ({
         <Styles.Error>{error}</Styles.Error>
         {!error.length && <span>{newLabel}</span>}
       </Styles.DropArea>
-      <Button
-        disabled={!uploadEnabled}
-        styleType="primary"
-        onClick={props.uploadFn}
-      >
-        UPLOAD
-      </Button>
+      {!!showUploadButton && (
+        <Button
+          disabled={!uploadEnabled}
+          styleType="primary"
+          onClick={props.uploadFn}
+        >
+          UPLOAD
+        </Button>
+      )}
     </Styles.Container>
   )
 }

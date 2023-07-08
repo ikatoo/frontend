@@ -26,7 +26,7 @@ describe('<UploadInput />', () => {
   })
 
   it('should disabled upload button while input file is empty', () => {
-    render(<UploadInput name="test" />)
+    render(<UploadInput showUploadButton name="test" />)
 
     const uploadButton = screen.getByRole('button')
 
@@ -34,7 +34,7 @@ describe('<UploadInput />', () => {
   })
 
   it('should enable upload button when choose a valid image file', async () => {
-    render(<UploadInput name="test" label="drop image here" />)
+    render(<UploadInput showUploadButton name="test" label="drop image here" />)
 
     const uploadButton = screen.getByRole('button')
     const file: DataTransferItem = {
@@ -63,7 +63,7 @@ describe('<UploadInput />', () => {
   })
 
   it('should update label with name and size of the choosed file and enable upload button', async () => {
-    render(<UploadInput name="test" label="drop image here" />)
+    render(<UploadInput showUploadButton name="test" label="drop image here" />)
 
     const file: DataTransferItem = {
       kind: 'file',
@@ -91,7 +91,7 @@ describe('<UploadInput />', () => {
   })
 
   it('should disable upload button and show default label when cancel choice of the image file', async () => {
-    render(<UploadInput name="test" label="drop image here" />)
+    render(<UploadInput showUploadButton name="test" label="drop image here" />)
 
     const uploadButton = screen.getByRole('button')
     const file: DataTransferItem = {
@@ -168,7 +168,12 @@ describe('<UploadInput />', () => {
   it('should call function when press upload button', async () => {
     const onUploadFn = vi.fn()
     render(
-      <UploadInput name="test" label="drop image here" uploadFn={onUploadFn} />
+      <UploadInput
+        showUploadButton
+        name="test"
+        label="drop image here"
+        uploadFn={onUploadFn}
+      />
     )
     expect(onUploadFn).toHaveBeenCalledTimes(0)
 
@@ -236,7 +241,7 @@ describe('<UploadInput />', () => {
   })
 
   it('should not enable upload button when droped file is not valid', () => {
-    render(<UploadInput name="test" label="drop image here" />)
+    render(<UploadInput showUploadButton name="test" label="drop image here" />)
 
     const file: DataTransferItem = {
       kind: 'file',
@@ -319,4 +324,6 @@ describe('<UploadInput />', () => {
 
     expect(hiddenInput).toHaveValue('')
   })
+
+  it.todo('should render without upload button')
 })
