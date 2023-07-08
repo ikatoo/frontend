@@ -11,7 +11,7 @@ import { useAlert } from 'src/hooks/useAlert'
 import { ProjectProps } from 'src/pages/Projects'
 import projectsService from 'src/services/projectsService'
 import Styles from './styles'
-import { upload } from 'src/services/imageUpload'
+import imageService from 'src/services/imageService'
 
 export const AdminProjects = () => {
   const { setAlert } = useAlert()
@@ -83,8 +83,8 @@ export const AdminProjects = () => {
     setImage(file)
   }
 
-  const onUploadImage = () => {
-    !!image && upload(image)
+  const onUploadImage = async () => {
+    !!image && (await imageService.upload(image))
   }
 
   // const onChangeTags = (values: Tag[]) => {

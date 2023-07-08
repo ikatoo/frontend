@@ -35,4 +35,24 @@ const upload = async (image: File) => {
   }
 }
 
-export { get, upload }
+const destroy = async (id: string) => {
+  try {
+    const { data, status } = await api.delete('image', {
+      data: {
+        publicId: id
+      }
+    })
+    const json =
+      typeof data === 'string' && data !== '' ? JSON.parse(data) : data
+
+    return { data: json, status }
+  } catch (error) {
+    if (error instanceof Error) throw error
+  }
+}
+
+export default {
+  get,
+  upload,
+  destroy
+}
