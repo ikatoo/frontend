@@ -4,6 +4,7 @@ import Alert from './components/Alert'
 import { AlertProvider } from './hooks/useAlert'
 import { About } from './pages/About'
 import { AdminAbout } from './pages/Admin/AdminAbout'
+import { AdminProjects } from './pages/Admin/AdminProjects'
 import { AdminSkills } from './pages/Admin/AdminSkills'
 import { Contact } from './pages/Contact'
 import { PrivateLayout } from './pages/Layouts/PrivateLayout'
@@ -36,6 +37,7 @@ function App() {
             <Route index element={<AdminAbout />} />
             <Route path="about" element={<AdminAbout />} />
             <Route path="skills" element={<AdminSkills />} />
+            <Route path="projects" element={<AdminProjects />} />
           </Route>
           <Route path="/*" element={<NotFound />} />
         </Routes>

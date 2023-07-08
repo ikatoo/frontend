@@ -11,6 +11,7 @@ import { useAlert } from 'src/hooks/useAlert'
 import { ProjectProps } from 'src/pages/Projects'
 import projectsService from 'src/services/projectsService'
 import Styles from './styles'
+import { upload } from 'src/services/imageUpload'
 
 export const AdminProjects = () => {
   const { setAlert } = useAlert()
@@ -22,6 +23,7 @@ export const AdminProjects = () => {
   const [refLink, setRefLink] = useState('')
   const [initialData, setInitialData] = useState<ProjectProps[]>()
   const [titleFocused, setTitleFocused] = useState(true)
+  const [image, setImage] = useState<File>()
 
   useEffect(() => {
     const getInitialData = async () => {
@@ -77,8 +79,12 @@ export const AdminProjects = () => {
     // setTitleFocused(true)
   }
 
-  const upload = () => {
-    throw new Error('Function not implemented.')
+  const onChangeImage = (file: File) => {
+    setImage(file)
+  }
+
+  const onUploadImage = () => {
+    !!image && upload(image)
   }
 
   // const onChangeTags = (values: Tag[]) => {
@@ -138,7 +144,11 @@ export const AdminProjects = () => {
 
             <Styles.Full>
               <Styles.Fill>
-                <UploadInput name="snapshot" uploadFn={upload} />
+                <UploadInput
+                  name="snapshot"
+                  onChangeFile={onChangeImage}
+                  uploadFn={onUploadImage}
+                />
               </Styles.Fill>
             </Styles.Full>
 
