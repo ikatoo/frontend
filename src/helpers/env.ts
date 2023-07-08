@@ -7,6 +7,5 @@ const env = (key: string) => {
 export default {
   VITE_API_SECRETS: env('VITE_API_SECRETS'),
   VITE_API_URL: env('VITE_API_URL'),
-  VITE_PORT: env('VITE_PORT'),
-  VITE_IMAGE_API_KEY: env('VITE_IMAGE_API_KEY')
+  VITE_PORT: env('VITE_PORT')
 }
