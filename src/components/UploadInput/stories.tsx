@@ -13,6 +13,7 @@ export const Default: Story = {
   render: () => (
     <div className="min-w-full max-w-full w-full flex flex-col md:flex-row gap-2">
       <UploadInput
+        showUploadButton
         name="snapshot"
         label="Snapshot ou ilustração"
         labelColor="black"
@@ -31,7 +32,14 @@ export const Default: Story = {
 
 export const Disabled: Story = {
   args: {
+    showUploadButton: true,
     name: 'test',
     disabled: true
+  }
+}
+
+export const Without_Upload_Button: Story = {
+  args: {
+    name: 'test'
   }
 }
