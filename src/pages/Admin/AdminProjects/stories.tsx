@@ -14,6 +14,15 @@ const meta: Meta<typeof AdminProjects> = {
       handlers: [
         rest.get(`${env.VITE_API_URL}/projects`, (_req, res, ctx) => {
           return res(ctx.status(200), ctx.json({}))
+        }),
+        rest.post(`${env.VITE_API_URL}/image`, (_req, res, ctx) => {
+          const mock = {
+            secure_url: 'https://cloudinary.com/folder/image.png',
+            public_id: 'folder/image.png'
+          }
+          const body = { url: mock.secure_url, publicId: mock.public_id }
+
+          return res(ctx.status(201), ctx.json({ body, statusCode: 201 }))
         })
       ]
     }

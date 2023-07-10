@@ -1,3 +1,4 @@
+import { AxiosProgressEvent } from 'axios'
 import api from '../api'
 
 const get = async (id: string) => {
@@ -16,7 +17,10 @@ const get = async (id: string) => {
   }
 }
 
-const upload = async (image: File) => {
+const upload = async (
+  image: File,
+  onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+) => {
   const formData = new FormData()
   formData.append('file', image)
 
@@ -24,7 +28,8 @@ const upload = async (image: File) => {
     const { data, status } = await api.post('image', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
-      }
+      },
+      onUploadProgress
     })
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
