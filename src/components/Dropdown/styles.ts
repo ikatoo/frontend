@@ -8,7 +8,7 @@ export const Title = styled.div`
     position: relative;
     display: flex;
     align-items: center;
-    z-index: ${theme.layers.alwaysOnTop};
+    z-index: ${theme.layers.base};
   `}
 `
 

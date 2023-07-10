@@ -19,7 +19,7 @@ export type SideMenuProps = {
 }
 
 const Menu = (props: SideMenuProps) => (
-  <div className="z-10">
+  <div className="z-20">
     <MediaMatch greaterThan="md">
       <DesktopMenu {...props} />
     </MediaMatch>
