@@ -38,21 +38,12 @@ export default {
     flex-col
     gap-2
   `,
-  Full: tw.div`
-    flex
-    flex-row
-    w-full
-    min-w-full
-    max-w-full
-    gap-2
-  `,
   Fill: tw.div`
     w-full
     flex
     flex-col
     md:flex-row
     gap-2
-
   `,
   Title: tw.div`
     w-full
@@ -81,7 +72,7 @@ export default {
     max-w-xs
   `,
   UploadWrapper: tw.div`
-    w-fit
+    w-full
     self-center
   `,
   UploadDropArea: tw.div`
@@ -97,5 +88,8 @@ export default {
     border
     border-mck_gray_light
     border-spacing-1
+  `,
+  LinkWrapper: tw.div`
+    w-full
   `
 }
