@@ -160,17 +160,16 @@ export const AdminProjects = () => {
                     label={`${progressUpload}%`}
                   />
                 </Styles.UploadWrapper>
+                <TextInput
+                  name="link"
+                  placeholder="Ex: https://github.com/seu_repo/seu_projeto ou https://site.com.br"
+                  label="Link para referência"
+                  labelColor="white"
+                  initialValue={refLink}
+                  onInputChange={setRefLink}
+                />
               </Styles.Fill>
             </Styles.Full>
-
-            <TextInput
-              name="link"
-              placeholder="Ex: https://github.com/seu_repo/seu_projeto ou https://site.com.br"
-              label="Link para referência"
-              labelColor="white"
-              initialValue={refLink}
-              onInputChange={setRefLink}
-            />
 
             <Styles.Actions>
               <Button styleType="primary">Adicionar</Button>
