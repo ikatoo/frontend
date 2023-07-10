@@ -2,6 +2,7 @@ import tw from 'tailwind-styled-components'
 
 export default {
   Wrapper: tw.div`
+    text-center
     flex flex-col
     gap-1
     ${(props: { $timeAnimation: number }) =>

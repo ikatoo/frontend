@@ -79,5 +79,23 @@ export default {
   `,
   CardWrapper: tw.div`
     max-w-xs
+  `,
+  UploadWrapper: tw.div`
+    w-fit
+    self-center
+  `,
+  UploadDropArea: tw.div`
+    flex
+    flex-row
+    flex-nowrap
+    items-center
+    gap-2
+  `,
+  Thumbnail: tw.img`
+    h-14
+    rounded
+    border
+    border-mck_gray_light
+    border-spacing-1
   `
 }

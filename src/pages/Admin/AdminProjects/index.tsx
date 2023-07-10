@@ -4,26 +4,27 @@ import Button from 'src/components/Button'
 import Card from 'src/components/Card'
 import DateInput from 'src/components/DateInput'
 import { FormContainer } from 'src/components/FormContainer'
+import ProgressBar from 'src/components/ProgressBar'
 import { TextContainer } from 'src/components/TextContainer'
 import TextInput from 'src/components/TextInput'
 import UploadInput from 'src/components/UploadInput'
 import { useAlert } from 'src/hooks/useAlert'
 import { ProjectProps } from 'src/pages/Projects'
+import imageService from 'src/services/imageService'
 import projectsService from 'src/services/projectsService'
 import Styles from './styles'
-import imageService from 'src/services/imageService'
 
 export const AdminProjects = () => {
   const { setAlert } = useAlert()
 
-  // const [snapshot, setSnapshot] = useState('')
+  const [snapshot, setSnapshot] = useState('')
   const [title, setTitle] = useState('')
   const [lastUpdate, setLastUpdate] = useState('')
   const [description, setDescription] = useState('')
   const [refLink, setRefLink] = useState('')
   const [initialData, setInitialData] = useState<ProjectProps[]>()
   const [titleFocused, setTitleFocused] = useState(true)
-  const [image, setImage] = useState<File>()
+  const [progressUpload, setProgressUpload] = useState(0)
 
   useEffect(() => {
     const getInitialData = async () => {
@@ -71,25 +72,23 @@ export const AdminProjects = () => {
   }
 
   const onReset = () => {
-    // setTitle('')
-    // setDescription('')
-    // setSkills([])
-    // setIllustrationURL('')
-    // setIllustrationALT('')
-    // setTitleFocused(true)
+    setTitle('')
+    setDescription('')
+    setTitleFocused(true)
   }
 
-  const onChangeImage = (file: File) => {
-    setImage(file)
-  }
+  const onChangeImage = async (file: File) => {
+    const result = await imageService.upload(file, (progressEvent) => {
+      const { loaded, total } = progressEvent
+      const percent = total ? Math.floor((loaded * 100) / total) : 0
+      setProgressUpload(percent)
+    })
 
-  const onUploadImage = async () => {
-    !!image && (await imageService.upload(image))
+    if (!!result?.data || result?.status === 201) {
+      console.log('result.data ===> ', result.data.url)
+      setSnapshot(result.data.url)
+    }
   }
-
-  // const onChangeTags = (values: Tag[]) => {
-  //   setSkills(values)
-  // }
 
   return (
     <Styles.Wrapper>
@@ -144,11 +143,23 @@ export const AdminProjects = () => {
 
             <Styles.Full>
               <Styles.Fill>
-                <UploadInput
-                  name="snapshot"
-                  onChangeFile={onChangeImage}
-                  uploadFn={onUploadImage}
-                />
+                <Styles.UploadWrapper>
+                  <Styles.UploadDropArea>
+                    <UploadInput name="snapshot" onChangeFile={onChangeImage} />
+                    {!!snapshot.length && (
+                      <a href={snapshot} target="_blank" rel="noreferrer">
+                        <Styles.Thumbnail
+                          src={snapshot}
+                          alt="Snapshot Thumbnail"
+                        />
+                      </a>
+                    )}
+                  </Styles.UploadDropArea>
+                  <ProgressBar
+                    percent={progressUpload}
+                    label={`${progressUpload}%`}
+                  />
+                </Styles.UploadWrapper>
               </Styles.Fill>
             </Styles.Full>
 
