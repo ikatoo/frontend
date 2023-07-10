@@ -1,14 +1,14 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import projectsPageMock from 'shared/mocks/projectsMock/result.json'
 import { stringToDateFormat } from 'src/helpers/date'
+import imageService from 'src/services/imageService'
 import projectsService from 'src/services/projectsService'
 import { describe, expect, test, vi } from 'vitest'
 import { AdminProjects } from '.'
-// import Alert from '../../../components/Alert'
-// import { AlertProvider } from '../../../hooks/useAlert'
+import { AlertProvider } from '../../../hooks/useAlert'
 
-describe.skip('ADMIN: projects page', () => {
+describe('ADMIN: projects page', () => {
   afterEach(() => {
     projectsService.get = vi.fn()
   })
@@ -21,8 +21,6 @@ describe.skip('ADMIN: projects page', () => {
     expect(screen.getByLabelText('Título')).toBeInTheDocument()
     expect(screen.getByLabelText('Última atualização')).toBeInTheDocument()
     expect(screen.getByLabelText('Breve Descrição')).toBeInTheDocument()
-    expect(screen.getByLabelText('Snapshot ou ilustração')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'UPLOAD' })).toBeInTheDocument()
     expect(screen.getByLabelText('Link para referência')).toBeInTheDocument()
     const saveButton = screen.getByRole('button', {
       name: /adicionar/i
@@ -76,10 +74,6 @@ describe.skip('ADMIN: projects page', () => {
     const descriptionInput = screen.getByRole('textbox', {
       name: 'Breve Descrição'
     })
-    const snapshotInput = screen.getByRole('textbox', {
-      name: /Snapshot ou Ilustração/i
-    })
-    const uploadButton = screen.getByRole('button', { name: 'UPLOAD' })
     const linkInput = screen.getByRole('textbox', {
       name: 'Link para referência'
     })
@@ -96,9 +90,6 @@ describe.skip('ADMIN: projects page', () => {
     userEvent.tab()
     expect(descriptionInput).toHaveFocus()
     userEvent.tab()
-    expect(snapshotInput).toHaveFocus()
-    userEvent.tab()
-    expect(uploadButton).toBeDisabled()
     expect(linkInput).toHaveFocus()
     userEvent.tab()
     expect(saveButton).toHaveFocus()
@@ -106,9 +97,27 @@ describe.skip('ADMIN: projects page', () => {
     expect(clearButton).toHaveFocus()
   })
 
-  test('should call post method with data when save button is clicked', async () => {
+  test('should disable save button when empty fields', () => {
     projectsService.get = vi.fn().mockResolvedValue({})
     render(<AdminProjects />)
+    const saveButton = screen.getByRole('button', {
+      name: /adicionar/i
+    })
+
+    expect(saveButton).toBeDisabled()
+  })
+
+  test('should call post method with data when save button is clicked', async () => {
+    projectsService.get = vi.fn().mockResolvedValue({})
+    imageService.upload = vi.fn().mockResolvedValue({})
+
+    await waitFor(() => {
+      render(
+        <AlertProvider>
+          <AdminProjects />
+        </AlertProvider>
+      )
+    })
 
     const mock = projectsPageMock[0]
 
@@ -119,16 +128,13 @@ describe.skip('ADMIN: projects page', () => {
     const descriptionInput = screen.getByRole('textbox', {
       name: 'Breve Descrição'
     })
-    const snapshotInput = screen.getByRole('textbox', {
-      name: /Snapshot ou Ilustração/i
+
+    const dropArea = screen.getByText('Click or Drop & Down a file here')
+      .parentElement as HTMLElement
+
+    const linkInput = screen.getByRole('textbox', {
+      name: 'Link para referência'
     })
-    // const uploadButton = screen.getByRole('button', { name: 'UPLOAD' })
-    // const linkInput = screen.getByRole('textbox', {
-    //   name: 'Link para referência'
-    // })
-    // const saveButton = screen.getByRole('button', {
-    //   name: /adicionar/i
-    // })
 
     userEvent.type(titleInput, mock.description.title)
     userEvent.type(
@@ -136,14 +142,46 @@ describe.skip('ADMIN: projects page', () => {
       stringToDateFormat(mock.description.subTitle.split(': ')[1])
     )
     userEvent.type(descriptionInput, mock.description.content)
-    userEvent.type(snapshotInput, mock.snapshot)
-    // userEvent.click(uploadButton)
-    // userEvent.type(linkInput, mock.githubLink)
+    const file: DataTransferItem = {
+      kind: 'file',
+      type: 'image/png',
+      getAsFile: vi
+        .fn()
+        .mockReturnValue(new File(['file'], 'test.png', { type: 'image/png' })),
+      getAsString: vi.fn(),
+      webkitGetAsEntry: vi.fn()
+    }
+    fireEvent.drop(dropArea, {
+      dataTransfer: {
+        items: [file]
+      }
+    })
+    userEvent.type(linkInput, mock.githubLink)
+    const saveButton = screen.getByRole('button', {
+      name: /adicionar/i
+    })
 
-    // projectsService.create = vi
-    //   .fn()
-    //   .mockResolvedValue({ data: {}, status: 201 })
-    // userEvent.click(saveButton)
+    projectsService.create = vi
+      .fn()
+      .mockResolvedValue({ data: {}, status: 201 })
+    userEvent.click(saveButton)
+
+    // const projectElements = screen.getAllByRole('link')
+
+    // const projects: typeof projectsPageMock = projectElements.map((card) => ({
+    //   description: {
+    //     title: card.getElementsByTagName('h1').item(0)?.textContent ?? '',
+    //     subTitle: card.getElementsByTagName('h2').item(0)?.textContent ?? '',
+    //     content:
+    //       card.getElementsByTagName('h2').item(0)?.nextElementSibling
+    //         ?.textContent ?? ''
+    //   },
+    //   githubLink: card.getAttribute('href') ?? '',
+    //   snapshot:
+    //     card.getElementsByTagName('img').item(0)?.getAttribute('src') ?? ''
+    // }))
+
+    // expect(projects[0]).toEqual(mock)
   })
 
   test.todo('should show save message when submit first data', async () => {

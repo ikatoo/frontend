@@ -17,7 +17,7 @@ import Styles from './styles'
 export const AdminProjects = () => {
   const { setAlert } = useAlert()
 
-  const [snapshot, setSnapshot] = useState('')
+  const [snapshotUrl, setSnapshotUrl] = useState('')
   const [title, setTitle] = useState('')
   const [lastUpdate, setLastUpdate] = useState('')
   const [description, setDescription] = useState('')
@@ -46,12 +46,12 @@ export const AdminProjects = () => {
     if (!initialData) {
       projectsService.create({
         description: {
-          content: description,
           title,
-          subTitle: lastUpdate
+          subTitle: lastUpdate,
+          content: description
         },
+        snapshot: snapshotUrl,
         githubLink: refLink
-        // snapshot
       })
       setAlert({
         title: 'Success on create projects page.',
@@ -64,16 +64,21 @@ export const AdminProjects = () => {
           title,
           subTitle: lastUpdate
         },
-        githubLink: refLink
-        // snapshot
+        githubLink: refLink,
+        snapshot: snapshotUrl
       })
       setAlert({ title: 'Success on update projects page.', type: 'message' })
     }
+
+    clearFields()
   }
 
-  const onReset = () => {
+  const clearFields = () => {
     setTitle('')
     setDescription('')
+    setLastUpdate('')
+    setRefLink('')
+    setSnapshotUrl('')
     setTitleFocused(true)
   }
 
@@ -86,7 +91,7 @@ export const AdminProjects = () => {
 
     if (!!result?.data || result?.status === 201) {
       console.log('result.data ===> ', result.data.url)
-      setSnapshot(result.data.url)
+      setSnapshotUrl(result.data.url)
     }
   }
 
@@ -96,40 +101,38 @@ export const AdminProjects = () => {
         <FormContainer>
           <Styles.Form
             onSubmit={handleSubmit}
-            onReset={onReset}
+            onReset={clearFields}
             method="post"
             name="projectsPageForm"
           >
-            <Styles.Full>
-              <Styles.Fill>
-                <Styles.Title>
-                  <TextInput
-                    name="title"
-                    placeholder="Nome do projeto ou portfolio."
-                    label="Título"
-                    labelColor="white"
-                    initialValue={title}
-                    onInputChange={setTitle}
-                    focus={titleFocused}
-                    onBlur={() => {
-                      setTitleFocused(false)
-                    }}
-                    autoFocus={titleFocused}
-                  />
-                </Styles.Title>
-                <Styles.DatesWrapper>
-                  <DateInput
-                    monthAndYearOnly
-                    name="lastUpdate"
-                    placeholder="mm/YYYY"
-                    label="Última atualização"
-                    labelColor="white"
-                    initialValue={lastUpdate}
-                    onDateChange={setLastUpdate}
-                  />
-                </Styles.DatesWrapper>
-              </Styles.Fill>
-            </Styles.Full>
+            <Styles.Fill>
+              <Styles.Title>
+                <TextInput
+                  name="title"
+                  placeholder="Nome do projeto ou portfolio."
+                  label="Título"
+                  labelColor="white"
+                  initialValue={title}
+                  onInputChange={setTitle}
+                  focus={titleFocused}
+                  onBlur={() => {
+                    setTitleFocused(false)
+                  }}
+                  autoFocus={titleFocused}
+                />
+              </Styles.Title>
+              <Styles.DatesWrapper>
+                <DateInput
+                  monthAndYearOnly
+                  name="lastUpdate"
+                  placeholder="mm/YYYY"
+                  label="Última atualização"
+                  labelColor="white"
+                  initialValue={lastUpdate}
+                  onDateChange={setLastUpdate}
+                />
+              </Styles.DatesWrapper>
+            </Styles.Fill>
 
             <TextInput
               name="description"
@@ -141,25 +144,25 @@ export const AdminProjects = () => {
               onInputChange={setDescription}
             />
 
-            <Styles.Full>
-              <Styles.Fill>
-                <Styles.UploadWrapper>
-                  <Styles.UploadDropArea>
-                    <UploadInput name="snapshot" onChangeFile={onChangeImage} />
-                    {!!snapshot.length && (
-                      <a href={snapshot} target="_blank" rel="noreferrer">
-                        <Styles.Thumbnail
-                          src={snapshot}
-                          alt="Snapshot Thumbnail"
-                        />
-                      </a>
-                    )}
-                  </Styles.UploadDropArea>
-                  <ProgressBar
-                    percent={progressUpload}
-                    label={`${progressUpload}%`}
-                  />
-                </Styles.UploadWrapper>
+            <Styles.Fill>
+              <Styles.UploadWrapper>
+                <Styles.UploadDropArea>
+                  <UploadInput name="snapshot" onChangeFile={onChangeImage} />
+                  {!!snapshotUrl.length && (
+                    <a href={snapshotUrl} target="_blank" rel="noreferrer">
+                      <Styles.Thumbnail
+                        src={snapshotUrl}
+                        alt="Snapshot Thumbnail"
+                      />
+                    </a>
+                  )}
+                </Styles.UploadDropArea>
+                <ProgressBar
+                  percent={progressUpload}
+                  label={`${progressUpload}%`}
+                />
+              </Styles.UploadWrapper>
+              <Styles.LinkWrapper>
                 <TextInput
                   name="link"
                   placeholder="Ex: https://github.com/seu_repo/seu_projeto ou https://site.com.br"
@@ -168,11 +171,22 @@ export const AdminProjects = () => {
                   initialValue={refLink}
                   onInputChange={setRefLink}
                 />
-              </Styles.Fill>
-            </Styles.Full>
+              </Styles.LinkWrapper>
+            </Styles.Fill>
 
             <Styles.Actions>
-              <Button styleType="primary">Adicionar</Button>
+              <Button
+                styleType="primary"
+                disabled={
+                  !title.length ||
+                  !lastUpdate.length ||
+                  !description.length ||
+                  !snapshotUrl.length ||
+                  !refLink.length
+                }
+              >
+                Adicionar
+              </Button>
               <Button styleType="secondary" type="reset">
                 Limpar Formulário
               </Button>
