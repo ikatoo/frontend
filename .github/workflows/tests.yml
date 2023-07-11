@@ -45,7 +45,7 @@ jobs:
           subject: Github Actions job result
           to: mckatoo@gmail.com
           from: iKatoo Repository
-          body: Os testes UNITÁRIOS do repositório <a href="https://${{github.repository}}/tree/${{github.ref_name}}">${{github.repository}}</a> falharam. Por favor, verifique e corrija o código.
+          html_body: Os testes UNITÁRIOS do repositório <a href="https://${{github.repository}}/tree/${{github.ref_name}}">${{github.repository}}</a> falharam. Por favor, verifique e corrija o código.
 
   e2e_tests:
     timeout-minutes: 60

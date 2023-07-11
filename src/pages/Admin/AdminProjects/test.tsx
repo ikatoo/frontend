@@ -64,6 +64,7 @@ describe('ADMIN: projects page', () => {
 
   test('should change focus on press tab key', () => {
     projectsService.get = vi.fn().mockResolvedValue({})
+    imageService.upload = vi.fn().mockResolvedValue({})
 
     render(<AdminProjects />)
 
@@ -74,11 +75,11 @@ describe('ADMIN: projects page', () => {
     const descriptionInput = screen.getByRole('textbox', {
       name: 'Breve Descrição'
     })
+    const dropArea = screen.getByText('Click or Drop & Down a file here')
+      .parentElement as HTMLElement
+
     const linkInput = screen.getByRole('textbox', {
       name: 'Link para referência'
-    })
-    const saveButton = screen.getByRole('button', {
-      name: /adicionar/i
     })
     const clearButton = screen.getByRole('button', {
       name: /limpar formulário/i
@@ -90,9 +91,9 @@ describe('ADMIN: projects page', () => {
     userEvent.tab()
     expect(descriptionInput).toHaveFocus()
     userEvent.tab()
-    expect(linkInput).toHaveFocus()
+    expect(dropArea).toHaveFocus()
     userEvent.tab()
-    expect(saveButton).toHaveFocus()
+    expect(linkInput).toHaveFocus()
     userEvent.tab()
     expect(clearButton).toHaveFocus()
   })

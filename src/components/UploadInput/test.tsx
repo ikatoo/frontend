@@ -1,4 +1,5 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 import UploadInput from '.'
 
@@ -323,6 +324,19 @@ describe('<UploadInput />', () => {
     })
 
     expect(hiddenInput).toHaveValue('')
+  })
+
+  it('should be accessible with tab', () => {
+    render(<UploadInput name="test" label="drop image here" />)
+
+    const dropArea = screen.getByText('drop image here')
+      .parentElement as HTMLElement
+
+    expect(document.body).toHaveFocus()
+
+    userEvent.tab()
+
+    expect(dropArea).toHaveFocus()
   })
 
   it.todo('should render without upload button')
