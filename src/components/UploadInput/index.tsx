@@ -24,6 +24,8 @@ const UploadInput = ({
   label = 'Click or Drop & Down a file here',
   showUploadButton = false,
   tabIndex = 0,
+  onChangeFile,
+  uploadFn,
   ...props
 }: UploadInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -60,7 +62,7 @@ const UploadInput = ({
     setUploadEnabled(true)
     setNewLabel(`${file.name} - ${(file.size / 1_000_000).toFixed(3)}MB`)
 
-    props.onChangeFile && props.onChangeFile(file)
+    onChangeFile && onChangeFile(file)
   }
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
@@ -126,7 +128,7 @@ const UploadInput = ({
         <Button
           disabled={!uploadEnabled}
           styleType="primary"
-          onClick={props.uploadFn}
+          onClick={uploadFn}
         >
           UPLOAD
         </Button>

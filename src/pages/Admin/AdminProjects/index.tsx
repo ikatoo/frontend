@@ -19,7 +19,7 @@ export const AdminProjects = () => {
   const { setAlert } = useAlert()
 
   const [snapshotUrl, setSnapshotUrl] = useState('')
-  const [id, setId] = useState(0)
+  // const [id, setId] = useState(0)
   const [title, setTitle] = useState('')
   const [lastUpdate, setLastUpdate] = useState('')
   const [description, setDescription] = useState('')
