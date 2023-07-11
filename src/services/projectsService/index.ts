@@ -3,7 +3,9 @@ import api from '../api'
 
 export default {
   create: async (pageData: Partial<ProjectProps>) => {
-    const { data, status } = await api.post('project', pageData)
+    console.log('pageData ===> ', pageData)
+    const result = await api.post('project', pageData)
+    const { data, status } = result
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
