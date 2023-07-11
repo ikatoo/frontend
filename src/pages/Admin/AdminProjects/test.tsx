@@ -114,98 +114,97 @@ describe('ADMIN: projects page', () => {
     expect(saveButton).toBeDisabled()
   })
 
-  test.todo(
-    'should call post method with data when save button is clicked',
-    async () => {
-      projectsService.get = vi.fn().mockResolvedValue({})
-      projectsService.create = vi
+  test('should call post method with data when save button is clicked', async () => {
+    projectsService.get = vi.fn().mockResolvedValue({})
+    projectsService.create = vi
+      .fn()
+      .mockResolvedValue({ data: {}, status: 201 })
+    imageService.upload = vi
+      .fn()
+      .mockImplementationOnce(() => {
+        return
+      })
+      .mockResolvedValue({
+        data: {
+          publicId: 'folder/test.png',
+          url: 'https://cloudservice.com/folder/test.png'
+        },
+        status: 201
+      })
+    const mock = projectsPageMock[0]
+
+    render(<AdminProjects />)
+
+    const titleInput = screen.getByRole('textbox', { name: 'Título' })
+    const lastUpdateInput = screen.getByRole('textbox', {
+      name: 'Última atualização'
+    })
+    const descriptionInput = screen.getByRole('textbox', {
+      name: 'Breve Descrição'
+    })
+
+    const dropArea = screen.getByText('Click or Drop & Down a file here')
+      .parentElement as HTMLElement
+
+    const linkInput = screen.getByRole('textbox', {
+      name: 'Link para referência'
+    })
+
+    userEvent.type(titleInput, mock.description.title)
+    userEvent.type(
+      lastUpdateInput,
+      stringToDateFormat(mock.description.subTitle.split(': ')[1])
+    )
+    userEvent.type(descriptionInput, mock.description.content)
+    const file: DataTransferItem = {
+      kind: 'file',
+      type: 'image/png',
+      getAsFile: vi
         .fn()
-        .mockResolvedValue({ data: {}, status: 201 })
-      imageService.upload = vi
-        .fn()
-        .mockImplementationOnce(() => {
-          return
-        })
-        .mockResolvedValue({
-          data: {
-            publicId: 'folder/test.png',
-            url: 'https://cloudservice.com/folder/test.png'
-          },
-          status: 201
-        })
-      const mock = projectsPageMock[0]
-
-      render(<AdminProjects />)
-
-      const titleInput = screen.getByRole('textbox', { name: 'Título' })
-      const lastUpdateInput = screen.getByRole('textbox', {
-        name: 'Última atualização'
-      })
-      const descriptionInput = screen.getByRole('textbox', {
-        name: 'Breve Descrição'
-      })
-
-      const dropArea = screen.getByText('Click or Drop & Down a file here')
-        .parentElement as HTMLElement
-
-      const linkInput = screen.getByRole('textbox', {
-        name: 'Link para referência'
-      })
-
-      userEvent.type(titleInput, mock.description.title)
-      userEvent.type(
-        lastUpdateInput,
-        stringToDateFormat(mock.description.subTitle.split(': ')[1])
-      )
-      userEvent.type(descriptionInput, mock.description.content)
-      const file: DataTransferItem = {
-        kind: 'file',
-        type: 'image/png',
-        getAsFile: vi
-          .fn()
-          .mockReturnValue(
-            new File(['file'], 'test.png', { type: 'image/png' })
-          ),
-        getAsString: vi.fn(),
-        webkitGetAsEntry: vi.fn()
-      }
-
-      fireEvent.drop(dropArea, {
-        dataTransfer: {
-          items: [file]
-        }
-      })
-
-      await waitFor(() => {
-        expect(imageService.upload).toHaveBeenCalledTimes(1)
-      })
-
-      // userEvent.type(linkInput, mock.githubLink)
-      // const saveButton = screen.getByRole('button', {
-      //   name: /adicionar/i
-      // })
-
-      // // fireEvent.click(saveButton)
-      // userEvent.click(saveButton)
-
-      // const projectElements = screen.getAllByRole('link')
-
-      // const projects: typeof projectsPageMock = projectElements.map((card) => ({
-      //   description: {
-      //     title: card.getElementsByTagName('h1').item(0)?.textContent ?? '',
-      //     subTitle: card.getElementsByTagName('h2').item(0)?.textContent ?? '',
-      //     content:
-      //       card.getElementsByTagName('h2').item(0)?.nextElementSibling
-      //         ?.textContent ?? ''
-      //   },
-      //   githubLink: card.getAttribute('href') ?? '',
-      //   snapshot:
-      //     card.getElementsByTagName('img').item(0)?.getAttribute('src') ?? ''
-      // }))
-
-      // expect(projects[0]).toEqual(mock)
+        .mockReturnValue(new File(['file'], 'test.png', { type: 'image/png' })),
+      getAsString: vi.fn(),
+      webkitGetAsEntry: vi.fn()
     }
-  )
+
+    fireEvent.drop(dropArea, {
+      dataTransfer: {
+        items: [file]
+      }
+    })
+
+    await waitFor(() => {
+      expect(imageService.upload).toHaveBeenCalledTimes(1)
+    })
+
+    userEvent.type(linkInput, mock.githubLink)
+    const saveButton = screen.getByRole('button', {
+      name: /adicionar/i
+    })
+
+    fireEvent.click(saveButton)
+    // userEvent.click(saveButton)
+
+    // await waitFor(() => {
+    //   expect(projectsService.create).toHaveBeenCalledTimes(1)
+    // })
+
+    // const projectElements = screen.getAllByRole('link')
+
+    // const projects: typeof projectsPageMock = projectElements.map((card) => ({
+    //   description: {
+    //     title: card.getElementsByTagName('h1').item(0)?.textContent ?? '',
+    //     subTitle: card.getElementsByTagName('h2').item(0)?.textContent ?? '',
+    //     content:
+    //       card.getElementsByTagName('h2').item(0)?.nextElementSibling
+    //         ?.textContent ?? ''
+    //   },
+    //   githubLink: card.getAttribute('href') ?? '',
+    //   snapshot:
+    //     card.getElementsByTagName('img').item(0)?.getAttribute('src') ?? ''
+    // }))
+
+    // expect(projects[0]).toEqual(mock)
+  })
 
   test.todo('should show save message when submit first data', async () => {
     //   api.get = vi.fn().mockResolvedValue({})

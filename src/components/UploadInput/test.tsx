@@ -296,6 +296,8 @@ describe('<UploadInput />', () => {
 
     expect(dropArea).not.toBeVisible()
     expect(input).toBeVisible()
+
+    navigator.userAgentData = undefined
   })
 
   it('should not change value of the input', () => {
@@ -339,5 +341,9 @@ describe('<UploadInput />', () => {
     expect(dropArea).toHaveFocus()
   })
 
-  it.todo('should render without upload button')
+  it('should render without upload button', () => {
+    render(<UploadInput name="test" label="file here" />)
+
+    expect(screen.queryByRole('button')).not.toBeInTheDocument()
+  })
 })
