@@ -13,11 +13,13 @@ import { ProjectProps } from 'src/pages/Projects'
 import imageService from 'src/services/imageService'
 import projectsService from 'src/services/projectsService'
 import Styles from './styles'
+import { dateToStringFormat } from 'src/helpers/date'
 
 export const AdminProjects = () => {
   const { setAlert } = useAlert()
 
   const [snapshotUrl, setSnapshotUrl] = useState('')
+  const [id, setId] = useState(0)
   const [title, setTitle] = useState('')
   const [lastUpdate, setLastUpdate] = useState('')
   const [description, setDescription] = useState('')
@@ -34,41 +36,41 @@ export const AdminProjects = () => {
     getInitialData()
   }, [])
 
-  // useEffect(() => {
-  //   initialData?.description && setDescription(initialData.description)
-  //   initialData?.snapshot && setSnapshot(initialData.snapshot)
-  //   initialData?.githubLink && setGithubLink(initialData.githubLink)
-  // }, [initialData])
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    if (!initialData) {
-      projectsService.create({
-        description: {
-          title,
-          subTitle: lastUpdate,
-          content: description
-        },
-        snapshot: snapshotUrl,
-        githubLink: refLink
-      })
+    const data = {
+      description: {
+        title,
+        subTitle: `Last update: ${dateToStringFormat(lastUpdate)}`,
+        content: description
+      },
+      snapshot: snapshotUrl,
+      githubLink: refLink
+    }
+    const { status } = await projectsService.create(data)
+    if (status === 201) {
+      const projects = initialData ? [...initialData, data] : [data]
+      console.log('projects ===>', projects)
+      setInitialData(projects)
       setAlert({
         title: 'Success on create projects page.',
         type: 'message'
       })
-    } else {
-      projectsService.patch(7, {
-        description: {
-          content: description,
-          title,
-          subTitle: lastUpdate
-        },
-        githubLink: refLink,
-        snapshot: snapshotUrl
-      })
-      setAlert({ title: 'Success on update projects page.', type: 'message' })
     }
+    // if (!initialData) {
+    //   const { status } = await projectsService.create(data)
+    //   if (status === 201) {
+    //     setInitialData([...initialData, data])
+    //     setAlert({
+    //       title: 'Success on create projects page.',
+    //       type: 'message'
+    //     })
+    //   }
+    // } else {
+    //   projectsService.patch(id, data)
+    //   setAlert({ title: 'Success on update projects page.', type: 'message' })
+    // }
 
     clearFields()
   }
@@ -90,7 +92,6 @@ export const AdminProjects = () => {
     })
 
     if (!!result?.data || result?.status === 201) {
-      console.log('result.data ===> ', result.data.url)
       setSnapshotUrl(result.data.url)
     }
   }

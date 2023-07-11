@@ -4,6 +4,7 @@ import Styles from './styles'
 import projectsService from '../../services/projectsService'
 
 export type ProjectProps = {
+  id?: number
   snapshot: string
   description: CardProps
   githubLink?: string
