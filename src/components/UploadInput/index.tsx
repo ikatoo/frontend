@@ -1,4 +1,10 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import {
+  ChangeEvent,
+  InputHTMLAttributes,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import Button from '../Button'
 import Styles from './styles'
 
@@ -10,13 +16,14 @@ export type UploadInputProps = {
   showUploadButton?: boolean
   onChangeFile?: (file: File) => void
   uploadFn?: () => void
-}
+} & InputHTMLAttributes<HTMLInputElement>
 
 const UploadInput = ({
   labelColor = 'black',
   disabled = false,
   label = 'Click or Drop & Down a file here',
   showUploadButton = false,
+  tabIndex = 0,
   ...props
 }: UploadInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -83,6 +90,8 @@ const UploadInput = ({
   return (
     <Styles.Container onDrop={disableOnDrop}>
       <input
+        {...props}
+        tabIndex={tabIndex}
         hidden={isValidEnv}
         disabled={disabled}
         ref={inputRef}
@@ -97,6 +106,13 @@ const UploadInput = ({
       />
       <Styles.DropArea
         hidden={!isValidEnv}
+        tabIndex={0}
+        onKeyDown={(e: KeyboardEvent) => {
+          if (e.key.toLowerCase() === 'enter' || e.key.toLowerCase() === ' ') {
+            e.preventDefault()
+            inputRef.current?.click()
+          }
+        }}
         onClick={handleClickDropArea}
         onDrop={handleDrop}
         onDragOver={handleDragOver}

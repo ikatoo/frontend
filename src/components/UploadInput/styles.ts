@@ -7,6 +7,10 @@ const Container = styled.div`
   button {
     height: 75%;
   }
+
+  &:focus-within {
+    box-shadow: 0 0 0.5rem ${theme.colors.primary};
+  }
 `
 
 const DropArea = styled.div<Pick<UploadInputProps, 'disabled' | 'labelColor'>>`
