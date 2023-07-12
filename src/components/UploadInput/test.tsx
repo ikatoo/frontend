@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useState } from 'react'
 import { vi } from 'vitest'
 import UploadInput from '.'
 
@@ -345,5 +346,61 @@ describe('<UploadInput />', () => {
     render(<UploadInput name="test" label="file here" />)
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
+  })
+
+  it('should reset the component', async () => {
+    const Wrapper = () => {
+      const [reset, setReset] = useState(false)
+      return (
+        <>
+          <button onClick={() => setReset(true)}>reset</button>
+          <UploadInput
+            name="test"
+            reset={reset}
+            label="drop image here"
+            showUploadButton
+          />
+        </>
+      )
+    }
+    render(<Wrapper />)
+
+    const file: DataTransferItem = {
+      kind: 'file',
+      type: 'image/png',
+      getAsFile: vi
+        .fn()
+        .mockReturnValue(
+          new File(['file'], 'image.png', { type: 'image/png' })
+        ),
+      getAsString: vi.fn(),
+      webkitGetAsEntry: vi.fn()
+    }
+
+    const dropArea = screen.getByText('drop image here')
+      .parentElement as HTMLElement
+    const uploadButton = screen.getByRole('button', { name: 'UPLOAD' })
+    expect(uploadButton).toBeDisabled()
+
+    fireEvent.drop(dropArea, {
+      dataTransfer: {
+        items: [file]
+      }
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText('image.png - 0.000MB')).toBeInTheDocument()
+      expect(uploadButton).toBeEnabled()
+    })
+
+    const resetButton = screen.getByRole('button', { name: 'reset' })
+
+    fireEvent.click(resetButton)
+
+    await waitFor(() => {
+      expect(screen.queryByText('image.png - 0.000MB')).not.toBeInTheDocument()
+      expect(screen.getByText('drop image here')).toBeInTheDocument()
+      expect(uploadButton).toBeDisabled()
+    })
   })
 })
