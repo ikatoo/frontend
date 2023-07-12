@@ -27,6 +27,7 @@ export const AdminProjects = () => {
   const [initialData, setInitialData] = useState<ProjectProps[]>()
   const [titleFocused, setTitleFocused] = useState(true)
   const [progressUpload, setProgressUpload] = useState(0)
+  const [resetUpload, setResetUpload] = useState(false)
 
   useEffect(() => {
     const getInitialData = async () => {
@@ -82,6 +83,7 @@ export const AdminProjects = () => {
     setLastUpdate('')
     setRefLink('')
     setSnapshotUrl('')
+    setResetUpload(true)
     setTitleFocused(true)
   }
 
@@ -144,7 +146,11 @@ export const AdminProjects = () => {
             <Styles.Fill>
               <Styles.UploadWrapper>
                 <Styles.UploadDropArea>
-                  <UploadInput name="snapshot" onChangeFile={onChangeImage} />
+                  <UploadInput
+                    name="snapshot"
+                    onChangeFile={onChangeImage}
+                    reset={resetUpload}
+                  />
                   {!!snapshotUrl.length && (
                     <a href={snapshotUrl} target="_blank" rel="noreferrer">
                       <Styles.Thumbnail

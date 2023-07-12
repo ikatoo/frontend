@@ -279,9 +279,9 @@ describe('ADMIN: projects page', () => {
       expect(titleInput).toHaveFocus()
       expect(lastUpdateInput).toHaveValue('')
       expect(descriptionInput).toHaveValue('')
-      // expect(
-      //   screen.getByText('Click or Drop & Down a file here')
-      // ).toBeInTheDocument()
+      expect(
+        screen.getByText('Click or Drop & Down a file here')
+      ).toBeInTheDocument()
       expect(linkInput).toHaveValue('')
     })
   })
