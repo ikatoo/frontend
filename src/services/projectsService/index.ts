@@ -18,49 +18,49 @@ export default {
     return { data: json, status }
   },
   delete: async (id: number) => {
-    try {
-      const { data, status } = await api.delete(`project/id/${id}`)
-      const json =
-        typeof data === 'string' && data !== '' ? JSON.parse(data) : data
+    const { data, status } = await api.delete(`project/id/${id}`)
+    const json =
+      typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
-      return { data: json, status }
-    } catch (error) {
-      if (error instanceof Error) throw error
-    }
+    return { data: json, status }
+    // try {
+    // } catch (error) {
+    //   if (error instanceof Error) throw error
+    // }
   },
   get: async () => {
-    try {
-      const { data, status } = await api.get<ProjectProps[]>('projects')
-      const json: ProjectProps[] =
-        typeof data === 'string' && data !== '' ? JSON.parse(data) : data
+    const { data, status } = await api.get<ProjectProps[]>('projects')
+    const json: ProjectProps[] =
+      typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
-      return { data: json, status }
-    } catch (error) {
-      if (error instanceof Error) throw error
-    }
+    return { data: json, status }
+    // try {
+    // } catch (error) {
+    //   if (error instanceof Error) throw error
+    // }
   },
   getByID: async (id: number) => {
-    try {
-      const { data, status } = await api.get<ProjectProps>(`project/id/${id}`)
-      const json: ProjectProps =
-        typeof data === 'string' && data !== '' ? JSON.parse(data) : data
+    const { data, status } = await api.get<ProjectProps>(`project/id/${id}`)
+    const json: ProjectProps =
+      typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
-      return { data: json, status }
-    } catch (error) {
-      if (error instanceof Error) throw error
-    }
+    return { data: json, status }
+    // try {
+    // } catch (error) {
+    //   if (error instanceof Error) throw error
+    // }
   },
   getByTitle: async (title: string) => {
-    try {
-      const { data, status } = await api.get<ProjectProps[]>(
-        `projects/title/${title}`
-      )
-      const json: ProjectProps[] =
-        typeof data === 'string' && data !== '' ? JSON.parse(data) : data
+    const { data, status } = await api.get<ProjectProps[]>(
+      `projects/title/${title}`
+    )
+    const json: ProjectProps[] =
+      typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
-      return { data: json, status }
-    } catch (error) {
-      if (error instanceof Error) throw error
-    }
+    return { data: json, status }
+    // try {
+    // } catch (error) {
+    //   if (error instanceof Error) throw error
+    // }
   }
 }
