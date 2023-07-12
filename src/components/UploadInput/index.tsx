@@ -14,6 +14,7 @@ export type UploadInputProps = {
   labelColor?: 'black' | 'white'
   disabled?: boolean
   showUploadButton?: boolean
+  reset?: boolean
   onChangeFile?: (file: File) => void
   uploadFn?: () => void
 } & InputHTMLAttributes<HTMLInputElement>
@@ -23,6 +24,7 @@ const UploadInput = ({
   disabled = false,
   label = 'Click or Drop & Down a file here',
   showUploadButton = false,
+  reset = false,
   tabIndex = 0,
   onChangeFile,
   uploadFn,
@@ -34,6 +36,14 @@ const UploadInput = ({
   const [newLabel, setNewLabel] = useState(label)
   const [isValidEnv, setIsValidEnv] = useState(true)
   const [uploadEnabled, setUploadEnabled] = useState(false)
+
+  useEffect(() => {
+    if (reset) {
+      setNewLabel(label)
+      setUploadEnabled(false)
+      setError('')
+    }
+  }, [label, reset])
 
   useEffect(() => {
     const isLinux = /linux/i.test(`${navigator.userAgentData?.platform}`)
