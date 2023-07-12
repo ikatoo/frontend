@@ -1,7 +1,9 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import projectsPageMock from 'shared/mocks/projectsMock/result.json'
+import Alert from 'src/components/Alert'
 import { stringToDateFormat } from 'src/helpers/date'
+import { AlertProvider } from 'src/hooks/useAlert'
 import imageService from 'src/services/imageService'
 import projectsService from 'src/services/projectsService'
 import { describe, expect, test, vi } from 'vitest'
@@ -115,25 +117,29 @@ describe('ADMIN: projects page', () => {
   })
 
   test('should call post method with data when save button is clicked', async () => {
+    const mockedPublicId = 'folder/test.png'
+    const mockedUrl = `https://cloudservice.com/${mockedPublicId}`
     projectsService.get = vi.fn().mockResolvedValue({})
     projectsService.create = vi
       .fn()
       .mockResolvedValue({ data: {}, status: 201 })
-    imageService.upload = vi
-      .fn()
-      .mockImplementationOnce(() => {
-        return
-      })
-      .mockResolvedValue({
+    imageService.upload = vi.fn().mockImplementation(() => {
+      return {
         data: {
-          publicId: 'folder/test.png',
-          url: 'https://cloudservice.com/folder/test.png'
+          publicId: mockedPublicId,
+          url: mockedUrl
         },
         status: 201
-      })
+      }
+    })
     const mock = projectsPageMock[0]
 
-    render(<AdminProjects />)
+    render(
+      <AlertProvider>
+        <Alert />
+        <AdminProjects />
+      </AlertProvider>
+    )
 
     const titleInput = screen.getByRole('textbox', { name: 'Título' })
     const lastUpdateInput = screen.getByRole('textbox', {
@@ -182,28 +188,27 @@ describe('ADMIN: projects page', () => {
     })
 
     fireEvent.click(saveButton)
-    // userEvent.click(saveButton)
 
-    // await waitFor(() => {
-    //   expect(projectsService.create).toHaveBeenCalledTimes(1)
-    // })
+    await waitFor(() => {
+      expect(screen.getByText('Últimos Trabalhos')).toBeInTheDocument()
+    })
 
-    // const projectElements = screen.getAllByRole('link')
+    const projectElements = screen.getAllByRole('link')
 
-    // const projects: typeof projectsPageMock = projectElements.map((card) => ({
-    //   description: {
-    //     title: card.getElementsByTagName('h1').item(0)?.textContent ?? '',
-    //     subTitle: card.getElementsByTagName('h2').item(0)?.textContent ?? '',
-    //     content:
-    //       card.getElementsByTagName('h2').item(0)?.nextElementSibling
-    //         ?.textContent ?? ''
-    //   },
-    //   githubLink: card.getAttribute('href') ?? '',
-    //   snapshot:
-    //     card.getElementsByTagName('img').item(0)?.getAttribute('src') ?? ''
-    // }))
+    const projects: typeof projectsPageMock = projectElements.map((card) => ({
+      description: {
+        title: card.getElementsByTagName('h1').item(0)?.textContent ?? '',
+        subTitle: card.getElementsByTagName('h2').item(0)?.textContent ?? '',
+        content:
+          card.getElementsByTagName('h2').item(0)?.nextElementSibling
+            ?.textContent ?? ''
+      },
+      githubLink: card.getAttribute('href') ?? '',
+      snapshot:
+        card.getElementsByTagName('img').item(0)?.getAttribute('src') ?? ''
+    }))
 
-    // expect(projects[0]).toEqual(mock)
+    expect(projects[0]).toEqual({ ...mock, snapshot: mockedUrl })
   })
 
   test.todo('should show save message when submit first data', async () => {

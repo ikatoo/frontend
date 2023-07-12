@@ -8,12 +8,12 @@ import ProgressBar from 'src/components/ProgressBar'
 import { TextContainer } from 'src/components/TextContainer'
 import TextInput from 'src/components/TextInput'
 import UploadInput from 'src/components/UploadInput'
+import { dateToStringFormat } from 'src/helpers/date'
 import { useAlert } from 'src/hooks/useAlert'
 import { ProjectProps } from 'src/pages/Projects'
 import imageService from 'src/services/imageService'
 import projectsService from 'src/services/projectsService'
 import Styles from './styles'
-import { dateToStringFormat } from 'src/helpers/date'
 
 export const AdminProjects = () => {
   const { setAlert } = useAlert()
@@ -51,7 +51,6 @@ export const AdminProjects = () => {
     const { status } = await projectsService.create(data)
     if (status === 201) {
       const projects = initialData ? [...initialData, data] : [data]
-      console.log('projects ===>', projects)
       setInitialData(projects)
       setAlert({
         title: 'Success on create projects page.',
@@ -100,12 +99,7 @@ export const AdminProjects = () => {
     <Styles.Wrapper>
       <TextContainer title={'Seus projetos ou portfolio.'}>
         <FormContainer>
-          <Styles.Form
-            onSubmit={handleSubmit}
-            onReset={clearFields}
-            method="post"
-            name="projectsPageForm"
-          >
+          <Styles.Form name="projectsPageForm">
             <Styles.Fill>
               <Styles.Title>
                 <TextInput
@@ -177,6 +171,7 @@ export const AdminProjects = () => {
 
             <Styles.Actions>
               <Button
+                onClick={handleSubmit}
                 styleType="primary"
                 disabled={
                   !title.length ||
@@ -188,7 +183,7 @@ export const AdminProjects = () => {
               >
                 Adicionar
               </Button>
-              <Button styleType="secondary" type="reset">
+              <Button onClick={clearFields} styleType="secondary" type="reset">
                 Limpar Formulário
               </Button>
             </Styles.Actions>
