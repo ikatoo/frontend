@@ -74,7 +74,9 @@ export const AdminProjects = () => {
     clearFields()
   }
 
-  const clearFields = () => {
+  const clearFields = (event?: React.FormEvent) => {
+    !!event && event.preventDefault()
+
     setTitle('')
     setDescription('')
     setLastUpdate('')
