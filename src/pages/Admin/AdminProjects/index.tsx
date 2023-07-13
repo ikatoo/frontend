@@ -265,11 +265,15 @@ export const AdminProjects = () => {
                 <Styles.CardActionsWrapper>
                   <Styles.CardActions>
                     <Edit
+                      tabIndex={0}
+                      aria-label={`edit project with title ${card.description.title}`}
                       onClick={() => {
                         editProject(card)
                       }}
                     />
                     <Delete
+                      tabIndex={0}
+                      aria-label={`remove project with title ${card.description.title}`}
                       onClick={() => {
                         card.id && removeProject(card.id)
                       }}
