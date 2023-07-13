@@ -1,9 +1,5 @@
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api'
-
-export type LocalizationType = {
-  lat: number
-  lng: number
-}
+import { LocalizationType } from 'src/types/LocalizationType'
 
 export type LabelMarkerOptions = google.maps.MarkerLabel
 
