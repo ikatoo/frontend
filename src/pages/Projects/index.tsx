@@ -28,7 +28,13 @@ export const Projects = () => {
   }, [])
 
   const LinkMatcher = ({ githubLink, children }: LinkMatcherProps) =>
-    !githubLink ? <div>{children}</div> : <a href={githubLink}>{children}</a>
+    !githubLink ? (
+      <div>{children}</div>
+    ) : (
+      <a href={githubLink} target="_blank" rel="noreferrer">
+        {children}
+      </a>
+    )
 
   return (
     <Styles.Wrapper>
