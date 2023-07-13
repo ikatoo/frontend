@@ -55,6 +55,12 @@ describe('ADMIN: projects page', () => {
     const projectElements = screen.getAllByRole('link')
 
     const projects: typeof projectsPageMock = projectElements.map((card) => ({
+      id:
+        projectsPageMock.find(
+          (value) =>
+            value.description.title ===
+            card.getElementsByTagName('h1').item(0)?.textContent
+        )?.id ?? 0,
       description: {
         title: card.getElementsByTagName('h1').item(0)?.textContent ?? '',
         subTitle: card.getElementsByTagName('h2').item(0)?.textContent ?? '',
@@ -195,6 +201,12 @@ describe('ADMIN: projects page', () => {
     const projectElements = screen.getAllByRole('link')
 
     const projects: typeof projectsPageMock = projectElements.map((card) => ({
+      id:
+        projectsPageMock.find(
+          (value) =>
+            value.description.title ===
+            card.getElementsByTagName('h1').item(0)?.textContent
+        )?.id ?? 0,
       description: {
         title: card.getElementsByTagName('h1').item(0)?.textContent ?? '',
         subTitle: card.getElementsByTagName('h2').item(0)?.textContent ?? '',
@@ -281,4 +293,25 @@ describe('ADMIN: projects page', () => {
       expect(linkInput).toHaveValue('')
     })
   })
+
+  // test('should remove project', async () => {
+  //   const mockToRemove = projectsPageMock[0]
+
+  //   projectsService.get = vi.fn().mockResolvedValue({
+  //     data: projectsPageMock,
+  //     status: 200
+  //   })
+
+  //   render(
+  //     <AlertProvider>
+  //       <Alert />
+  //       <AdminProjects />
+  //     </AlertProvider>
+  //   )
+
+  //   await waitFor(() => {
+  //     expect(screen.getAllByRole('link')).toHaveLength(projectsPageMock.length)
+  //   })
+
+  // })
 })
