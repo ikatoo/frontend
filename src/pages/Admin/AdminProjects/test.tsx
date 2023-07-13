@@ -294,24 +294,84 @@ describe('ADMIN: projects page', () => {
     })
   })
 
-  // test('should remove project', async () => {
-  //   const mockToRemove = projectsPageMock[0]
+  test('should remove project', async () => {
+    const mockToRemove = projectsPageMock[0]
 
-  //   projectsService.get = vi.fn().mockResolvedValue({
-  //     data: projectsPageMock,
-  //     status: 200
-  //   })
+    projectsService.get = vi.fn().mockResolvedValue({
+      data: projectsPageMock,
+      status: 200
+    })
+    projectsService.delete = vi.fn().mockResolvedValue({
+      status: 204
+    })
 
-  //   render(
-  //     <AlertProvider>
-  //       <Alert />
-  //       <AdminProjects />
-  //     </AlertProvider>
-  //   )
+    render(
+      <AlertProvider>
+        <Alert />
+        <AdminProjects />
+      </AlertProvider>
+    )
 
-  //   await waitFor(() => {
-  //     expect(screen.getAllByRole('link')).toHaveLength(projectsPageMock.length)
-  //   })
+    await waitFor(() => {
+      expect(screen.getAllByRole('link')).toHaveLength(projectsPageMock.length)
+    })
 
-  // })
+    const removeButton = screen.getByLabelText(
+      `remove project with title ${mockToRemove.description.title}`
+    )
+    userEvent.click(removeButton)
+
+    await waitFor(() => {
+      expect(screen.getByText('Success on remove project.')).toBeInTheDocument()
+    })
+
+    expect(
+      screen.queryByText(mockToRemove.description.title)
+    ).not.toBeInTheDocument()
+  })
+
+  test('should edit project', async () => {
+    const mockToEdit = projectsPageMock[0]
+
+    projectsService.get = vi.fn().mockResolvedValue({
+      data: projectsPageMock,
+      status: 200
+    })
+    projectsService.patch = vi.fn().mockResolvedValue({
+      status: 204
+    })
+
+    render(
+      <AlertProvider>
+        <Alert />
+        <AdminProjects />
+      </AlertProvider>
+    )
+
+    await waitFor(() => {
+      expect(screen.getAllByRole('link')).toHaveLength(projectsPageMock.length)
+    })
+
+    const editButton = screen.getByLabelText(
+      `edit project with title ${mockToEdit.description.title}`
+    )
+    userEvent.click(editButton)
+
+    const titleInput = screen.getByLabelText('Título')
+    const lastUpdateInput = screen.getByLabelText('Última atualização')
+    const descriptionInput = screen.getByLabelText('Breve Descrição')
+    const linkInput = screen.getByLabelText('Link para referência')
+    const snapshotUrl = screen
+      .getAllByRole('link')
+      .find((link) => link.textContent?.includes(mockToEdit.snapshot))
+    await waitFor(() => {
+      expect(titleInput).toHaveValue(mockToEdit.description.title)
+      expect(lastUpdateInput).toHaveValue(
+        stringToDateFormat(mockToEdit.description.subTitle.split(': ')[1])
+      )
+      expect(descriptionInput).toHaveValue(mockToEdit.description.content)
+      expect(linkInput).toHaveValue(mockToEdit.githubLink)
+      expect(snapshotUrl).toHaveAttribute('href', mockToEdit.snapshot)
+    })
+  })
 })
