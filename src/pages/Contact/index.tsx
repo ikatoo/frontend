@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import Map, { LocalizationType } from '../../components/Map'
+import Map from '../../components/Map'
 import { TextContainer } from '../../components/TextContainer'
-import Styles from './styles'
 import contactService from '../../services/contactService'
+import Styles from './styles'
+import { LocalizationType } from 'src/types/LocalizationType'
 
 export const Contact = () => {
   const [description, setDescription] = useState('')

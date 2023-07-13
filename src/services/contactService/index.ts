@@ -2,7 +2,7 @@ import { ContactPageProps } from '../../types/ContactPage'
 import api from '../api'
 
 export default {
-  create: async (pageData: Partial<ContactPageProps>) => {
+  create: async (pageData: ContactPageProps) => {
     const { data, status } = await api.post('contact', pageData)
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
