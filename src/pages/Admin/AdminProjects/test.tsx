@@ -325,13 +325,24 @@ describe('ADMIN: projects page', () => {
       expect(screen.getByText('Success on remove project.')).toBeInTheDocument()
     })
 
+    const projectElements = screen.getAllByRole('link')
+    const otherProject = projectElements.find((projectElement) =>
+      projectElement.textContent?.includes(
+        projectsPageMock[1].description.title
+      )
+    )
+
     expect(
       screen.queryByText(mockToRemove.description.title)
     ).not.toBeInTheDocument()
+    expect(projectElements).toHaveLength(1)
+    expect(otherProject).toBeInTheDocument()
   })
 
   test('should edit project', async () => {
     const mockToEdit = projectsPageMock[0]
+    const mockedNewLastUpdate = '07/2021'
+    const mockedNewGithubLink = 'https://newlink.com/updated'
 
     projectsService.get = vi.fn().mockResolvedValue({
       data: projectsPageMock,
@@ -361,9 +372,11 @@ describe('ADMIN: projects page', () => {
     const lastUpdateInput = screen.getByLabelText('Última atualização')
     const descriptionInput = screen.getByLabelText('Breve Descrição')
     const linkInput = screen.getByLabelText('Link para referência')
-    const snapshotUrl = screen
-      .getAllByRole('link')
-      .find((link) => link.textContent?.includes(mockToEdit.snapshot))
+    const dropArea = screen.getByText('Click or Drop & Down a file here')
+    const snapshotUrl = screen.getByAltText('Snapshot Thumbnail').parentElement
+    const updateButton = screen.getByRole('button', {
+      name: /atualizar/i
+    })
     await waitFor(() => {
       expect(titleInput).toHaveValue(mockToEdit.description.title)
       expect(lastUpdateInput).toHaveValue(
@@ -373,5 +386,44 @@ describe('ADMIN: projects page', () => {
       expect(linkInput).toHaveValue(mockToEdit.githubLink)
       expect(snapshotUrl).toHaveAttribute('href', mockToEdit.snapshot)
     })
+
+    const file: DataTransferItem = {
+      kind: 'file',
+      type: 'image/png',
+      getAsFile: vi
+        .fn()
+        .mockReturnValue(
+          new File(['file'], 'new-image.png', { type: 'image/png' })
+        ),
+      getAsString: vi.fn(),
+      webkitGetAsEntry: vi.fn()
+    }
+
+    userEvent.type(titleInput, ' title updated')
+    userEvent.type(lastUpdateInput, mockedNewLastUpdate)
+    userEvent.type(descriptionInput, ' description updated')
+    fireEvent.drop(dropArea, {
+      dataTransfer: {
+        items: [file]
+      }
+    })
+    userEvent.clear(linkInput)
+    userEvent.type(linkInput, mockedNewGithubLink)
+
+    userEvent.click(updateButton)
+
+    await waitFor(() => {
+      expect(screen.getByText('Success on update project.')).toBeInTheDocument()
+    })
+
+    const projectElements = screen.getAllByRole('link')
+    const updatedProjectElement = projectElements.find((card) =>
+      card.textContent?.includes(
+        `${mockToEdit.description.title} title updated`
+      )
+    )
+
+    expect(updatedProjectElement).toBeInTheDocument()
+    expect(projectElements).toHaveLength(2)
   })
 })
