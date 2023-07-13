@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { describe, it } from 'vitest'
 
 import DesktopMenu from '.'
-import { mockedMenu } from '../mock'
+import { mockedMenu } from '../stories'
 
 describe('Menu Component', () => {
   it('should render menu on desktop', async () => {
