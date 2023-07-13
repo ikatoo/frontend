@@ -23,10 +23,6 @@ export default {
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
     return { data: json, status }
-    // try {
-    // } catch (error) {
-    //   if (error instanceof Error) throw error
-    // }
   },
   get: async () => {
     const { data, status } = await api.get<ProjectProps[]>('projects')
@@ -34,10 +30,6 @@ export default {
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
     return { data: json, status }
-    // try {
-    // } catch (error) {
-    //   if (error instanceof Error) throw error
-    // }
   },
   getByID: async (id: number) => {
     const { data, status } = await api.get<ProjectProps>(`project/id/${id}`)
@@ -45,10 +37,6 @@ export default {
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
     return { data: json, status }
-    // try {
-    // } catch (error) {
-    //   if (error instanceof Error) throw error
-    // }
   },
   getByTitle: async (title: string) => {
     const { data, status } = await api.get<ProjectProps[]>(
@@ -58,9 +46,5 @@ export default {
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
     return { data: json, status }
-    // try {
-    // } catch (error) {
-    //   if (error instanceof Error) throw error
-    // }
   }
 }
