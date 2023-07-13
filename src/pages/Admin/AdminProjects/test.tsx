@@ -119,7 +119,10 @@ describe('ADMIN: projects page', () => {
   test('should call post method with data when save button is clicked', async () => {
     const mockedPublicId = 'folder/test.png'
     const mockedUrl = `https://cloudservice.com/${mockedPublicId}`
+    const mock = projectsPageMock[0]
+
     projectsService.get = vi.fn().mockResolvedValue({})
+    projectsService.create = vi.fn().mockResolvedValue({ status: 201 })
     imageService.upload = vi.fn().mockImplementation(() => {
       return {
         data: {
@@ -129,7 +132,6 @@ describe('ADMIN: projects page', () => {
         status: 201
       }
     })
-    const mock = projectsPageMock[0]
 
     render(
       <AlertProvider>
@@ -184,36 +186,28 @@ describe('ADMIN: projects page', () => {
       name: /adicionar/i
     })
 
-    projectsService.create = vi
-      .fn()
-      .mockImplementation(() => ({ status: 201 }))
-      .mockResolvedValue({})
     userEvent.click(addProjectButton)
 
-    // await waitFor(() => {
-    //   expect(projectsService.create).toHaveBeenCalledTimes(1)
-    //   // expect(screen.getByText('Últimos Trabalhos')).toBeInTheDocument()
-    //   // expect(
-    //   //   screen.getByText('Success on create projects page.')
-    //   // ).toBeInTheDocument()
-    // })
+    await waitFor(() => {
+      expect(screen.getByText('Success on create project.')).toBeInTheDocument()
+    })
 
-    // const projectElements = screen.getAllByRole('link')
+    const projectElements = screen.getAllByRole('link')
 
-    // const projects: typeof projectsPageMock = projectElements.map((card) => ({
-    //   description: {
-    //     title: card.getElementsByTagName('h1').item(0)?.textContent ?? '',
-    //     subTitle: card.getElementsByTagName('h2').item(0)?.textContent ?? '',
-    //     content:
-    //       card.getElementsByTagName('h2').item(0)?.nextElementSibling
-    //         ?.textContent ?? ''
-    //   },
-    //   githubLink: card.getAttribute('href') ?? '',
-    //   snapshot:
-    //     card.getElementsByTagName('img').item(0)?.getAttribute('src') ?? ''
-    // }))
+    const projects: typeof projectsPageMock = projectElements.map((card) => ({
+      description: {
+        title: card.getElementsByTagName('h1').item(0)?.textContent ?? '',
+        subTitle: card.getElementsByTagName('h2').item(0)?.textContent ?? '',
+        content:
+          card.getElementsByTagName('h2').item(0)?.nextElementSibling
+            ?.textContent ?? ''
+      },
+      githubLink: card.getAttribute('href') ?? '',
+      snapshot:
+        card.getElementsByTagName('img').item(0)?.getAttribute('src') ?? ''
+    }))
 
-    // expect(projects[0]).toEqual({ ...mock, snapshot: mockedUrl })
+    expect(projects[0]).toEqual({ ...mock, snapshot: mockedUrl })
   })
 
   test('should clear all text inputs when click on clear button', async () => {
