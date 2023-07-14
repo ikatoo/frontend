@@ -35,7 +35,7 @@ export default {
     w-full
     flex
     flex-col
-    md:flex-row
+    sm:flex-row
     gap-2
   `,
   Title: tw.div`
