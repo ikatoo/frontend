@@ -117,6 +117,10 @@ export const AdminContact = () => {
     setMapIsVisible(true)
   }
 
+  const whenClickOnTheMap = (position: LocalizationType) => {
+    setLocalization(position)
+  }
+
   return (
     <Styles.Wrapper>
       <TextContainer title={'Dados da sua página de contato.'}>
@@ -211,13 +215,12 @@ export const AdminContact = () => {
                     }}
                     className="rounded overflow-auto h-96 aspect-square"
                   >
-                    {localization && (
-                      <Map
-                        center={localization}
-                        markerTitle="Casa"
-                        markerDescription={title}
-                      />
-                    )}
+                    <Map
+                      center={localization}
+                      markerTitle="Casa"
+                      markerDescription={title}
+                      whenClickOnTheMap={whenClickOnTheMap}
+                    />
                   </div>
                 </div>
               )}
