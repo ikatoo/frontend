@@ -205,8 +205,19 @@ export const AdminContact = () => {
                   }}
                   className="inset-0 absolute flex items-center justify-center z-10 bg-black bg-opacity-50"
                 >
-                  <div className="min-h-fit min-w-fit rounded overflow-auto">
-                    <Map center={localization} />
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                    className="rounded overflow-auto h-96 aspect-square"
+                  >
+                    {localization && (
+                      <Map
+                        center={localization}
+                        markerTitle="Casa"
+                        markerDescription={title}
+                      />
+                    )}
                   </div>
                 </div>
               )}

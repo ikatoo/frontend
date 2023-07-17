@@ -30,18 +30,19 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@react-google-maps/api": "2.13.1",
     "@styled-icons/boxicons-logos": "10.46.0",
     "@styled-icons/boxicons-regular": "10.46.0",
     "@styled-icons/material-outlined": "10.46.0",
     "@types/node": "18.8.4",
     "axios": "^1.3.4",
+    "leaflet": "^1.9.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "3.1.4",
     "react-icon-cloud": "4.1.4",
     "react-inlinesvg": "3.0.1",
     "react-jwt": "1.1.7",
+    "react-leaflet": "^4.2.1",
     "react-router-dom": "6.4.2",
     "styled-components": "5.3.6"
   },
@@ -59,6 +60,7 @@
     "@storybook/testing-library": "^0.1.0",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "13.4.0",
+    "@types/leaflet": "^1.9.3",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@types/styled-components": "5.1.26",
