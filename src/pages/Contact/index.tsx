@@ -37,8 +37,7 @@ export const Contact = () => {
             center={localization}
             label={{
               text: 'Milton Carlos Katoo',
-              className: '-mt-10 bg-slate-700 p-1 rounded',
-              color: 'white'
+              className: '-mt-10 bg-slate-700 p-1 rounded'
             }}
           />
         </div>
