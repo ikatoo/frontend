@@ -220,6 +220,7 @@ export const AdminContact = () => {
                       markerTitle="Casa"
                       markerDescription={title}
                       whenClickOnTheMap={whenClickOnTheMap}
+                      showSearchBar
                     />
                   </div>
                 </div>
