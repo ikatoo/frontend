@@ -52,16 +52,9 @@ const Map = ({
         input: 'text-mck_black',
         resultlist: 'text-mck_black'
       },
-      onClick: (event: Event) => {
-        console.log('clickkkkk ====>', event)
-      },
-      onAdd: (map: unknown) => {
-        console.log('adddddd ===>', map)
-      }
+      showMarker: false,
+      autoClose: true
     })
-
-    // search.onClick
-    // search.onAdd
 
     const searchElements = document.getElementsByClassName(
       'geosearch leaflet-bar leaflet-control leaflet-control-geosearch leaflet-geosearch-button'
@@ -79,7 +72,7 @@ const Map = ({
     <MapContainer
       center={!position ? [0, 0] : [position.lat, position.lng]}
       zoom={15}
-      style={{ height: '100%', width: '100%' }}
+      style={{ height: '100%', width: '100%', cursor: 'default' }}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
