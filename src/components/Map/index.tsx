@@ -1,3 +1,5 @@
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch'
+import 'leaflet-geosearch/dist/geosearch.css'
 import 'leaflet/dist/leaflet.css'
 import { useState } from 'react'
 import {
@@ -5,6 +7,7 @@ import {
   Marker,
   Popup,
   TileLayer,
+  useMap,
   useMapEvents
 } from 'react-leaflet'
 import { LocalizationType } from 'src/types/LocalizationType'
@@ -14,13 +17,15 @@ export type MapProps = {
   markerTitle?: string
   markerDescription?: string
   whenClickOnTheMap?: (position: LocalizationType) => void
+  showSearchBar?: boolean
 }
 
 const Map = ({
   center,
   markerTitle,
   markerDescription,
-  whenClickOnTheMap
+  whenClickOnTheMap,
+  showSearchBar = false
 }: MapProps) => {
   const [position, setPosition] = useState(center)
 
@@ -32,6 +37,41 @@ const Map = ({
         whenClickOnTheMap && whenClickOnTheMap(event.latlng)
       }
     })
+    return <></>
+  }
+
+  const SearchBar = () => {
+    const map = useMap()
+
+    const provider = new OpenStreetMapProvider()
+
+    const search = GeoSearchControl({
+      provider,
+      autoCompleteDelay: 250,
+      classNames: {
+        input: 'text-mck_black',
+        resultlist: 'text-mck_black'
+      },
+      onClick: (event: Event) => {
+        console.log('clickkkkk ====>', event)
+      },
+      onAdd: (map: unknown) => {
+        console.log('adddddd ===>', map)
+      }
+    })
+
+    // search.onClick
+    // search.onAdd
+
+    const searchElements = document.getElementsByClassName(
+      'geosearch leaflet-bar leaflet-control leaflet-control-geosearch leaflet-geosearch-button'
+    )
+
+    searchElements.length &&
+      Array.from(searchElements).forEach((element) => element.remove())
+
+    map.addControl(search)
+
     return <></>
   }
 
@@ -54,6 +94,7 @@ const Map = ({
           )}
         </Marker>
       )}
+      {showSearchBar && <SearchBar />}
       <Events />
     </MapContainer>
   )
