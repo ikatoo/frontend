@@ -33,13 +33,7 @@ export const Contact = () => {
 
       {!!localization && (
         <div data-testid="google-maps">
-          <Map
-            center={localization}
-            label={{
-              text: 'Milton Carlos Katoo',
-              className: '-mt-10 bg-slate-700 p-1 rounded'
-            }}
-          />
+          <Map center={localization} />
         </div>
       )}
     </Styles.Wrapper>
