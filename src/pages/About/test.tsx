@@ -19,4 +19,33 @@ describe('About Page', () => {
       ).toBeInTheDocument()
     })
   })
+
+  test('shoud not render image wrapper if illustration url not exist', async () => {
+    api.get = vi.fn().mockResolvedValue({
+      data: {
+        ...aboutPageMock,
+        illustrationURL: aboutPageMock.illustrationURL
+      }
+    })
+
+    render(<About />)
+
+    await waitFor(() => {
+      expect(screen.getByText(aboutPageMock.title)).toBeInTheDocument()
+      expect(screen.queryByRole('img')).not.toBeInTheDocument()
+    })
+  })
+
+  test('shoud not render image wrapper if illustration url is empty', async () => {
+    api.get = vi.fn().mockResolvedValue({
+      data: { ...aboutPageMock, illustrationURL: undefined }
+    })
+
+    render(<About />)
+
+    await waitFor(() => {
+      expect(screen.getByText(aboutPageMock.title)).toBeInTheDocument()
+      expect(screen.queryByRole('img')).not.toBeInTheDocument()
+    })
+  })
 })

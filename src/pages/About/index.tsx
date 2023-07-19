@@ -45,7 +45,7 @@ export const About = () => {
           <IconCloud slugs={skills.map((skill) => skill.title)} />
         </Styles.Skills>
       ) : (
-        !!illustrationURL && (
+        !!illustrationURL?.length && (
           <Styles.ImageWrapper>
             <img src={illustrationURL} alt={illustrationALT ?? ''} />
           </Styles.ImageWrapper>
