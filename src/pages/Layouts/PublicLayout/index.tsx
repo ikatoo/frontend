@@ -1,13 +1,9 @@
 import { Outlet } from 'react-router-dom'
 
-import MediaMatch from '../../../components/MediaMatch'
 import Menu, { SideMenuProps } from '../../../components/Menu'
-import Session from '../../../components/Session'
 import Styles from './styles'
 
 export const PublicLayout = () => {
-  const auth = { user: {} }
-
   const menu: SideMenuProps = {
     links: [
       {
@@ -48,11 +44,6 @@ export const PublicLayout = () => {
 
   return (
     <div className="h-screen w-screen flex flex-cols">
-      {!!auth.user && (
-        <MediaMatch greaterThan="md">
-          <Session />
-        </MediaMatch>
-      )}
       <Menu {...menu} />
       <Styles.Container>
         <Outlet />
