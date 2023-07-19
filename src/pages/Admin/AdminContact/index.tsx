@@ -46,9 +46,15 @@ export const AdminContact = () => {
 
   useEffect(() => {
     updateLocalization()
+  }, [updateLocalization])
+
+  useEffect(() => {
     const getInitialData = async () => {
       const result = await contactService.get()
-      if (result?.status !== 200 || !result.data) return
+      if (result?.status !== 200 || !result.data) {
+        setEditMode(false)
+        return
+      }
 
       setEditMode(true)
       const contact = result.data
@@ -58,7 +64,7 @@ export const AdminContact = () => {
       setLocalization(contact.localization)
     }
     getInitialData()
-  }, [updateLocalization])
+  }, [])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -76,7 +82,6 @@ export const AdminContact = () => {
         type: 'message'
       })
     }
-    clearFields()
   }
 
   const updateContact = async (event: React.FormEvent) => {
@@ -97,9 +102,6 @@ export const AdminContact = () => {
         type: 'message'
       })
     }
-
-    clearFields()
-    setEditMode(false)
   }
 
   const clearFields = (event?: React.FormEvent) => {
@@ -141,8 +143,8 @@ export const AdminContact = () => {
 
             <TextInput
               name="description"
-              placeholder="Instrução breve e clara para uma comunicação eficiente com até 250 caracteres."
-              maxLength={250}
+              placeholder="Instrução breve e clara para uma comunicação eficiente com até 350 caracteres."
+              maxLength={350}
               label="Breve Descrição"
               labelColor="white"
               initialValue={description}

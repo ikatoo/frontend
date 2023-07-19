@@ -149,7 +149,7 @@ describe('ADMIN: contact page', () => {
       expect(contactService.create).toHaveBeenCalledTimes(1)
       expect(contactService.create).toHaveBeenCalledWith({
         ...mock,
-        description: mock.description.slice(0, 250)
+        description: mock.description
       })
     })
   })
