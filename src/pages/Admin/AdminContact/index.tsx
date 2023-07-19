@@ -22,8 +22,8 @@ export const AdminContact = () => {
   const [titleFocused, setTitleFocused] = useState(true)
   const [mapIsVisible, setMapIsVisible] = useState(false)
   const disabledButton =
-    !title.length ||
-    !description.length ||
+    !title?.length ||
+    !description?.length ||
     !localization?.lat ||
     !localization.lng
 
@@ -45,12 +45,11 @@ export const AdminContact = () => {
   }, [setAlert])
 
   useEffect(() => {
+    updateLocalization()
     const getInitialData = async () => {
       const result = await contactService.get()
-      if (result?.status !== 200 || !result.data) {
-        updateLocalization()
-        return
-      }
+      if (result?.status !== 200 || !result.data) return
+
       setEditMode(true)
       const contact = result.data
       setTitle(contact.title)
@@ -160,8 +159,15 @@ export const AdminContact = () => {
                 onInputChange={setEmail}
               />
               <div className="flex flex-col">
-                <label className="text-xl cursor-pointer">Localization</label>
+                <label
+                  htmlFor="localization"
+                  className="text-xl cursor-pointer"
+                >
+                  Localização
+                </label>
                 <div
+                  tabIndex={0}
+                  id="localization"
                   onClick={localizationClick}
                   className="bg-mck_primary text-mck_aqua rounded text-center h-12 flex flex-col items-center justify-center cursor-pointer"
                 >
