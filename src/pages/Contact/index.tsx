@@ -32,7 +32,10 @@ export const Contact = () => {
       </Styles.Description>
 
       {!!localization && (
-        <div data-testid="google-maps">
+        <div
+          className="rounded overflow-auto w-full aspect-square"
+          data-testid="map-testid"
+        >
           <Map center={localization} />
         </div>
       )}
