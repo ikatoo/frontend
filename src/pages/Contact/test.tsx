@@ -23,7 +23,7 @@ describe('Contact Page', () => {
       expect(leftColumn).toHaveTextContent(
         contactPageMock.description.slice(3, 10)
       )
-      expect(screen.getByTestId('google-maps'))
+      expect(screen.getByTestId('map-testid'))
     })
   })
 })
