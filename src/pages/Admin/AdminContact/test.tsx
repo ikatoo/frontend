@@ -89,16 +89,24 @@ describe('ADMIN: contact page', () => {
     expect(title).toHaveFocus()
 
     userEvent.tab()
-    expect(description).toHaveFocus
+    await waitFor(() => {
+      expect(description).toHaveFocus()
+    })
 
     userEvent.tab()
-    expect(email).toHaveFocus()
+    await waitFor(() => {
+      expect(email).toHaveFocus()
+    })
 
     userEvent.tab()
-    expect(localization).toHaveFocus()
+    await waitFor(() => {
+      expect(localization).toHaveFocus()
+    })
 
     userEvent.tab()
-    expect(clearButton).toHaveFocus()
+    await waitFor(() => {
+      expect(clearButton).toHaveFocus()
+    })
   })
 
   test('should call post method with data when save button is clicked', async () => {
