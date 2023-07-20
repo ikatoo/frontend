@@ -3,13 +3,14 @@ import styled from 'styled-components'
 
 export default {
   Page: styled.div`
-    position: relative;
-    width: 100%;
-    background-color: red;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
   `,
   Container: styled.div`
     display: flex;
     flex-direction: column;
+    min-width: fit-content;
     margin: auto;
     padding: 1rem;
     flex-direction: column;
@@ -61,10 +62,12 @@ export default {
     gap: 1rem;
     border-radius: 4px;
     border: 2px solid ${theme.colors.light};
+    border-style: dashed;
     padding: 0.5rem;
 
     button {
       padding: 0.7rem;
+      min-width: 7rem;
     }
   `
 }
