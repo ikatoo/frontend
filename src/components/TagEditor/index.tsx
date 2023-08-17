@@ -60,17 +60,18 @@ const TagEditor = (props: TagEditorProps) => {
   return (
     <>
       <Styles.TagsWrapper>
-        {tags.map((tag) => (
-          <Styles.Tag data-testid="tag-testid" key={tag.title}>
-            {tag.title}
-            <Styles.DeleteButton
-              title={`Remove ${tag.title} skill.`}
-              onClick={() => deleteTag(tag.title)}
-            >
-              <Close size={16} />
-            </Styles.DeleteButton>
-          </Styles.Tag>
-        ))}
+        {!!tags.length &&
+          tags.map((tag) => (
+            <Styles.Tag data-testid="tag-testid" key={tag.title}>
+              {tag.title}
+              <Styles.DeleteButton
+                title={`Remove ${tag.title} skill.`}
+                onClick={() => deleteTag(tag.title)}
+              >
+                <Close size={16} />
+              </Styles.DeleteButton>
+            </Styles.Tag>
+          ))}
       </Styles.TagsWrapper>
       <TextInput
         onKeyDown={handleOnKeyDown}
