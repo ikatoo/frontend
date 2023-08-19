@@ -19,8 +19,11 @@ docker run -t -i -d --name playwright \
   --user pwuser \
   --ipc=host \
   --net=host \
-  mcr.microsoft.com/playwright:v1.32.3-jammy \
+  mcr.microsoft.com/playwright:v1.33.0-jammy \
   bash
+
+docker exec -t -i playwright \
+  npx playwright install
 }
 
 
