@@ -32,7 +32,8 @@
   "include": [
     "src",
     "src/pages/.tsx",
-    "shared"
+    "shared",
+    "e2e"
   ],
   "references": [
     {
