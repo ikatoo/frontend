@@ -26,6 +26,7 @@ export const SignInPage = () => (
       </Button>
 
       <Styles.SocialLogin id="social-login">
+        <Styles.Legend>Login com</Styles.Legend>
         <Button styleType="secondary">
           <svg
             width="25"
@@ -67,7 +68,6 @@ export const SignInPage = () => (
               </clipPath>
             </defs>
           </svg>
-          GOOGLE
         </Button>
         <Button styleType="secondary">
           <svg
@@ -86,7 +86,6 @@ export const SignInPage = () => (
               fill="white"
             />
           </svg>
-          LINKEDIN
         </Button>
         <Button styleType="secondary">
           <svg
@@ -101,7 +100,6 @@ export const SignInPage = () => (
               fill="#E5E7EB"
             />
           </svg>
-          E-MAIL
         </Button>
       </Styles.SocialLogin>
     </Styles.Container>
