@@ -4,20 +4,14 @@ import skillsPageMock from 'shared/mocks/skillsPageMock/result.json' assert { ty
 const _URL = '/admin/skills'
 
 test.describe('ADMIN - Skills page', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto(_URL)
-  })
-
   test('has page title', async ({ page }) => {
+    await page.goto(_URL)
+
     await expect(page).toHaveTitle(/ikatoo - software developer/i)
   })
 
-  test('should call submit with data when save button is clicked', async ({
-    page
-  }) => {
-    await page.route('*/**/skills', async (route) => {
-      await route.fulfill()
-    })
+  test('should save new skills page', async ({ page }) => {
+    await page.goto(_URL)
 
     const title = page.getByLabel('Título')
     const description = page.getByPlaceholder('Descrição', { exact: true })
@@ -34,12 +28,10 @@ test.describe('ADMIN - Skills page', () => {
     })
     const saveButton = page.getByRole('button', { name: 'Salvar' })
 
-    await title.fill('Olá. Bem vindo❗')
+    await title.fill(skillsPageMock.title)
     await title.press('Tab')
 
-    await description.fill(
-      '<p>Me chamo Milton Carlos Katoo, moro em Itapira, interior de São Paulo/Brasil. Pai de uma princesa e filho de excelente cozinheira Italiana e um saldoso Japonês faz tudo, sou um desenvolvedor full-stack que ama programação e desenvolvimento de software afim de melhorar a vida das pessoas.</p><p>Pessoa bem organizada, solucionador de problemas, funcionário independente com alta atenção aos detalhes. Gosto de animes, mangas, games, séries de TV e filmes. Pai orgulhoso de uma princesa, sou nascido em 1979 e sou innteressado em todo o espectro de programação.</p><a class="text-mck_aqua underline underline-offset-8" href="https://ikatoo.com.br/contact/" rel="contact"><span>🎉</span>Vamos fazer algo especial.</a><span>😄</span>'
-    )
+    await description.fill(skillsPageMock.description)
     await description.press('Tab')
 
     await skills.fill(
@@ -78,6 +70,115 @@ test.describe('ADMIN - Skills page', () => {
 
     await saveButton.click()
 
-    expect(page.getByText('Success on create skills page.')).toBeDefined()
+    await expect(page.getByText('Success on create skills page.')).toBeVisible()
+    await expect(saveButton).not.toBeVisible()
+    await expect(page.getByRole('button', { name: 'Atualizar' })).toBeVisible()
+  })
+
+  test('should complete update skills page data', async ({ page }) => {
+    const newData: typeof skillsPageMock = {
+      title: 'new title',
+      description: 'new description',
+      lastJobs: [
+        {
+          jobTitle: 'job1',
+          jobDescription: 'description of job1',
+          link: 'http://link.job1.com',
+          yearMonthStart: '2021 - 05',
+          yearMonthEnd: '2021 - 06'
+        },
+        {
+          jobTitle: 'job2',
+          jobDescription: 'description of job2',
+          link: 'http://link.job2.com',
+          yearMonthStart: '2022 - 05',
+          yearMonthEnd: '2022 - 06'
+        }
+      ],
+      skills: [
+        {
+          skillTitle: 'skill1'
+        },
+        {
+          skillTitle: 'skill2'
+        },
+        {
+          skillTitle: 'skill3'
+        }
+      ]
+    }
+    await page.route(`${process.env.VITE_API_URL}/skills`, async (route) => {
+      await route.fulfill({ json: skillsPageMock, status: 200 })
+    })
+    await page.goto(_URL)
+
+    const title = page.getByLabel('Título')
+    const description = page.getByPlaceholder('Descrição', { exact: true })
+    const skills = page.getByPlaceholder(
+      'Press "," | "Enter" | "Shift+Enter" to add Habilidades'
+    )
+    const jobTitle = page.getByLabel('Nome da empresa ou projeto')
+    const jobStart = page.getByLabel('Início')
+    const jobEnd = page.getByLabel('Fim')
+    const jobLink = page.getByLabel('Link para referência')
+    const jobDescription = page.getByLabel('Breve Descrição')
+    const addJobButton = page.getByRole('button', {
+      name: 'ADICIONAR TRABALHO'
+    })
+    const updateButton = page.getByRole('button', { name: 'Atualizar' })
+    expect(title).toHaveValue(skillsPageMock.title)
+    await title.fill(newData.title)
+    await title.press('Tab')
+    await description.fill(newData.description)
+    await description.press('Tab')
+    await skills.fill(
+      newData.skills.map((skill) => skill.skillTitle).toString()
+    )
+    await skills.press('Tab')
+    for (let index = 0; index < newData.lastJobs.length; index++) {
+      const job = newData.lastJobs[index]
+      await jobTitle.fill(job.jobTitle)
+      await jobTitle.press('Tab')
+      const mockJobStart = `${job.yearMonthStart.split(' - ')[1]}/${
+        job.yearMonthStart.split(' - ')[0]
+      }`
+      await jobStart.fill(mockJobStart)
+      await jobStart.press('Tab')
+      if (job.yearMonthEnd) {
+        const mockJobEnd = `${job.yearMonthEnd.split(' - ')[1]}/${
+          job.yearMonthEnd.split(' - ')[0]
+        }`
+        await jobEnd.fill(mockJobEnd)
+      }
+      await jobEnd.press('Tab')
+      await jobLink.fill(job.link)
+      await jobLink.press('Tab')
+      await jobDescription.fill(job.jobDescription)
+      await jobDescription.press('Tab')
+      await addJobButton.click()
+    }
+    await updateButton.click()
+
+    expect(page.getByText('Success on update skills page.')).toBeVisible()
+  })
+
+  test('should partial update skills page data', async ({ page }) => {
+    const newData = {
+      title: 'new title'
+    }
+    await page.route(`${process.env.VITE_API_URL}/skills`, async (route) => {
+      await route.fulfill({ json: skillsPageMock, status: 200 })
+    })
+    await page.goto(_URL)
+
+    const title = page.getByLabel('Título')
+    const updateButton = page.getByRole('button', { name: 'Atualizar' })
+
+    expect(title).toHaveValue(skillsPageMock.title)
+    await title.fill(newData.title)
+    await title.press('Tab')
+    await updateButton.click()
+
+    expect(page.getByText('Success on update skills page.')).toBeVisible()
   })
 })
