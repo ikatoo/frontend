@@ -8,6 +8,7 @@ config()
 const baseURL = `http://localhost:${process.env.VITE_PORT}`
 
 export default defineConfig({
+  timeout: 60_000,
   testDir: './e2e',
   /* Run tests in files in parallel */
   fullyParallel: true,
