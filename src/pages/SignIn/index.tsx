@@ -4,7 +4,7 @@ import Logo from 'src/components/Logo'
 import TextInput from 'src/components/TextInput'
 import Styles from './styles'
 
-const LoginPage = () => (
+export const SignInPage = () => (
   <Styles.Page>
     <Styles.Container>
       <Styles.LogoWrapper>
@@ -107,5 +107,3 @@ const LoginPage = () => (
     </Styles.Container>
   </Styles.Page>
 )
-
-export default LoginPage

@@ -10,7 +10,7 @@ import { AdminSkills } from './pages/Admin/AdminSkills'
 import { Contact } from './pages/Contact'
 import { PrivateLayout } from './pages/Layouts/PrivateLayout'
 import { PublicLayout } from './pages/Layouts/PublicLayout'
-import LoginPage from './pages/Login'
+import { SignInPage } from './pages/SignIn'
 import { NotFound } from './pages/NotFound'
 import { Projects } from './pages/Projects'
 import { Skills } from './pages/Skills'
@@ -21,7 +21,7 @@ function App() {
       <Alert />
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signin" element={<SignInPage />} />
           <Route path="/" element={<PublicLayout />}>
             <Route index element={<About />} />
             <Route path="about" element={<About />} />
