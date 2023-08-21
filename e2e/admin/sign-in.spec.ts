@@ -40,4 +40,23 @@ test.describe('ADMIN - SignIn Page', () => {
     await expect(linkedinButton).toBeVisible()
     await expect(emailButton).toBeVisible()
   })
+
+  test('do sign in and redirect to home', async ({ page }) => {
+    await page.goto(_URL)
+
+    const email = page.getByLabel('E-mail')
+    const password = page.getByLabel('Senha')
+    const signInButton = page.getByRole('button', {
+      name: 'ENTRAR'
+    })
+
+    await email.fill('user@email.com')
+    await password.fill('password')
+
+    page.route(`${process.env.VITE_API_URL}/auth`, async (route) => {
+      await route.fulfill({ status: 200 })
+    })
+
+    await signInButton.click()
+  })
 })
