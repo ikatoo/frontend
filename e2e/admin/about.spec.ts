@@ -1,44 +1,117 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
+import aboutPageMock from 'shared/mocks/aboutPageMock/result.json' assert { type: 'json' }
 
 const _URL = '/admin/about'
 
 test.describe('ADMIN - About page', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto(_URL)
-  })
-
   test('has page title', async ({ page }) => {
+    await page.goto(_URL)
+
     await expect(page).toHaveTitle(/ikatoo - software developer/i)
   })
 
-  test('should call submit with data when save button is clicked', async ({
-    page
-  }) => {
-    await page.getByPlaceholder('Título').fill('Olá. Bem vindo❗')
-    await page.getByPlaceholder('Título').press('Tab')
-    await page
-      .getByPlaceholder('Descrição', { exact: true })
-      .fill(
-        '<p>Me chamo Milton Carlos Katoo, moro em Itapira, interior de São Paulo/Brasil. Pai de uma princesa e filho de excelente cozinheira Italiana e um saldoso Japonês faz tudo, sou um desenvolvedor full-stack que ama programação e desenvolvimento de software afim de melhorar a vida das pessoas.</p><p>Pessoa bem organizada, solucionador de problemas, funcionário independente com alta atenção aos detalhes. Gosto de animes, mangas, games, séries de TV e filmes. Pai orgulhoso de uma princesa, sou nascido em 1979 e sou innteressado em todo o espectro de programação.</p><a class="text-mck_aqua underline underline-offset-8" href="https://ikatoo.com.br/contact/" rel="contact"><span>🎉</span>Vamos fazer algo especial.</a><span>😄</span>'
-      )
-    await page.getByPlaceholder('Descrição', { exact: true }).press('Tab')
-    await page
-      .getByPlaceholder(
-        'Press "," | "Enter" | "Shift+Enter" to add Habilidades'
-      )
-      .fill('playwright')
-    await page
-      .getByPlaceholder(
-        'Press "," | "Enter" | "Shift+Enter" to add Habilidades'
-      )
-      .press('Tab')
-    await page
-      .getByPlaceholder('https://domain.com/image.jpg')
-      .fill('https://example.com.br/image.jpg')
-    await page.getByPlaceholder('https://domain.com/image.jpg').press('Tab')
-    await page
-      .getByPlaceholder('Uma breve descrição da imagem')
-      .fill('description for image')
-    await page.getByPlaceholder('Uma breve descrição da imagem').press('Enter')
+  test('should save new about page', async ({ page }) => {
+    await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
+      await route.fulfill({ status: 204 })
+    })
+    await page.goto(_URL)
+
+    const title = page.getByPlaceholder('Título')
+    const description = page.getByPlaceholder('Descrição', { exact: true })
+    const skills = page.getByPlaceholder(
+      'Press "," | "Enter" | "Shift+Enter" to add Habilidades'
+    )
+    const imageURL = page.getByPlaceholder('https://domain.com/image.jpg')
+    const imageALT = page.getByPlaceholder('Uma breve descrição da imagem')
+    const saveButton = page.getByRole('button', { name: 'Salvar' })
+
+    await title.fill(aboutPageMock.title)
+    await title.press('Tab')
+
+    await description.fill(aboutPageMock.description)
+    await description.press('Tab')
+
+    for (let index = 0; index < aboutPageMock.skills.length; index++) {
+      await skills.fill(aboutPageMock.skills[index].title)
+      await skills.press(',')
+    }
+    await skills.press('Tab')
+
+    await imageURL.fill(aboutPageMock.illustrationURL)
+    await imageURL.press('Tab')
+
+    await imageALT.fill(aboutPageMock.illustrationALT)
+    await imageALT.press('Tab')
+
+    await saveButton.click()
+
+    await expect(page.getByText('Success on create about page.')).toBeVisible()
+  })
+
+  test('should complete update about page', async ({ page }) => {
+    const newData: typeof aboutPageMock = {
+      title: 'new title',
+      description: 'new description',
+      skills: [
+        {
+          title: 'new skill 1'
+        },
+        {
+          title: 'new skill 2'
+        }
+      ],
+      illustrationALT: 'illustration alt',
+      illustrationURL: 'https://ilustration.new'
+    }
+    await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
+      await route.fulfill({ json: aboutPageMock, status: 200 })
+    })
+    await page.goto(_URL)
+
+    const title = page.getByPlaceholder('Título')
+    const description = page.getByPlaceholder('Descrição', { exact: true })
+    const skills = page.getByPlaceholder(
+      'Press "," | "Enter" | "Shift+Enter" to add Habilidades'
+    )
+    const imageURL = page.getByPlaceholder('https://domain.com/image.jpg')
+    const imageALT = page.getByPlaceholder('Uma breve descrição da imagem')
+    const updateButton = page.getByRole('button', { name: 'Atualizar' })
+
+    await title.fill(newData.title)
+    await title.press('Tab')
+
+    await description.fill(newData.description)
+    await description.press('Tab')
+
+    for (let index = 0; index < newData.skills.length; index++) {
+      await skills.fill(newData.skills[index].title)
+      await skills.press(',')
+    }
+    await skills.press('Tab')
+
+    await imageURL.fill(newData.illustrationURL)
+    await imageURL.press('Tab')
+
+    await imageALT.fill(newData.illustrationALT)
+    await imageALT.press('Tab')
+
+    await updateButton.click()
+
+    await expect(page.getByText('Success on update about page.')).toBeVisible()
+  })
+
+  test('should partial update about page', async ({ page }) => {
+    await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
+      await route.fulfill({ json: aboutPageMock, status: 200 })
+    })
+    page.goto(_URL)
+
+    const description = page.getByPlaceholder('Descrição', { exact: true })
+    const updateButton = page.getByRole('button', { name: 'Atualizar' })
+
+    await description.fill('new description')
+    await updateButton.click()
+
+    await expect(page.getByText('Success on update about page.')).toBeVisible()
   })
 })
