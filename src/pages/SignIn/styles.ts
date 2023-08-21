@@ -6,8 +6,12 @@ export default {
     width: 100vw;
     height: 100vh;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    color: ${theme.colors.white};
   `,
   Container: styled.div`
+    margin: 1rem;
     display: flex;
     flex-direction: column;
     min-width: fit-content;
@@ -21,6 +25,7 @@ export default {
     border: 3px solid ${theme.colors.light};
   `,
   LogoWrapper: styled.div`
+    width: fit-content;
     aspect-ratio: 1/1;
     display: flex;
     align-items: center;
@@ -38,7 +43,13 @@ export default {
   `,
   OptionsWrapper: styled.div`
     display: flex;
-    flex-direction: row;
+    gap: 1.5rem;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
     flex-wrap: nowrap;
     width: 100%;
     justify-content: space-between;
@@ -56,18 +67,27 @@ export default {
   `,
   SocialLogin: styled.fieldset`
     display: flex;
-    flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
-    gap: 1rem;
     border-radius: 4px;
     border: 2px solid ${theme.colors.light};
     border-style: dashed;
+    width: 100%;
     padding: 0.5rem;
+    gap: 1rem;
+
+    button {
+    }
+    /*
+    gap: 1rem;
 
     button {
       padding: 0.7rem;
       min-width: 7rem;
     }
+    */
+  `,
+  Legend: styled.legend`
+    padding: 3px;
   `
 }
