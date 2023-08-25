@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
+import { useEffect, useState } from 'react'
 import Alert from './components/Alert'
-import { AlertProvider } from './hooks/useAlert'
+import { AlertProvider, useAlert } from './hooks/useAlert'
 import { About } from './pages/About'
 import { AdminAbout } from './pages/Admin/AdminAbout'
 import { AdminContact } from './pages/Admin/AdminContact'
@@ -10,10 +11,33 @@ import { AdminSkills } from './pages/Admin/AdminSkills'
 import { Contact } from './pages/Contact'
 import { PrivateLayout } from './pages/Layouts/PrivateLayout'
 import { PublicLayout } from './pages/Layouts/PublicLayout'
-import { SignInPage } from './pages/SignIn'
 import { NotFound } from './pages/NotFound'
 import { Projects } from './pages/Projects'
+import { SignInPage } from './pages/SignIn'
 import { Skills } from './pages/Skills'
+import authService from './services/authService'
+
+function RequireAuth({ children }: { children: JSX.Element }) {
+  const { setAlert } = useAlert()
+  const [authorized, setAuthorized] = useState(false)
+
+  useEffect(() => {
+    const verify = async () => {
+      const { data, status } = await authService.verifyToken()
+      if (status >= 400)
+        setAlert({
+          type: 'error',
+          title: data.message
+        })
+      setAuthorized(status === 200)
+    }
+    verify()
+  }, [setAlert])
+
+  if (authorized) return children
+
+  return <SignInPage />
+}
 
 function App() {
   return (
@@ -32,9 +56,9 @@ function App() {
           <Route
             path="/admin"
             element={
-              // <RequireAuth>
-              <PrivateLayout />
-              // </RequireAuth>
+              <RequireAuth>
+                <PrivateLayout />
+              </RequireAuth>
             }
           >
             <Route index element={<AdminAbout />} />
