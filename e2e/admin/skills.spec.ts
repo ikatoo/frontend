@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import skillsPageMock from 'shared/mocks/skillsPageMock/result.json' assert { type: 'json' }
+import { authorize } from 'src/helpers/playwrightUtils'
 
 const _URL = '/admin/skills'
 
@@ -11,6 +12,8 @@ test.describe('ADMIN - Skills page', () => {
   })
 
   test('should save new skills page', async ({ page }) => {
+    await authorize(page)
+
     await page.goto(_URL)
 
     const title = page.getByLabel('Título')
@@ -110,6 +113,8 @@ test.describe('ADMIN - Skills page', () => {
     await page.route(`${process.env.VITE_API_URL}/skills`, async (route) => {
       await route.fulfill({ json: skillsPageMock, status: 200 })
     })
+    await authorize(page)
+
     await page.goto(_URL)
 
     const title = page.getByLabel('Título')
@@ -169,6 +174,8 @@ test.describe('ADMIN - Skills page', () => {
     await page.route(`${process.env.VITE_API_URL}/skills`, async (route) => {
       await route.fulfill({ json: skillsPageMock, status: 200 })
     })
+    await authorize(page)
+
     await page.goto(_URL)
 
     const title = page.getByLabel('Título')

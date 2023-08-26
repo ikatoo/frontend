@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { SyntheticEvent, useState } from 'react'
+import { Link, redirect, useLocation } from 'react-router-dom'
 import Button from 'src/components/Button'
 import Logo from 'src/components/Logo'
 import TextInput from 'src/components/TextInput'
@@ -9,17 +9,21 @@ import Styles from './styles'
 
 export const SignInPage = () => {
   const { setAlert } = useAlert()
+  const { pathname } = useLocation()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSignIn = async () => {
+  const handleSignIn = async (event: SyntheticEvent) => {
+    event.preventDefault()
     const response = await authService.signIn({ email, password })
-    if (response instanceof Error)
+    if (response?.status !== 200) {
       return setAlert({
         type: 'error',
-        title: response.message
+        title: response?.data.message
       })
+    }
+    pathname !== '/signin' && response?.status === 200 && redirect(pathname)
   }
 
   return (
@@ -29,8 +33,8 @@ export const SignInPage = () => {
           <Logo name="Milton Carlos Katoo" description="Software Developer" />
         </Styles.LogoWrapper>
 
-        <Styles.InputWrapper>
-          <form onSubmit={handleSignIn}>
+        <form onSubmit={handleSignIn}>
+          <Styles.InputWrapper>
             <TextInput
               name="email"
               label="E-mail"
@@ -43,21 +47,21 @@ export const SignInPage = () => {
               labelColor="white"
               onInputChange={setPassword}
             />
-          </form>
-        </Styles.InputWrapper>
+          </Styles.InputWrapper>
 
-        <Styles.OptionsWrapper>
-          <Link to={'/'}>Recupere sua senha aqui.</Link>
-          <Link to={'/'}>Não tem conta? Cadastre-se aqui.</Link>
-        </Styles.OptionsWrapper>
+          <Styles.OptionsWrapper>
+            <Link to={'/'}>Recupere sua senha aqui.</Link>
+            <Link to={'/'}>Não tem conta? Cadastre-se aqui.</Link>
+          </Styles.OptionsWrapper>
 
-        <Button block styleType="primary" onClick={handleSignIn}>
-          ENTRAR
-        </Button>
+          <Button type="submit" block styleType="primary">
+            ENTRAR
+          </Button>
+        </form>
 
         <Styles.SocialLogin id="social-login">
           <Styles.Legend>Login com</Styles.Legend>
-          <Button styleType="secondary">
+          <Button styleType="secondary" aria-label="Login com Google">
             <svg
               width="25"
               height="26"
@@ -99,7 +103,7 @@ export const SignInPage = () => {
               </defs>
             </svg>
           </Button>
-          <Button styleType="secondary">
+          <Button styleType="secondary" aria-label="Login com Linkedin">
             <svg
               width="26"
               height="26"
@@ -117,7 +121,7 @@ export const SignInPage = () => {
               />
             </svg>
           </Button>
-          <Button styleType="secondary">
+          <Button styleType="secondary" aria-label="Login via email">
             <svg
               width="25"
               height="25"

@@ -20,13 +20,13 @@ test.describe('ADMIN - SignIn Page', () => {
     })
     const LoginGroup = page.getByRole('group')
     const googleButton = page.getByRole('button', {
-      name: 'GOOGLE'
+      name: 'Login com Google'
     })
     const linkedinButton = page.getByRole('button', {
-      name: 'LINKEDIN'
+      name: 'Login com Linkedin'
     })
     const emailButton = page.getByRole('button', {
-      name: 'E-MAIL'
+      name: 'Login via email'
     })
 
     await expect(logo).toBeVisible()
@@ -56,6 +56,21 @@ test.describe('ADMIN - SignIn Page', () => {
     page.route(`${process.env.VITE_API_URL}/auth`, async (route) => {
       await route.fulfill({ status: 200 })
     })
+
+    const mock = {
+      user: {
+        id: '7',
+        name: 'zé da silva',
+        email: 'ze@dasilva.com'
+      },
+      accessToken: 'valid-access-token'
+    }
+    await page.route(
+      `${process.env.VITE_API_URL}/auth/sign-in`,
+      async (route) => {
+        await route.fulfill({ status: 200, json: { data: mock } })
+      }
+    )
 
     await signInButton.click()
   })
