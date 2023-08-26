@@ -10,19 +10,35 @@ const githubAuth = async (code: string) => {
 }
 
 const signIn = async ({ username, email, password }: SignInProps) => {
-  const { data, status } = await api.post('/auth/sign-in', {
-    email,
-    username,
-    password
-  })
-  api.defaults.headers.Authorization = `Bearer ${data.accessToken}`
-  localStorage.setItem(`${env.VITE_LOCALSTORAGE_PREFIX}token`, data.accessToken)
-  localStorage.setItem(
-    `${env.VITE_LOCALSTORAGE_PREFIX}user`,
-    JSON.stringify(data.user)
-  )
+  try {
+    const { data, status } = await api.post('/auth/sign-in', {
+      email,
+      username,
+      password
+    })
+    api.defaults.headers.Authorization = `Bearer ${data.accessToken}`
+    localStorage.setItem(
+      `${env.VITE_LOCALSTORAGE_PREFIX}token`,
+      data.accessToken
+    )
+    localStorage.setItem(
+      `${env.VITE_LOCALSTORAGE_PREFIX}user`,
+      JSON.stringify(data.user)
+    )
 
-  return { data, status }
+    return { data, status }
+  } catch (error) {
+    if (!!error && typeof error === 'object' && 'response' in error) {
+      const response = error.response
+      if (
+        !!response &&
+        typeof response === 'object' &&
+        'data' in response &&
+        'status' in response
+      )
+        return { data: response?.data, status: response?.status }
+    }
+  }
 }
 
 const verifyToken = async () => {
