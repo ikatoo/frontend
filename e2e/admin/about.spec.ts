@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import aboutPageMock from 'shared/mocks/aboutPageMock/result.json' assert { type: 'json' }
+import { authorize } from 'src/helpers/playwrightUtils'
 
 const _URL = '/admin/about'
 
@@ -14,6 +15,8 @@ test.describe('ADMIN - About page', () => {
     await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
       await route.fulfill({ status: 204 })
     })
+    await authorize(page)
+
     await page.goto(_URL)
 
     const title = page.getByPlaceholder('Título')
@@ -66,6 +69,8 @@ test.describe('ADMIN - About page', () => {
     await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
       await route.fulfill({ json: aboutPageMock, status: 200 })
     })
+    await authorize(page)
+
     await page.goto(_URL)
 
     const title = page.getByPlaceholder('Título')
@@ -104,6 +109,8 @@ test.describe('ADMIN - About page', () => {
     await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
       await route.fulfill({ json: aboutPageMock, status: 200 })
     })
+    await authorize(page)
+
     page.goto(_URL)
 
     const description = page.getByPlaceholder('Descrição', { exact: true })
