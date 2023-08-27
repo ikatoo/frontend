@@ -6,6 +6,7 @@ import TextInput from 'src/components/TextInput'
 import { useAlert } from 'src/hooks/useAlert'
 import authService from 'src/services/authService'
 import Styles from './styles'
+import { HttpResponseSchema } from 'src/types/HttpResponse'
 
 export const SignInPage = () => {
   const { setAlert } = useAlert()
@@ -17,13 +18,17 @@ export const SignInPage = () => {
   const handleSignIn = async (event: SyntheticEvent) => {
     event.preventDefault()
     const response = await authService.signIn({ email, password })
-    if (response?.status !== 200) {
-      return setAlert({
-        type: 'error',
-        title: response?.data.message
-      })
+    const validResponse = HttpResponseSchema.safeParse(response)
+    if (validResponse.success) {
+      validResponse.data.status !== 200
+        ? setAlert({
+            type: 'error',
+            title: validResponse.data.data.message
+          })
+        : pathname !== '/signin' &&
+          validResponse.data.status === 200 &&
+          redirect(pathname)
     }
-    pathname !== '/signin' && response?.status === 200 && redirect(pathname)
   }
 
   return (
