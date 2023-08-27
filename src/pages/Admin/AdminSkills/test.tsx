@@ -1,3 +1,5 @@
+vi.mock('src/services/api')
+
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import skillsPageMock from 'shared/mocks/skillsPageMock/result.json'

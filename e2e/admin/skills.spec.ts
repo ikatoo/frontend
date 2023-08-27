@@ -131,7 +131,9 @@ test.describe('ADMIN - Skills page', () => {
       name: 'ADICIONAR TRABALHO'
     })
     const updateButton = page.getByRole('button', { name: 'Atualizar' })
-    expect(title).toHaveValue(skillsPageMock.title)
+
+    await expect(title).toHaveValue(skillsPageMock.title)
+
     await title.fill(newData.title)
     await title.press('Tab')
     await description.fill(newData.description)
@@ -164,7 +166,7 @@ test.describe('ADMIN - Skills page', () => {
     }
     await updateButton.click()
 
-    expect(page.getByText('Success on update skills page.')).toBeVisible()
+    await expect(page.getByText('Success on update skills page.')).toBeVisible()
   })
 
   test('should partial update skills page data', async ({ page }) => {
@@ -181,11 +183,11 @@ test.describe('ADMIN - Skills page', () => {
     const title = page.getByLabel('Título')
     const updateButton = page.getByRole('button', { name: 'Atualizar' })
 
-    expect(title).toHaveValue(skillsPageMock.title)
+    await expect(title).toHaveValue(skillsPageMock.title)
     await title.fill(newData.title)
     await title.press('Tab')
     await updateButton.click()
 
-    expect(page.getByText('Success on update skills page.')).toBeVisible()
+    await expect(page.getByText('Success on update skills page.')).toBeVisible()
   })
 })
