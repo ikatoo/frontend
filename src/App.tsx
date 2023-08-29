@@ -13,7 +13,9 @@ import { PrivateLayout } from './pages/Layouts/PrivateLayout'
 import { PublicLayout } from './pages/Layouts/PublicLayout'
 import { NotFound } from './pages/NotFound'
 import { Projects } from './pages/Projects'
+import { RecoveryPage } from './pages/Recovery'
 import { SignInPage } from './pages/SignIn'
+import { SignUpPage } from './pages/SignUp'
 import { Skills } from './pages/Skills'
 import authService from './services/authService'
 
@@ -46,6 +48,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/signin" element={<SignInPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/recovery" element={<RecoveryPage />} />
           <Route path="/" element={<PublicLayout />}>
             <Route index element={<About />} />
             <Route path="about" element={<About />} />
