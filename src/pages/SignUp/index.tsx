@@ -33,9 +33,13 @@ export const SignUpPage = () => {
 
   useEffect(() => {
     setEnabledSubmit(
-      !passwordError && !!name.length && !!email.length && !!password.length
+      !passwordError &&
+        !!name.length &&
+        !!email.length &&
+        !!password.length &&
+        !emailError
     )
-  }, [email.length, name.length, password.length, passwordError])
+  }, [email.length, emailError, name.length, password.length, passwordError])
 
   useEffect(() => {
     if (password === confirmPassword) return setPasswordError(undefined)
@@ -100,8 +104,8 @@ export const SignUpPage = () => {
           </Styles.InputWrapper>
 
           <Styles.OptionsWrapper>
-            <Link to={'/'}>Recupere sua senha aqui.</Link>
-            <Link to={'/'}>Não tem conta? Cadastre-se aqui.</Link>
+            <Link to={'/recovery'}>Recupere sua senha aqui.</Link>
+            <Link to={'/signin'}>Voltar a tela de login.</Link>
           </Styles.OptionsWrapper>
 
           <Button

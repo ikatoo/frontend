@@ -1,5 +1,6 @@
 import theme from 'src/theme'
 import styled from 'styled-components'
+import { Container } from '../SignIn/styles'
 
 export default {
   Page: styled.div`
@@ -14,20 +15,7 @@ export default {
       scale: 90%;
     }
   `,
-  Container: styled.div`
-    margin: 1rem;
-    display: flex;
-    flex-direction: column;
-    min-width: fit-content;
-    margin: auto;
-    padding: 1rem;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-
-    border-radius: 5px;
-    border: 3px solid ${theme.colors.light};
-  `,
+  Container,
   LogoWrapper: styled.div`
     width: fit-content;
     aspect-ratio: 1/1;

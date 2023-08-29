@@ -68,8 +68,8 @@ export const SignInPage = () => {
           </Styles.InputWrapper>
 
           <Styles.OptionsWrapper>
-            <Link to={'/'}>Recupere sua senha aqui.</Link>
-            <Link to={'/'}>Não tem conta? Cadastre-se aqui.</Link>
+            <Link to={'/recovery'}>Recupere sua senha aqui.</Link>
+            <Link to={'/signup'}>Não tem conta? Cadastre-se aqui.</Link>
           </Styles.OptionsWrapper>
 
           <Button
