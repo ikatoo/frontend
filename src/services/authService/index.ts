@@ -50,7 +50,9 @@ const verifyToken = async () => {
 }
 
 const signOut = async () => {
-  // await api.post('/auth/signout')
+  await api.post('/auth/signout')
+  localStorage.removeItem(`${env.VITE_LOCALSTORAGE_PREFIX}token`)
+
   return
 }
 

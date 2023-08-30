@@ -41,6 +41,16 @@ test.describe('ADMIN - SignIn Page', () => {
     await expect(emailButton).toBeVisible()
   })
 
+  test('redirect to signin page on access protected route without authentication', async ({
+    page
+  }) => {
+    await page.goto('/admin/about')
+
+    await expect(page).toHaveTitle(
+      'iKatoo - Software Developer - Authentication'
+    )
+  })
+
   test('do sign in and redirect to home', async ({ page }) => {
     await page.goto(_URL)
 
@@ -73,5 +83,13 @@ test.describe('ADMIN - SignIn Page', () => {
     )
 
     await signInButton.click()
+
+    await expect(page).toHaveURL('/about')
+  })
+
+  test('redirect to preview url after authentication', async ({ page }) => {
+    await page.goto('/admin/skills')
+
+
   })
 })

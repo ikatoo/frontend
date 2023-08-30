@@ -6,7 +6,7 @@ import Styles from './styles'
 
 const DesktopMenu = ({ social, links }: SideMenuProps) => {
   const { pathname } = useLocation()
-  const auth = { user: {} }
+  const user = {}
 
   const getStyle = (to: string, isActive: boolean) => {
     const isRoot =
@@ -35,7 +35,7 @@ const DesktopMenu = ({ social, links }: SideMenuProps) => {
             ))}
         </Styles.Links>
 
-        {auth.user ? (
+        {user ? (
           <Styles.Session>
             <Styles.DashboardLink>
               <Link to={'/admin'}>Dashboard</Link>
@@ -43,7 +43,7 @@ const DesktopMenu = ({ social, links }: SideMenuProps) => {
           </Styles.Session>
         ) : (
           <Styles.SignInLink>
-            <Link to={'/login'}>Entrar</Link>
+            <Link to={'/signin'}>Entrar</Link>
           </Styles.SignInLink>
         )}
       </Styles.LinksWrapper>
