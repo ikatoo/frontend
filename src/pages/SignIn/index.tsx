@@ -1,5 +1,5 @@
 import { SyntheticEvent, useEffect, useState } from 'react'
-import { Link, redirect, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from 'src/components/Button'
 import Logo from 'src/components/Logo'
 import TextInput from 'src/components/TextInput'
@@ -8,14 +8,20 @@ import authService from 'src/services/authService'
 import { EmailSchema } from 'src/types/Email'
 import { HttpResponseSchema } from 'src/types/HttpResponse'
 import Styles from './styles'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 
 export const SignInPage = () => {
   const { setAlert } = useAlert()
   const { pathname } = useLocation()
+  const navigate = useNavigate()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState<string>()
+
+  useEffect(() => {
+    setPageSubtitle('Authentication')
+  }, [])
 
   useEffect(() => {
     const validEmail = EmailSchema.safeParse(email)
@@ -37,9 +43,10 @@ export const SignInPage = () => {
             type: 'error',
             title: validResponse.data.data.message
           })
-        : pathname !== '/signin' &&
-          validResponse.data.status === 200 &&
-          redirect(pathname)
+        : (pathname !== '/signin' &&
+            validResponse.data.status === 200 &&
+            navigate(pathname)) ||
+          navigate('/about')
     }
   }
 
@@ -60,6 +67,7 @@ export const SignInPage = () => {
               error={emailError}
             />
             <TextInput
+              type="password"
               name="password"
               label="Senha"
               labelColor="white"

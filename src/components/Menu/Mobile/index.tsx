@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import SVG from 'react-inlinesvg'
 import { Link, NavLink, useLocation } from 'react-router-dom'
+import authService from 'src/services/authService'
 import { SideMenuProps } from '..'
 import CloseButton from '../../CloseButton'
 import Logo from '../../Logo'
@@ -9,9 +10,10 @@ import Styles from './styles'
 
 const MobileMenu = ({ social, links }: SideMenuProps) => {
   const { pathname } = useLocation()
-  const auth = { user: {}, signOut: () => ({}) }
 
   const [isClosed, setIsClosed] = useState(true)
+
+  const user = {}
 
   const getStyle = (to: string, isActive: boolean) => {
     const isRoot =
@@ -19,8 +21,8 @@ const MobileMenu = ({ social, links }: SideMenuProps) => {
     return isActive || isRoot ? 'text-mck_aqua' : 'text-gray-500'
   }
 
-  const handleSignOut = () => {
-    auth.signOut()
+  const handleSignOut = async () => {
+    await authService.signOut()
     setIsClosed(true)
   }
 
@@ -50,7 +52,7 @@ const MobileMenu = ({ social, links }: SideMenuProps) => {
                 </Styles.LinksItem>
               ))}
 
-            {auth.user ? (
+            {user ? (
               <Styles.Session>
                 <Styles.DashboardLink onClick={() => setIsClosed(true)}>
                   <Link to={'/admin'}>Dashboard</Link>
@@ -61,7 +63,7 @@ const MobileMenu = ({ social, links }: SideMenuProps) => {
               </Styles.Session>
             ) : (
               <Styles.SignInLink onClick={() => setIsClosed(true)}>
-                <Link to={'/login'}>Entrar</Link>
+                <Link to={'/signin'}>Entrar</Link>
               </Styles.SignInLink>
             )}
           </Styles.Links>

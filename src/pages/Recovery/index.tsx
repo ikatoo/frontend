@@ -1,5 +1,5 @@
 import { SyntheticEvent, useEffect, useState } from 'react'
-import { Link, redirect } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from 'src/components/Button'
 import Logo from 'src/components/Logo'
 import TextInput from 'src/components/TextInput'
@@ -10,6 +10,7 @@ import { HttpResponseSchema } from 'src/types/HttpResponse'
 import Styles from './styles'
 
 export const RecoveryPage = () => {
+  const navigate = useNavigate()
   const { setAlert } = useAlert()
 
   const [email, setEmail] = useState('')
@@ -33,7 +34,7 @@ export const RecoveryPage = () => {
   const handleRecovery = async (event: SyntheticEvent) => {
     event.preventDefault()
 
-    if (enabledSubmit) return
+    if (!enabledSubmit) return
 
     const response = await usersService.recoveryPassword(email)
     const validResponse = HttpResponseSchema.safeParse(response)
@@ -42,7 +43,7 @@ export const RecoveryPage = () => {
         type: 'message',
         title: 'Email enviado com sucesso.'
       })
-      redirect('/signin')
+      navigate('/signin')
     } else {
       setAlert({
         type: 'error',
