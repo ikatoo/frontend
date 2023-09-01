@@ -84,6 +84,7 @@ export const SignUpPage = () => {
               label="Nome"
               labelColor="white"
               onInputChange={setName}
+              autoFocus
             />
             <TextInput
               name="email"
