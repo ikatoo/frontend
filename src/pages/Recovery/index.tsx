@@ -74,6 +74,7 @@ export const RecoveryPage = () => {
               labelColor="white"
               onInputChange={setEmail}
               error={emailError}
+              autoFocus
             />
           </Styles.InputWrapper>
 

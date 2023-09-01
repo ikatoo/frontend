@@ -65,6 +65,7 @@ export const SignInPage = () => {
               labelColor="white"
               onInputChange={setEmail}
               error={emailError}
+              autoFocus
             />
             <TextInput
               type="password"
