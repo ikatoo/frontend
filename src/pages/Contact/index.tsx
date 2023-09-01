@@ -4,6 +4,7 @@ import { TextContainer } from '../../components/TextContainer'
 import contactService from '../../services/contactService'
 import Styles from './styles'
 import { LocalizationType } from 'src/types/LocalizationType'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 
 export const Contact = () => {
   const [description, setDescription] = useState('')
@@ -11,6 +12,8 @@ export const Contact = () => {
   const [localization, setLocalization] = useState<LocalizationType>()
 
   useEffect(() => {
+    setPageSubtitle('Contact Page')
+
     const getInitialData = async () => {
       const initialData = (await contactService.get())?.data
       initialData?.title && setTitle(initialData.title)

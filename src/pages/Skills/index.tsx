@@ -6,6 +6,7 @@ import ProgressBar from '../../components/ProgressBar'
 import { TextContainer } from '../../components/TextContainer'
 import skillsService from '../../services/skillsService'
 import Styles from './styles'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 
 type SkillProps = {
   skillTitle: string
@@ -25,6 +26,8 @@ export const Skills = () => {
   const [lastJobs, setLastJobs] = useState<Job[]>([])
 
   useEffect(() => {
+    setPageSubtitle('Skills Page')
+
     const getInitialData = async () => {
       const initialData = (await skillsService.get())?.data
       initialData?.title && setTitle(initialData.title)

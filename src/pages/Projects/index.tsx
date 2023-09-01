@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Card, { CardProps } from '../../components/Card'
 import Styles from './styles'
 import projectsService from '../../services/projectsService'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 
 export type ProjectProps = {
   id?: number
@@ -19,6 +20,8 @@ export const Projects = () => {
   const [projects, setProjects] = useState<ProjectProps[]>([])
 
   useEffect(() => {
+    setPageSubtitle('Projects Page')
+
     const getInitialData = async () => {
       const initialData = (await projectsService.get())?.data
       !!initialData && setProjects(initialData)

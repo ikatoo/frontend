@@ -10,6 +10,7 @@ import { ContactPageProps } from 'src/types/ContactPage'
 import { LocalizationType } from 'src/types/LocalizationType'
 import Localization from './Localization'
 import Styles from './styles'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 
 export const AdminContact = () => {
   const { setAlert } = useAlert()
@@ -48,6 +49,8 @@ export const AdminContact = () => {
   }, [updateLocalization])
 
   useEffect(() => {
+    setPageSubtitle('Edit Contact Page')
+
     const getInitialData = async () => {
       const result = await contactService.get()
       if (result?.status !== 200 || !result.data) {

@@ -8,6 +8,7 @@ import usersService from 'src/services/usersService'
 import { EmailSchema } from 'src/types/Email'
 import { HttpResponseSchema } from 'src/types/HttpResponse'
 import Styles from './styles'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 
 export const RecoveryPage = () => {
   const navigate = useNavigate()
@@ -16,6 +17,10 @@ export const RecoveryPage = () => {
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState<string>()
   const [enabledSubmit, setEnabledSubmit] = useState(false)
+
+  useEffect(() => {
+    setPageSubtitle('Recovery Page')
+  }, [])
 
   useEffect(() => {
     const validEmail = EmailSchema.safeParse(email)

@@ -10,6 +10,7 @@ import { useAlert } from '../../../hooks/useAlert'
 import aboutService from '../../../services/aboutService'
 import { AboutPageServiceProps } from '../../../types/AboutPage'
 import Styles from './styles'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 
 export const AdminAbout = () => {
   const { setAlert } = useAlert()
@@ -23,6 +24,8 @@ export const AdminAbout = () => {
   const [titleFocused, setTitleFocused] = useState(true)
 
   useEffect(() => {
+    setPageSubtitle('Edit About Page')
+
     const getInitialData = async () => {
       const result = await aboutService.get()
       setInitialData(result?.data)

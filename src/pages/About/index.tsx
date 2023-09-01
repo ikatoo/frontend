@@ -3,6 +3,7 @@ import IconCloud from '../../components/IconCloud'
 import { TextContainer } from '../../components/TextContainer'
 import aboutService from '../../services/aboutService'
 import Styles from './styles'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 
 type Skill = {
   title: string
@@ -16,6 +17,8 @@ export const About = () => {
   const [illustrationALT, setIllustrationALT] = useState('')
 
   useEffect(() => {
+    setPageSubtitle('About Page')
+
     const getInitialData = async () => {
       const initialData = (await aboutService.get())?.data
       initialData?.title && setTitle(initialData.title)
