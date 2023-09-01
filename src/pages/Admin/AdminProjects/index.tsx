@@ -16,6 +16,7 @@ import imageService from 'src/services/imageService'
 import projectsService from 'src/services/projectsService'
 import theme from 'src/theme'
 import Styles from './styles'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 
 export const AdminProjects = () => {
   const { setAlert } = useAlert()
@@ -39,6 +40,8 @@ export const AdminProjects = () => {
     !refLink.length
 
   useEffect(() => {
+    setPageSubtitle('Edit Projects Page')
+
     const getInitialData = async () => {
       const result = await projectsService.get()
       setInitialData(result?.data)

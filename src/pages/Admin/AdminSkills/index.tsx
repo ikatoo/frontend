@@ -13,6 +13,7 @@ import { useAlert } from 'src/hooks/useAlert'
 import skillsService from 'src/services/skillsService'
 import { Job, SkillsPageProps } from 'src/types/SkillsPage'
 import Styles from './styles'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 
 export const AdminSkills = () => {
   const { setAlert } = useAlert()
@@ -31,6 +32,8 @@ export const AdminSkills = () => {
   const [initialDataIsEmpty, setInitialDataIsEmpty] = useState(true)
 
   useEffect(() => {
+    setPageSubtitle('Edit Skills Page')
+
     const getInitialData = async () => {
       const result = await skillsService.get()
       if (result?.data) {

@@ -3,6 +3,7 @@ import { Link, redirect, useLocation } from 'react-router-dom'
 import Button from 'src/components/Button'
 import Logo from 'src/components/Logo'
 import TextInput from 'src/components/TextInput'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import { useAlert } from 'src/hooks/useAlert'
 import usersService from 'src/services/usersService'
 import { EmailSchema } from 'src/types/Email'
@@ -20,6 +21,10 @@ export const SignUpPage = () => {
   const [passwordError, setPasswordError] = useState<string>()
   const [emailError, setEmailError] = useState<string>()
   const [enabledSubmit, setEnabledSubmit] = useState(false)
+
+  useEffect(() => {
+    setPageSubtitle('Signup Page')
+  }, [])
 
   useEffect(() => {
     const validEmail = EmailSchema.safeParse(email)
