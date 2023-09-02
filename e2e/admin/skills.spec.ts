@@ -6,14 +6,16 @@ const _URL = '/admin/skills'
 
 test.describe('ADMIN - Skills page', () => {
   test('has page title', async ({ page }) => {
+    await authorize(page)
     await page.goto(_URL)
 
-    await expect(page).toHaveTitle(/ikatoo - software developer/i)
+    await expect(page).toHaveTitle(
+      /ikatoo - software developer - Edit Skills Page/i
+    )
   })
 
   test('should save new skills page', async ({ page }) => {
     await authorize(page)
-
     await page.goto(_URL)
 
     const title = page.getByLabel('Título')

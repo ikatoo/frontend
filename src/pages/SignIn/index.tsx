@@ -3,16 +3,16 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from 'src/components/Button'
 import Logo from 'src/components/Logo'
 import TextInput from 'src/components/TextInput'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import { useAlert } from 'src/hooks/useAlert'
 import authService from 'src/services/authService'
 import { EmailSchema } from 'src/types/Email'
 import { HttpResponseSchema } from 'src/types/HttpResponse'
 import Styles from './styles'
-import setPageSubtitle from 'src/helpers/setPageSubtitle'
 
 export const SignInPage = () => {
   const { setAlert } = useAlert()
-  const { pathname } = useLocation()
+  const { state } = useLocation()
   const navigate = useNavigate()
 
   const [email, setEmail] = useState('')
@@ -37,16 +37,25 @@ export const SignInPage = () => {
     event.preventDefault()
     const response = await authService.signIn({ email, password })
     const validResponse = HttpResponseSchema.safeParse(response)
-    if (validResponse.success) {
-      validResponse.data.status !== 200
-        ? setAlert({
-            type: 'error',
-            title: validResponse.data.data.message
-          })
-        : (pathname !== '/signin' &&
-            validResponse.data.status === 200 &&
-            navigate(pathname)) ||
-          navigate('/about')
+
+    if (!validResponse.success) {
+      setAlert({
+        type: 'error',
+        title: validResponse.error.issues[0].message
+      })
+      return
+    } else if (validResponse.data.status !== 200) {
+      setAlert({
+        type: 'error',
+        title: validResponse.data.data.message
+      })
+      return
+    }
+
+    if (!state || !state.redirectTo) {
+      navigate('/')
+    } else {
+      navigate(state.redirectTo)
     }
   }
 

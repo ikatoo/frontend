@@ -1,4 +1,10 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation
+} from 'react-router-dom'
 
 import { useEffect, useState } from 'react'
 import Alert from './components/Alert'
@@ -21,24 +27,36 @@ import authService from './services/authService'
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const { setAlert } = useAlert()
-  const [authorized, setAuthorized] = useState(false)
+  const { pathname } = useLocation()
+
+  const [authorized, setAuthorized] = useState<boolean>()
 
   useEffect(() => {
     const verify = async () => {
-      const { data, status } = await authService.verifyToken()
-      if (status >= 400)
+      const result = await authService.verifyToken()
+
+      if (!result) return
+
+      const { data, status } = result
+      const isAuthorized = status !== 401
+      isAuthorized &&
         setAlert({
           type: 'error',
           title: data.message
         })
-      setAuthorized(status === 200)
+      setAuthorized(isAuthorized)
     }
     verify()
   }, [setAlert])
 
-  if (authorized) return children
+  if (authorized === undefined) return <div>loading...</div>
 
-  return <SignInPage />
+  if (authorized) {
+    return children
+  }
+
+  const target = pathname === '/signin' ? '/' : pathname
+  return <Navigate to="/signin" state={{ redirectTo: target }} />
 }
 
 function App() {

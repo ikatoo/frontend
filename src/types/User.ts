@@ -10,6 +10,8 @@ export type User = {
   }
 }
 
+export type PartialUser = Partial<User>
+
 export type UserSignUp = {
   name: string
   email: string
