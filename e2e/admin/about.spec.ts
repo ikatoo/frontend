@@ -6,9 +6,12 @@ const _URL = '/admin/about'
 
 test.describe('ADMIN - About page', () => {
   test('has page title', async ({ page }) => {
+    await authorize(page)
     await page.goto(_URL)
 
-    await expect(page).toHaveTitle(/ikatoo - software developer/i)
+    await expect(page).toHaveTitle(
+      /ikatoo - software developer - Edit About Page/i
+    )
   })
 
   test('should save new about page', async ({ page }) => {

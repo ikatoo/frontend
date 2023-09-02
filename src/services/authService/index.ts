@@ -42,11 +42,23 @@ const signIn = async ({ username, email, password }: SignInProps) => {
 }
 
 const verifyToken = async () => {
-  const token = localStorage.getItem(`${env.VITE_LOCALSTORAGE_PREFIX}token`)
-  api.defaults.headers.Authorization = `Bearer ${token}`
-  const { data, status } = await api.post('/auth/verify-token')
-
-  return { data, status }
+  try {
+    const token = localStorage.getItem(`${env.VITE_LOCALSTORAGE_PREFIX}token`)
+    api.defaults.headers.Authorization = `Bearer ${token}`
+    const { data, status } = await api.post('/auth/verify-token')
+    return { data, status }
+  } catch (error) {
+    if (!!error && typeof error === 'object' && 'response' in error) {
+      const response = error.response
+      if (
+        !!response &&
+        typeof response === 'object' &&
+        'data' in response &&
+        'status' in response
+      )
+        return { data: response?.data, status: response?.status }
+    }
+  }
 }
 
 const signOut = async () => {
