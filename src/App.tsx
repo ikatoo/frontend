@@ -24,6 +24,7 @@ import { SignInPage } from './pages/SignIn'
 import { SignUpPage } from './pages/SignUp'
 import { Skills } from './pages/Skills'
 import authService from './services/authService'
+import { HttpResponseSchema } from './types/HttpResponse'
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const { setAlert } = useAlert()
@@ -35,16 +36,35 @@ function RequireAuth({ children }: { children: JSX.Element }) {
     const verify = async () => {
       const result = await authService.verifyToken()
 
-      if (!result) return
+      const validateResponse = HttpResponseSchema.safeParse(result)
 
-      const { data, status } = result
-      const isAuthorized = status !== 401
-      isAuthorized &&
+      if (!validateResponse.success) {
         setAlert({
           type: 'error',
-          title: data.message
+          title: 'Unknown error on server'
+        })
+        return
+      }
+
+      const { data, status } = validateResponse.data
+      const isAuthorized = status !== 401
+      !isAuthorized &&
+        setAlert({
+          type: 'error',
+          title: !!data && 'message' in data && data.message
         })
       setAuthorized(isAuthorized)
+
+      // if (!result) return
+
+      // const { data, status } = result
+      // const isAuthorized = status !== 401
+      // !isAuthorized &&
+      //   setAlert({
+      //     type: 'error',
+      //     title: !!data && 'message' in data && data.message
+      //   })
+      // setAuthorized(isAuthorized)
     }
     verify()
   }, [setAlert])
