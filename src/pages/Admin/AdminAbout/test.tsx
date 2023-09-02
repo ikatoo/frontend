@@ -8,6 +8,7 @@ import { describe, expect, test, vi } from 'vitest'
 import { AdminAbout } from '.'
 import Alert from '../../../components/Alert'
 import { AlertProvider } from '../../../hooks/useAlert'
+import authService from 'src/services/authService'
 
 describe('ADMIN: About page', () => {
   test('should render all fields', () => {
@@ -26,6 +27,9 @@ describe('ADMIN: About page', () => {
   test('should load data at render', async () => {
     aboutService.get = vi.fn().mockResolvedValue({
       data: aboutPageMock,
+      status: 200
+    })
+    authService.verifyToken = vi.fn().mockResolvedValueOnce({
       status: 200
     })
 

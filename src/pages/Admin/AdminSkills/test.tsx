@@ -10,6 +10,7 @@ import skillsService from 'src/services/skillsService'
 import { AlertProvider } from 'src/hooks/useAlert'
 import { stringToDateFormat } from 'src/helpers/date'
 import Alert from 'src/components/Alert'
+import authService from 'src/services/authService'
 
 describe('ADMIN: Skills page', () => {
   beforeEach(() => {
@@ -57,6 +58,9 @@ describe('ADMIN: Skills page', () => {
   test('should load data at render', async () => {
     api.get = vi.fn().mockResolvedValue({
       data: skillsPageMock
+    })
+    api.post = vi.fn().mockResolvedValue({
+      status: 200
     })
 
     render(<AdminSkills />)
@@ -346,6 +350,9 @@ describe('ADMIN: Skills page', () => {
   test('should clear all text inputs, skills tags, jobs cards and set focus in the first text input when click on Clear Button', async () => {
     skillsService.get = vi.fn().mockResolvedValue({
       data: skillsPageMock,
+      status: 200
+    })
+    authService.verifyToken = vi.fn().mockResolvedValueOnce({
       status: 200
     })
 

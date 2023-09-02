@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { authorize } from 'src/helpers/playwrightUtils'
 
 const _URL = '/signin'
 
@@ -63,9 +64,10 @@ test.describe('ADMIN - SignIn Page', () => {
     await email.fill('user@email.com')
     await password.fill('password')
 
-    page.route(`${process.env.VITE_API_URL}/auth`, async (route) => {
-      await route.fulfill({ status: 200 })
-    })
+    await authorize(page)
+    // page.route(`${process.env.VITE_API_URL}/auth`, async (route) => {
+    //   await route.fulfill({ status: 200 })
+    // })
 
     const mock = {
       user: {
