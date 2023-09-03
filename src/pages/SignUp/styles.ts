@@ -11,7 +11,7 @@ export default {
     justify-content: center;
     color: ${theme.colors.white};
 
-    @media (max-height: 600px) {
+    @media (max-height: 768px) {
       scale: 90%;
     }
   `,
