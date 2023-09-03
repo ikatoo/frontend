@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
-import {} from 'react-router-dom'
 import JobsCards from 'src/components/JobsCards'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import { Job } from 'src/types/SkillsPage'
 import ProgressBar from '../../components/ProgressBar'
 import { TextContainer } from '../../components/TextContainer'
 import skillsService from '../../services/skillsService'
 import Styles from './styles'
-import setPageSubtitle from 'src/helpers/setPageSubtitle'
 
 type SkillProps = {
   skillTitle: string
@@ -55,11 +54,6 @@ export const Skills = () => {
             <Styles.Progress>
               <Styles.Subtitle>Estudo</Styles.Subtitle>
               {skills.map(({ skillTitle }, index) => (
-                // <ProgressBar
-                //   key={index}
-                //   label={skillTitle}
-                //   percent={rankPercent}
-                // />
                 <ProgressBar key={index} label={skillTitle} percent={0} />
               ))}
             </Styles.Progress>

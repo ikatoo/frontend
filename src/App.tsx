@@ -59,7 +59,6 @@ function RequireAuth({ children }: { children: JSX.Element }) {
     verify()
   }, [setAlert])
 
-  // if (authorized === undefined) return <div>loading...</div>
   if (authorized === undefined) return <Loading />
 
   if (authorized) {
