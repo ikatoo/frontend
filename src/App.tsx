@@ -25,6 +25,7 @@ import { SignUpPage } from './pages/SignUp'
 import { Skills } from './pages/Skills'
 import authService from './services/authService'
 import { HttpResponseSchema } from './types/HttpResponse'
+import Loading from './components/Loading'
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const { setAlert } = useAlert()
@@ -54,22 +55,12 @@ function RequireAuth({ children }: { children: JSX.Element }) {
           title: !!data && 'message' in data && data.message
         })
       setAuthorized(isAuthorized)
-
-      // if (!result) return
-
-      // const { data, status } = result
-      // const isAuthorized = status !== 401
-      // !isAuthorized &&
-      //   setAlert({
-      //     type: 'error',
-      //     title: !!data && 'message' in data && data.message
-      //   })
-      // setAuthorized(isAuthorized)
     }
     verify()
   }, [setAlert])
 
-  if (authorized === undefined) return <div>loading...</div>
+  // if (authorized === undefined) return <div>loading...</div>
+  if (authorized === undefined) return <Loading />
 
   if (authorized) {
     return children
@@ -89,8 +80,7 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/recovery" element={<RecoveryPage />} />
           <Route path="/" element={<PublicLayout />}>
-            <Route index element={<About />} />
-            <Route path="about" element={<About />} />
+            <Route index path="about" element={<About />} />
             <Route path="skills" element={<Skills />} />
             <Route path="contact" element={<Contact />} />
             <Route path="projects" element={<Projects />} />

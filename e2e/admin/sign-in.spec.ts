@@ -65,9 +65,6 @@ test.describe('ADMIN - SignIn Page', () => {
     await password.fill('password')
 
     await authorize(page)
-    // page.route(`${process.env.VITE_API_URL}/auth`, async (route) => {
-    //   await route.fulfill({ status: 200 })
-    // })
 
     const mock = {
       user: {

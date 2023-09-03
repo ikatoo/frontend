@@ -1,18 +1,18 @@
 import { SyntheticEvent, useEffect, useState } from 'react'
-import { Link, redirect, useLocation } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from 'src/components/Button'
 import Logo from 'src/components/Logo'
 import TextInput from 'src/components/TextInput'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import { useAlert } from 'src/hooks/useAlert'
+import api from 'src/services/api'
 import usersService from 'src/services/usersService'
 import { EmailSchema } from 'src/types/Email'
-import { HttpResponseSchema } from 'src/types/HttpResponse'
 import Styles from './styles'
 
 export const SignUpPage = () => {
   const { setAlert } = useAlert()
-  const { pathname } = useLocation()
+  const navigate = useNavigate()
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -54,20 +54,22 @@ export const SignUpPage = () => {
   const handleSignUp = async (event: SyntheticEvent) => {
     event.preventDefault()
 
-    if (enabledSubmit) return
+    if (!enabledSubmit) return
 
     const response = await usersService.create({ name, email, password })
-    const validResponse = HttpResponseSchema.safeParse(response)
-    if (validResponse.success) {
-      validResponse.data.status !== 200
-        ? setAlert({
-            type: 'error',
-            title: validResponse.data.data.message
-          })
-        : pathname !== '/signin' &&
-          validResponse.data.status === 200 &&
-          redirect(pathname)
+    if (response.status === 201) {
+      api.defaults.headers.Authorization = `Bearer ${response.data.accessToken}`
+      navigate('/admin')
+      return
     }
+
+    setAlert({
+      type: 'error',
+      title:
+        response.status === 500
+          ? 'Internal Server Error'
+          : response.data.message
+    })
   }
 
   return (
@@ -96,6 +98,7 @@ export const SignUpPage = () => {
             <TextInput
               name="password"
               label="Senha"
+              type="password"
               labelColor="white"
               onInputChange={setPassword}
               error={passwordError}
@@ -103,6 +106,7 @@ export const SignUpPage = () => {
             <TextInput
               name="confirm-password"
               label="Confirmar Senha"
+              type="password"
               labelColor="white"
               onInputChange={setConfirmPassword}
               error={passwordError}
@@ -120,7 +124,7 @@ export const SignUpPage = () => {
             block
             styleType="primary"
           >
-            ENTRAR
+            CADASTRAR
           </Button>
         </Styles.Container>
       </form>
