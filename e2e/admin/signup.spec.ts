@@ -14,7 +14,8 @@ test.describe('ADMIN - Signup Page', () => {
 
     const logo = page.getByLabel('Logotipo')
     const name = page.getByLabel('Nome')
-    const email = page.getByLabel('E-mail')
+    const email = page.getByLabel('E-mail', { exact: true })
+    const confirmEmail = page.getByLabel('Confirmar E-mail', { exact: true })
     const password = page.getByLabel('Senha', { exact: true })
     const confirmPassword = page.getByLabel('Confirmar Senha', { exact: true })
     const recoveryLink = page.getByRole('link', {
@@ -30,6 +31,7 @@ test.describe('ADMIN - Signup Page', () => {
     await expect(logo).toBeVisible()
     await expect(name).toBeVisible()
     await expect(email).toBeVisible()
+    await expect(confirmEmail).toBeVisible()
     await expect(password).toBeVisible()
     await expect(confirmPassword).toBeVisible()
     await expect(recoveryLink).toBeVisible()
@@ -44,7 +46,8 @@ test.describe('ADMIN - Signup Page', () => {
     await page.goto(_URL)
 
     const name = page.getByLabel('Nome')
-    const email = page.getByLabel('E-mail')
+    const email = page.getByLabel('E-mail', { exact: true })
+    const confirmEmail = page.getByLabel('Confirmar E-mail', { exact: true })
     const password = page.getByLabel('Senha', { exact: true })
     const confirmPassword = page.getByLabel('Confirmar Senha', { exact: true })
     const signupButton = page.getByRole('button', { name: 'CADASTRAR' })
@@ -54,6 +57,9 @@ test.describe('ADMIN - Signup Page', () => {
 
     await email.fill(mockedUser.email)
     await email.press('Tab')
+
+    await confirmEmail.fill(mockedUser.email)
+    await confirmEmail.press('Tab')
 
     await password.fill(mockedUser.password)
     await password.press('Tab')
@@ -84,7 +90,8 @@ test.describe('ADMIN - Signup Page', () => {
     await page.goto(_URL)
 
     const name = page.getByLabel('Nome')
-    const email = page.getByLabel('E-mail')
+    const email = page.getByLabel('E-mail', { exact: true })
+    const confirmEmail = page.getByLabel('Confirmar E-mail', { exact: true })
     const password = page.getByLabel('Senha', { exact: true })
     const confirmPassword = page.getByLabel('Confirmar Senha', { exact: true })
     const signupButton = page.getByRole('button', { name: 'CADASTRAR' })
@@ -94,6 +101,9 @@ test.describe('ADMIN - Signup Page', () => {
 
     await email.fill(mockedUser.email)
     await email.press('Tab')
+
+    await confirmEmail.fill(mockedUser.email)
+    await confirmEmail.press('Tab')
 
     await password.fill(mockedUser.password)
     await password.press('Tab')
