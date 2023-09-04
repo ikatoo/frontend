@@ -16,6 +16,7 @@ export const SignUpPage = () => {
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [confirmEmail, setConfirmEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [passwordError, setPasswordError] = useState<string>()
@@ -28,13 +29,17 @@ export const SignUpPage = () => {
 
   useEffect(() => {
     const validEmail = EmailSchema.safeParse(email)
+    const emailConfirmation = email === confirmEmail
 
-    if (!!email.length && !validEmail.success) {
-      setEmailError(validEmail.error.issues[0].message)
+    if (!emailConfirmation)
+      return setEmailError('E-Email e Confirmar Email precisam ser iguais.')
+
+    if (!!email.length && !validEmail.success && emailConfirmation) {
+      return setEmailError(validEmail.error.issues[0].message)
     } else {
-      setEmailError(undefined)
+      return setEmailError(undefined)
     }
-  }, [email])
+  }, [confirmEmail, email])
 
   useEffect(() => {
     setEnabledSubmit(
@@ -93,6 +98,13 @@ export const SignUpPage = () => {
               label="E-mail"
               labelColor="white"
               onInputChange={setEmail}
+              error={emailError}
+            />
+            <TextInput
+              name="confirm-email"
+              label="Confirmar E-mail"
+              labelColor="white"
+              onInputChange={setConfirmEmail}
               error={emailError}
             />
             <TextInput
