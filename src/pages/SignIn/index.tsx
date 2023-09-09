@@ -5,15 +5,16 @@ import Logo from 'src/components/Logo'
 import TextInput from 'src/components/TextInput'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import { useAlert } from 'src/hooks/useAlert'
-import authService from 'src/services/authService'
+import { useAuthStore } from 'src/store/useAuthStore'
 import { EmailSchema } from 'src/types/Email'
-import { HttpResponseSchema } from 'src/types/HttpResponse'
 import Styles from './styles'
+import { setLocalStorage } from 'src/helpers/localStorage'
 
 export const SignInPage = () => {
   const { setAlert } = useAlert()
   const { state } = useLocation()
   const navigate = useNavigate()
+  const signin = useAuthStore((state) => state.signin)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -21,7 +22,8 @@ export const SignInPage = () => {
 
   useEffect(() => {
     setPageSubtitle('Authentication')
-  }, [])
+    console.log('state ===>', state)
+  }, [state])
 
   useEffect(() => {
     const validEmail = EmailSchema.safeParse(email)
@@ -35,22 +37,20 @@ export const SignInPage = () => {
 
   const handleSignIn = async (event: SyntheticEvent) => {
     event.preventDefault()
-    const response = await authService.signIn({ email, password })
-    const validResponse = HttpResponseSchema.safeParse(response)
 
-    if (!validResponse.success) {
+    const result = await signin({ email, password })
+
+    if (result.error) {
       setAlert({
         type: 'error',
-        title: validResponse.error.issues[0].message
-      })
-      return
-    } else if (validResponse.data.status !== 200) {
-      setAlert({
-        type: 'error',
-        title: validResponse.data.data.message
+        title: result.error
       })
       return
     }
+
+    const { accessToken, user } = result
+    setLocalStorage('token', JSON.stringify(accessToken))
+    setLocalStorage('user', JSON.stringify(user))
 
     if (!state || !state.redirectTo) {
       navigate('/')

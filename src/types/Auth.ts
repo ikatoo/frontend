@@ -1,10 +1,13 @@
-import { User } from './User'
+import { z } from 'zod'
+import { UserSchema } from './User'
 
-export type AuthResponseType = {
-  user: Omit<User, 'password'>
-  accessToken: string
-  refreshToken: string
-}
+export const AuthResponseSchema = z.object({
+  user: UserSchema.partial().optional(),
+  accessToken: z.string().optional(),
+  error: z.string().optional()
+})
+
+export type AuthResponseType = z.infer<typeof AuthResponseSchema>
 
 export type SignInProps = {
   password: string
