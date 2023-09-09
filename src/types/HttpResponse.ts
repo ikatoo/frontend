@@ -1,11 +1,13 @@
 import { z } from 'zod'
 
 export const HttpResponseSchema = z.object({
-  data: z
+  data: z.object({}).optional(),
+  error: z
     .object({
-      message: z.string().optional()
+      message: z.string()
     })
-    .or(z.any()),
+    .optional(),
+  // .or(z.any()),
   status: z.number().int().positive()
 })
 

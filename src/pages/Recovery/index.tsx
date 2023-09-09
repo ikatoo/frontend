@@ -53,7 +53,7 @@ export const RecoveryPage = () => {
       setAlert({
         type: 'error',
         title: validResponse.success
-          ? validResponse.data.data.message
+          ? validResponse.data.error?.message
           : validResponse.error.issues[0].message
       })
     }

@@ -1,6 +1,9 @@
-import env from 'src/helpers/env'
+import { isAxiosError } from 'axios'
+import { HttpResponse } from 'src/types/HttpResponse'
 import { AuthResponseType, SignInProps } from '../../types/Auth'
 import api from '../api'
+
+type SignInFunction = (credentials: SignInProps) => Promise<HttpResponse>
 
 const githubAuth = async (code: string) => {
   const response = await api.post<AuthResponseType>('/auth/github', {
@@ -9,7 +12,7 @@ const githubAuth = async (code: string) => {
   return response.data
 }
 
-const signIn = async ({ username, email, password }: SignInProps) => {
+const signIn: SignInFunction = async ({ username, email, password }) => {
   try {
     const { data, status } = await api.post('/auth/sign-in', {
       email,
@@ -17,53 +20,44 @@ const signIn = async ({ username, email, password }: SignInProps) => {
       password
     })
     api.defaults.headers.Authorization = `Bearer ${data.accessToken}`
-    localStorage.setItem(
-      `${env.VITE_LOCALSTORAGE_PREFIX}token`,
-      data.accessToken
-    )
-    localStorage.setItem(
-      `${env.VITE_LOCALSTORAGE_PREFIX}user`,
-      JSON.stringify(data.user)
-    )
 
     return { data, status }
   } catch (error) {
-    if (!!error && typeof error === 'object' && 'response' in error) {
-      const response = error.response
-      if (
-        !!response &&
-        typeof response === 'object' &&
-        'data' in response &&
-        'status' in response
-      )
-        return { data: response?.data, status: response?.status }
-    }
+    if (isAxiosError(error))
+      return {
+        error: {
+          message: error.message
+        },
+        status: error.response?.status ?? 500
+      }
   }
+
+  return { status: 500 }
 }
 
-const verifyToken = async () => {
+const verifyToken = async (token: string) => {
   try {
-    const token = localStorage.getItem(`${env.VITE_LOCALSTORAGE_PREFIX}token`)
     api.defaults.headers.Authorization = `Bearer ${token}`
     const { data, status } = await api.post('/auth/verify-token')
     return { data, status }
   } catch (error) {
-    if (!!error && typeof error === 'object' && 'response' in error) {
-      const response = error.response
-      if (
-        !!response &&
-        typeof response === 'object' &&
-        'data' in response &&
-        'status' in response
-      )
-        return { data: response?.data, status: response?.status }
-    }
+    if (isAxiosError(error))
+      return {
+        error: {
+          message: error.message
+        },
+        status: error.response?.status ?? 500
+      }
   }
 }
 
 const signOut = async () => {
-  await api.post('/auth/signout')
-  localStorage.removeItem(`${env.VITE_LOCALSTORAGE_PREFIX}token`)
+  try {
+    await api.post('/auth/sign-out')
+  } catch (error) {
+    console.log(error)
+  }
+  api.defaults.headers.Authorization = ''
 
   return
 }
