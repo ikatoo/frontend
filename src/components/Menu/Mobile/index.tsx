@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import SVG from 'react-inlinesvg'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import authService from 'src/services/authService'
+import { useAuthStore } from 'src/store/useAuthStore'
 import { SideMenuProps } from '..'
 import CloseButton from '../../CloseButton'
 import Logo from '../../Logo'
@@ -10,6 +10,7 @@ import Styles from './styles'
 
 const MobileMenu = ({ social, links }: SideMenuProps) => {
   const { pathname } = useLocation()
+  const signout = useAuthStore((state) => state.signout)
 
   const [isClosed, setIsClosed] = useState(true)
 
@@ -22,7 +23,7 @@ const MobileMenu = ({ social, links }: SideMenuProps) => {
   }
 
   const handleSignOut = async () => {
-    await authService.signOut()
+    await signout()
     setIsClosed(true)
   }
 

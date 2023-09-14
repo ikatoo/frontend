@@ -1,15 +1,16 @@
 import { useState } from 'react'
 
+import { useAuthStore } from 'src/store/useAuthStore'
 import Styles from './styles'
-import authService from 'src/services/authService'
 
 const Session = () => {
-  const user = { name: '', avatar: { url: '', alt: '' } }
+  const user = useAuthStore((state) => state.user)
+  const signout = useAuthStore((state) => state.signout)
   const avatar = user?.avatar
   const [hidden, setHidden] = useState(true)
 
   const signOut = async () => {
-    await authService.signOut()
+    await signout()
   }
 
   return (

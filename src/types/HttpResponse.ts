@@ -7,7 +7,6 @@ export const HttpResponseSchema = z.object({
       message: z.string()
     })
     .optional(),
-  // .or(z.any()),
   status: z.number().int().positive()
 })
 

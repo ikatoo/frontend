@@ -53,13 +53,19 @@ const verifyToken = async (token: string) => {
 
 const signOut = async () => {
   try {
-    await api.post('/auth/sign-out')
-  } catch (error) {
-    console.log(error)
-  }
-  api.defaults.headers.Authorization = ''
+    const { data, status } = await api.post('/auth/sign-out')
+    api.defaults.headers.Authorization = ''
 
-  return
+    return { data, status }
+  } catch (error) {
+    if (isAxiosError(error))
+      return {
+        error: {
+          message: error.message
+        },
+        status: error.response?.status ?? 500
+      }
+  }
 }
 
 export default {

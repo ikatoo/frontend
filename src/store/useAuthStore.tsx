@@ -1,3 +1,8 @@
+import {
+  getLocalStorage,
+  removeLocalStorage,
+  setLocalStorage
+} from 'src/helpers/localStorage'
 import authService from 'src/services/authService'
 import {
   AuthResponseSchema,
@@ -9,38 +14,60 @@ import { create } from 'zustand'
 
 type UseAuthProps = {
   user: PartialUser | undefined
+  loading: boolean
   signin: (credentials: SignInProps) => Promise<AuthResponseType>
   signout: () => void
-  verifyToken: (token: string) => Promise<AuthResponseType>
+  verifyToken: () => Promise<AuthResponseType>
 }
 
 export const useAuthStore = create<UseAuthProps>((set) => ({
   user: undefined,
+  loading: false,
   signin: async (credentials) => {
+    set(() => ({ loading: true }))
+
     const response = await authService.signIn(credentials)
     const validSignInResponse = AuthResponseSchema.safeParse(response.data)
 
     if (validSignInResponse.success) {
       const { data } = validSignInResponse
-      set(() => ({ user: data.user }))
+
+      const { accessToken, user } = data
+      setLocalStorage('token', accessToken ?? '')
+
+      set(() => ({ user, loading: false }))
       return data
     }
 
+    set(() => ({ loading: false }))
     return { error: validSignInResponse.error.message }
   },
   signout: async () => {
+    set(() => ({ loading: true }))
+
     await authService.signOut()
-    set(() => ({ user: undefined }))
+    removeLocalStorage('token')
+    set(() => ({ user: undefined, loading: false }))
   },
-  verifyToken: async (token: string) => {
-    const response = await authService.verifyToken(`${token}`)
+  verifyToken: async () => {
+    set(() => ({ loading: true }))
+    const accessToken = getLocalStorage('token')
+    if (!accessToken) {
+      set(() => ({ user: undefined, loading: false }))
+
+      return { error: 'Unauthorized' }
+    }
+    const response = await authService.verifyToken(accessToken)
     const validResponse = AuthResponseSchema.safeParse(response?.data)
 
     if (validResponse.success) {
       const { data } = validResponse
-      set(() => ({ user: data.user }))
+      set(() => ({ user: data.user, loading: false }))
       return data
     }
+
+    removeLocalStorage('token')
+    set(() => ({ user: undefined, loading: false }))
 
     return { error: validResponse.error.message }
   }

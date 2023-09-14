@@ -7,10 +7,10 @@ import {
   useNavigate
 } from 'react-router-dom'
 
-import Alert from './components/Alert'
 import { useEffect } from 'react'
-import { getLocalStorage } from './helpers/localStorage'
-import { AlertProvider } from './hooks/useAlert'
+import Alert from './components/Alert'
+import Loading from './components/Loading'
+import { AlertProvider, useAlert } from './hooks/useAlert'
 import { About } from './pages/About'
 import { AdminAbout } from './pages/Admin/AdminAbout'
 import { AdminContact } from './pages/Admin/AdminContact'
@@ -28,26 +28,40 @@ import { Skills } from './pages/Skills'
 import { useAuthStore } from './store/useAuthStore'
 
 function RequireAuth({ children }: { children: JSX.Element }) {
-  const { pathname } = useLocation()
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const { setAlert } = useAlert()
 
   const user = useAuthStore((state) => state.user)
+  const loading = useAuthStore((state) => state.loading)
   const verifyToken = useAuthStore((state) => state.verifyToken)
 
   const target = pathname === '/signin' ? '/' : pathname
 
   useEffect(() => {
-    !user && navigate('/signin', { state: { redirectTo: target } })
-  }, [navigate, target, user])
+    const verify = async () => {
+      const result = await verifyToken()
+      if (!result || !Object.keys(result).length || result.error) {
+        setAlert({
+          type: 'error',
+          title: result.error
+        })
+        navigate('/signin', { state: { redirectTo: target } })
+        return
+      }
+    }
+    verify()
+  }, [navigate, setAlert, target, verifyToken])
 
-  useEffect(() => {
-    const token = getLocalStorage('token')
-    !!token && verifyToken(token)
-  }, [verifyToken])
+  if (!loading && !user) {
+    return <Navigate to="/signin" state={{ redirectTo: target }} />
+  }
 
-  if (user) return children
+  if (!loading && user) {
+    return children
+  }
 
-  return <Navigate to="/signin" state={{ redirectTo: target }} />
+  return <Loading />
 }
 
 function App() {
