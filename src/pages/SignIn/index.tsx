@@ -8,7 +8,6 @@ import { useAlert } from 'src/hooks/useAlert'
 import { useAuthStore } from 'src/store/useAuthStore'
 import { EmailSchema } from 'src/types/Email'
 import Styles from './styles'
-import { setLocalStorage } from 'src/helpers/localStorage'
 
 export const SignInPage = () => {
   const { setAlert } = useAlert()
@@ -22,7 +21,6 @@ export const SignInPage = () => {
 
   useEffect(() => {
     setPageSubtitle('Authentication')
-    console.log('state ===>', state)
   }, [state])
 
   useEffect(() => {
@@ -47,10 +45,6 @@ export const SignInPage = () => {
       })
       return
     }
-
-    const { accessToken, user } = result
-    setLocalStorage('token', JSON.stringify(accessToken))
-    setLocalStorage('user', JSON.stringify(user))
 
     if (!state || !state.redirectTo) {
       navigate('/')

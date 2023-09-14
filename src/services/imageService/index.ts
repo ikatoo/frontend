@@ -4,9 +4,7 @@ import api from '../api'
 const get = async (id: string) => {
   try {
     const { data, status } = await api.get('image', {
-      data: {
-        publicId: id
-      }
+      data: { id }
     })
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
@@ -43,9 +41,7 @@ const upload = async (
 const destroy = async (id: string) => {
   try {
     const { data, status } = await api.delete('image', {
-      data: {
-        publicId: id
-      }
+      data: { id }
     })
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
