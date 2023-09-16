@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 
 import Menu, { SideMenuProps } from '../../../components/Menu'
+import Session from 'src/components/Session'
 
 export const PrivateLayout = () => {
   const menu: SideMenuProps = {
@@ -43,6 +44,7 @@ export const PrivateLayout = () => {
 
   return (
     <div className="h-screen w-screen flex flex-cols">
+      <Session />
       <Menu {...menu} />
       <div className="h-screen w-full overflow-y-auto">
         <Outlet />

@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom'
 
 import Menu, { SideMenuProps } from '../../../components/Menu'
 import Styles from './styles'
+import Session from 'src/components/Session'
 
 export const PublicLayout = () => {
   const menu: SideMenuProps = {
@@ -44,6 +45,7 @@ export const PublicLayout = () => {
 
   return (
     <div className="h-screen w-screen flex flex-cols">
+      <Session />
       <Menu {...menu} />
       <Styles.Container>
         <Outlet />

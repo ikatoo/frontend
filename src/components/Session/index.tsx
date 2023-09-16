@@ -1,17 +1,27 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { useAuthStore } from 'src/store/useAuthStore'
+import { useAuthUser, useSignOut } from 'react-auth-kit'
 import Styles from './styles'
+import { MD5 } from 'crypto-js'
 
 const Session = () => {
-  const user = useAuthStore((state) => state.user)
-  const signout = useAuthStore((state) => state.signout)
-  const avatar = user?.avatar
-  const [hidden, setHidden] = useState(true)
+  const signOut = useSignOut()
+  const auth = useAuthUser()
 
-  const signOut = async () => {
-    await signout()
-  }
+  const user = auth()
+  const [hidden, setHidden] = useState(true)
+  const [avatar, setAvatar] = useState({ url: '', alt: '' })
+
+  useEffect(() => {
+    const emailHash = MD5(`${user?.email}`.toLowerCase()).toString()
+    const url = `https://www.gravatar.com/avatar/${emailHash}`
+    setAvatar({
+      url,
+      alt: `Imagem do usuário ${user?.name}`
+    })
+  }, [user?.email, user?.name])
+
+  if (!user) return <></>
 
   return (
     <Styles.Wrapper>

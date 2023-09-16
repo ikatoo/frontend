@@ -64,7 +64,7 @@ export const SignUpPage = () => {
     const response = await usersService.create({ name, email, password })
     if (response.status === 201) {
       api.defaults.headers.Authorization = `Bearer ${response.data.accessToken}`
-      navigate('/admin')
+      navigate('/admin', { replace: true })
       return
     }
 
