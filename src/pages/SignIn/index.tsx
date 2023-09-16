@@ -1,19 +1,23 @@
 import { SyntheticEvent, useEffect, useState } from 'react'
+import { useSignIn } from 'react-auth-kit'
+import { decodeToken } from 'react-jwt'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from 'src/components/Button'
 import Logo from 'src/components/Logo'
 import TextInput from 'src/components/TextInput'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import { useAlert } from 'src/hooks/useAlert'
-import { useAuthStore } from 'src/store/useAuthStore'
+import authService from 'src/services/authService'
+import { AuthResponseSchema } from 'src/types/Auth'
 import { EmailSchema } from 'src/types/Email'
 import Styles from './styles'
 
 export const SignInPage = () => {
+  const { pathname } = useLocation()
   const { setAlert } = useAlert()
   const { state } = useLocation()
   const navigate = useNavigate()
-  const signin = useAuthStore((state) => state.signin)
+  const signIn = useSignIn()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -35,22 +39,40 @@ export const SignInPage = () => {
 
   const handleSignIn = async (event: SyntheticEvent) => {
     event.preventDefault()
+    const { data } = await authService.signIn({
+      email,
+      password
+    })
 
-    const result = await signin({ email, password })
-
-    if (result.error) {
+    const validResponse = AuthResponseSchema.safeParse(data)
+    if (!validResponse.success) {
       setAlert({
         type: 'error',
-        title: result.error
+        title: validResponse.error.message
       })
       return
     }
 
-    if (!state || !state.redirectTo) {
-      navigate('/')
-    } else {
-      navigate(state.redirectTo)
+    const { accessToken, user } = validResponse.data
+    const token = `${accessToken}`
+    const decodedToken = decodeToken(token) as { exp: number }
+    const authorized = signIn({
+      token,
+      expiresIn: decodedToken.exp,
+      tokenType: 'Bearer',
+      authState: user
+    })
+    const target = pathname === '/signin' ? '/admin' : pathname
+
+    if (authorized) {
+      navigate(target, { replace: true })
+      return
     }
+
+    setAlert({
+      type: 'alert',
+      title: 'Não autorizado'
+    })
   }
 
   return (

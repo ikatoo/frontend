@@ -1,0 +1,16 @@
+# @host = https://backend-development-1651.up.railway.app
+@host = http://localhost:8000
+
+### Get about page data
+GET {{host}}/users HTTP/1.1
+
+### Create about page data
+POST {{host}}/user HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer valid-token
+
+{
+  "name": "Teste",
+  "email": "teste@teste.com",
+  "password": "teste123"
+}

@@ -5,7 +5,7 @@ import { HttpResponseSchema } from 'src/types/HttpResponse'
 
 const create = async (user: UserSignUp) => {
   try {
-    const response = await api.post('/user', { user })
+    const response = await api.post('/user', user)
     return response
   } catch (error) {
     const validResponse = HttpResponseSchema.safeParse(error)
