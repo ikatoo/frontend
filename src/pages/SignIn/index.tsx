@@ -1,22 +1,16 @@
 import { SyntheticEvent, useEffect, useState } from 'react'
-import { decodeToken } from 'react-jwt'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Button from 'src/components/Button'
 import Logo from 'src/components/Logo'
 import TextInput from 'src/components/TextInput'
-import { setLocalStorage } from 'src/helpers/localStorage'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
-import { useAlert } from 'src/hooks/useAlert'
-import authService from 'src/services/authService'
-import { AuthResponseSchema } from 'src/types/Auth'
 import { EmailSchema } from 'src/types/Email'
 import Styles from './styles'
+import { useUser } from 'src/contexts/User/UserContext'
 
 export const SignInPage = () => {
-  const { pathname } = useLocation()
-  const { setAlert } = useAlert()
   const { state } = useLocation()
-  const navigate = useNavigate()
+  const { signIn } = useUser()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -38,37 +32,7 @@ export const SignInPage = () => {
 
   const handleSignIn = async (event: SyntheticEvent) => {
     event.preventDefault()
-    const { data } = await authService.signIn({
-      email,
-      password
-    })
-
-    const validResponse = AuthResponseSchema.safeParse(data)
-    if (!validResponse.success) {
-      setAlert({
-        type: 'error',
-        title: validResponse.error.message
-      })
-      return
-    }
-
-    const { accessToken, user } = validResponse.data
-    const token = `${accessToken}`
-    const decodedToken = decodeToken(token) as { exp: number }
-    const target = pathname === '/signin' ? '/admin' : pathname
-
-    const authorized = !!user && !!decodedToken
-
-    if (authorized) {
-      setLocalStorage('token', token)
-      navigate(target, { replace: true })
-      return
-    }
-
-    setAlert({
-      type: 'alert',
-      title: 'Não autorizado'
-    })
+    signIn({ email, password })
   }
 
   return (
