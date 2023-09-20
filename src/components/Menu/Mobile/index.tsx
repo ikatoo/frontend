@@ -1,16 +1,16 @@
 import { useState } from 'react'
-import { useSignOut } from 'react-auth-kit'
 import SVG from 'react-inlinesvg'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { SideMenuProps } from '..'
 import CloseButton from '../../CloseButton'
 import Logo from '../../Logo'
 import MenuButton from '../../MenuButton'
 import Styles from './styles'
+import { removeLocalStorage } from 'src/helpers/localStorage'
 
 const MobileMenu = ({ social, links }: SideMenuProps) => {
-  const signOut = useSignOut()
   const { pathname } = useLocation()
+  const navigate = useNavigate()
 
   const [isClosed, setIsClosed] = useState(true)
 
@@ -23,7 +23,9 @@ const MobileMenu = ({ social, links }: SideMenuProps) => {
   }
 
   const handleSignOut = () => {
-    signOut()
+    // signOut()
+    removeLocalStorage('token')
+    navigate('/')
     setIsClosed(true)
   }
 

@@ -1,10 +1,10 @@
 import { SyntheticEvent, useEffect, useState } from 'react'
-import { useSignIn } from 'react-auth-kit'
 import { decodeToken } from 'react-jwt'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from 'src/components/Button'
 import Logo from 'src/components/Logo'
 import TextInput from 'src/components/TextInput'
+import { setLocalStorage } from 'src/helpers/localStorage'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import { useAlert } from 'src/hooks/useAlert'
 import authService from 'src/services/authService'
@@ -17,7 +17,6 @@ export const SignInPage = () => {
   const { setAlert } = useAlert()
   const { state } = useLocation()
   const navigate = useNavigate()
-  const signIn = useSignIn()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -56,15 +55,12 @@ export const SignInPage = () => {
     const { accessToken, user } = validResponse.data
     const token = `${accessToken}`
     const decodedToken = decodeToken(token) as { exp: number }
-    const authorized = signIn({
-      token,
-      expiresIn: decodedToken.exp,
-      tokenType: 'Bearer',
-      authState: user
-    })
     const target = pathname === '/signin' ? '/admin' : pathname
 
+    const authorized = !!user && !!decodedToken
+
     if (authorized) {
+      setLocalStorage('token', token)
       navigate(target, { replace: true })
       return
     }
