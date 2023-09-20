@@ -3,9 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import Button from 'src/components/Button'
 import Logo from 'src/components/Logo'
 import TextInput from 'src/components/TextInput'
+import { setLocalStorage } from 'src/helpers/localStorage'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import { useAlert } from 'src/hooks/useAlert'
-import api from 'src/services/api'
 import usersService from 'src/services/usersService'
 import { EmailSchema } from 'src/types/Email'
 import Styles from './styles'
@@ -63,7 +63,8 @@ export const SignUpPage = () => {
 
     const response = await usersService.create({ name, email, password })
     if (response.status === 201) {
-      api.defaults.headers.Authorization = `Bearer ${response.data.accessToken}`
+      const token = response.data.accessToken
+      setLocalStorage('token', token)
       navigate('/admin', { replace: true })
       return
     }

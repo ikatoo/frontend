@@ -5,11 +5,13 @@ import api from '../api'
 
 type SignInFunction = (credentials: SignInProps) => Promise<HttpResponse>
 
-const githubAuth = async (code: string) => {
+async function githubAuth(code: string): Promise<HttpResponse> {
   const response = await api.post<AuthResponseType>('/auth/github', {
     code
   })
-  return response.data
+  const { data, status } = response
+
+  return { data, status }
 }
 
 const signIn: SignInFunction = async ({ username, email, password }) => {
@@ -35,7 +37,7 @@ const signIn: SignInFunction = async ({ username, email, password }) => {
   return { status: 500 }
 }
 
-const verifyToken = async (token: string) => {
+async function verifyToken(token: string): Promise<HttpResponse> {
   try {
     api.defaults.headers.Authorization = `Bearer ${token}`
     const { data, status } = await api.post('/auth/verify-token')
@@ -48,6 +50,10 @@ const verifyToken = async (token: string) => {
         },
         status: error.response?.status ?? 500
       }
+    return {
+      error: { message: 'Unknow Error' },
+      status: 500
+    }
   }
 }
 
