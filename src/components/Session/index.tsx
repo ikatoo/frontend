@@ -1,42 +1,37 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
+import { MD5 } from 'crypto-js'
+import { useUser } from 'src/contexts/User/UserContext'
 import Styles from './styles'
-import { removeLocalStorage } from 'src/helpers/localStorage'
-import { useNavigate } from 'react-router-dom'
 
 const Session = () => {
-  const navigate = useNavigate()
+  const { user, signOut } = useUser()
 
   const [hidden, setHidden] = useState(true)
-  // const [avatar, setAvatar] = useState({ url: '', alt: '' })
+  const [avatar, setAvatar] = useState({ url: '', alt: '' })
 
-  // useEffect(() => {
-  //   const emailHash = MD5(`${user?.email}`.toLowerCase()).toString()
-  //   const url = `https://www.gravatar.com/avatar/${emailHash}`
-  //   setAvatar({
-  //     url,
-  //     alt: `Imagem do usuário ${user?.name}`
-  //   })
-  // }, [user?.email, user?.name])
+  useEffect(() => {
+    const emailHash = MD5(`${user?.email}`.toLowerCase()).toString()
+    const url = `https://www.gravatar.com/avatar/${emailHash}`
+    setAvatar({
+      url,
+      alt: `Imagem do usuário ${user?.name}`
+    })
+  }, [user?.email, user?.name])
 
-  // if (!user) return <></>
-
-  const signOut = () => {
-    removeLocalStorage('token')
-    navigate('/')
-  }
+  if (!user) return <></>
 
   return (
     <Styles.Wrapper>
       <Styles.Menu onClick={() => setHidden(!hidden)}>
-        {/* <Styles.ImageWrapper>
+        <Styles.ImageWrapper>
           <Styles.Image
             layout="object-fit"
             src={avatar?.url}
             alt={avatar?.alt}
           />
         </Styles.ImageWrapper>
-        {user?.name} */}
+        {user?.name}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import Loading from 'src/components/Loading'
+import { useUser } from 'src/contexts/User/UserContext'
 import { getLocalStorage } from 'src/helpers/localStorage'
 import authService from 'src/services/authService'
 
 export const Private = (props: { children: JSX.Element }) => {
   const [loading, setLoading] = useState(true)
   const [signed, setSigned] = useState(false)
+  const { setUser } = useUser()
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -15,8 +17,9 @@ export const Private = (props: { children: JSX.Element }) => {
         setLoading(false)
         return
       }
-      const { status } = await authService.verifyToken(token)
+      const { status, data } = await authService.verifyToken(token)
       if (status === 200) {
+        !!data && 'user' in data && !!data.user && setUser(data.user)
         setLoading(false)
         setSigned(true)
         return
@@ -25,7 +28,7 @@ export const Private = (props: { children: JSX.Element }) => {
       setSigned(false)
     }
     verifyToken()
-  }, [])
+  }, [setUser])
 
   if (loading) return <Loading />
 
