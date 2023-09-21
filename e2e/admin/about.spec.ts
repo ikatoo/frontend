@@ -6,8 +6,8 @@ const _URL = '/admin/about'
 
 test.describe('ADMIN - About page', () => {
   test('has page title', async ({ page }) => {
-    await authorize(page)
     await page.goto(_URL)
+    await authorize(page)
 
     await expect(page).toHaveTitle(
       /ikatoo - software developer - Edit About Page/i
@@ -15,41 +15,37 @@ test.describe('ADMIN - About page', () => {
   })
 
   test('should save new about page', async ({ page }) => {
-    await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
-      await route.fulfill({ status: 204 })
-    })
+    await page.goto(_URL)
     await authorize(page)
 
-    await page.goto(_URL)
+    await page.route(`**/about`, async (route) => {
+      await route.fulfill({ status: 200, json: {} })
+    })
 
-    const title = page.getByPlaceholder('Título')
-    const description = page.getByPlaceholder('Descrição', { exact: true })
+    await page.getByPlaceholder('Título').fill('new title')
+    await page
+      .getByPlaceholder('Descrição', { exact: true })
+      .fill('new description')
     const skills = page.getByPlaceholder(
       'Press "," | "Enter" | "Shift+Enter" to add Habilidades'
     )
-    const imageURL = page.getByPlaceholder('https://domain.com/image.jpg')
-    const imageALT = page.getByPlaceholder('Uma breve descrição da imagem')
-    const saveButton = page.getByRole('button', { name: 'Salvar' })
 
-    await title.fill(aboutPageMock.title)
-    await title.press('Tab')
-
-    await description.fill(aboutPageMock.description)
-    await description.press('Tab')
-
-    for (let index = 0; index < aboutPageMock.skills.length; index++) {
-      await skills.fill(aboutPageMock.skills[index].title)
+    for (let index = 1; index < 4; index++) {
+      await skills.fill(`skill ${index}`)
       await skills.press(',')
     }
-    await skills.press('Tab')
 
-    await imageURL.fill(aboutPageMock.illustrationURL)
-    await imageURL.press('Tab')
+    await page
+      .getByPlaceholder('https://domain.com/image.jpg')
+      .fill('https://image.com/new.jpg')
+    await page
+      .getByPlaceholder('Uma breve descrição da imagem')
+      .fill('new image')
 
-    await imageALT.fill(aboutPageMock.illustrationALT)
-    await imageALT.press('Tab')
-
-    await saveButton.click()
+    await page.route(`**/about`, async (route) => {
+      await route.fulfill({ status: 201 })
+    })
+    await page.getByRole('button', { name: 'Salvar' }).click()
 
     await expect(page.getByText('Success on create about page.')).toBeVisible()
   })
