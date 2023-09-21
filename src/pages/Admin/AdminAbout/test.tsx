@@ -12,7 +12,7 @@ import authService from 'src/services/authService'
 
 describe('ADMIN: About page', () => {
   test('should render all fields', () => {
-    aboutService.get = vi.fn().mockResolvedValue({})
+    aboutService.get = vi.fn().mockResolvedValue({ status: 200, data: {} })
 
     render(<AdminAbout />)
 
@@ -22,6 +22,13 @@ describe('ADMIN: About page', () => {
     expect(screen.getByRole('group')).toContain(/images/i)
     expect(screen.getByLabelText(/imagem url/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/imagem alt/i)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Salvar' })).toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'Atualizar' })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Limpar Formulário' })
+    ).toBeInTheDocument()
   })
 
   test('should load data at render', async () => {
@@ -316,6 +323,21 @@ describe('ADMIN: About page', () => {
 
     await waitFor(() => {
       expect(screen.getByLabelText('Título')).toHaveFocus()
+    })
+  })
+
+  test('should show update button when have data on load', async () => {
+    aboutService.get = vi
+      .fn()
+      .mockResolvedValueOnce({ data: aboutPageMock, status: 200 })
+    render(<AdminAbout />)
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', {
+          name: 'Atualizar'
+        })
+      )
     })
   })
 })

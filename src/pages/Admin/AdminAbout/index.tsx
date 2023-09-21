@@ -22,6 +22,11 @@ export const AdminAbout = () => {
   const [illustrationALT, setIllustrationALT] = useState('')
   const [initialData, setInitialData] = useState<AboutPageServiceProps>()
   const [titleFocused, setTitleFocused] = useState(true)
+  const [isEmpty, setIsEmpty] = useState(true)
+
+  useEffect(() => {
+    setIsEmpty(!!(initialData && Object.keys(initialData).length))
+  }, [initialData])
 
   useEffect(() => {
     setPageSubtitle('Edit About Page')
@@ -152,8 +157,8 @@ export const AdminAbout = () => {
             </Styles.TextWrapper>
 
             <Styles.Actions>
-              {!initialData && <Button styleType="primary">Salvar</Button>}
-              {!!initialData && <Button styleType="primary">Atualizar</Button>}
+              {!isEmpty && <Button styleType="primary">Salvar</Button>}
+              {!!isEmpty && <Button styleType="primary">Atualizar</Button>}
               <Button styleType="secondary" type="reset">
                 Limpar Formulário
               </Button>
