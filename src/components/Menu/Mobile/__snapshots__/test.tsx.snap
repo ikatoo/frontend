@@ -13,6 +13,16 @@ exports[`Menu Component > should render menu on desktop 1`] = `
   cursor: pointer;
 }
 
+.c2 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(8 253 216 / var(--tw-bg-opacity));
+}
+
+.c2 a {
+  --tw-text-opacity: 1;
+  color: rgb(0 3 44 / var(--tw-text-opacity));
+}
+
 <div>
   <menu
     aria-label="Mobile Menu"
@@ -178,26 +188,15 @@ exports[`Menu Component > should render menu on desktop 1`] = `
               Contato
             </a>
           </li>
-          <div
-            class="grid grid-cols-2 text-mck_gray_light"
+          <li
+            class="c1 c2"
           >
-            <li
-              class="c1 bg-mck_black_light"
+            <a
+              href="/signin"
             >
-              <a
-                href="/admin"
-              >
-                Dashboard
-              </a>
-            </li>
-            <li
-              class="c1 bg-mck_red"
-            >
-              <span>
-                Sair
-              </span>
-            </li>
-          </div>
+              Entrar
+            </a>
+          </li>
         </ul>
       </nav>
       <div
