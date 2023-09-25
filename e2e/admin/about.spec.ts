@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 import aboutPageMock from 'shared/mocks/aboutPageMock/result.json' assert { type: 'json' }
 import { authorize } from 'src/helpers/playwrightUtils'
 
-const _URL = '/admin/about'
+const _URL = '/admin'
 
 test.describe('ADMIN - About page', () => {
   test('has page title', async ({ page }) => {

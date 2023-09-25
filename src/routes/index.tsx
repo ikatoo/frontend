@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { About } from 'src/pages/About'
 import { AdminAbout } from 'src/pages/Admin/AdminAbout'
 import { AdminContact } from 'src/pages/Admin/AdminContact'
@@ -21,7 +21,8 @@ export const AppRoutes = () => (
     <Route path="/signup" element={<SignUpPage />} />
     <Route path="/recovery" element={<RecoveryPage />} />
     <Route path="/" element={<PublicLayout />}>
-      <Route index path="about" element={<About />} />
+      <Route index element={<Navigate to="/about" />} />
+      <Route path="about" element={<About />} />
       <Route path="skills" element={<Skills />} />
       <Route path="contact" element={<Contact />} />
       <Route path="projects" element={<Projects />} />
@@ -34,7 +35,7 @@ export const AppRoutes = () => (
         </Private>
       }
     >
-      <Route index element={<AdminAbout />} />
+      <Route index element={<Navigate to="/admin/about" />} />
       <Route path="about" element={<AdminAbout />} />
       <Route path="skills" element={<AdminSkills />} />
       <Route path="projects" element={<AdminProjects />} />
