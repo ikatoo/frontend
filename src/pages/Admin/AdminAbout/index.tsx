@@ -25,7 +25,7 @@ export const AdminAbout = () => {
   const [isEmpty, setIsEmpty] = useState(true)
 
   useEffect(() => {
-    setIsEmpty(!!(initialData && Object.keys(initialData).length))
+    setIsEmpty(!!(!initialData || !Object.keys(initialData).length))
   }, [initialData])
 
   useEffect(() => {
@@ -48,31 +48,33 @@ export const AdminAbout = () => {
       setIllustrationURL(initialData.illustrationURL)
   }, [initialData])
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const save = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    if (!initialData) {
-      aboutService.create({
-        title,
-        description,
-        skills,
-        illustrationALT,
-        illustrationURL
-      })
-      setAlert({
-        title: 'Success on create about page.',
-        type: 'message'
-      })
-    } else {
-      aboutService.patch({
-        title: title,
-        description: description,
-        skills,
-        illustrationALT,
-        illustrationURL
-      })
-      setAlert({ title: 'Success on update about page.', type: 'message' })
-    }
+    aboutService.create({
+      title,
+      description,
+      skills,
+      illustrationALT,
+      illustrationURL
+    })
+    setAlert({
+      title: 'Success on create about page.',
+      type: 'message'
+    })
+  }
+
+  const update = async (event: React.FormEvent) => {
+    event.preventDefault()
+
+    aboutService.patch({
+      title: title,
+      description: description,
+      skills,
+      illustrationALT,
+      illustrationURL
+    })
+    setAlert({ title: 'Success on update about page.', type: 'message' })
   }
 
   const onReset = () => {
@@ -92,12 +94,7 @@ export const AdminAbout = () => {
     <Styles.Wrapper>
       <TextContainer title={'Informações sobre você.'}>
         <FormContainer>
-          <Styles.Form
-            onSubmit={handleSubmit}
-            onReset={onReset}
-            method="post"
-            name="aboutPageForm"
-          >
+          <Styles.Form onReset={onReset} method="post" name="aboutPageForm">
             <Styles.TextWrapper>
               <TextInput
                 initialValue={title}
@@ -157,8 +154,16 @@ export const AdminAbout = () => {
             </Styles.TextWrapper>
 
             <Styles.Actions>
-              {!isEmpty && <Button styleType="primary">Salvar</Button>}
-              {!!isEmpty && <Button styleType="primary">Atualizar</Button>}
+              {isEmpty && (
+                <Button styleType="primary" onClick={save}>
+                  Salvar
+                </Button>
+              )}
+              {!isEmpty && (
+                <Button styleType="primary" onClick={update}>
+                  Atualizar
+                </Button>
+              )}
               <Button styleType="secondary" type="reset">
                 Limpar Formulário
               </Button>
