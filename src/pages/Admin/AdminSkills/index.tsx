@@ -29,17 +29,18 @@ export const AdminSkills = () => {
   const [jobDescription, setJobDescription] = useState('')
   const [initialData, setInitialData] = useState<SkillsPageProps>()
   const [focus, setFocus] = useState(true)
-  const [initialDataIsEmpty, setInitialDataIsEmpty] = useState(true)
+  const [isEmpty, setIsEmpty] = useState(true)
+
+  useEffect(() => {
+    setIsEmpty(!!(!initialData || !Object.keys(initialData).length))
+  }, [initialData])
 
   useEffect(() => {
     setPageSubtitle('Edit Skills Page')
 
     const getInitialData = async () => {
       const result = await skillsService.get()
-      if (result?.data) {
-        setInitialData(result.data)
-        setInitialDataIsEmpty(false)
-      }
+      setInitialData(result?.data)
     }
     getInitialData()
   }, [])
@@ -52,37 +53,6 @@ export const AdminSkills = () => {
     )
     setLastJobs(initialData?.lastJobs ?? [])
   }, [initialData, setLastJobs])
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
-
-    const mappedLastJobs = lastJobs.map((job) => ({
-      ...job,
-      yearMonthEnd: dateToStringFormat(job.yearMonthEnd),
-      yearMonthStart: dateToStringFormat(job.yearMonthStart)
-    }))
-
-    const data = {
-      title,
-      description,
-      skills: skills.map((skill) => ({
-        skillTitle: skill.title
-      })),
-      lastJobs: mappedLastJobs
-    }
-
-    if (!initialData && !!initialDataIsEmpty) {
-      skillsService.create(data)
-      setInitialDataIsEmpty(false)
-      setAlert({
-        title: 'Success on create skills page.',
-        type: 'message'
-      })
-    } else {
-      skillsService.patch(data)
-      setAlert({ title: 'Success on update skills page.', type: 'message' })
-    }
-  }
 
   const onChangeSkills = (values: Tag[]) => {
     setSkills(values)
@@ -128,16 +98,48 @@ export const AdminSkills = () => {
     setFocus(true)
   }
 
+  const prepareSubmit = () => {
+    const mappedLastJobs = lastJobs.map((job) => ({
+      ...job,
+      yearMonthEnd: dateToStringFormat(job.yearMonthEnd),
+      yearMonthStart: dateToStringFormat(job.yearMonthStart)
+    }))
+
+    const data = {
+      title,
+      description,
+      skills: skills.map((skill) => ({
+        skillTitle: skill.title
+      })),
+      lastJobs: mappedLastJobs
+    }
+    return data
+  }
+
+  const save = async (event: React.FormEvent) => {
+    event.preventDefault()
+    const data = prepareSubmit()
+
+    skillsService.create(data)
+    setAlert({
+      title: 'Success on create skills page.',
+      type: 'message'
+    })
+  }
+
+  const update = async (event: React.FormEvent) => {
+    event.preventDefault()
+    const data = prepareSubmit()
+
+    skillsService.patch(data)
+    setAlert({ title: 'Success on update skills page.', type: 'message' })
+  }
+
   return (
     <Styles.Wrapper>
       <TextContainer title={'Suas habilidades e experiências.'}>
         <FormContainer>
-          <Styles.Form
-            onSubmit={handleSubmit}
-            onReset={handleReset}
-            method="post"
-            name="skillsPageForm"
-          >
+          <Styles.Form onReset={handleReset} name="skillsPageForm">
             <Styles.TextWrapper>
               <TextInput
                 focus={focus}
@@ -262,10 +264,14 @@ export const AdminSkills = () => {
             </Styles.TextWrapper>
 
             <Styles.Actions>
-              {initialDataIsEmpty ? (
-                <Button styleType="primary">Salvar</Button>
+              {isEmpty ? (
+                <Button styleType="primary" onClick={save}>
+                  Salvar
+                </Button>
               ) : (
-                <Button styleType="primary">Atualizar</Button>
+                <Button styleType="primary" onClick={update}>
+                  Atualizar
+                </Button>
               )}
               <Button styleType="secondary" type="reset">
                 Limpar
