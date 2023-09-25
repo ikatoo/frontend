@@ -18,7 +18,7 @@ test.describe('ADMIN - About page', () => {
     await page.goto(_URL)
     await authorize(page)
 
-    await page.route(`**/about`, async (route) => {
+    await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
       await route.fulfill({ status: 200, json: {} })
     })
 
@@ -42,7 +42,7 @@ test.describe('ADMIN - About page', () => {
       .getByPlaceholder('Uma breve descrição da imagem')
       .fill('new image')
 
-    await page.route(`**/about`, async (route) => {
+    await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
       await route.fulfill({ status: 201 })
     })
     await page.getByRole('button', { name: 'Salvar' }).click()
@@ -65,12 +65,13 @@ test.describe('ADMIN - About page', () => {
       illustrationALT: 'illustration alt',
       illustrationURL: 'https://ilustration.new'
     }
+
+    await page.goto(_URL)
+    await authorize(page)
+
     await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
       await route.fulfill({ json: aboutPageMock, status: 200 })
     })
-    await authorize(page)
-
-    await page.goto(_URL)
 
     const title = page.getByPlaceholder('Título')
     const description = page.getByPlaceholder('Descrição', { exact: true })
@@ -105,12 +106,12 @@ test.describe('ADMIN - About page', () => {
   })
 
   test('should partial update about page', async ({ page }) => {
+    page.goto(_URL)
+    await authorize(page)
+
     await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
       await route.fulfill({ json: aboutPageMock, status: 200 })
     })
-    await authorize(page)
-
-    page.goto(_URL)
 
     const description = page.getByPlaceholder('Descrição', { exact: true })
     const updateButton = page.getByRole('button', { name: 'Atualizar' })

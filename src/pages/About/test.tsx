@@ -1,8 +1,9 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { describe, expect, test, vi } from 'vitest'
 import { About } from '.'
 import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
 import api from '../../services/api'
+import { waitFor } from 'src/helpers/testUtils'
 
 vi.mock('../../components/IconCloud')
 

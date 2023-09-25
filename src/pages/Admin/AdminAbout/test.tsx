@@ -1,6 +1,6 @@
 vi.mock('src/services/aboutService')
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
 import aboutService from 'src/services/aboutService'
@@ -9,6 +9,7 @@ import { AdminAbout } from '.'
 import Alert from '../../../components/Alert'
 import { AlertProvider } from '../../../hooks/useAlert'
 import authService from 'src/services/authService'
+import { waitFor } from 'src/helpers/testUtils'
 
 describe('ADMIN: About page', () => {
   test('should render all fields', () => {

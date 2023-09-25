@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import Loading from 'src/components/Loading'
 import { useUser } from 'src/contexts/User/UserContext'
 import { getLocalStorage } from 'src/helpers/localStorage'
 import authService from 'src/services/authService'
 
 export const Private = (props: { children: JSX.Element }) => {
+  const { pathname } = useLocation()
   const [loading, setLoading] = useState(true)
   const [signed, setSigned] = useState(false)
   const { setUser } = useUser()
@@ -32,7 +33,10 @@ export const Private = (props: { children: JSX.Element }) => {
 
   if (loading) return <Loading />
 
-  if (!signed) return <Navigate to={'/signin'} replace />
+  const target = pathname === '/signin' ? '/admin' : pathname
+
+  if (!signed)
+    return <Navigate to={'/signin'} state={{ redirectTo: target }} replace />
 
   return props.children
 }

@@ -9,7 +9,7 @@ import Styles from './styles'
 import { useUser } from 'src/contexts/User/UserContext'
 
 export const SignInPage = () => {
-  const { state } = useLocation()
+  const { state: locationState } = useLocation()
   const { signIn } = useUser()
 
   const [email, setEmail] = useState('')
@@ -18,7 +18,7 @@ export const SignInPage = () => {
 
   useEffect(() => {
     setPageSubtitle('Authentication')
-  }, [state])
+  }, [locationState])
 
   useEffect(() => {
     const validEmail = EmailSchema.safeParse(email)

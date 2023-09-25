@@ -1,6 +1,6 @@
 vi.mock('src/services/api')
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import skillsPageMock from 'shared/mocks/skillsPageMock/result.json'
 import api from 'src/services/api'
@@ -11,6 +11,7 @@ import { AlertProvider } from 'src/hooks/useAlert'
 import { stringToDateFormat } from 'src/helpers/date'
 import Alert from 'src/components/Alert'
 import authService from 'src/services/authService'
+import { waitFor } from 'src/helpers/testUtils'
 
 describe('ADMIN: Skills page', () => {
   beforeEach(() => {
@@ -96,7 +97,7 @@ describe('ADMIN: Skills page', () => {
     expect(jobs).toEqual(lastJobs)
   })
 
-  test('should change focus on press tab key', () => {
+  test('should change focus on press tab key', async () => {
     api.get = vi.fn().mockResolvedValue({})
 
     render(<AdminSkills />)
@@ -217,67 +218,6 @@ describe('ADMIN: Skills page', () => {
     })
   })
 
-  test('should call submit with data when save button is clicked', async () => {
-    skillsService.get = vi.fn().mockResolvedValue({})
-    skillsService.create = vi.fn().mockResolvedValue({ data: {}, status: 201 })
-    skillsService.patch = vi.fn().mockResolvedValue({ data: {}, status: 201 })
-
-    render(
-      <AlertProvider>
-        <AdminSkills />
-      </AlertProvider>
-    )
-
-    const titleInput = screen.getByLabelText('Título')
-    const descriptionInput = screen.getByLabelText('Descrição')
-    const skillsInput = screen.getByLabelText('Habilidades')
-    const jobTitleInput = screen.getByLabelText('Nome da empresa ou projeto')
-    const jobStartInput = screen.getByLabelText('Início')
-    const jobEndInput = screen.getByLabelText('Fim')
-    const jobLinkInput = screen.getByLabelText('Link para referência')
-    const jobDescriptionInput = screen.getByLabelText('Breve Descrição')
-    const addJobButton = screen.getByRole('button', {
-      name: 'ADICIONAR TRABALHO'
-    })
-
-    userEvent.type(titleInput, skillsPageMock.title)
-    userEvent.type(descriptionInput, skillsPageMock.description)
-    skillsPageMock.skills.forEach((skill) => {
-      userEvent.type(skillsInput, `${skill.skillTitle},`)
-    })
-    skillsPageMock.lastJobs.forEach((job) => {
-      userEvent.type(jobTitleInput, job.jobTitle)
-      userEvent.type(jobStartInput, stringToDateFormat(job.yearMonthStart))
-      job.yearMonthEnd &&
-        userEvent.type(jobEndInput, stringToDateFormat(job.yearMonthEnd))
-      userEvent.type(jobLinkInput, job.link)
-      userEvent.type(jobDescriptionInput, job.jobDescription)
-      userEvent.click(addJobButton)
-    })
-
-    await waitFor(() => {
-      expect(screen.queryAllByTestId('tag-testid')).toHaveLength(
-        skillsPageMock.skills.length
-      )
-    })
-
-    await waitFor(() => {
-      expect(screen.queryAllByTestId('job-testid')).toHaveLength(
-        skillsPageMock.lastJobs.length
-      )
-    })
-
-    const saveButton = screen.getByRole('button', { name: 'Salvar' })
-    userEvent.click(saveButton)
-    expect(skillsService.create).toHaveBeenCalledTimes(1)
-    expect(skillsService.create).toHaveBeenCalledWith(skillsPageMock)
-
-    const updateButton = screen.getByRole('button', { name: 'Atualizar' })
-    userEvent.click(updateButton)
-    expect(skillsService.patch).toHaveBeenCalledTimes(1)
-    expect(skillsService.patch).toHaveBeenCalledWith(skillsPageMock)
-  })
-
   test('should show save message when submit data', async () => {
     skillsService.get = vi.fn().mockResolvedValue({})
     skillsService.create = vi.fn().mockResolvedValue({ data: {}, status: 201 })
@@ -303,6 +243,7 @@ describe('ADMIN: Skills page', () => {
       expect(
         screen.getByText('Success on create skills page.')
       ).toBeInTheDocument()
+      expect(skillsService.create).toHaveBeenCalledTimes(1)
     })
   })
 

@@ -1,5 +1,6 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import contactPageMock from 'shared/mocks/contactPageMock/result.json'
+import { waitFor } from 'src/helpers/testUtils'
 import { AlertProvider } from 'src/hooks/useAlert'
 import { describe, expect, test, vi } from 'vitest'
 import { Contact } from '.'
