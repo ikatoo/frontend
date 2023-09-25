@@ -1,8 +1,9 @@
-import { render, waitFor } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { describe, expect, test, vi } from 'vitest'
 import { Skills } from '.'
 import skillsPageMock from 'shared/mocks/skillsPageMock/result.json'
 import api from '../../services/api'
+import { waitFor } from 'src/helpers/testUtils'
 
 describe('Skills Page', () => {
   test('renders the skill page with data from the server', async () => {

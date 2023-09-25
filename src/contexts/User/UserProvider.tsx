@@ -10,7 +10,7 @@ import { UserContext } from './UserContext'
 
 export const UserProvider = (props: { children: JSX.Element }) => {
   const navigate = useNavigate()
-  const { pathname } = useLocation()
+  const { state: locationState } = useLocation()
   const { setAlert } = useAlert()
 
   const [user, setUser] = useState<PartialUser>()
@@ -40,13 +40,12 @@ export const UserProvider = (props: { children: JSX.Element }) => {
     const { accessToken, user } = validResponse.data
     const token = `${accessToken}`
     const decodedToken = decodeToken(token) as { exp: number }
-    const target = pathname === '/signin' ? '/admin' : pathname
 
     const authorized = !!user && !!decodedToken
 
     if (authorized) {
       setLocalStorage('token', token)
-      navigate(target, { replace: true })
+      navigate(locationState?.redirectTo ?? '/admin', { replace: true })
       return
     }
 
