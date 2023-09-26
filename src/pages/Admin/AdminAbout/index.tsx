@@ -18,8 +18,6 @@ export const AdminAbout = () => {
   const [title, setTitle] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [skills, setSkills] = useState<Tag[]>([])
-  const [illustrationURL, setIllustrationURL] = useState('')
-  const [illustrationALT, setIllustrationALT] = useState('')
   const [initialData, setInitialData] = useState<AboutPageServiceProps>()
   const [titleFocused, setTitleFocused] = useState(true)
   const [isEmpty, setIsEmpty] = useState(true)
@@ -42,10 +40,6 @@ export const AdminAbout = () => {
     initialData?.title && setTitle(initialData.title)
     initialData?.description && setDescription(initialData.description)
     initialData?.skills && setSkills(initialData.skills)
-    initialData?.illustrationALT &&
-      setIllustrationALT(initialData.illustrationALT)
-    initialData?.illustrationURL &&
-      setIllustrationURL(initialData.illustrationURL)
   }, [initialData])
 
   const save = async (event: React.FormEvent) => {
@@ -54,9 +48,7 @@ export const AdminAbout = () => {
     aboutService.create({
       title,
       description,
-      skills,
-      illustrationALT,
-      illustrationURL
+      skills
     })
     setAlert({
       title: 'Success on create about page.',
@@ -70,9 +62,7 @@ export const AdminAbout = () => {
     aboutService.patch({
       title: title,
       description: description,
-      skills,
-      illustrationALT,
-      illustrationURL
+      skills
     })
     setAlert({ title: 'Success on update about page.', type: 'message' })
   }
@@ -81,8 +71,6 @@ export const AdminAbout = () => {
     setTitle('')
     setDescription('')
     setSkills([])
-    setIllustrationURL('')
-    setIllustrationALT('')
     setTitleFocused(true)
   }
 
@@ -129,28 +117,6 @@ export const AdminAbout = () => {
                 initalValue={skills}
                 onChangeTags={onChangeTags}
               />
-            </Styles.TextWrapper>
-
-            <Styles.TextWrapper>
-              <Styles.FieldSet>
-                <legend role="label">Imagem</legend>
-                <TextInput
-                  name="illustrationURL"
-                  placeholder="https://domain.com/image.jpg"
-                  label="Imagem URL"
-                  labelColor="white"
-                  initialValue={illustrationURL}
-                  onInputChange={(value) => setIllustrationURL(value)}
-                />
-                <TextInput
-                  name="illustrationALT"
-                  placeholder="Uma breve descrição da imagem"
-                  label="Imagem ALT"
-                  labelColor="white"
-                  initialValue={illustrationALT}
-                  onInputChange={(value) => setIllustrationALT(value)}
-                />
-              </Styles.FieldSet>
             </Styles.TextWrapper>
 
             <Styles.Actions>

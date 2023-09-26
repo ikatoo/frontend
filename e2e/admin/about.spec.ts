@@ -35,13 +35,6 @@ test.describe('ADMIN - About page', () => {
       await skills.press(',')
     }
 
-    await page
-      .getByPlaceholder('https://domain.com/image.jpg')
-      .fill('https://image.com/new.jpg')
-    await page
-      .getByPlaceholder('Uma breve descrição da imagem')
-      .fill('new image')
-
     await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
       await route.fulfill({ status: 201 })
     })
@@ -61,9 +54,7 @@ test.describe('ADMIN - About page', () => {
         {
           title: 'new skill 2'
         }
-      ],
-      illustrationALT: 'illustration alt',
-      illustrationURL: 'https://ilustration.new'
+      ]
     }
 
     await page.goto(_URL)
@@ -78,8 +69,6 @@ test.describe('ADMIN - About page', () => {
     const skills = page.getByPlaceholder(
       'Press "," | "Enter" | "Shift+Enter" to add Habilidades'
     )
-    const imageURL = page.getByPlaceholder('https://domain.com/image.jpg')
-    const imageALT = page.getByPlaceholder('Uma breve descrição da imagem')
     const updateButton = page.getByRole('button', { name: 'Atualizar' })
 
     await title.fill(newData.title)
@@ -93,12 +82,6 @@ test.describe('ADMIN - About page', () => {
       await skills.press(',')
     }
     await skills.press('Tab')
-
-    await imageURL.fill(newData.illustrationURL)
-    await imageURL.press('Tab')
-
-    await imageALT.fill(newData.illustrationALT)
-    await imageALT.press('Tab')
 
     await updateButton.click()
 
