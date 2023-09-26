@@ -3,15 +3,15 @@ vi.mock('src/services/api')
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import skillsPageMock from 'shared/mocks/skillsPageMock/result.json'
+import Alert from 'src/components/Alert'
+import { stringToDateFormat } from 'src/helpers/date'
+import { waitFor } from 'src/helpers/testUtils'
+import { AlertProvider } from 'src/hooks/useAlert'
 import api from 'src/services/api'
+import authService from 'src/services/authService'
+import skillsService from 'src/services/skillsService'
 import { describe, expect, test, vi } from 'vitest'
 import { AdminSkills } from '.'
-import skillsService from 'src/services/skillsService'
-import { AlertProvider } from 'src/hooks/useAlert'
-import { stringToDateFormat } from 'src/helpers/date'
-import Alert from 'src/components/Alert'
-import authService from 'src/services/authService'
-import { waitFor } from 'src/helpers/testUtils'
 
 describe('ADMIN: Skills page', () => {
   beforeEach(() => {
@@ -20,6 +20,7 @@ describe('ADMIN: Skills page', () => {
 
   test('should render page with title', () => {
     api.get = vi.fn().mockResolvedValue({})
+
     render(<AdminSkills />)
 
     const title = screen.getByRole('heading', { level: 1 })
@@ -58,7 +59,8 @@ describe('ADMIN: Skills page', () => {
 
   test('should load data at render', async () => {
     api.get = vi.fn().mockResolvedValue({
-      data: skillsPageMock
+      data: skillsPageMock,
+      status: 200
     })
     api.post = vi.fn().mockResolvedValue({
       status: 200
@@ -100,7 +102,9 @@ describe('ADMIN: Skills page', () => {
   test('should change focus on press tab key', async () => {
     api.get = vi.fn().mockResolvedValue({})
 
-    render(<AdminSkills />)
+    await waitFor(() => {
+      render(<AdminSkills />)
+    })
 
     const title = screen.getByLabelText('Título')
     const description = screen.getByLabelText('Descrição')
@@ -116,25 +120,27 @@ describe('ADMIN: Skills page', () => {
       name: 'Limpar'
     })
 
-    expect(title).toHaveFocus()
-    userEvent.tab()
-    expect(description).toHaveFocus()
-    userEvent.tab()
-    expect(skills).toHaveFocus()
-    userEvent.tab()
-    expect(jobTitle).toHaveFocus()
-    userEvent.tab()
-    expect(jobStart).toHaveFocus()
-    userEvent.tab()
-    expect(jobEnd).toHaveFocus()
-    userEvent.tab()
-    expect(jobLink).toHaveFocus()
-    userEvent.tab()
-    expect(jobDescription).toHaveFocus()
-    userEvent.tab()
-    expect(submitButton).toHaveFocus()
-    userEvent.tab()
-    expect(clearButton).toHaveFocus()
+    await waitFor(() => {
+      expect(title).toHaveFocus()
+      userEvent.tab()
+      expect(description).toHaveFocus()
+      userEvent.tab()
+      expect(skills).toHaveFocus()
+      userEvent.tab()
+      expect(jobTitle).toHaveFocus()
+      userEvent.tab()
+      expect(jobStart).toHaveFocus()
+      userEvent.tab()
+      expect(jobEnd).toHaveFocus()
+      userEvent.tab()
+      expect(jobLink).toHaveFocus()
+      userEvent.tab()
+      expect(jobDescription).toHaveFocus()
+      userEvent.tab()
+      expect(submitButton).toHaveFocus()
+      userEvent.tab()
+      expect(clearButton).toHaveFocus()
+    })
   })
 
   test('should clear fields of the last jobs group on add jobs', async () => {

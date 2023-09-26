@@ -140,12 +140,14 @@ describe('ADMIN: projects page', () => {
       }
     })
 
-    render(
-      <AlertProvider>
-        <Alert />
-        <AdminProjects />
-      </AlertProvider>
-    )
+    await waitFor(() => {
+      render(
+        <AlertProvider>
+          <Alert />
+          <AdminProjects />
+        </AlertProvider>
+      )
+    })
 
     const titleInput = screen.getByRole('textbox', { name: 'Título' })
     const lastUpdateInput = screen.getByRole('textbox', {

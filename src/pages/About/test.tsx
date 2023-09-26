@@ -22,12 +22,7 @@ describe('About Page', () => {
   })
 
   test('shoud not render image wrapper if illustration url not exist', async () => {
-    api.get = vi.fn().mockResolvedValue({
-      data: {
-        ...aboutPageMock,
-        illustrationURL: aboutPageMock.illustrationURL
-      }
-    })
+    api.get = vi.fn().mockResolvedValue({ data: aboutPageMock })
 
     render(<About />)
 
