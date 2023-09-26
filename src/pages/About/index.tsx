@@ -13,8 +13,6 @@ export const About = () => {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [skills, setSkills] = useState<Skill[]>([])
-  const [illustrationURL, setIllustrationURL] = useState('')
-  const [illustrationALT, setIllustrationALT] = useState('')
 
   useEffect(() => {
     setPageSubtitle('About Page')
@@ -24,10 +22,6 @@ export const About = () => {
       initialData?.title && setTitle(initialData.title)
       initialData?.description && setDescription(initialData.description)
       initialData?.skills && setSkills(initialData.skills)
-      initialData?.illustrationURL &&
-        setIllustrationURL(initialData.illustrationURL)
-      initialData?.illustrationALT &&
-        setIllustrationALT(initialData.illustrationALT)
     }
 
     getInitialData()
@@ -43,16 +37,10 @@ export const About = () => {
         )}
       </Styles.Text>
 
-      {skills.length ? (
+      {skills.length && (
         <Styles.Skills>
           <IconCloud slugs={skills.map((skill) => skill.title)} />
         </Styles.Skills>
-      ) : (
-        !!illustrationURL?.length && (
-          <Styles.ImageWrapper>
-            <img src={illustrationURL} alt={illustrationALT ?? ''} />
-          </Styles.ImageWrapper>
-        )
       )}
     </Styles.Wrapper>
   )
