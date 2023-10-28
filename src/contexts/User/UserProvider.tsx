@@ -37,8 +37,8 @@ export const UserProvider = (props: { children: JSX.Element }) => {
       return
     }
 
-    const { accessToken, user } = validResponse.data
-    const token = `${accessToken}`
+    const { access_token, user } = validResponse.data
+    const token = `${access_token}`
     const decodedToken = decodeToken(token) as { exp: number }
 
     const authorized = !!user && !!decodedToken

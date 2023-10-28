@@ -1,22 +1,52 @@
 [
   {
-    "id": 1,
-    "snapshot": "/images/snap-calm.png",
-    "description": {
-      "title": "Calm Organizador de Criptomoedas",
-      "subTitle": "Last update: 2022 - 03",
-      "content": "Personal project for learn nextjs."
-    },
-    "githubLink": "https://github.com/mckatoo/calm"
+    "jobTitle": "Calm Organizador de Criptomoedas",
+    "jobDescription": "Projeto pessoal para estudo.",
+    "yearMonthStart": "2022 - 03",
+    "link": "https://github.com/mckatoo/calm",
+    "skills": [
+      {
+        "title": "NextJS"
+      },
+      {
+        "title": "Prisma"
+      },
+      {
+        "title": "Typescript"
+      },
+      {
+        "title": "Tailwindcss"
+      },
+      {
+        "title": "Jest"
+      }
+    ]
   },
   {
-    "id": 2,
-    "snapshot": "/images/ikatoo.png",
-    "description": {
-      "title": "iKatoo - Site pessoal",
-      "subTitle": "Last update: 2022 - 08",
-      "content": "Personal Web Site."
-    },
-    "githubLink": "https://github.com/mckatoo/ikatoo-frontend"
+    "jobTitle": "Uniesi - Centro Universitário de Itapira",
+    "jobDescription": "Responsável pela infraestrutura local e suporte dos serviços dispostos pela mantenedora UNIP.",
+    "yearMonthStart": "2013 - 06",
+    "yearMonthEnd": "2021 - 07",
+    "link": "https://uniesi.edu.br",
+    "skills": [
+      {
+        "title": "Docker"
+      },
+      {
+        "title": "Strapi"
+      },
+      {
+        "title": "Typescript"
+      },
+      {
+        "title": "Jest"
+      },
+      {
+        "title": "Storybook"
+      },
+      {
+        "title": "NextJS"
+      }
+    ]
   }
 ]
