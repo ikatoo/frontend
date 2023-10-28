@@ -3,7 +3,7 @@ import { UserSchema } from './User'
 
 export const AuthResponseSchema = z.object({
   user: UserSchema.partial().optional(),
-  accessToken: z.string().optional(),
+  access_token: z.string().optional(),
   error: z.string().optional()
 })
 
