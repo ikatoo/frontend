@@ -141,6 +141,8 @@ test.describe('ADMIN - Skills page', () => {
     })
     const updateButton = page.getByRole('button', { name: 'Atualizar' })
 
+    await page.waitForResponse(`${process.env.VITE_API_URL}/skills`)
+
     await expect(title).toHaveValue(skillsPageMock.title)
 
     await title.fill(newData.title)
