@@ -1,4 +1,13 @@
+import styled from 'styled-components'
 import tw from 'tailwind-styled-components'
+
+const ImageWrapper = styled.div`
+  img {
+    border-radius: 50%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+`
 
 export default {
   Wrapper: tw.div`
@@ -30,9 +39,12 @@ export default {
     items-center
     justify-center
   `,
-  ImageWrapper: tw.div`
-    flex
-    md:w-1/2
+  ImageWrapper: tw(ImageWrapper)`
+    md:flex
     justify-center
+    items-center
+    hidden
+    h-screen
+    md:w-full
   `
 }
