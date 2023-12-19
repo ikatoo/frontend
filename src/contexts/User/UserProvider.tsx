@@ -37,14 +37,15 @@ export const UserProvider = (props: { children: JSX.Element }) => {
       return
     }
 
-    const { access_token, user } = validResponse.data
-    const token = `${access_token}`
-    const decodedToken = decodeToken(token) as { exp: number }
+    const { accessToken, refreshToken, user } = validResponse.data
+    const decodedToken = decodeToken(accessToken + '') as { exp: number }
 
     const authorized = !!user && !!decodedToken
+    console.log('decodedToken ====>', decodedToken)
 
     if (authorized) {
-      setLocalStorage('token', token)
+      setLocalStorage('token', accessToken + '')
+      setLocalStorage('token', refreshToken + '')
       navigate(locationState?.redirectTo ?? '/admin', { replace: true })
       return
     }
