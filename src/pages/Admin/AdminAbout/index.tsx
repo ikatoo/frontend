@@ -1,23 +1,25 @@
 import { useEffect, useState } from 'react'
 
+import { useUser } from 'src/contexts/User/UserContext'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
+import { AboutPageServiceProps } from 'src/types/AboutPage'
 import Button from '../../../components/Button'
 import { FormContainer } from '../../../components/FormContainer'
-import TagEditor, { Tag } from '../../../components/TagEditor'
 import TextArea from '../../../components/TextArea'
 import { TextContainer } from '../../../components/TextContainer'
 import TextInput from '../../../components/TextInput'
 import { useAlert } from '../../../hooks/useAlert'
 import aboutService from '../../../services/aboutService'
-import { AboutPageServiceProps } from '../../../types/AboutPage'
 import Styles from './styles'
-import setPageSubtitle from 'src/helpers/setPageSubtitle'
 
 export const AdminAbout = () => {
   const { setAlert } = useAlert()
+  const { user } = useUser()
 
   const [title, setTitle] = useState<string>('')
   const [description, setDescription] = useState<string>('')
-  const [skills, setSkills] = useState<Tag[]>([])
+  const [imageUrl, setImageUrl] = useState<string>('')
+  const [imageAlt, setImageAlt] = useState<string>('')
   const [initialData, setInitialData] = useState<AboutPageServiceProps>()
   const [titleFocused, setTitleFocused] = useState(true)
   const [isEmpty, setIsEmpty] = useState(true)
@@ -30,16 +32,17 @@ export const AdminAbout = () => {
     setPageSubtitle('Edit About Page')
 
     const getInitialData = async () => {
-      const result = await aboutService.get()
+      const result = await aboutService.get(user?.id ?? 1)
       setInitialData(result?.data)
     }
     getInitialData()
-  }, [])
+  }, [user?.id])
 
   useEffect(() => {
     initialData?.title && setTitle(initialData.title)
     initialData?.description && setDescription(initialData.description)
-    initialData?.skills && setSkills(initialData.skills)
+    initialData?.image.url && setImageUrl(initialData.image.url)
+    initialData?.image.alt && setImageAlt(initialData.image.alt)
   }, [initialData])
 
   const save = async (event: React.FormEvent) => {
@@ -48,7 +51,10 @@ export const AdminAbout = () => {
     aboutService.create({
       title,
       description,
-      skills
+      image: {
+        url: imageUrl,
+        alt: imageAlt
+      }
     })
     setAlert({
       title: 'Success on create about page.',
@@ -60,9 +66,12 @@ export const AdminAbout = () => {
     event.preventDefault()
 
     aboutService.patch({
-      title: title,
-      description: description,
-      skills
+      title,
+      description,
+      image: {
+        alt: imageAlt,
+        url: imageUrl
+      }
     })
     setAlert({ title: 'Success on update about page.', type: 'message' })
   }
@@ -70,12 +79,9 @@ export const AdminAbout = () => {
   const onReset = () => {
     setTitle('')
     setDescription('')
-    setSkills([])
+    setImageAlt('')
+    setImageUrl('')
     setTitleFocused(true)
-  }
-
-  const onChangeTags = (values: Tag[]) => {
-    setSkills(values)
   }
 
   return (
@@ -111,12 +117,25 @@ export const AdminAbout = () => {
             </Styles.TextWrapper>
 
             <Styles.TextWrapper>
-              <TagEditor
-                name="skills"
-                title="Habilidades"
-                initalValue={skills}
-                onChangeTags={onChangeTags}
-              />
+              <Styles.FieldSet>
+                <legend>Imagem</legend>
+                <TextInput
+                  initialValue={imageUrl}
+                  labelColor="white"
+                  label="URL"
+                  name="illustrationURL"
+                  placeholder="https://dominio.com/imagem.png"
+                  onInputChange={(value) => setImageUrl(value)}
+                />
+                <TextInput
+                  initialValue={imageAlt}
+                  labelColor="white"
+                  label="ALT"
+                  name="illustrationALT"
+                  placeholder="Descrição da imagem"
+                  onInputChange={(value) => setImageAlt(value)}
+                />
+              </Styles.FieldSet>
             </Styles.TextWrapper>
 
             <Styles.Actions>

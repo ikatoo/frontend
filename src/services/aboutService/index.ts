@@ -3,7 +3,7 @@ import api from '../api'
 
 export default {
   create: async (pageData: Partial<AboutPageServiceProps>) => {
-    const { data, status } = await api.post('/about', pageData)
+    const { data, status } = await api.post('/about-page', pageData)
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
@@ -16,9 +16,11 @@ export default {
 
     return { data: json, status }
   },
-  get: async () => {
+  get: async (userId: number) => {
     try {
-      const { data, status } = await api.get<AboutPageServiceProps>('about')
+      const { data, status } = await api.get<AboutPageServiceProps>(
+        `about-page/user-id/${userId}`
+      )
       const json: AboutPageServiceProps =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
@@ -29,7 +31,7 @@ export default {
   },
   delete: async () => {
     try {
-      const { data, status } = await api.delete<AboutPageServiceProps>('about')
+      const { data, status } = await api.delete('about-page')
       const json =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
