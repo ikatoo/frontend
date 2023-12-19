@@ -41,7 +41,6 @@ export const UserProvider = (props: { children: JSX.Element }) => {
     const decodedToken = decodeToken(accessToken + '') as { exp: number }
 
     const authorized = !!user && !!decodedToken
-    console.log('decodedToken ====>', decodedToken)
 
     if (authorized) {
       setLocalStorage('token', accessToken + '')
