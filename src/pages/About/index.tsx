@@ -17,7 +17,7 @@ export const About = () => {
     setPageSubtitle('About Page')
 
     const getInitialData = async () => {
-      const initialData = (await aboutService.get(user?.id ?? 1))?.data
+      const initialData = (await aboutService.get())?.data
       initialData?.title && setTitle(initialData.title)
       initialData?.description && setDescription(initialData.description)
       initialData?.image.url && setImageUrl(initialData.image.url)

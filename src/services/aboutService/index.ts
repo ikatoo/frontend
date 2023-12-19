@@ -16,7 +16,7 @@ export default {
 
     return { data: json, status }
   },
-  get: async (userId: number) => {
+  get: async (userId = 1) => {
     try {
       const { data, status } = await api.get<AboutPageServiceProps>(
         `about-page/user-id/${userId}`

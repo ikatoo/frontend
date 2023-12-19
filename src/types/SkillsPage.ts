@@ -1,16 +1,22 @@
-export type Job = {
-  jobTitle: string
-  jobDescription: string
-  yearMonthStart: string | undefined
-  yearMonthEnd?: string | undefined
-  link: string
+type Skill = {
+  id: number
+  title: string
+}
+
+type Project = {
+  id: number
+  title: string
+  description: string
+  snapshot: string
+  repositoryLink: string
+  lastUpdate: Date
+  userId: number
+  skills: Skill[]
 }
 
 export type SkillsPageProps = {
+  id: number
   title: string
   description: string
-  skills: {
-    skillTitle: string
-  }[]
-  lastJobs: Job[]
+  projects: Project[]
 }
