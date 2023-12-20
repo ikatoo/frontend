@@ -17,6 +17,9 @@ import projectsService from 'src/services/projectsService'
 import theme from 'src/theme'
 import Styles from './styles'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
+import TagEditor from 'src/components/TagEditor'
+
+type Skill = { title: string }
 
 export const AdminProjects = () => {
   const { setAlert } = useAlert()
@@ -24,8 +27,10 @@ export const AdminProjects = () => {
   const [snapshotUrl, setSnapshotUrl] = useState('')
   const [id, setId] = useState(0)
   const [title, setTitle] = useState('')
+  const [start, setStart] = useState('')
   const [lastUpdate, setLastUpdate] = useState('')
   const [description, setDescription] = useState('')
+  const [skills, setSkills] = useState<Skill[]>([])
   const [refLink, setRefLink] = useState('')
   const [initialData, setInitialData] = useState<ProjectProps[]>()
   const [titleFocused, setTitleFocused] = useState(true)
@@ -181,6 +186,15 @@ export const AdminProjects = () => {
               <Styles.DatesWrapper>
                 <DateInput
                   monthAndYearOnly
+                  name="start"
+                  placeholder="mm/YYYY"
+                  label="Início"
+                  labelColor="white"
+                  initialValue={start}
+                  onDateChange={setStart}
+                />
+                <DateInput
+                  monthAndYearOnly
                   name="lastUpdate"
                   placeholder="mm/YYYY"
                   label="Última atualização"
@@ -191,17 +205,15 @@ export const AdminProjects = () => {
               </Styles.DatesWrapper>
             </Styles.Fill>
 
-            <TextInput
-              name="description"
-              placeholder="Motivação, caracteristicas ou funcionalidades com até 100 caracteres."
-              maxLength={100}
-              label="Breve Descrição"
-              labelColor="white"
-              initialValue={description}
-              onInputChange={setDescription}
-            />
-
             <Styles.Fill>
+              <TextInput
+                name="link"
+                placeholder="Ex: https://github.com/seu_repo/seu_projeto ou https://site.com.br"
+                label="Link para referência"
+                labelColor="white"
+                initialValue={refLink}
+                onInputChange={setRefLink}
+              />
               <Styles.UploadWrapper>
                 <Styles.UploadDropArea>
                   <UploadInput
@@ -223,16 +235,24 @@ export const AdminProjects = () => {
                   label={`${progressUpload}%`}
                 />
               </Styles.UploadWrapper>
-              <Styles.LinkWrapper>
-                <TextInput
-                  name="link"
-                  placeholder="Ex: https://github.com/seu_repo/seu_projeto ou https://site.com.br"
-                  label="Link para referência"
-                  labelColor="white"
-                  initialValue={refLink}
-                  onInputChange={setRefLink}
-                />
-              </Styles.LinkWrapper>
+            </Styles.Fill>
+
+            <Styles.Fill>
+              <TextInput
+                name="description"
+                placeholder="Motivação, caracteristicas ou funcionalidades com até 100 caracteres."
+                maxLength={100}
+                label="Breve Descrição"
+                labelColor="white"
+                initialValue={description}
+                onInputChange={setDescription}
+              />
+              <TagEditor
+                name="skills"
+                title="Habilidades desenvolvidas"
+                initalValue={skills}
+                onChangeTags={setSkills}
+              />
             </Styles.Fill>
 
             <Styles.Actions>

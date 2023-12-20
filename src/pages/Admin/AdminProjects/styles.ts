@@ -73,7 +73,6 @@ export default {
     max-w-xs
   `,
   UploadWrapper: tw.div`
-    w-full
     self-center
   `,
   UploadDropArea: tw.div`
