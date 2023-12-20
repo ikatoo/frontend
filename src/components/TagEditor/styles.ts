@@ -6,6 +6,11 @@ type AlertProps = {
 }
 
 export default {
+  Wrapper: styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  `,
   TagsWrapper: styled.div`
     line-height: 30px;
   `,

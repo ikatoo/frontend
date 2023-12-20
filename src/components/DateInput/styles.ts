@@ -20,6 +20,7 @@ const Label = styled.label<LabelProps>`
   ${({ labelColor }) => css`
     font-size: ${theme.font.sizes.large};
     color: ${theme.colors[labelColor ?? 'black']};
+    text-wrap: nowrap;
     cursor: pointer;
   `}
 `

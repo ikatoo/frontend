@@ -58,7 +58,18 @@ const TagEditor = (props: TagEditorProps) => {
   }
 
   return (
-    <>
+    <Styles.Wrapper>
+      <TextInput
+        onKeyDown={handleOnKeyDown}
+        onChange={handleOnChange}
+        placeholder={`Press "," | "Enter" | "Shift+Enter" to add ${props.title}`}
+        value={newTag}
+        name={props.name}
+        label={props.title}
+        labelColor="white"
+        error={alert}
+        tabIndex={props.tabIndex ?? 0}
+      />
       <Styles.TagsWrapper>
         {!!tags.length &&
           tags.map((tag) => (
@@ -73,18 +84,7 @@ const TagEditor = (props: TagEditorProps) => {
             </Styles.Tag>
           ))}
       </Styles.TagsWrapper>
-      <TextInput
-        onKeyDown={handleOnKeyDown}
-        onChange={handleOnChange}
-        placeholder={`Press "," | "Enter" | "Shift+Enter" to add ${props.title}`}
-        value={newTag}
-        name={props.name}
-        label={props.title}
-        labelColor="white"
-        error={alert}
-        tabIndex={props.tabIndex ?? 0}
-      />
-    </>
+    </Styles.Wrapper>
   )
 }
 
