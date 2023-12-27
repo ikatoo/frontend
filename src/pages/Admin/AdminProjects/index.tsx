@@ -6,18 +6,18 @@ import Card from 'src/components/Card'
 import DateInput from 'src/components/DateInput'
 import { FormContainer } from 'src/components/FormContainer'
 import ProgressBar from 'src/components/ProgressBar'
+import TagEditor from 'src/components/TagEditor'
 import { TextContainer } from 'src/components/TextContainer'
 import TextInput from 'src/components/TextInput'
 import UploadInput from 'src/components/UploadInput'
 import { dateToStringFormat, stringToDateFormat } from 'src/helpers/date'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import { useAlert } from 'src/hooks/useAlert'
 import { ProjectProps } from 'src/pages/Projects'
 import imageService from 'src/services/imageService'
 import projectsService from 'src/services/projectsService'
 import theme from 'src/theme'
 import Styles from './styles'
-import setPageSubtitle from 'src/helpers/setPageSubtitle'
-import TagEditor from 'src/components/TagEditor'
 
 type Skill = { title: string }
 
@@ -31,7 +31,8 @@ export const AdminProjects = () => {
   const [lastUpdate, setLastUpdate] = useState('')
   const [description, setDescription] = useState('')
   const [skills, setSkills] = useState<Skill[]>([])
-  const [refLink, setRefLink] = useState('')
+  const [githubRepo, setGithubRepo] = useState('')
+  const [githubOwner, setGithubOwner] = useState('')
   const [initialData, setInitialData] = useState<ProjectProps[]>()
   const [titleFocused, setTitleFocused] = useState(true)
   const [progressUpload, setProgressUpload] = useState(0)
@@ -42,7 +43,7 @@ export const AdminProjects = () => {
     !lastUpdate.length ||
     !description.length ||
     !snapshotUrl.length ||
-    !refLink.length
+    !githubRepo.length
 
   useEffect(() => {
     setPageSubtitle('Edit Projects Page')
@@ -63,7 +64,7 @@ export const AdminProjects = () => {
         content: description
       },
       snapshot: snapshotUrl,
-      githubLink: refLink
+      githubLink: githubRepo
     }
     const { status } = await projectsService.create(data)
     if (status === 201) {
@@ -89,7 +90,7 @@ export const AdminProjects = () => {
         content: description
       },
       snapshot: snapshotUrl,
-      githubLink: refLink
+      githubLink: githubRepo
     }
 
     const { status } = await projectsService.patch(id, data)
@@ -135,7 +136,7 @@ export const AdminProjects = () => {
     )
     setDescription(project.description.content)
     setSnapshotUrl(project.snapshot)
-    setRefLink(project.githubLink ?? '')
+    setGithubRepo(project.githubLink ?? '')
   }
 
   const clearFields = (event?: React.FormEvent) => {
@@ -144,7 +145,7 @@ export const AdminProjects = () => {
     setTitle('')
     setDescription('')
     setLastUpdate('')
-    setRefLink('')
+    setGithubRepo('')
     setSnapshotUrl('')
     setResetUpload(true)
     setTitleFocused(true)
@@ -183,37 +184,6 @@ export const AdminProjects = () => {
                   autoFocus={titleFocused}
                 />
               </Styles.Title>
-              <Styles.DatesWrapper>
-                <DateInput
-                  monthAndYearOnly
-                  name="start"
-                  placeholder="mm/YYYY"
-                  label="Início"
-                  labelColor="white"
-                  initialValue={start}
-                  onDateChange={setStart}
-                />
-                <DateInput
-                  monthAndYearOnly
-                  name="lastUpdate"
-                  placeholder="mm/YYYY"
-                  label="Última atualização"
-                  labelColor="white"
-                  initialValue={lastUpdate}
-                  onDateChange={setLastUpdate}
-                />
-              </Styles.DatesWrapper>
-            </Styles.Fill>
-
-            <Styles.Fill>
-              <TextInput
-                name="link"
-                placeholder="Ex: https://github.com/seu_repo/seu_projeto ou https://site.com.br"
-                label="Link para referência"
-                labelColor="white"
-                initialValue={refLink}
-                onInputChange={setRefLink}
-              />
               <Styles.UploadWrapper>
                 <Styles.UploadDropArea>
                   <UploadInput
@@ -235,6 +205,59 @@ export const AdminProjects = () => {
                   label={`${progressUpload}%`}
                 />
               </Styles.UploadWrapper>
+            </Styles.Fill>
+
+            <Styles.Fill>
+              <Styles.GithubDetails>
+                <Styles.RowWrapper>
+                  <TextInput
+                    name="baseGithub"
+                    label="Github"
+                    labelColor="white"
+                    initialValue="https://github.com/"
+                    disabled
+                  />
+                  <TextInput
+                    name="owner"
+                    placeholder="Seu nome de usuário no github"
+                    label="Repositório"
+                    labelColor="white"
+                    initialValue={githubOwner}
+                    onInputChange={setGithubOwner}
+                  />
+                  <TextInput
+                    name="githubProjectName"
+                    placeholder="Nome do repositório"
+                    label="Projeto"
+                    labelColor="white"
+                    initialValue={githubRepo}
+                    onInputChange={setGithubRepo}
+                  />
+                </Styles.RowWrapper>
+                <Styles.GithubLink>
+                  https://github.com/{githubOwner}/{githubRepo}
+                </Styles.GithubLink>
+              </Styles.GithubDetails>
+              <Styles.RowWrapper>
+                <DateInput
+                  monthAndYearOnly
+                  name="start"
+                  placeholder="mm/YYYY"
+                  label="Início"
+                  labelColor="white"
+                  initialValue={start}
+                  onDateChange={setStart}
+                />
+                <DateInput
+                  monthAndYearOnly
+                  name="lastUpdate"
+                  placeholder="mm/YYYY"
+                  label="Última atualização"
+                  labelColor="white"
+                  initialValue={lastUpdate}
+                  onDateChange={setLastUpdate}
+                />
+              </Styles.RowWrapper>
             </Styles.Fill>
 
             <Styles.Fill>
