@@ -50,12 +50,6 @@ export default {
     w-full
     min-w-[18.5rem]
   `,
-  DatesWrapper: tw.div`
-    flex
-    flex-row
-    gap-2
-    min-w-[18.5rem]
-  `,
   FieldSet: tw(Legend)`
     max-w-full
     flex
@@ -111,5 +105,30 @@ export default {
       background-color: ${theme.colors.black}80;
       border-radius: 50%;
     }
+  `,
+  RowWrapper: tw.div`
+    flex
+    flex-row
+    gap-2
+    min-w-[18.5rem]
+  `,
+  GithubDetails: tw.fieldset`
+    border-solid
+    border-mck_gray_light
+    border-2
+    rounded
+    p-2
+    pb-0
+    flex
+    flex-col
+    gap-0
+  `,
+  GithubLink: tw.a`
+    relative
+    -top-4
+    text-center
+    w-full
+    m-0
+    p-0
   `
 }

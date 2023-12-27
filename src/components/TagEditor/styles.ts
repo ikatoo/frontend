@@ -12,7 +12,10 @@ export default {
     width: 100%;
   `,
   TagsWrapper: styled.div`
-    line-height: 30px;
+    position: relative;
+    top: -20px;
+    display: flex;
+    gap: 2px;
   `,
   DeleteButton: styled.a`
     cursor: pointer;
@@ -21,10 +24,10 @@ export default {
     }
   `,
   Tag: styled.span`
-    border-radius: 10%;
+    border-radius: 3px;
     background-color: ${theme.colors.secondary};
-    margin: 4px;
-    padding: 2px;
+    margin: 0px;
+    padding: 2px 4px;
     white-space: nowrap;
   `,
   InputWrapper: styled.div`
