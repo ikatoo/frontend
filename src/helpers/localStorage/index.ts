@@ -1,6 +1,6 @@
 import env from '../env'
 
-type LocalStorageKeys = 'token'
+type LocalStorageKeys = 'accessToken' | 'refreshToken'
 
 const getLocalStorage = (key: LocalStorageKeys) =>
   localStorage.getItem(`${env.VITE_LOCALSTORAGE_PREFIX}${key}`)
