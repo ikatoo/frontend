@@ -1,17 +1,30 @@
-import { ProjectProps } from '../../pages/Projects'
 import api from '../api'
 
+type Skill = { title: string }
+
+export type CreateProject = {
+  id?: number
+  title: string
+  description: string
+  snapshot: string
+  repositoryLink: string
+  start: Date
+  lastUpdate: Date
+  skills: Skill[]
+  userId: number
+}
+
 export default {
-  create: async (pageData: Partial<ProjectProps>) => {
-    const result = await api.post('project', pageData)
+  create: async (project: CreateProject) => {
+    const result = await api.post('project', project)
     const { data, status } = result
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
     return { data: json, status }
   },
-  patch: async (id: number, pageData: Partial<ProjectProps>) => {
-    const { data, status } = await api.patch(`project/id/${id}`, pageData)
+  patch: async (id: number, newData: Partial<CreateProject>) => {
+    const { data, status } = await api.patch(`project/id/${id}`, newData)
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
@@ -25,24 +38,24 @@ export default {
     return { data: json, status }
   },
   get: async () => {
-    const { data, status } = await api.get<ProjectProps[]>('projects')
-    const json: ProjectProps[] =
+    const { data, status } = await api.get<CreateProject[]>('projects')
+    const json: CreateProject[] =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
     return { data: json, status }
   },
   getByID: async (id: number) => {
-    const { data, status } = await api.get<ProjectProps>(`project/id/${id}`)
-    const json: ProjectProps =
+    const { data, status } = await api.get<CreateProject>(`project/id/${id}`)
+    const json: CreateProject =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
     return { data: json, status }
   },
   getByTitle: async (title: string) => {
-    const { data, status } = await api.get<ProjectProps[]>(
+    const { data, status } = await api.get<CreateProject[]>(
       `projects/title/${title}`
     )
-    const json: ProjectProps[] =
+    const json: CreateProject[] =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
     return { data: json, status }
