@@ -16,7 +16,7 @@ export const UserProvider = (props: { children: JSX.Element }) => {
   const [user, setUser] = useState<PartialUser>()
 
   const signOut = () => {
-    removeLocalStorage('token')
+    removeLocalStorage('accessToken')
     navigate('/')
     setUser(undefined)
   }
@@ -43,8 +43,8 @@ export const UserProvider = (props: { children: JSX.Element }) => {
     const authorized = !!user && !!decodedToken
 
     if (authorized) {
-      setLocalStorage('token', accessToken + '')
-      setLocalStorage('token', refreshToken + '')
+      setLocalStorage('accessToken', accessToken + '')
+      setLocalStorage('refreshToken', refreshToken + '')
       navigate(locationState?.redirectTo ?? '/admin', { replace: true })
       return
     }

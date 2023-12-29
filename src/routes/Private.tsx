@@ -13,7 +13,7 @@ export const Private = (props: { children: JSX.Element }) => {
 
   useEffect(() => {
     const verifyToken = async () => {
-      const token = getLocalStorage('token')
+      const token = getLocalStorage('accessToken')
       if (!token) {
         setLoading(false)
         return
