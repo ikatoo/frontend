@@ -8,6 +8,13 @@ const Legend = styled.fieldset`
   }
 `
 
+const RowWrapper = tw.div`
+  flex
+  flex-row
+  gap-2
+  min-w-[18.5rem]
+`
+
 export default {
   Wrapper: tw.div`
     flex
@@ -106,19 +113,13 @@ export default {
       border-radius: 50%;
     }
   `,
-  RowWrapper: tw.div`
-    flex
-    flex-row
-    gap-2
-    min-w-[18.5rem]
-  `,
-  GithubDetails: tw.fieldset`
+  RowWrapper,
+  GithubDetails: tw.div`
     border-solid
     border-mck_gray_light
     border-2
     rounded
     p-2
-    pb-0
     flex
     flex-col
     gap-0
@@ -130,5 +131,8 @@ export default {
     w-full
     m-0
     p-0
+  `,
+  DatesWrapper: tw(RowWrapper)`
+    pt-2
   `
 }

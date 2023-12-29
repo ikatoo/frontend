@@ -10,12 +10,12 @@ import TagEditor from 'src/components/TagEditor'
 import { TextContainer } from 'src/components/TextContainer'
 import TextInput from 'src/components/TextInput'
 import UploadInput from 'src/components/UploadInput'
-import { dateToStringFormat, stringToDateFormat } from 'src/helpers/date'
+import { useUser } from 'src/contexts/User/UserContext'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import { useAlert } from 'src/hooks/useAlert'
-import { ProjectProps } from 'src/pages/Projects'
+import { getGithubDates } from 'src/services/github'
 import imageService from 'src/services/imageService'
-import projectsService from 'src/services/projectsService'
+import projectsService, { CreateProject } from 'src/services/projectsService'
 import theme from 'src/theme'
 import Styles from './styles'
 
@@ -23,6 +23,7 @@ type Skill = { title: string }
 
 export const AdminProjects = () => {
   const { setAlert } = useAlert()
+  const { user } = useUser()
 
   const [snapshotUrl, setSnapshotUrl] = useState('')
   const [id, setId] = useState(0)
@@ -33,17 +34,24 @@ export const AdminProjects = () => {
   const [skills, setSkills] = useState<Skill[]>([])
   const [githubRepo, setGithubRepo] = useState('')
   const [githubOwner, setGithubOwner] = useState('')
-  const [initialData, setInitialData] = useState<ProjectProps[]>()
+  const [githubLink, setGithubLink] = useState('')
+  const [initialData, setInitialData] = useState<CreateProject[]>()
   const [titleFocused, setTitleFocused] = useState(true)
   const [progressUpload, setProgressUpload] = useState(0)
   const [resetUpload, setResetUpload] = useState(false)
   const [editMode, setEditMode] = useState(false)
   const disabledButton =
     !title.length ||
-    !lastUpdate.length ||
+    !start ||
+    !lastUpdate ||
     !description.length ||
     !snapshotUrl.length ||
     !githubRepo.length
+
+  useEffect(() => {
+    if (!!githubRepo && !!githubOwner)
+      setGithubLink(`https://github.com/${githubOwner}/${githubRepo}`)
+  }, [githubOwner, githubRepo])
 
   useEffect(() => {
     setPageSubtitle('Edit Projects Page')
@@ -57,18 +65,24 @@ export const AdminProjects = () => {
 
   const addProject = async (event: React.FormEvent) => {
     event.preventDefault()
+
     const data = {
-      description: {
-        title,
-        subTitle: `Last update: ${dateToStringFormat(lastUpdate)}`,
-        content: description
-      },
+      title,
+      description,
       snapshot: snapshotUrl,
-      githubLink: githubRepo
+      repositoryLink: githubLink,
+      start: new Date(start.split('/').reverse().join('/')),
+      lastUpdate: new Date(lastUpdate.split('/').reverse().join('/')),
+      skills,
+      userId: user?.id ?? 0
     }
+
     const { status } = await projectsService.create(data)
+
     if (status === 201) {
-      const projects = initialData ? [...initialData, data] : [data]
+      const projects: CreateProject[] = initialData
+        ? [...initialData, data]
+        : [data]
       setInitialData(projects)
       setAlert({
         title: 'Success on create project.',
@@ -83,20 +97,21 @@ export const AdminProjects = () => {
 
     if (!initialData || id < 1) return
 
-    const data = {
-      description: {
-        title,
-        subTitle: `Last update: ${dateToStringFormat(lastUpdate)}`,
-        content: description
-      },
+    const data: CreateProject = {
+      title,
+      description,
       snapshot: snapshotUrl,
-      githubLink: githubRepo
+      repositoryLink: githubLink,
+      start: new Date(start.split('/').reverse().join('/')),
+      lastUpdate: new Date(lastUpdate.split('/').reverse().join('/')),
+      skills,
+      userId: user?.id ?? 0
     }
 
     const { status } = await projectsService.patch(id, data)
     if (status === 204) {
       const projects = initialData.filter((project) => project.id !== id)
-      const updatedProjects = [...projects, data]
+      const updatedProjects: CreateProject[] = [...projects, data]
       setInitialData(updatedProjects)
       setAlert({
         title: 'Success on update project.',
@@ -122,7 +137,7 @@ export const AdminProjects = () => {
     }
   }
 
-  const editProject = (project: ProjectProps) => {
+  const editProject = (project: CreateProject) => {
     setEditMode(true)
     if (!project.id) {
       setEditMode(false)
@@ -130,13 +145,14 @@ export const AdminProjects = () => {
     }
 
     setId(project.id)
-    setTitle(project.description.title)
+    setTitle(project.title)
+    setStart(project.start.toLocaleDateString('pt-BR', { dateStyle: 'short' }))
     setLastUpdate(
-      stringToDateFormat(project.description.subTitle?.split(': ')[1] ?? '')
+      project.lastUpdate.toLocaleDateString('pt-BR', { dateStyle: 'short' })
     )
-    setDescription(project.description.content)
+    setDescription(project.description)
     setSnapshotUrl(project.snapshot)
-    setGithubRepo(project.githubLink ?? '')
+    setGithubRepo(project.repositoryLink)
   }
 
   const clearFields = (event?: React.FormEvent) => {
@@ -144,6 +160,7 @@ export const AdminProjects = () => {
 
     setTitle('')
     setDescription('')
+    setStart('')
     setLastUpdate('')
     setGithubRepo('')
     setSnapshotUrl('')
@@ -160,6 +177,21 @@ export const AdminProjects = () => {
 
     if (!!result?.data || result?.status === 201) {
       setSnapshotUrl(result.data.url)
+    }
+  }
+
+  const onChangeGithub = async () => {
+    if (!!githubOwner && !!githubRepo) {
+      const { createdAt, pushedAt } = await getGithubDates(
+        githubOwner,
+        githubRepo
+      )
+      setStart(
+        new Date(createdAt).toLocaleDateString('pt-BR', { dateStyle: 'short' })
+      )
+      setLastUpdate(
+        new Date(pushedAt).toLocaleDateString('pt-BR', { dateStyle: 'short' })
+      )
     }
   }
 
@@ -224,6 +256,7 @@ export const AdminProjects = () => {
                     labelColor="white"
                     initialValue={githubOwner}
                     onInputChange={setGithubOwner}
+                    onBlur={onChangeGithub}
                   />
                   <TextInput
                     name="githubProjectName"
@@ -232,32 +265,29 @@ export const AdminProjects = () => {
                     labelColor="white"
                     initialValue={githubRepo}
                     onInputChange={setGithubRepo}
+                    onBlur={onChangeGithub}
                   />
                 </Styles.RowWrapper>
-                <Styles.GithubLink>
-                  https://github.com/{githubOwner}/{githubRepo}
-                </Styles.GithubLink>
+                <Styles.GithubLink>{githubLink}</Styles.GithubLink>
               </Styles.GithubDetails>
-              <Styles.RowWrapper>
+              <Styles.DatesWrapper>
                 <DateInput
-                  monthAndYearOnly
                   name="start"
-                  placeholder="mm/YYYY"
+                  placeholder="dd/mm/YYYY"
                   label="Início"
                   labelColor="white"
                   initialValue={start}
                   onDateChange={setStart}
                 />
                 <DateInput
-                  monthAndYearOnly
                   name="lastUpdate"
-                  placeholder="mm/YYYY"
+                  placeholder="dd/mm/YYYY"
                   label="Última atualização"
                   labelColor="white"
                   initialValue={lastUpdate}
                   onDateChange={setLastUpdate}
                 />
-              </Styles.RowWrapper>
+              </Styles.DatesWrapper>
             </Styles.Fill>
 
             <Styles.Fill>
@@ -312,14 +342,14 @@ export const AdminProjects = () => {
                   <Styles.CardActions>
                     <Edit
                       tabIndex={0}
-                      aria-label={`edit project with title ${card.description.title}`}
+                      aria-label={`edit project with title ${card.title}`}
                       onClick={() => {
                         editProject(card)
                       }}
                     />
                     <Delete
                       tabIndex={0}
-                      aria-label={`remove project with title ${card.description.title}`}
+                      aria-label={`remove project with title ${card.title}`}
                       onClick={() => {
                         card.id && removeProject(card.id)
                       }}
@@ -328,11 +358,19 @@ export const AdminProjects = () => {
                   </Styles.CardActions>
                 </Styles.CardActionsWrapper>
                 <Card
-                  title={card.description.title}
-                  subTitle={card.description.subTitle}
-                  content={card.description.content}
+                  title={card.title}
+                  subTitle={
+                    new Date(card.start).toLocaleDateString('pt-BR', {
+                      dateStyle: 'short'
+                    }) +
+                    ' - ' +
+                    new Date(card.lastUpdate).toLocaleDateString('pt-BR', {
+                      dateStyle: 'short'
+                    })
+                  }
+                  content={card.description}
                   image={card.snapshot}
-                  link={card.githubLink}
+                  link={card.repositoryLink}
                 />
               </Styles.CardWrapper>
             ))}
