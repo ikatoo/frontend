@@ -7,11 +7,15 @@ type IconPositionProps = Pick<DateInputProps, 'iconPosition'>
 
 type LabelProps = Pick<DateInputProps, 'labelColor'>
 
-type WrapperProps = Pick<DateInputProps, 'disabled'>
+type WrapperProps = Pick<DateInputProps, 'disabled' | 'monthAndYearOnly'>
 
 const Wrapper = styled.div<WrapperProps>`
-  ${({ disabled }) => css`
+  ${({ disabled, monthAndYearOnly }) => css`
     width: fit-content;
+    ${!monthAndYearOnly &&
+    `
+      min-width: 8rem;
+    `}
     ${disabled && wrapperModifiers.disabled()}
   `}
 `

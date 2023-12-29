@@ -26,7 +26,7 @@ const DateInput = ({
   error,
   disabled = false,
   onDateChange,
-  monthAndYearOnly,
+  monthAndYearOnly = false,
   ...props
 }: DateInputProps) => {
   const [value, setValue] = useState('')
@@ -59,7 +59,7 @@ const DateInput = ({
       }
 
   return (
-    <Styles.Wrapper disabled={disabled}>
+    <Styles.Wrapper monthAndYearOnly={monthAndYearOnly} disabled={disabled}>
       {!!label && (
         <Styles.Label labelColor={labelColor} htmlFor={name}>
           {label}
