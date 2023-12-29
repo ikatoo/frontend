@@ -1,9 +1,17 @@
 import axios from 'axios'
+import env from 'src/helpers/env'
 
-export const getStartDate = async (owner: string, repo: string) => {
+export const getGithubDates = async (owner: string, repo: string) => {
   const response = await axios.get(
-    `https://api.github.com/repos/${owner}/${repo}`
+    `https://api.github.com/repos/${owner}/${repo}`,
+    {
+      headers: {
+        Authorization: `Bearer ${env.VITE_GITHUB_TOKEN}`
+      }
+    }
   )
 
-  console.log('response.data ===>', response.data)
+  const { created_at: createdAt, pushed_at: pushedAt } = response.data
+
+  return { createdAt, pushedAt }
 }
