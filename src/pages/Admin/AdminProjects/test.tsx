@@ -19,11 +19,11 @@ vi.mock('src/components/ProgressBar', () => ({
 
 describe('ADMIN: projects page', () => {
   afterEach(() => {
-    projectsService.get = vi.fn()
+    projectsService.getAll = vi.fn()
   })
 
   test('should render all fields', async () => {
-    projectsService.get = vi.fn().mockResolvedValue({})
+    projectsService.getAll = vi.fn().mockResolvedValue({})
 
     render(<AdminProjects />)
 
@@ -42,7 +42,7 @@ describe('ADMIN: projects page', () => {
   })
 
   test('should load data at render', async () => {
-    projectsService.get = vi.fn().mockResolvedValue({
+    projectsService.getAll = vi.fn().mockResolvedValue({
       data: projectsPageMock,
       status: 200
     })
@@ -78,7 +78,7 @@ describe('ADMIN: projects page', () => {
   })
 
   test('should change focus on press tab key', () => {
-    projectsService.get = vi.fn().mockResolvedValue({})
+    projectsService.getAll = vi.fn().mockResolvedValue({})
     imageService.upload = vi.fn().mockResolvedValue({})
 
     render(<AdminProjects />)
@@ -114,7 +114,7 @@ describe('ADMIN: projects page', () => {
   })
 
   test('should disable save button when empty fields', () => {
-    projectsService.get = vi.fn().mockResolvedValue({})
+    projectsService.getAll = vi.fn().mockResolvedValue({})
     render(<AdminProjects />)
     const saveButton = screen.getByRole('button', {
       name: /adicionar/i
@@ -128,7 +128,7 @@ describe('ADMIN: projects page', () => {
     const mockedUrl = `https://cloudservice.com/${mockedPublicId}`
     const mock = projectsPageMock[0]
 
-    projectsService.get = vi.fn().mockResolvedValue({})
+    projectsService.getAll = vi.fn().mockResolvedValue({})
     projectsService.create = vi.fn().mockResolvedValue({ status: 201 })
     imageService.upload = vi.fn().mockImplementation(() => {
       return {
@@ -229,7 +229,7 @@ describe('ADMIN: projects page', () => {
     const mockedPublicId = 'folder/test.png'
     const mockedUrl = `https://cloudservice.com/${mockedPublicId}`
     const mock = projectsPageMock[0]
-    projectsService.get = vi.fn().mockResolvedValue({})
+    projectsService.getAll = vi.fn().mockResolvedValue({})
     imageService.upload = vi
       .fn()
       .mockImplementation(() => {
@@ -300,7 +300,7 @@ describe('ADMIN: projects page', () => {
   test('should remove project', async () => {
     const mockToRemove = projectsPageMock[0]
 
-    projectsService.get = vi.fn().mockResolvedValue({
+    projectsService.getAll = vi.fn().mockResolvedValue({
       data: projectsPageMock,
       status: 200
     })
@@ -347,7 +347,7 @@ describe('ADMIN: projects page', () => {
     const mockedNewLastUpdate = '07/2021'
     const mockedNewGithubLink = 'https://newlink.com/updated'
 
-    projectsService.get = vi.fn().mockResolvedValue({
+    projectsService.getAll = vi.fn().mockResolvedValue({
       data: projectsPageMock,
       status: 200
     })

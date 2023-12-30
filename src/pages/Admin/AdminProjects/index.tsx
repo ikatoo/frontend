@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
-
-import { Delete, Edit } from '@styled-icons/material-outlined'
 import Button from 'src/components/Button'
-import Card from 'src/components/Card'
 import DateInput from 'src/components/DateInput'
 import { FormContainer } from 'src/components/FormContainer'
 import ProgressBar from 'src/components/ProgressBar'
+import { ProjectCard } from 'src/components/ProjectCard'
 import TagEditor from 'src/components/TagEditor'
 import { TextContainer } from 'src/components/TextContainer'
 import TextInput from 'src/components/TextInput'
@@ -16,7 +14,6 @@ import { useAlert } from 'src/hooks/useAlert'
 import { getGithubDates } from 'src/services/github'
 import imageService from 'src/services/imageService'
 import projectsService, { CreateProject } from 'src/services/projectsService'
-import theme from 'src/theme'
 import Styles from './styles'
 
 type Skill = { title: string }
@@ -57,11 +54,13 @@ export const AdminProjects = () => {
     setPageSubtitle('Edit Projects Page')
 
     const getInitialData = async () => {
-      const result = await projectsService.get()
-      setInitialData(result?.data)
+      if (user?.id) {
+        const result = await projectsService.getByUserId(+user.id)
+        setInitialData(result?.data)
+      }
     }
     getInitialData()
-  }, [])
+  }, [user?.id])
 
   const addProject = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -336,43 +335,13 @@ export const AdminProjects = () => {
         {!!initialData?.length && (
           <Styles.FieldSet>
             <legend role="label">Últimos Trabalhos</legend>
-            {initialData.map((card, index) => (
-              <Styles.CardWrapper key={index}>
-                <Styles.CardActionsWrapper>
-                  <Styles.CardActions>
-                    <Edit
-                      tabIndex={0}
-                      aria-label={`edit project with title ${card.title}`}
-                      onClick={() => {
-                        editProject(card)
-                      }}
-                    />
-                    <Delete
-                      tabIndex={0}
-                      aria-label={`remove project with title ${card.title}`}
-                      onClick={() => {
-                        card.id && removeProject(card.id)
-                      }}
-                      color={`${theme.colors.red}`}
-                    />
-                  </Styles.CardActions>
-                </Styles.CardActionsWrapper>
-                <Card
-                  title={card.title}
-                  subTitle={
-                    new Date(card.start).toLocaleDateString('pt-BR', {
-                      dateStyle: 'short'
-                    }) +
-                    ' - ' +
-                    new Date(card.lastUpdate).toLocaleDateString('pt-BR', {
-                      dateStyle: 'short'
-                    })
-                  }
-                  content={card.description}
-                  image={card.snapshot}
-                  link={card.repositoryLink}
-                />
-              </Styles.CardWrapper>
+            {initialData.map((project, index) => (
+              <ProjectCard
+                key={index}
+                project={project}
+                editProject={editProject}
+                removeProject={removeProject}
+              />
             ))}
           </Styles.FieldSet>
         )}
