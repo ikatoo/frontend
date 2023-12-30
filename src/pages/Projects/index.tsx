@@ -1,52 +1,30 @@
 import { useEffect, useState } from 'react'
-import Card, { CardProps } from '../../components/Card'
-import Styles from './styles'
-import projectsService from '../../services/projectsService'
+import { ProjectCard } from 'src/components/ProjectCard'
+import { useUser } from 'src/contexts/User/UserContext'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
-
-export type ProjectProps = {
-  id?: number
-  snapshot: string
-  description: CardProps
-  githubLink?: string
-}
-
-type LinkMatcherProps = {
-  githubLink?: string
-  children: JSX.Element
-}
+import projectsService, { CreateProject } from '../../services/projectsService'
+import Styles from './styles'
 
 export const Projects = () => {
-  const [projects, setProjects] = useState<ProjectProps[]>([])
+  const { user } = useUser()
+
+  const [projects, setProjects] = useState<CreateProject[]>([])
 
   useEffect(() => {
     setPageSubtitle('Projects Page')
 
     const getInitialData = async () => {
-      const initialData = (await projectsService.get())?.data
+      const initialData = (await projectsService.getByUserId(user?.id))?.data
       !!initialData && setProjects(initialData)
     }
 
     getInitialData()
-  }, [])
-
-  const LinkMatcher = ({ githubLink, children }: LinkMatcherProps) =>
-    !githubLink ? (
-      <div>{children}</div>
-    ) : (
-      <a href={githubLink} target="_blank" rel="noreferrer">
-        {children}
-      </a>
-    )
+  }, [user?.id])
 
   return (
     <Styles.Wrapper>
-      {projects.map(({ description, snapshot, githubLink }, index) => (
-        <Styles.CardWrapper key={index}>
-          <LinkMatcher githubLink={githubLink}>
-            <Card stretch image={snapshot} {...description} />
-          </LinkMatcher>
-        </Styles.CardWrapper>
+      {projects.map((project, index) => (
+        <ProjectCard key={index} project={project} />
       ))}
     </Styles.Wrapper>
   )
