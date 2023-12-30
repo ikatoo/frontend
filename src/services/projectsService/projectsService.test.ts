@@ -7,7 +7,7 @@ import api from '../api'
 describe('projects page fetch data', () => {
   test('should get projects page data', async () => {
     api.get = vi.fn().mockResolvedValue({ data: projectsMock, status: 200 })
-    const result = await projectsService.get()
+    const result = await projectsService.getAll()
 
     expect(result?.data).toEqual(projectsMock)
     expect(result?.status).toEqual(200)
