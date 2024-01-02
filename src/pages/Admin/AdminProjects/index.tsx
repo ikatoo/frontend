@@ -51,6 +51,16 @@ export const AdminProjects = () => {
   }, [githubOwner, githubRepo])
 
   useEffect(() => {
+    if (githubLink) {
+      const [owner, repo] = githubLink
+        .replace('https://github.com/', '')
+        .split('/')
+      setGithubOwner(owner)
+      setGithubRepo(repo)
+    }
+  }, [githubLink])
+
+  useEffect(() => {
     setPageSubtitle('Edit Projects Page')
 
     const getInitialData = async () => {
@@ -110,7 +120,7 @@ export const AdminProjects = () => {
     const { status } = await projectsService.patch(id, data)
     if (status === 204) {
       const projects = initialData.filter((project) => project.id !== id)
-      const updatedProjects: CreateProject[] = [...projects, data]
+      const updatedProjects: CreateProject[] = [...projects, { id, ...data }]
       setInitialData(updatedProjects)
       setAlert({
         title: 'Success on update project.',
@@ -145,13 +155,22 @@ export const AdminProjects = () => {
 
     setId(project.id)
     setTitle(project.title)
-    setStart(project.start.toLocaleDateString('pt-BR', { dateStyle: 'short' }))
+    setStart(
+      new Date(project.start).toLocaleDateString('pt-BR', {
+        month: 'numeric',
+        year: 'numeric'
+      })
+    )
     setLastUpdate(
-      project.lastUpdate.toLocaleDateString('pt-BR', { dateStyle: 'short' })
+      new Date(project.lastUpdate).toLocaleDateString('pt-BR', {
+        month: 'numeric',
+        year: 'numeric'
+      })
     )
     setDescription(project.description)
     setSnapshotUrl(project.snapshot)
-    setGithubRepo(project.repositoryLink)
+    setGithubLink(project.repositoryLink)
+    setSkills(project.skills)
   }
 
   const clearFields = (event?: React.FormEvent) => {
@@ -161,10 +180,14 @@ export const AdminProjects = () => {
     setDescription('')
     setStart('')
     setLastUpdate('')
+    setGithubOwner('')
     setGithubRepo('')
+    setGithubLink('')
     setSnapshotUrl('')
     setResetUpload(true)
     setTitleFocused(true)
+    setSkills([])
+    setId(0)
   }
 
   const onChangeImage = async (file: File) => {

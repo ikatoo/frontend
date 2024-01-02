@@ -24,14 +24,19 @@ export default {
     return { data: json, status }
   },
   patch: async (id: number, newData: Partial<CreateProject>) => {
-    const { data, status } = await api.patch(`project/id/${id}`, newData)
+    if (!newData.id) return { data: null, status: 400 }
+
+    const { data, status } = await api.patch(`project/${id}`, {
+      title: newData.title,
+      description: newData.description
+    })
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
     return { data: json, status }
   },
   delete: async (id: number) => {
-    const { data, status } = await api.delete(`project/id/${id}`)
+    const { data, status } = await api.delete(`project/${id}`)
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
