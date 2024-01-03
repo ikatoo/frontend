@@ -8,9 +8,25 @@ export type CardProps = {
   content: string
   link?: string
   tags?: Tag[]
+  users?:
+    | {
+        avatar: {
+          url: string
+          alt: string
+        }
+      }[]
+    | undefined
 }
 
-const Card = ({ image, title, subTitle, content, link, tags }: CardProps) => {
+const Card = ({
+  image,
+  title,
+  subTitle,
+  content,
+  link,
+  tags,
+  users
+}: CardProps) => {
   const Content = () => (
     <>
       {!!image && <Styles.Image src={image} alt={title} />}
@@ -27,6 +43,18 @@ const Card = ({ image, title, subTitle, content, link, tags }: CardProps) => {
           <Styles.Tags>
             {tags.map((tag, index) => (
               <Styles.Tag key={index}>{tag.title}</Styles.Tag>
+            ))}
+          </Styles.Tags>
+        )}
+
+        {!tags && !!users && (
+          <Styles.Tags>
+            {users.map((user, index) => (
+              <Styles.Avatar
+                key={index}
+                src={user.avatar.url}
+                alt={user.avatar.alt}
+              />
             ))}
           </Styles.Tags>
         )}

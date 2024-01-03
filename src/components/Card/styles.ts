@@ -68,5 +68,10 @@ export default {
   `,
   Tag: tw.div`
     h-fit
+  `,
+  User: tw.a``,
+  Avatar: tw.img`
+    rounded-full
+    w-8
   `
 }
