@@ -1,23 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { MD5 } from 'crypto-js'
 import { useUser } from 'src/contexts/User/UserContext'
 import Styles from './styles'
 
 const Session = () => {
-  const { user, signOut } = useUser()
+  const { user, avatar, signOut } = useUser()
 
   const [hidden, setHidden] = useState(true)
-  const [avatar, setAvatar] = useState({ url: '', alt: '' })
-
-  useEffect(() => {
-    const emailHash = MD5(`${user?.email}`.toLowerCase()).toString()
-    const url = `https://www.gravatar.com/avatar/${emailHash}`
-    setAvatar({
-      url,
-      alt: `Imagem do usuário ${user?.name}`
-    })
-  }, [user?.email, user?.name])
 
   if (!user) return <></>
 
