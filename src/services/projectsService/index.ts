@@ -2,6 +2,12 @@ import api from '../api'
 
 type Skill = { title: string }
 
+type User = {
+  id: number
+  name: string
+  email: string
+}
+
 export type CreateProject = {
   id?: number
   title: string
@@ -11,6 +17,7 @@ export type CreateProject = {
   start: Date
   lastUpdate: Date
   skills: Skill[]
+  users?: User[]
   userId: number
 }
 

@@ -13,7 +13,7 @@ export default {
   Text: tw.div`
     flex
     flex-row
-    md:w-1/2
+    w-full
   `,
   Skills: tw.div`
     flex
@@ -33,5 +33,14 @@ export default {
   Subtitle: tw.h2`
     text-mck_aqua
     text-2xl
+  `,
+  Projects: tw.div`
+    flex
+    flex-wrap
+    w-full
+    justify-center
+    gap-4
+    mt-4
+    mb-4
   `
 }

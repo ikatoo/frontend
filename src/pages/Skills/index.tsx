@@ -1,38 +1,30 @@
 import { useEffect, useState } from 'react'
-import JobsCards from 'src/components/JobsCards'
+import { ProjectCard } from 'src/components/ProjectCard'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
-import { Job } from 'src/types/SkillsPage'
-import ProgressBar from '../../components/ProgressBar'
+import projectsService, { CreateProject } from 'src/services/projectsService'
 import { TextContainer } from '../../components/TextContainer'
 import skillsService from '../../services/skillsService'
 import Styles from './styles'
 
-type SkillProps = {
-  skillTitle: string
-}
-
-export type SkillsProps = {
-  title: string
-  description: string
-  skills: SkillProps[]
-  lastJobs: Job[]
-}
-
 export const Skills = () => {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [skills, setSkills] = useState<SkillProps[]>([])
-  const [lastJobs, setLastJobs] = useState<Job[]>([])
+  const [projects, setProjects] = useState<CreateProject[]>([])
 
   useEffect(() => {
     setPageSubtitle('Skills Page')
 
     const getInitialData = async () => {
-      const initialData = (await skillsService.get())?.data
-      initialData?.title && setTitle(initialData.title)
-      initialData?.description && setDescription(initialData.description)
-      initialData?.skills && setSkills(initialData.skills)
-      initialData?.lastJobs && setLastJobs(initialData.lastJobs)
+      const pageData = (await skillsService.get())?.data
+      pageData?.title && setTitle(pageData.title)
+      pageData?.description && setDescription(pageData.description)
+
+      const { data: projects, status: projectsStatus } =
+        await projectsService.getAll()
+      console.log('data ===>', projects)
+      if (projectsStatus === 200) {
+        setProjects(projects)
+      }
     }
 
     getInitialData()
@@ -47,21 +39,11 @@ export const Skills = () => {
           </TextContainer>
         )}
       </Styles.Text>
-
-      {!!(!!skills.length || !!lastJobs.length) && (
-        <Styles.Skills>
-          {!!skills.length && (
-            <Styles.Progress>
-              <Styles.Subtitle>Estudo</Styles.Subtitle>
-              {skills.map(({ skillTitle }, index) => (
-                <ProgressBar key={index} label={skillTitle} percent={0} />
-              ))}
-            </Styles.Progress>
-          )}
-
-          <JobsCards jobs={lastJobs} title="Últimos Trabalhos" />
-        </Styles.Skills>
-      )}
+      <Styles.Projects>
+        {projects.map((project, index) => (
+          <ProjectCard key={index} project={project} />
+        ))}
+      </Styles.Projects>
     </Styles.Wrapper>
   )
 }
