@@ -86,12 +86,12 @@ export const AdminProjects = () => {
       userId: user?.id ?? 0
     }
 
-    const { status } = await projectsService.create(data)
+    const { status, data: newProject } = await projectsService.create(data)
 
     if (status === 201) {
       const projects: CreateProject[] = initialData
-        ? [...initialData, data]
-        : [data]
+        ? [...initialData, { id: newProject.id, ...data }]
+        : [{ id: newProject.id, ...data }]
       setInitialData(projects)
       setAlert({
         title: 'Success on create project.',
