@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { decodeToken } from 'react-jwt'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { removeLocalStorage, setLocalStorage } from 'src/helpers/localStorage'
 import { useAlert } from 'src/hooks/useAlert'
 import authService from 'src/services/authService'
+import { getAvatar } from 'src/services/gravatarService'
 import { AuthResponseSchema, SignInProps } from 'src/types/Auth'
 import { PartialUser } from 'src/types/User'
-import { UserContext } from './UserContext'
+import { AvatarProps, UserContext } from './UserContext'
 
 export const UserProvider = (props: { children: JSX.Element }) => {
   const navigate = useNavigate()
@@ -14,6 +15,17 @@ export const UserProvider = (props: { children: JSX.Element }) => {
   const { setAlert } = useAlert()
 
   const [user, setUser] = useState<PartialUser>()
+  const [avatar, setAvatar] = useState<AvatarProps>()
+
+  useEffect(() => {
+    if (user?.email) {
+      const url = getAvatar(user.email)
+      setAvatar({
+        url,
+        alt: `Imagem do usuário ${user?.name}`
+      })
+    }
+  }, [user?.email, user?.name])
 
   const signOut = () => {
     removeLocalStorage('accessToken')
@@ -56,7 +68,7 @@ export const UserProvider = (props: { children: JSX.Element }) => {
   }
 
   return (
-    <UserContext.Provider value={{ user, setUser, signOut, signIn }}>
+    <UserContext.Provider value={{ user, avatar, setUser, signOut, signIn }}>
       {props.children}
     </UserContext.Provider>
   )
