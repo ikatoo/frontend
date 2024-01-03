@@ -3,6 +3,7 @@ import Card from 'src/components/Card'
 import { CreateProject } from 'src/services/projectsService'
 import theme from 'src/theme'
 import Styles from './Styles'
+import { getAvatar } from 'src/services/gravatarService'
 type ProjectCardProps = {
   project: CreateProject
   editProject?: (project: CreateProject) => void
@@ -54,6 +55,12 @@ export const ProjectCard = ({
         image={project.snapshot}
         link={project.repositoryLink}
         tags={project.skills}
+        users={project.users?.map((user) => ({
+          avatar: {
+            alt: user.name,
+            url: getAvatar(user.email)
+          }
+        }))}
       />
     </Styles.CardWrapper>
   )
