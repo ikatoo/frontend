@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
+import { useUser } from 'src/contexts/User/UserContext'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
+import CommonWrapper from 'src/styles/common/wrapper'
 import { TextContainer } from '../../components/TextContainer'
 import aboutService from '../../services/aboutService'
 import Styles from './styles'
-import { useUser } from 'src/contexts/User/UserContext'
 
 export const About = () => {
   const { user } = useUser()
@@ -28,7 +29,7 @@ export const About = () => {
   }, [user?.id])
 
   return (
-    <Styles.Wrapper>
+    <CommonWrapper>
       <Styles.Text>
         {!!title && (
           <TextContainer title={title}>
@@ -39,6 +40,6 @@ export const About = () => {
       <Styles.ImageWrapper>
         <img src={imageUrl} alt={imageAlt} />
       </Styles.ImageWrapper>
-    </Styles.Wrapper>
+    </CommonWrapper>
   )
 }

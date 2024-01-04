@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ProjectCard } from 'src/components/ProjectCard'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import projectsService, { CreateProject } from 'src/services/projectsService'
+import CommonWrapper from 'src/styles/common/wrapper'
 import { TextContainer } from '../../components/TextContainer'
 import skillsService from '../../services/skillsService'
 import Styles from './styles'
@@ -31,7 +32,7 @@ export const Skills = () => {
   }, [])
 
   return (
-    <Styles.Wrapper>
+    <CommonWrapper>
       <Styles.Text>
         {!!title && (
           <TextContainer title={title}>
@@ -45,6 +46,6 @@ export const Skills = () => {
           <ProjectCard key={index} project={project} />
         ))}
       </Styles.Projects>
-    </Styles.Wrapper>
+    </CommonWrapper>
   )
 }
