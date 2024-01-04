@@ -32,7 +32,8 @@ export default {
     gray: '#8F8F8F',
     darkGray: '#1f2937',
     red: '#ff2a2a',
-    light: '#BDC4DE'
+    light: '#BDC4DE',
+    mck_aqua: '#00ffff'
   },
   spacings: {
     xxsmall: '0.2rem',
