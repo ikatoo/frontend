@@ -1,4 +1,4 @@
-import theme from 'src/theme'
+import theme from 'src/styles/theme'
 import styled from 'styled-components'
 import { Container } from '../SignIn/styles'
 

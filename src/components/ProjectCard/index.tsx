@@ -1,7 +1,7 @@
 import { Delete, Edit } from '@styled-icons/material-outlined'
 import Card from 'src/components/Card'
 import { CreateProject } from 'src/services/projectsService'
-import theme from 'src/theme'
+import theme from 'src/styles/theme'
 import Styles from './Styles'
 import { getAvatar } from 'src/services/gravatarService'
 type ProjectCardProps = {

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { waitFor } from 'src/helpers/testUtils'
 import { describe, expect, test, vi } from 'vitest'
 import TextEditor from '.'
-import theme from '../../theme'
+import theme from '../../styles/theme'
 
 describe('<TextEditor />', () => {
   test('should render the component with default properties', async () => {

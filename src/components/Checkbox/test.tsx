@@ -4,7 +4,7 @@ import { waitFor } from 'src/helpers/testUtils'
 import { vi } from 'vitest'
 
 import Checkbox from '.'
-import theme from '../../theme'
+import theme from '../../styles/theme'
 
 describe('<Checkbox />', () => {
   it('should render with label', () => {
