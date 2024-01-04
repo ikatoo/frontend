@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
+import CommonWrapper from 'src/styles/common/wrapper'
+import { LocalizationType } from 'src/types/LocalizationType'
 import Map from '../../components/Map'
 import { TextContainer } from '../../components/TextContainer'
 import contactService from '../../services/contactService'
 import Styles from './styles'
-import { LocalizationType } from 'src/types/LocalizationType'
-import setPageSubtitle from 'src/helpers/setPageSubtitle'
 
 export const Contact = () => {
   const [description, setDescription] = useState('')
@@ -25,7 +26,7 @@ export const Contact = () => {
   }, [])
 
   return (
-    <Styles.Wrapper>
+    <CommonWrapper>
       <Styles.Description>
         {
           <TextContainer title={title}>
@@ -42,6 +43,6 @@ export const Contact = () => {
           <Map center={localization} />
         </div>
       )}
-    </Styles.Wrapper>
+    </CommonWrapper>
   )
 }

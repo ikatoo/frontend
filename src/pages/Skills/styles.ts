@@ -1,17 +1,8 @@
-import theme from 'src/theme'
+import theme from 'src/styles/theme'
 import styled from 'styled-components'
 import tw from 'tailwind-styled-components'
 
 export default {
-  Wrapper: tw.div`
-    flex
-    flex-col
-    md:flex-row
-    md:items-start
-    ml-4
-    pr-4
-    md:pt-4
-  `,
   Text: tw.div`
     flex
     flex-row
