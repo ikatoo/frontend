@@ -40,6 +40,7 @@ export const Skills = () => {
         )}
       </Styles.Text>
       <Styles.Projects>
+        <Styles.Title>Atuação em projetos e habilidades técnicas</Styles.Title>
         {projects.map((project, index) => (
           <ProjectCard key={index} project={project} />
         ))}
