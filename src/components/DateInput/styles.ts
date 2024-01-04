@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 
 import { DateInputProps } from '.'
-import theme from '../../theme'
+import theme from '../../styles/theme'
 
 type IconPositionProps = Pick<DateInputProps, 'iconPosition'>
 

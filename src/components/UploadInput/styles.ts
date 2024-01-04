@@ -1,4 +1,4 @@
-import theme from 'src/theme'
+import theme from 'src/styles/theme'
 import styled, { css } from 'styled-components'
 import tw from 'tailwind-styled-components'
 import { UploadInputProps } from '.'

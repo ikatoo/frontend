@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components'
 
 import tw from 'tailwind-styled-components'
 import { TextInputProps } from '.'
-import theme from '../../theme'
+import theme from '../../styles/theme'
 
 type IconPositionProps = Pick<TextInputProps, 'iconPosition'>
 
