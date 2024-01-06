@@ -2,23 +2,25 @@ import { ContactPageProps } from '../../types/ContactPage'
 import api from '../api'
 
 export default {
-  create: async (pageData: ContactPageProps) => {
-    const { data, status } = await api.post('contact', pageData)
+  create: async (pageData: ContactPageProps & { userId: number }) => {
+    const { data, status } = await api.post('contact-page', pageData)
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
     return { data: json, status }
   },
   patch: async (pageData: Partial<ContactPageProps>) => {
-    const { data, status } = await api.patch('contact', pageData)
+    const { data, status } = await api.patch('contact-page', pageData)
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
     return { data: json, status }
   },
-  get: async () => {
+  get: async (userId = 1) => {
     try {
-      const { data, status } = await api.get<ContactPageProps>('contact')
+      const { data, status } = await api.get<ContactPageProps>(
+        `contact-page/user-id/${userId}`
+      )
       const json: ContactPageProps =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
