@@ -11,9 +11,11 @@ import { LocalizationType } from 'src/types/LocalizationType'
 import Localization from './Localization'
 import Styles from './styles'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
+import { useUser } from 'src/contexts/User/UserContext'
 
 export const AdminContact = () => {
   const { setAlert } = useAlert()
+  const { user } = useUser()
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -70,13 +72,15 @@ export const AdminContact = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    if (!localization) return
-    const data: ContactPageProps = {
+    if (!localization || !user?.id) return
+    const data = {
       title,
       description,
+      email,
       localization,
-      email
+      userId: user.id
     }
+    console.log('data ===>', data)
     const { status } = await contactService.create(data)
     if (status === 201) {
       setAlert({

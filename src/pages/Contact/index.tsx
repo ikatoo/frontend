@@ -35,14 +35,14 @@ export const Contact = () => {
         }
       </Styles.Description>
 
-      {!!localization && (
-        <div
-          className="rounded overflow-auto w-full aspect-square"
-          data-testid="map-testid"
-        >
+      <Styles.MapWrapper data-testid="map-testid">
+        <Map center={localization} />
+      </Styles.MapWrapper>
+      {/* {!!localization && (
+        <Styles.MapWrapper data-testid="map-testid">
           <Map center={localization} />
-        </div>
-      )}
+        </Styles.MapWrapper>
+      )} */}
     </CommonWrapper>
   )
 }
