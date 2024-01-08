@@ -1,17 +1,18 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import Button from 'src/components/Button'
+import Form from 'src/components/Form'
 import { FormContainer } from 'src/components/FormContainer'
 import { TextContainer } from 'src/components/TextContainer'
 import TextInput from 'src/components/TextInput'
+import { useUser } from 'src/contexts/User/UserContext'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import { useAlert } from 'src/hooks/useAlert'
 import contactService from 'src/services/contactService'
 import { ContactPageProps } from 'src/types/ContactPage'
 import { LocalizationType } from 'src/types/LocalizationType'
 import Localization from './Localization'
 import Styles from './styles'
-import setPageSubtitle from 'src/helpers/setPageSubtitle'
-import { useUser } from 'src/contexts/User/UserContext'
 
 export const AdminContact = () => {
   const { setAlert } = useAlert()
@@ -128,7 +129,7 @@ export const AdminContact = () => {
     <Styles.Wrapper>
       <TextContainer title={'Dados da sua página de contato.'}>
         <FormContainer>
-          <Styles.Form name="contactsPageForm">
+          <Form name="contactsPageForm">
             <TextInput
               name="title"
               placeholder="Título da página"
@@ -192,7 +193,7 @@ export const AdminContact = () => {
                 Limpar Formulário
               </Button>
             </Styles.Actions>
-          </Styles.Form>
+          </Form>
         </FormContainer>
       </TextContainer>
     </Styles.Wrapper>

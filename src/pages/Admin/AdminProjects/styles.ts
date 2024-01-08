@@ -40,11 +40,6 @@ export default {
     m-4
     gap-2
   `,
-  Form: tw.form`
-    flex
-    flex-col
-    gap-2
-  `,
   Fill: tw.div`
     w-full
     flex

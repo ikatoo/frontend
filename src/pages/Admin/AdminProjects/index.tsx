@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Button from 'src/components/Button'
 import DateInput from 'src/components/DateInput'
+import Form from 'src/components/Form'
 import { FormContainer } from 'src/components/FormContainer'
 import ProgressBar from 'src/components/ProgressBar'
 import { ProjectCard } from 'src/components/ProjectCard'
@@ -221,7 +222,7 @@ export const AdminProjects = () => {
     <Styles.Wrapper>
       <TextContainer title={'Seus projetos ou portfolio.'}>
         <FormContainer>
-          <Styles.Form name="projectsPageForm">
+          <Form name="projectsPageForm">
             <Styles.Fill>
               <Styles.Title>
                 <TextInput
@@ -352,7 +353,7 @@ export const AdminProjects = () => {
                 Limpar Formulário
               </Button>
             </Styles.Actions>
-          </Styles.Form>
+          </Form>
         </FormContainer>
 
         {!!initialData?.length && (

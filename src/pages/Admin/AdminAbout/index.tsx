@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import Form from 'src/components/Form'
+import TextWrapper from 'src/components/TextWrapper'
 import { useUser } from 'src/contexts/User/UserContext'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import { AboutPageServiceProps } from 'src/types/AboutPage'
@@ -88,8 +90,8 @@ export const AdminAbout = () => {
     <Styles.Wrapper>
       <TextContainer title={'Informações sobre você.'}>
         <FormContainer>
-          <Styles.Form onReset={onReset} method="post" name="aboutPageForm">
-            <Styles.TextWrapper>
+          <Form onReset={onReset} method="post" name="aboutPageForm">
+            <TextWrapper>
               <TextInput
                 initialValue={title}
                 focus={titleFocused}
@@ -103,9 +105,9 @@ export const AdminAbout = () => {
                 onInputChange={(value) => setTitle(value)}
                 autoFocus={titleFocused}
               />
-            </Styles.TextWrapper>
+            </TextWrapper>
 
-            <Styles.TextWrapper>
+            <TextWrapper>
               <TextArea
                 name="editor"
                 initialValue={description}
@@ -114,9 +116,9 @@ export const AdminAbout = () => {
                 labelColor="white"
                 onTextAreaChange={(value) => setDescription(value)}
               />
-            </Styles.TextWrapper>
+            </TextWrapper>
 
-            <Styles.TextWrapper>
+            <TextWrapper>
               <Styles.FieldSet>
                 <legend>Imagem</legend>
                 <TextInput
@@ -136,7 +138,7 @@ export const AdminAbout = () => {
                   onInputChange={(value) => setImageAlt(value)}
                 />
               </Styles.FieldSet>
-            </Styles.TextWrapper>
+            </TextWrapper>
 
             <Styles.Actions>
               {isEmpty && (
@@ -153,7 +155,7 @@ export const AdminAbout = () => {
                 Limpar Formulário
               </Button>
             </Styles.Actions>
-          </Styles.Form>
+          </Form>
         </FormContainer>
       </TextContainer>
     </Styles.Wrapper>
