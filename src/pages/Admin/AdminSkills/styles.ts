@@ -32,21 +32,12 @@ export default {
     pt-4
     pr-4
   `,
-  TextWrapper: tw.div`
-    py-2
-    text-mck_gray_light
-  `,
   Actions: tw.div`
     flex
     w-full
     items-center
     justify-center
     m-4
-    gap-2
-  `,
-  Form: tw.form`
-    flex
-    flex-col
     gap-2
   `,
   FieldSet: tw(Legend)`

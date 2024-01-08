@@ -9,6 +9,7 @@ const CommonWrapper = tw.div`
   mt-16
   pt-4
   pr-4
+  gap-4
 
   md:flex-row
   md:items-start

@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import Button from 'src/components/Button'
+import Form from 'src/components/Form'
 import { FormContainer } from 'src/components/FormContainer'
 import TextArea from 'src/components/TextArea'
 import { TextContainer } from 'src/components/TextContainer'
 import TextInput from 'src/components/TextInput'
+import TextWrapper from 'src/components/TextWrapper'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import { useAlert } from 'src/hooks/useAlert'
 import skillsService from 'src/services/skillsService'
@@ -82,8 +84,8 @@ export const AdminSkills = () => {
     <Styles.Wrapper>
       <TextContainer title={'Suas habilidades e experiências.'}>
         <FormContainer>
-          <Styles.Form onReset={handleReset} name="skillsPageForm">
-            <Styles.TextWrapper>
+          <Form onReset={handleReset} name="skillsPageForm">
+            <TextWrapper>
               <TextInput
                 focus={focus}
                 onBlur={() => {
@@ -97,9 +99,9 @@ export const AdminSkills = () => {
                 onInputChange={setTitle}
                 autoFocus={focus}
               />
-            </Styles.TextWrapper>
+            </TextWrapper>
 
-            <Styles.TextWrapper>
+            <TextWrapper>
               <TextArea
                 name="description"
                 initialValue={description}
@@ -108,7 +110,7 @@ export const AdminSkills = () => {
                 labelColor="white"
                 onTextAreaChange={setDescription}
               />
-            </Styles.TextWrapper>
+            </TextWrapper>
 
             <Styles.Actions>
               {isEmpty ? (
@@ -124,7 +126,7 @@ export const AdminSkills = () => {
                 Limpar
               </Button>
             </Styles.Actions>
-          </Styles.Form>
+          </Form>
         </FormContainer>
       </TextContainer>
     </Styles.Wrapper>
