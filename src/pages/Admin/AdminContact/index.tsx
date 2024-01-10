@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import Button from 'src/components/Button'
-import Form from 'src/components/Form'
+import Form, { Actions } from 'src/components/Form'
 import { FormContainer } from 'src/components/FormContainer'
 import { TextContainer } from 'src/components/TextContainer'
 import TextInput from 'src/components/TextInput'
@@ -171,7 +171,7 @@ export const AdminContact = () => {
               />
             </Styles.Fill>
 
-            <Styles.Actions>
+            <Actions>
               {!editMode ? (
                 <Button
                   onClick={handleSubmit}
@@ -192,7 +192,7 @@ export const AdminContact = () => {
               <Button onClick={clearFields} styleType="secondary" type="reset">
                 Limpar Formulário
               </Button>
-            </Styles.Actions>
+            </Actions>
           </Form>
         </FormContainer>
       </TextContainer>
