@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Button from 'src/components/Button'
 import DateInput from 'src/components/DateInput'
-import Form from 'src/components/Form'
+import Form, { Actions } from 'src/components/Form'
 import { FormContainer } from 'src/components/FormContainer'
 import ProgressBar from 'src/components/ProgressBar'
 import { ProjectCard } from 'src/components/ProjectCard'
@@ -331,7 +331,7 @@ export const AdminProjects = () => {
               />
             </Styles.Fill>
 
-            <Styles.Actions>
+            <Actions>
               {!editMode ? (
                 <Button
                   onClick={addProject}
@@ -352,7 +352,7 @@ export const AdminProjects = () => {
               <Button onClick={clearFields} styleType="secondary" type="reset">
                 Limpar Formulário
               </Button>
-            </Styles.Actions>
+            </Actions>
           </Form>
         </FormContainer>
 

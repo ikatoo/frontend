@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import Form from 'src/components/Form'
+import Form, { Actions } from 'src/components/Form'
 import TextWrapper from 'src/components/TextWrapper'
 import { useUser } from 'src/contexts/User/UserContext'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
@@ -140,7 +140,7 @@ export const AdminAbout = () => {
               </Styles.FieldSet>
             </TextWrapper>
 
-            <Styles.Actions>
+            <Actions>
               {isEmpty && (
                 <Button styleType="primary" onClick={save}>
                   Salvar
@@ -154,7 +154,7 @@ export const AdminAbout = () => {
               <Button styleType="secondary" type="reset">
                 Limpar Formulário
               </Button>
-            </Styles.Actions>
+            </Actions>
           </Form>
         </FormContainer>
       </TextContainer>

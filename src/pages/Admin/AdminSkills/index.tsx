@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import Button from 'src/components/Button'
-import Form from 'src/components/Form'
+import Form, { Actions } from 'src/components/Form'
 import { FormContainer } from 'src/components/FormContainer'
 import TextArea from 'src/components/TextArea'
 import { TextContainer } from 'src/components/TextContainer'
@@ -112,7 +112,7 @@ export const AdminSkills = () => {
               />
             </TextWrapper>
 
-            <Styles.Actions>
+            <Actions>
               {isEmpty ? (
                 <Button styleType="primary" onClick={save}>
                   Salvar
@@ -125,7 +125,7 @@ export const AdminSkills = () => {
               <Button styleType="secondary" type="reset">
                 Limpar
               </Button>
-            </Styles.Actions>
+            </Actions>
           </Form>
         </FormContainer>
       </TextContainer>

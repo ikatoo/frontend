@@ -32,14 +32,6 @@ export default {
     pt-4
     pr-4
   `,
-  Actions: tw.div`
-    flex
-    w-full
-    items-center
-    justify-center
-    m-4
-    gap-2
-  `,
   FieldSet: tw(Legend)`
     max-w-full
     flex
