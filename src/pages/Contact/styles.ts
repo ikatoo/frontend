@@ -7,10 +7,15 @@ export default {
   `,
   AditionalContent: styled.div`
     width: 100%;
-    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 17rem;
+
+    @media (min-width: 768px) {
+      height: 100vh;
+      margin-top: 0;
+    }
   `,
   MapWrapper: styled.div`
     border-radius: 0.25rem;

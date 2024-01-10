@@ -1,6 +1,11 @@
 import { ContactPageProps } from '../../types/ContactPage'
 import api from '../api'
 
+type Email = {
+  from: string
+  message: string
+}
+
 export default {
   create: async (pageData: ContactPageProps & { userId: number }) => {
     const { data, status } = await api.post('contact-page', pageData)
@@ -39,5 +44,17 @@ export default {
     } catch (error) {
       if (error instanceof Error) throw error
     }
+  },
+  sendEmail: async (email: Email) => {
+    const { data, status } = await api.post('mailer', {
+      from: email.from,
+      to: 'mckatoo@gmail.com',
+      subject: 'iKatoo - Contact',
+      message: email.message
+    })
+    const json =
+      typeof data === 'string' && data !== '' ? JSON.parse(data) : data
+
+    return { data: json, status }
   }
 }
