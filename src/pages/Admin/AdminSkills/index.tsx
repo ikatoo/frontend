@@ -16,20 +16,15 @@ import Styles from './styles'
 export const AdminSkills = () => {
   const { setAlert } = useAlert()
 
-  const [title, setTitle] = useState<string>('')
-  const [description, setDescription] = useState<string>('')
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
   const [initialData, setInitialData] = useState({} as SkillsPageProps)
   const [focus, setFocus] = useState(true)
   const [isEmpty, setIsEmpty] = useState(true)
 
   useEffect(() => {
-    const { id, title, description, projects } = initialData
-    const isEmpty = !!(
-      !id &&
-      !title &&
-      !description &&
-      !!(!projects || !projects.length)
-    )
+    const { id, title, description } = initialData
+    const isEmpty = !!(!id && !title && !description)
     setIsEmpty(isEmpty)
   }, [initialData])
 
