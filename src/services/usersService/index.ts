@@ -24,7 +24,7 @@ const create = async (user: UserSignUp) => {
 
 const recoveryPassword = async (email: Email) => {
   try {
-    const response = await api.post('/user/password-recovery', { email })
+    const response = await api.post('/user/recovery-password', { email })
     return response
   } catch (error) {
     const validResponse = HttpResponseSchema.safeParse(error)

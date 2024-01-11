@@ -1,14 +1,14 @@
 import { SyntheticEvent, useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Button from 'src/components/Button'
 import Logo from 'src/components/Logo'
 import TextInput from 'src/components/TextInput'
+import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import { useAlert } from 'src/hooks/useAlert'
 import usersService from 'src/services/usersService'
 import { EmailSchema } from 'src/types/Email'
 import { HttpResponseSchema } from 'src/types/HttpResponse'
 import Styles from './styles'
-import setPageSubtitle from 'src/helpers/setPageSubtitle'
 
 export const RecoveryPage = () => {
   const navigate = useNavigate()
@@ -42,8 +42,10 @@ export const RecoveryPage = () => {
     if (!enabledSubmit) return
 
     const response = await usersService.recoveryPassword(email)
+    console.log('response ===>', response)
     const validResponse = HttpResponseSchema.safeParse(response)
-    if (validResponse.success && validResponse.data.status === 204) {
+    console.log('validResponse ===>', validResponse)
+    if (validResponse.success && validResponse.data.status === 200) {
       setAlert({
         type: 'message',
         title: 'Email enviado com sucesso.'
@@ -78,7 +80,7 @@ export const RecoveryPage = () => {
             />
           </Styles.InputWrapper>
 
-          <Link to={'/signup'}>Não tem conta? Cadastre-se aqui.</Link>
+          {/* <Link to={'/signup'}>Não tem conta? Cadastre-se aqui.</Link> */}
 
           <Button
             disabled={!enabledSubmit}
