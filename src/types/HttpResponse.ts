@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const HttpResponseSchema = z.object({
-  data: z.object({}).optional(),
+  data: z.object({}).or(z.string()).optional(),
   error: z
     .object({
       message: z.string()
