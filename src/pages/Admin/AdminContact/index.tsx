@@ -81,7 +81,6 @@ export const AdminContact = () => {
       localization,
       userId: user.id
     }
-    console.log('data ===>', data)
     const { status } = await contactService.create(data)
     if (status === 201) {
       setAlert({

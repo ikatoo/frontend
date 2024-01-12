@@ -1,48 +1,40 @@
-import { render } from '@testing-library/react'
-import { describe, expect, test, vi } from 'vitest'
-import { Skills } from '.'
+import { render, screen } from '@testing-library/react'
 import skillsPageMock from 'shared/mocks/skillsPageMock/result.json'
-import api from '../../services/api'
-import { waitFor } from 'src/helpers/testUtils'
+import projectsService from 'src/services/projectsService'
+import skillsService from 'src/services/skillsService'
+import { describe, test, vi } from 'vitest'
+import { Skills } from '.'
 
 describe('Skills Page', () => {
   test('renders the skill page with data from the server', async () => {
-    api.get = vi.fn().mockResolvedValue({ data: skillsPageMock })
+    const { projects, ...page } = skillsPageMock
+    vi.spyOn(skillsService, 'get').mockImplementation(async () => ({
+      data: {
+        ...page,
+        projects: projects.map(({ lastUpdate, start, ...project }) => ({
+          ...project,
+          lastUpdate: new Date(lastUpdate),
+          start: new Date(start)
+        }))
+      },
+      status: 200
+    }))
+    vi.spyOn(projectsService, 'getAll').mockImplementation(async () => ({
+      status: 200,
+      data: projects.map(({ lastUpdate, start, ...project }) => ({
+        ...project,
+        lastUpdate: new Date(lastUpdate),
+        start: new Date(start)
+      }))
+    }))
 
-    const { container } = render(<Skills />)
+    render(<Skills />)
 
-    await waitFor(() => {
-      expect(container.childElementCount).toBe(1)
-      const wrapper = container.firstChild
-      const leftColumn = wrapper?.firstChild
-      expect(leftColumn).toHaveTextContent(skillsPageMock.title)
-      expect(leftColumn).toHaveTextContent(
-        skillsPageMock.description.slice(3, 10)
-      )
-      const rightColumn = leftColumn?.nextSibling
-      const studyBlock = rightColumn?.firstChild
-      expect(studyBlock).toHaveTextContent(/estudo/i)
-      for (const skill of skillsPageMock.skills) {
-        expect(studyBlock).toHaveTextContent(skill.skillTitle)
-      }
-      const lastJobsBlock = studyBlock?.nextSibling
-      const lastJobsTitle = lastJobsBlock?.firstChild
-      expect(lastJobsTitle).toHaveTextContent(/Últimos Trabalhos/i)
-      const jobsWrapper = lastJobsTitle?.nextSibling
-      expect(jobsWrapper?.childNodes).toHaveLength(
-        skillsPageMock.lastJobs.length
-      )
-      for (let index = 0; index < skillsPageMock.lastJobs.length; index++) {
-        const job = skillsPageMock.lastJobs[index]
-        const jobElement = jobsWrapper?.childNodes[index]
-        expect(jobElement).toHaveTextContent(job.jobTitle)
-        expect(jobElement).toHaveTextContent(job.jobDescription)
-        expect(jobElement).toHaveTextContent(job.yearMonthStart)
-        expect(jobElement?.firstChild?.firstChild).toHaveAttribute(
-          'href',
-          job.link
-        )
-      }
-    })
+    await screen.findByText(projects[1].title)
+
+    expect(screen.getByText(page.title)).toBeInTheDocument()
+    expect(screen.getByText(page.description)).toBeInTheDocument()
+    expect(screen.getByText(projects[0].title)).toBeInTheDocument()
+    expect(screen.getByText(projects[1].title)).toBeInTheDocument()
   })
 })
