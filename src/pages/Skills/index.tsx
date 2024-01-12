@@ -22,7 +22,6 @@ export const Skills = () => {
 
       const { data: projects, status: projectsStatus } =
         await projectsService.getAll()
-      console.log('data ===>', projects)
       if (projectsStatus === 200) {
         setProjects(projects)
       }
