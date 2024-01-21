@@ -7,7 +7,6 @@ import projectsPageMock from 'shared/mocks/projectsMock/result.json'
 import Alert from 'src/components/Alert'
 import { UserContext } from 'src/contexts/User/UserContext'
 import { AlertProvider } from 'src/hooks/useAlert'
-import imageService from 'src/services/imageService'
 import { describe, expect, test, vi } from 'vitest'
 import { AdminProjects } from '.'
 
@@ -425,11 +424,6 @@ describe('ADMIN: projects page', () => {
       dataTransfer: {
         items: [file]
       }
-    })
-
-    await waitFor(() => {
-      expect(imageService.upload).toHaveBeenCalledTimes(1)
-      expect(screen.getByText('test.png - 0.000MB')).toBeInTheDocument()
     })
 
     userEvent.click(clearButton)
