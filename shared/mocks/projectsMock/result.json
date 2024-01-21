@@ -1,9 +1,13 @@
 [
   {
-    "jobTitle": "Calm Organizador de Criptomoedas",
-    "jobDescription": "Projeto pessoal para estudo.",
-    "yearMonthStart": "2022 - 03",
-    "link": "https://github.com/mckatoo/calm",
+    "id": 2352,
+    "userId": 1,
+    "title": "Calm Organizador de Criptomoedas",
+    "description": "Projeto pessoal para estudo.",
+    "snapshot": "https://image.com/snapshot.jpg",
+    "start": "2022-03-02T03:00:00.000Z",
+    "lastUpdate": "2022-07-02T03:00:00.000Z",
+    "repositoryLink": "https://github.com/mckatoo/calm",
     "skills": [
       {
         "title": "NextJS"
@@ -23,11 +27,14 @@
     ]
   },
   {
-    "jobTitle": "Uniesi - Centro Universitário de Itapira",
-    "jobDescription": "Responsável pela infraestrutura local e suporte dos serviços dispostos pela mantenedora UNIP.",
-    "yearMonthStart": "2013 - 06",
-    "yearMonthEnd": "2021 - 07",
-    "link": "https://uniesi.edu.br",
+    "id": 2353,
+    "userId": 1,
+    "title": "Uniesi - Centro Universitário de Itapira",
+    "description": "Responsável pela infraestrutura local e suporte dos serviços dispostos pela mantenedora UNIP.",
+    "snapshot": "https://image2.com/snapshot2.jpg",
+    "start": "2013-06-01T03:00:00.000Z",
+    "lastUpdate": "2021-07-01T03:00:00.000Z",
+    "repositoryLink": "https://uniesi.edu.br",
     "skills": [
       {
         "title": "Docker"

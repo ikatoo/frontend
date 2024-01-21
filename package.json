@@ -84,7 +84,7 @@
     "jest-styled-components": "7.1.1",
     "jsdom": "20.0.2",
     "lint-staged": "13.0.3",
-    "msw": "^1.2.2",
+    "msw": "^2.1.0",
     "msw-storybook-addon": "^1.8.0",
     "postcss": "8.4.17",
     "prettier": "2.7.1",

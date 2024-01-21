@@ -42,9 +42,7 @@ export const RecoveryPage = () => {
     if (!enabledSubmit) return
 
     const response = await usersService.recoveryPassword(email)
-    console.log('response ===>', response)
     const validResponse = HttpResponseSchema.safeParse(response)
-    console.log('validResponse ===>', validResponse)
     if (validResponse.success && validResponse.data.status === 200) {
       setAlert({
         type: 'message',
