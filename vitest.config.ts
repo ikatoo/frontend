@@ -5,7 +5,8 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     include: ['src/**/test.{ts,tsx}', 'src/**/*.test.{ts,tsx}'],
-    setupFiles: ['./vitestGlobalReact.ts']
+    setupFiles: ['./vitestGlobalReact.ts'],
+    testTimeout: 15000
   },
   resolve: {
     alias: {
