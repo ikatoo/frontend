@@ -31,9 +31,8 @@ export default {
     return { data: json, status }
   },
   patch: async (id: number, newData: Partial<CreateProject>) => {
-    if (!newData.id) return { data: null, status: 400 }
-
     const { data, status } = await api.patch(`project/${id}`, {
+      id,
       title: newData.title,
       description: newData.description
     })

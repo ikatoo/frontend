@@ -34,7 +34,7 @@
     "snapshot": "https://image2.com/snapshot2.jpg",
     "start": "2013-06-01T03:00:00.000Z",
     "lastUpdate": "2021-07-01T03:00:00.000Z",
-    "repositoryLink": "https://uniesi.edu.br",
+    "repositoryLink": "https://github.com/mckatoo/uniesi",
     "skills": [
       {
         "title": "Docker"

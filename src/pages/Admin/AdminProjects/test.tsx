@@ -1,16 +1,15 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 import projectsPageMock from 'shared/mocks/projectsMock/result.json'
 import Alert from 'src/components/Alert'
 import { UserContext } from 'src/contexts/User/UserContext'
+import { serverUse, waitFor } from 'src/helpers/testUtils'
 import { AlertProvider } from 'src/hooks/useAlert'
 import { describe, expect, test, vi } from 'vitest'
 import { AdminProjects } from '.'
-
-const server = setupServer()
 
 vi.mock('src/components/ProgressBar', () => ({
   __esModule: true,
@@ -20,22 +19,19 @@ vi.mock('src/components/ProgressBar', () => ({
 }))
 
 describe('ADMIN: projects page', () => {
+  const server = setupServer()
+
   afterEach(() => {
     vi.clearAllMocks()
     server.resetHandlers()
   })
 
-  afterAll(() => {
-    server.close()
-  })
-
   test('should render all fields', async () => {
-    server.use(
-      http.get('*/projects/user-id/*', () => {
+    serverUse(server, [
+      http.get('*projects/user-id/*', () => {
         return HttpResponse.json([])
       })
-    )
-    server.listen({ onUnhandledRequest: 'error' })
+    ])
 
     render(<AdminProjects />)
 
@@ -65,8 +61,8 @@ describe('ADMIN: projects page', () => {
   })
 
   test('should load data at render', async () => {
-    server.use(
-      http.get('*/projects/user-id/*', () => {
+    serverUse(server, [
+      http.get('*projects/user-id/*', () => {
         return HttpResponse.json(
           projectsPageMock.map(({ start, lastUpdate, ...project }) => ({
             ...project,
@@ -75,8 +71,7 @@ describe('ADMIN: projects page', () => {
           }))
         )
       })
-    )
-    server.listen({ onUnhandledRequest: 'error' })
+    ])
 
     render(
       <UserContext.Provider
@@ -105,12 +100,17 @@ describe('ADMIN: projects page', () => {
   })
 
   test('should change focus on press tab key', () => {
-    server.use(
-      http.get('/projects/user-id/1', () => {
-        return HttpResponse.json([])
+    serverUse(server, [
+      http.get('*projects/user-id/*', () => {
+        return HttpResponse.json(
+          projectsPageMock.map(({ start, lastUpdate, ...project }) => ({
+            ...project,
+            start: new Date(start),
+            lastUpdate: new Date(lastUpdate)
+          }))
+        )
       })
-    )
-    server.listen({ onUnhandledRequest: 'error' })
+    ])
 
     render(<AdminProjects />)
 
@@ -152,16 +152,11 @@ describe('ADMIN: projects page', () => {
   })
 
   test('should disable save button when empty fields', () => {
-    // vi.spyOn(projectsService, 'getByUserId').mockImplementation(async () => ({
-    //   data: [],
-    //   status: 200
-    // }))
-    server.use(
-      http.get('/projects/user-id/1', () => {
+    serverUse(server, [
+      http.get('*projects/user-id/*', () => {
         return HttpResponse.json([])
       })
-    )
-    server.listen({ onUnhandledRequest: 'error' })
+    ])
 
     render(<AdminProjects />)
 
@@ -181,25 +176,23 @@ describe('ADMIN: projects page', () => {
       .replace('https://github.com/', '')
       .split('/')[1]
 
-    server.use(
-      http.get('*/projects/user-id/*', () => {
+    serverUse(server, [
+      http.get('*projects/user-id/*', () => {
         return HttpResponse.json([])
       }),
-      http.post('*/image*', () => {
+      http.post('*image*', () => {
         return HttpResponse.json({ url: mock.snapshot }, { status: 201 })
       }),
       http.get('https://api.github.com/repos/*', () => {
-        const data = {
+        return HttpResponse.json({
           created_at: mock.start,
           pushed_at: mock.lastUpdate
-        }
-        return HttpResponse.json(data)
+        })
       }),
-      http.post('*/project', () => {
+      http.post('*project*', () => {
         return HttpResponse.json({ id: 2020 }, { status: 201 })
       })
-    )
-    server.listen({ onUnhandledRequest: 'error' })
+    ])
 
     render(
       <AlertProvider>
@@ -292,7 +285,6 @@ describe('ADMIN: projects page', () => {
     expect(success).toBeInTheDocument()
 
     const projectElements = await screen.findAllByRole('link')
-    screen.debug(projectElements)
     const projects: typeof projectsPageMock = projectElements.map((card) => {
       const [start, lastUpdate] = `${
         card.getElementsByTagName('h2').item(0)?.textContent
@@ -343,43 +335,39 @@ describe('ADMIN: projects page', () => {
       .split('/')[1]
 
     server.use(
-      http.get('*/projects/user-id/*', () => {
+      http.get('*projects/user-id/*', () => {
         return HttpResponse.json([])
       }),
-      http.post('*/image*', () => {
-        return HttpResponse.json({ url: mock.snapshot }, { status: 201 })
-      }),
       http.get('https://api.github.com/repos/*', () => {
-        const data = {
+        return HttpResponse.json({
           created_at: mock.start,
           pushed_at: mock.lastUpdate
-        }
-        return HttpResponse.json(data)
+        })
       }),
-      http.post('*/project', () => {
-        return HttpResponse.json({ id: 2020 }, { status: 201 })
+      http.post('*/image*', () => {
+        return HttpResponse.json(
+          { data: { url: mock.snapshot } },
+          { status: 201 }
+        )
       })
     )
     server.listen({ onUnhandledRequest: 'error' })
 
     render(
-      <AlertProvider>
-        <Alert />
-        <UserContext.Provider
-          value={{
-            user: { id: 1 },
-            avatar: {
-              url: '',
-              alt: ''
-            },
-            setUser: () => {},
-            signOut: () => {},
-            signIn: () => {}
-          }}
-        >
-          <AdminProjects />
-        </UserContext.Provider>
-      </AlertProvider>
+      <UserContext.Provider
+        value={{
+          user: { id: 1 },
+          avatar: {
+            url: '',
+            alt: ''
+          },
+          setUser: () => {},
+          signOut: () => {},
+          signIn: () => {}
+        }}
+      >
+        <AdminProjects />
+      </UserContext.Provider>
     )
 
     const titleInput = screen.getByLabelText('Título')
@@ -433,142 +421,191 @@ describe('ADMIN: projects page', () => {
       expect(titleInput).toHaveFocus()
       expect(lastUpdateInput).toHaveValue('')
       expect(descriptionInput).toHaveValue('')
-      expect(
-        screen.getByText('Click or Drop & Down a file here')
-      ).toBeInTheDocument()
     })
   })
 
-  // test('should remove project', async () => {
-  //   const mockToRemove = projectsPageMock[0]
+  test('should remove project', async () => {
+    const mockToRemove = projectsPageMock[1]
 
-  //   projectsService.getAll = vi.fn().mockResolvedValue({
-  //     data: projectsPageMock,
-  //     status: 200
-  //   })
-  //   projectsService.delete = vi.fn().mockResolvedValue({
-  //     status: 204
-  //   })
+    serverUse(server, [
+      http.get('*projects/user-id/*', () => {
+        return HttpResponse.json(
+          projectsPageMock.map(({ start, lastUpdate, ...project }) => ({
+            ...project,
+            start: new Date(start),
+            lastUpdate: new Date(lastUpdate)
+          }))
+        )
+      }),
+      http.delete('*project/*', () => {
+        return new HttpResponse(null, { status: 204 })
+      })
+    ])
 
-  //   render(
-  //     <AlertProvider>
-  //       <Alert />
-  //       <AdminProjects />
-  //     </AlertProvider>
-  //   )
+    render(
+      <AlertProvider>
+        <Alert />
+        <UserContext.Provider
+          value={{
+            user: { id: 1 },
+            avatar: {
+              url: '',
+              alt: ''
+            },
+            setUser: () => {},
+            signOut: () => {},
+            signIn: () => {}
+          }}
+        >
+          <AdminProjects />
+        </UserContext.Provider>
+      </AlertProvider>
+    )
 
-  //   await waitFor(() => {
-  //     expect(screen.getAllByRole('link')).toHaveLength(projectsPageMock.length)
-  //   })
+    await screen.findByText('Últimos Trabalhos')
 
-  //   const removeButton = screen.getByLabelText(
-  //     `remove project with title ${mockToRemove.description.title}`
-  //   )
-  //   userEvent.click(removeButton)
+    const removeButton = screen.getByLabelText(
+      `remove project with title ${mockToRemove.title}`
+    )
+    userEvent.click(removeButton)
 
-  //   await waitFor(() => {
-  //     expect(screen.getByText('Success on remove project.')).toBeInTheDocument()
-  //   })
+    const success = await screen.findByText('Success on remove project.')
 
-  //   const projectElements = screen.getAllByRole('link')
-  //   const otherProject = projectElements.find((projectElement) =>
-  //     projectElement.textContent?.includes(
-  //       projectsPageMock[1].description.title
-  //     )
-  //   )
+    expect(success).toBeInTheDocument()
 
-  //   expect(
-  //     screen.queryByText(mockToRemove.description.title)
-  //   ).not.toBeInTheDocument()
-  //   expect(projectElements).toHaveLength(1)
-  //   expect(otherProject).toBeInTheDocument()
-  // })
+    const projectElements = screen.getAllByRole('link')
+    const otherProject = projectElements.find(
+      (projectElement) =>
+        !projectElement.textContent?.includes(mockToRemove.title)
+    )
 
-  // test('should edit project', async () => {
-  //   const mockToEdit = projectsPageMock[0]
-  //   const mockedNewLastUpdate = '07/2021'
-  //   const mockedNewGithubLink = 'https://newlink.com/updated'
+    expect(screen.queryByText(mockToRemove.title)).not.toBeInTheDocument()
+    expect(projectElements).toHaveLength(1)
+    expect(otherProject).toBeInTheDocument()
+  })
 
-  //   projectsService.getAll = vi.fn().mockResolvedValue({
-  //     data: projectsPageMock,
-  //     status: 200
-  //   })
-  //   projectsService.patch = vi.fn().mockResolvedValue({
-  //     status: 204
-  //   })
+  test('should edit project', async () => {
+    const mockToEdit = projectsPageMock[0]
+    const mockedNewLastUpdate = '03/07/2021'
 
-  //   render(
-  //     <AlertProvider>
-  //       <Alert />
-  //       <AdminProjects />
-  //     </AlertProvider>
-  //   )
+    serverUse(server, [
+      http.get('*projects/user-id/*', () => {
+        return HttpResponse.json(
+          projectsPageMock.map(({ start, lastUpdate, ...project }) => ({
+            ...project,
+            start: new Date(start),
+            lastUpdate: new Date(lastUpdate)
+          }))
+        )
+      }),
+      http.patch('*project/*', () => {
+        return new HttpResponse(null, { status: 204 })
+      }),
+      http.post('*image*', () => {
+        return HttpResponse.json(
+          { url: 'https://newurl.com/image.jpg' },
+          { status: 201 }
+        )
+      })
+    ])
 
-  //   await waitFor(() => {
-  //     expect(screen.getAllByRole('link')).toHaveLength(projectsPageMock.length)
-  //   })
+    render(
+      <AlertProvider>
+        <Alert />
+        <UserContext.Provider
+          value={{
+            user: { id: 1 },
+            avatar: {
+              url: '',
+              alt: ''
+            },
+            setUser: () => {},
+            signOut: () => {},
+            signIn: () => {}
+          }}
+        >
+          <AdminProjects />
+        </UserContext.Provider>
+      </AlertProvider>
+    )
 
-  //   const editButton = screen.getByLabelText(
-  //     `edit project with title ${mockToEdit.description.title}`
-  //   )
-  //   userEvent.click(editButton)
+    const editButton = await screen.findByLabelText(
+      `edit project with title ${mockToEdit.title}`
+    )
+    userEvent.click(editButton)
 
-  //   const titleInput = screen.getByLabelText('Título')
-  //   const lastUpdateInput = screen.getByLabelText('Última atualização')
-  //   const descriptionInput = screen.getByLabelText('Breve Descrição')
-  //   const linkInput = screen.getByLabelText('Link para referência')
-  //   const dropArea = screen.getByText('Click or Drop & Down a file here')
-  //   const snapshotUrl = screen.getByAltText('Snapshot Thumbnail').parentElement
-  //   const updateButton = screen.getByRole('button', {
-  //     name: /atualizar/i
-  //   })
-  //   await waitFor(() => {
-  //     expect(titleInput).toHaveValue(mockToEdit.description.title)
-  //     expect(lastUpdateInput).toHaveValue(
-  //       stringToDateFormat(mockToEdit.description.subTitle.split(': ')[1])
-  //     )
-  //     expect(descriptionInput).toHaveValue(mockToEdit.description.content)
-  //     expect(linkInput).toHaveValue(mockToEdit.githubLink)
-  //     expect(snapshotUrl).toHaveAttribute('href', mockToEdit.snapshot)
-  //   })
+    const titleInput = screen.getByLabelText('Título')
+    const descriptionInput = screen.getByLabelText('Breve Descrição')
+    const lastUpdateInput = screen.getByLabelText('Última atualização')
+    const startInput = screen.getByLabelText('Início')
+    const repoInput = screen.getByLabelText('Repositório')
+    const projectInput = screen.getByLabelText('Projeto')
+    const dropArea = screen.getByText('Click or Drop & Down a file here')
+    const updateButton = screen.getByRole('button', {
+      name: /atualizar/i
+    })
 
-  //   const file: DataTransferItem = {
-  //     kind: 'file',
-  //     type: 'image/png',
-  //     getAsFile: vi
-  //       .fn()
-  //       .mockReturnValue(
-  //         new File(['file'], 'new-image.png', { type: 'image/png' })
-  //       ),
-  //     getAsString: vi.fn(),
-  //     webkitGetAsEntry: vi.fn()
-  //   }
+    await waitFor(() => {
+      expect(titleInput).toHaveValue(mockToEdit.title)
+      expect(screen.getByAltText('Snapshot Thumbnail')).toHaveAttribute(
+        'src',
+        mockToEdit.snapshot
+      )
+      expect(repoInput).toHaveValue(
+        mockToEdit.repositoryLink
+          .replace('https://github.com/', '')
+          .split('/')[0]
+      )
+      expect(projectInput).toHaveValue(
+        mockToEdit.repositoryLink
+          .replace('https://github.com/', '')
+          .split('/')[1]
+      )
+      expect(startInput).toHaveValue(
+        new Date(mockToEdit.start).toLocaleDateString('pt-BR', {
+          dateStyle: 'short'
+        })
+      )
+      expect(lastUpdateInput).toHaveValue(
+        new Date(mockToEdit.lastUpdate).toLocaleDateString('pt-BR', {
+          dateStyle: 'short'
+        })
+      )
+      expect(descriptionInput).toHaveValue(mockToEdit.description)
+      expect(screen.getAllByTestId('tag-testid')).toHaveLength(
+        mockToEdit.skills.length
+      )
+    })
 
-  //   userEvent.type(titleInput, ' title updated')
-  //   userEvent.type(lastUpdateInput, mockedNewLastUpdate)
-  //   userEvent.type(descriptionInput, ' description updated')
-  //   fireEvent.drop(dropArea, {
-  //     dataTransfer: {
-  //       items: [file]
-  //     }
-  //   })
-  //   userEvent.clear(linkInput)
-  //   userEvent.type(linkInput, mockedNewGithubLink)
+    const file: DataTransferItem = {
+      kind: 'file',
+      type: 'image/png',
+      getAsFile: vi
+        .fn()
+        .mockReturnValue(
+          new File(['file'], 'new-image.png', { type: 'image/png' })
+        ),
+      getAsString: vi.fn(),
+      webkitGetAsEntry: vi.fn()
+    }
 
-  //   userEvent.click(updateButton)
+    userEvent.type(titleInput, ' title updated')
+    userEvent.type(lastUpdateInput, mockedNewLastUpdate)
+    userEvent.type(descriptionInput, ' description updated')
+    fireEvent.drop(dropArea, {
+      dataTransfer: {
+        items: [file]
+      }
+    })
 
-  //   await waitFor(() => {
-  //     expect(screen.getByText('Success on update project.')).toBeInTheDocument()
-  //   })
+    userEvent.click(updateButton)
 
-  //   const projectElements = screen.getAllByRole('link')
-  //   const updatedProjectElement = projectElements.find((card) =>
-  //     card.textContent?.includes(
-  //       `${mockToEdit.description.title} title updated`
-  //     )
-  //   )
+    const successMessage = await screen.findByText('Success on update project.')
 
-  //   expect(updatedProjectElement).toBeInTheDocument()
-  //   expect(projectElements).toHaveLength(2)
-  // })
+    expect(successMessage).toBeInTheDocument()
+    expect(screen.queryByText(mockToEdit.title)).not.toBeInTheDocument()
+    expect(
+      screen.getByText(`${mockToEdit.title} title updated`)
+    ).toBeInTheDocument()
+  })
 })
