@@ -12,7 +12,7 @@ import UploadInput from 'src/components/UploadInput'
 import { useUser } from 'src/contexts/User/UserContext'
 import setPageSubtitle from 'src/helpers/setPageSubtitle'
 import { useAlert } from 'src/hooks/useAlert'
-import { getGithubDates } from 'src/services/github'
+import githubService from 'src/services/githubService'
 import imageService from 'src/services/imageService'
 import projectsService, { CreateProject } from 'src/services/projectsService'
 import Styles from './styles'
@@ -63,7 +63,6 @@ export const AdminProjects = () => {
 
   useEffect(() => {
     setPageSubtitle('Edit Projects Page')
-
     const getInitialData = async () => {
       if (user?.id) {
         const result = await projectsService.getByUserId(+user.id)
@@ -158,14 +157,12 @@ export const AdminProjects = () => {
     setTitle(project.title)
     setStart(
       new Date(project.start).toLocaleDateString('pt-BR', {
-        month: 'numeric',
-        year: 'numeric'
+        dateStyle: 'short'
       })
     )
     setLastUpdate(
       new Date(project.lastUpdate).toLocaleDateString('pt-BR', {
-        month: 'numeric',
-        year: 'numeric'
+        dateStyle: 'short'
       })
     )
     setDescription(project.description)
@@ -205,7 +202,7 @@ export const AdminProjects = () => {
 
   const onChangeGithub = async () => {
     if (!!githubOwner && !!githubRepo) {
-      const { createdAt, pushedAt } = await getGithubDates(
+      const { createdAt, pushedAt } = await githubService.getGithubDates(
         githubOwner,
         githubRepo
       )

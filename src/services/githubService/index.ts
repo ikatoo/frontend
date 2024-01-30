@@ -1,7 +1,7 @@
 import axios from 'axios'
 import env from 'src/helpers/env'
 
-export const getGithubDates = async (owner: string, repo: string) => {
+const getGithubDates = async (owner: string, repo: string) => {
   const response = await axios.get(
     `https://api.github.com/repos/${owner}/${repo}`,
     {
@@ -15,3 +15,5 @@ export const getGithubDates = async (owner: string, repo: string) => {
 
   return { createdAt, pushedAt }
 }
+
+export default { getGithubDates }
