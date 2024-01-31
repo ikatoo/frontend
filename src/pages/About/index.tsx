@@ -21,8 +21,8 @@ export const About = () => {
       const initialData = (await aboutService.get())?.data
       initialData?.title && setTitle(initialData.title)
       initialData?.description && setDescription(initialData.description)
-      initialData?.image.url && setImageUrl(initialData.image.url)
-      initialData?.image.alt && setImageAlt(initialData.image.alt)
+      initialData?.image?.url && setImageUrl(initialData.image.url)
+      initialData?.image?.alt && setImageAlt(initialData.image.alt)
     }
 
     getInitialData()
@@ -37,9 +37,11 @@ export const About = () => {
           </TextContainer>
         )}
       </Styles.Text>
-      <Styles.ImageWrapper>
-        <img src={imageUrl} alt={imageAlt} />
-      </Styles.ImageWrapper>
+      {imageUrl.length && (
+        <Styles.ImageWrapper>
+          <img src={imageUrl} alt={imageAlt} />
+        </Styles.ImageWrapper>
+      )}
     </CommonWrapper>
   )
 }

@@ -1,15 +1,23 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { render, screen } from '@testing-library/react'
+import { HttpResponse, http } from 'msw'
+import { setupServer } from 'msw/node'
+import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
+import { serverUse, waitFor } from 'src/helpers/testUtils'
 import { describe, expect, test, vi } from 'vitest'
 import { About } from '.'
-import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
-import api from '../../services/api'
-import { waitFor } from 'src/helpers/testUtils'
 
 vi.mock('../../components/IconCloud')
 
+const server = setupServer()
+
 describe('About Page', () => {
   test('renders the about page with data from the server', async () => {
-    api.get = vi.fn().mockResolvedValue({ data: aboutPageMock })
+    serverUse(server, [
+      http.get('*/about-page/user-id/*', () => {
+        return HttpResponse.json(aboutPageMock)
+      })
+    ])
 
     render(<About />)
 
@@ -22,7 +30,14 @@ describe('About Page', () => {
   })
 
   test('shoud not render image wrapper if illustration url not exist', async () => {
-    api.get = vi.fn().mockResolvedValue({ data: aboutPageMock })
+    serverUse(server, [
+      http.get('*/about-page/user-id/*', () => {
+        const { image: _, ...page } = aboutPageMock
+        return HttpResponse.json({
+          ...page
+        })
+      })
+    ])
 
     render(<About />)
 
@@ -33,9 +48,14 @@ describe('About Page', () => {
   })
 
   test('shoud not render image wrapper if illustration url is empty', async () => {
-    api.get = vi.fn().mockResolvedValue({
-      data: { ...aboutPageMock, illustrationURL: undefined }
-    })
+    serverUse(server, [
+      http.get('*/about-page/user-id/*', () => {
+        return HttpResponse.json({
+          ...aboutPageMock,
+          image: { url: '', alt: '' }
+        })
+      })
+    ])
 
     render(<About />)
 
