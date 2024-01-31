@@ -10,7 +10,7 @@ export default {
     return { data: json, status }
   },
   patch: async (pageData: Partial<AboutPageServiceProps>) => {
-    const { data, status } = await api.patch('/about', pageData)
+    const { data, status } = await api.patch('/about-page', pageData)
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
