@@ -36,7 +36,7 @@ export default {
   },
   delete: async () => {
     try {
-      const { data, status } = await api.delete('contact')
+      const { data, status } = await api.delete('contact-page')
       const json =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
