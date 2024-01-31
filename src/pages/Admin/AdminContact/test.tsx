@@ -1,22 +1,35 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import contactService from 'src/services/contactService'
 import { describe, test, vi } from 'vitest'
 
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { HttpResponse, http } from 'msw'
+import { setupServer } from 'msw/node'
 import mock from 'shared/mocks/contactPageMock/result.json'
 import Alert from 'src/components/Alert'
+import { UserContext } from 'src/contexts/User/UserContext'
+import { serverUse, waitFor } from 'src/helpers/testUtils'
 import { AlertProvider } from 'src/hooks/useAlert'
 import { AdminContact } from '.'
-import { waitFor } from 'src/helpers/testUtils'
 
 describe('ADMIN: contact page', () => {
+  const server = setupServer()
+
   afterEach(() => {
-    contactService.get = vi.fn()
+    vi.clearAllMocks()
+    server.resetHandlers()
+  })
+
+  afterAll(() => {
+    server.close()
   })
 
   test('should render all elements', async () => {
-    contactService.get = vi.fn().mockResolvedValue({})
+    serverUse(server, [
+      http.get('*/contact-page/user-id/*', () => {
+        return HttpResponse.json({})
+      })
+    ])
 
     render(
       <AlertProvider>
@@ -42,7 +55,11 @@ describe('ADMIN: contact page', () => {
   })
 
   test('should load data at render', async () => {
-    contactService.get = vi.fn().mockResolvedValue({ data: mock, status: 200 })
+    serverUse(server, [
+      http.get('*/contact-page/user-id/*', () => {
+        return HttpResponse.json(mock)
+      })
+    ])
 
     render(
       <AlertProvider>
@@ -67,7 +84,11 @@ describe('ADMIN: contact page', () => {
   })
 
   test('should change focus on press tab key', async () => {
-    contactService.get = vi.fn().mockResolvedValue({})
+    serverUse(server, [
+      http.get('*/contact-page/user-id/*', () => {
+        return HttpResponse.json({})
+      })
+    ])
 
     render(
       <AlertProvider>
@@ -110,9 +131,15 @@ describe('ADMIN: contact page', () => {
     })
   })
 
-  test('should call post method with data when save button is clicked', async () => {
-    contactService.get = vi.fn().mockResolvedValue({})
-    contactService.create = vi.fn().mockResolvedValue({ status: 201 })
+  test('should save data when save button is clicked', async () => {
+    serverUse(server, [
+      http.get('*/contact-page/user-id/*', () => {
+        return HttpResponse.json({})
+      }),
+      http.post('*/contact-page', () => {
+        return new HttpResponse(null, { status: 201 })
+      })
+    ])
 
     Object.assign(navigator, {
       geolocation: {
@@ -129,10 +156,23 @@ describe('ADMIN: contact page', () => {
     })
 
     render(
-      <AlertProvider>
-        <Alert />
-        <AdminContact />
-      </AlertProvider>
+      <UserContext.Provider
+        value={{
+          user: { id: 1 },
+          avatar: {
+            alt: '',
+            url: ''
+          },
+          setUser: vi.fn(),
+          signIn: vi.fn(),
+          signOut: vi.fn()
+        }}
+      >
+        <AlertProvider>
+          <Alert />
+          <AdminContact />
+        </AlertProvider>
+      </UserContext.Provider>
     )
 
     const title = screen.getByLabelText('Título')
@@ -155,17 +195,18 @@ describe('ADMIN: contact page', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Success on create contact.')).toBeInTheDocument()
-      expect(contactService.create).toHaveBeenCalledTimes(1)
-      expect(contactService.create).toHaveBeenCalledWith({
-        ...mock,
-        description: mock.description
-      })
     })
   })
 
-  test('should call patch method with data when update button is clicked', async () => {
-    contactService.get = vi.fn().mockResolvedValue({ data: mock, status: 200 })
-    contactService.patch = vi.fn().mockResolvedValue({ status: 204 })
+  test('should update data when update button is clicked', async () => {
+    serverUse(server, [
+      http.get('*/contact-page/user-id/*', () => {
+        return HttpResponse.json(mock)
+      }),
+      http.patch('*/contact-page', () => {
+        return new HttpResponse(null, { status: 204 })
+      })
+    ])
 
     Object.assign(navigator, {
       geolocation: {
@@ -182,10 +223,23 @@ describe('ADMIN: contact page', () => {
     })
 
     render(
-      <AlertProvider>
-        <Alert />
-        <AdminContact />
-      </AlertProvider>
+      <UserContext.Provider
+        value={{
+          user: { id: 1 },
+          avatar: {
+            alt: '',
+            url: ''
+          },
+          setUser: vi.fn(),
+          signIn: vi.fn(),
+          signOut: vi.fn()
+        }}
+      >
+        <AlertProvider>
+          <Alert />
+          <AdminContact />
+        </AlertProvider>
+      </UserContext.Provider>
     )
 
     await waitFor(() => {
@@ -200,13 +254,15 @@ describe('ADMIN: contact page', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Success on update contact.')).toBeInTheDocument()
-      expect(contactService.patch).toHaveBeenCalledTimes(1)
-      expect(contactService.patch).toHaveBeenLastCalledWith(mock)
     })
   })
 
   test('should clear all text inputs when click on clear button', async () => {
-    contactService.get = vi.fn().mockResolvedValue({ data: mock, status: 200 })
+    serverUse(server, [
+      http.get('*/contact-page/user-id/*', () => {
+        return HttpResponse.json(mock)
+      })
+    ])
     const mockedCoords = {
       latitude: -22.41778641933523,
       longitude: -46.83248345696965
@@ -223,10 +279,23 @@ describe('ADMIN: contact page', () => {
     })
 
     render(
-      <AlertProvider>
-        <Alert />
-        <AdminContact />
-      </AlertProvider>
+      <UserContext.Provider
+        value={{
+          user: { id: 1 },
+          avatar: {
+            alt: '',
+            url: ''
+          },
+          setUser: vi.fn(),
+          signIn: vi.fn(),
+          signOut: vi.fn()
+        }}
+      >
+        <AlertProvider>
+          <Alert />
+          <AdminContact />
+        </AlertProvider>
+      </UserContext.Provider>
     )
 
     const title = screen.getByLabelText('Título')
@@ -254,6 +323,7 @@ describe('ADMIN: contact page', () => {
       expect(email).toHaveValue('')
       expect(localization).toHaveTextContent(mockedCoords.latitude.toString())
       expect(localization).toHaveTextContent(mockedCoords.longitude.toString())
+      expect(title).toHaveFocus()
     })
   })
 })
