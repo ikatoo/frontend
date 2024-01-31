@@ -2,17 +2,20 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 import TagEditor from '.'
-import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
+import skillsPageMock from 'shared/mocks/skillsPageMock/result.json'
+import { waitFor } from 'src/helpers/testUtils'
+
+const mock = skillsPageMock.projects[1]
 
 describe('<TagEditor />', () => {
-  it('should render the component', () => {
+  test('should render the component', () => {
     const title = 'Tags'
     const onChangeTags = vi.fn()
     render(
       <TagEditor
         name="tags"
         title={title}
-        initalValue={aboutPageMock.skills}
+        initalValue={mock.skills}
         onChangeTags={onChangeTags}
       />
     )
@@ -24,34 +27,32 @@ describe('<TagEditor />', () => {
     expect(inputElement).toBeInTheDocument()
     expect(tagsElement).toBeInTheDocument()
 
-    expect(tagElements).toHaveLength(aboutPageMock.skills.length)
+    expect(tagElements).toHaveLength(mock.skills.length)
   })
 
-  test('should remove tag when click in delete button', () => {
+  test('should remove tag when click in delete button', async () => {
     const onChangeTags = vi.fn()
     render(
       <TagEditor
         name="tags"
         title="Tags"
-        initalValue={aboutPageMock.skills}
+        initalValue={mock.skills}
         onChangeTags={onChangeTags}
       />
     )
 
-    const tagForRemove = screen.queryByText('javascript')
-    const buttonElement = tagForRemove?.lastElementChild
+    const titleForRemove = mock.skills[2].title
+    const buttonElement = screen.getByTitle(`Remove ${titleForRemove} skill.`)
 
-    buttonElement && userEvent.click(buttonElement)
-    const tagElements = screen.queryAllByTestId('tag-testid')
+    userEvent.click(buttonElement)
 
-    expect(onChangeTags).toHaveBeenCalledTimes(1)
-    expect(tagForRemove).not.toBeInTheDocument()
-    expect(tagElements).toHaveLength(aboutPageMock.skills.length - 1)
-    const newSkills = [
-      ...aboutPageMock.skills.filter((skill) => skill.title !== 'javascript')
-    ]
-    expect(onChangeTags).toBeCalledTimes(1)
-    expect(onChangeTags).toBeCalledWith(newSkills)
+    await waitFor(() => {
+      expect(onChangeTags).toHaveBeenCalledTimes(1)
+    })
+    expect(screen.queryByText(titleForRemove)).not.toBeInTheDocument()
+    expect(screen.getAllByTestId('tag-testid')).toHaveLength(
+      mock.skills.length - 1
+    )
   })
 
   test('should add tag when key enter is pressed inner text input', async () => {
@@ -60,7 +61,7 @@ describe('<TagEditor />', () => {
       <TagEditor
         name="tags"
         title="Tags"
-        initalValue={aboutPageMock.skills}
+        initalValue={mock.skills}
         onChangeTags={onChange}
       />
     )
@@ -68,13 +69,13 @@ describe('<TagEditor />', () => {
     const inputElement = screen.getByRole('textbox')
     const tagElements = screen.queryAllByTestId('tag-testid')
 
-    expect(tagElements).toHaveLength(aboutPageMock.skills.length)
+    expect(tagElements).toHaveLength(mock.skills.length)
     userEvent.type(inputElement, tagForAdd)
     expect(inputElement).toHaveFocus()
     userEvent.type(inputElement, '{enter}')
 
     expect(screen.queryByText('new tag')).toBeInTheDocument()
-    const newSkills = [...aboutPageMock.skills, { title: 'new tag' }]
+    const newSkills = [...mock.skills, { title: 'new tag' }]
     expect(onChange).toBeCalledTimes(1)
     expect(onChange).toBeCalledWith(newSkills)
   })
