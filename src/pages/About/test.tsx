@@ -12,6 +12,15 @@ vi.mock('../../components/IconCloud')
 const server = setupServer()
 
 describe('About Page', () => {
+  afterEach(() => {
+    vi.clearAllMocks()
+    server.resetHandlers()
+  })
+
+  afterAll(() => {
+    server.close()
+  })
+
   test('renders the about page with data from the server', async () => {
     serverUse(server, [
       http.get('*/about-page/user-id/*', () => {

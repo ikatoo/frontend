@@ -26,6 +26,10 @@ describe('ADMIN: projects page', () => {
     server.resetHandlers()
   })
 
+  afterAll(() => {
+    server.close()
+  })
+
   test('should render all fields', async () => {
     serverUse(server, [
       http.get('*projects/user-id/*', () => {
