@@ -67,7 +67,7 @@ export const AdminAbout = () => {
   const update = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    aboutService.patch({
+    await aboutService.patch({
       title,
       description,
       image: {
