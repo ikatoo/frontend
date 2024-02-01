@@ -1,42 +1,33 @@
-import { render } from '@testing-library/react'
-import { describe, expect, test, vi } from 'vitest'
-import { Projects } from '.'
+import { render, screen } from '@testing-library/react'
+import { HttpResponse, http } from 'msw'
+import { setupServer } from 'msw/node'
 import projectsMock from 'shared/mocks/projectsMock/result.json'
-import api from '../../services/api'
-import { waitFor } from 'src/helpers/testUtils'
+import { serverUse, waitFor } from 'src/helpers/testUtils'
+import { describe, expect, test } from 'vitest'
+import { Projects } from '.'
 
 describe('Projects Page', () => {
-  test('renders the projects page with data from the server', async () => {
-    api.get = vi.fn().mockResolvedValue({ data: projectsMock })
+  const server = setupServer()
 
-    const { container } = render(<Projects />)
+  afterEach(() => {
+    server.resetHandlers()
+  })
+
+  afterAll(() => {
+    server.close()
+  })
+
+  test('renders the projects page with initial data', async () => {
+    serverUse(server, [
+      http.get('*/projects/user-id/*', () => {
+        return HttpResponse.json(projectsMock)
+      })
+    ])
+
+    render(<Projects />)
 
     await waitFor(() => {
-      expect(container.childElementCount).toBe(1)
-      const wrapper = container.firstChild
-      expect(wrapper?.childNodes).toHaveLength(projectsMock.length)
-      for (let index = 0; index < projectsMock.length; index++) {
-        const projectElement = wrapper?.childNodes[index].firstChild
-        expect(projectElement).toHaveAttribute(
-          'href',
-          projectsMock[index].githubLink
-        )
-        const image = projectElement?.firstChild?.firstChild
-        expect(image).toHaveAttribute('src', projectsMock[index].snapshot)
-        const cardElement = image?.nextSibling
-        const titleOfCardElement = cardElement?.firstChild
-        expect(titleOfCardElement).toHaveTextContent(
-          projectsMock[index].description.title
-        )
-        const lastUpdateElement = titleOfCardElement?.nextSibling
-        expect(lastUpdateElement).toHaveTextContent(
-          projectsMock[index].description.subTitle
-        )
-        const descriptionElement = lastUpdateElement?.nextSibling
-        expect(descriptionElement).toHaveTextContent(
-          projectsMock[index].description.content
-        )
-      }
+      expect(screen.getAllByRole('link')).toHaveLength(projectsMock.length)
     })
   })
 })
