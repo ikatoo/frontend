@@ -4,6 +4,7 @@ import Loading from 'src/components/Loading'
 import { useUser } from 'src/contexts/User/UserContext'
 import { getLocalStorage } from 'src/helpers/localStorage'
 import authService from 'src/services/authService'
+import { UserSchema } from 'src/types/User'
 
 export const Private = (props: { children: JSX.Element }) => {
   const { pathname } = useLocation()
@@ -19,10 +20,11 @@ export const Private = (props: { children: JSX.Element }) => {
         return
       }
       const { status, data } = await authService.verifyToken(token)
-      if (status === 200) {
-        !!data && 'user' in data && !!data.user && setUser(data.user)
+      if (status === 200 && typeof data === 'object' && 'user' in data) {
+        const validUser = UserSchema.safeParse(data.user)
+        validUser.success && setUser(validUser.data)
         setLoading(false)
-        setSigned(true)
+        setSigned(validUser.success)
         return
       }
       setLoading(false)

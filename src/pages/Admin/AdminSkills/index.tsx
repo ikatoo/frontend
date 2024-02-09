@@ -26,6 +26,9 @@ export const AdminSkills = () => {
     const { id, title, description } = initialData
     const isEmpty = !!(!id && !title && !description)
     setIsEmpty(isEmpty)
+
+    setTitle(initialData?.title ?? '')
+    setDescription(initialData?.description ?? '')
   }, [initialData])
 
   const getInitialData = useCallback(async () => {
@@ -38,11 +41,6 @@ export const AdminSkills = () => {
 
     getInitialData()
   }, [getInitialData])
-
-  useEffect(() => {
-    setTitle(initialData?.title ?? '')
-    setDescription(initialData?.description ?? '')
-  }, [initialData])
 
   const handleReset = () => {
     setTitle('')

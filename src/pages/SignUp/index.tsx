@@ -64,7 +64,7 @@ export const SignUpPage = () => {
     const response = await usersService.create({ name, email, password })
     if (response.status === 201) {
       const token = response.data.accessToken
-      setLocalStorage('token', token)
+      setLocalStorage('accessToken', token)
       navigate('/admin', { replace: true })
       return
     }

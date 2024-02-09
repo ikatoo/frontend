@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { describe, expect, test, vi } from 'vitest'
 
 import skillsPageMock from 'shared/mocks/skillsPageMock/result.json'
@@ -15,14 +16,16 @@ describe('skills page fetch data', () => {
 
   test('should create skills page data', async () => {
     api.post = vi.fn().mockResolvedValue({ data: {}, status: 201 })
-    const result = await skillsService.create(skillsPageMock)
+    const { projects, ...data } = skillsPageMock
+    const result = await skillsService.create(data)
 
     expect(result?.status).toEqual(201)
   })
 
   test('should update skills page data', async () => {
     api.patch = vi.fn().mockResolvedValue({ data: {}, status: 204 })
-    const result = await skillsService.patch(skillsPageMock)
+    const { projects, ...data } = skillsPageMock
+    const result = await skillsService.patch(data)
 
     expect(result?.status).toEqual(204)
   })

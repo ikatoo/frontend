@@ -2,7 +2,7 @@ import env from 'src/helpers/env'
 import { AdminAbout } from '.'
 
 import type { Meta, StoryObj } from '@storybook/react'
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
 
 const meta: Meta<typeof AdminAbout> = {
@@ -12,8 +12,8 @@ const meta: Meta<typeof AdminAbout> = {
   parameters: {
     msw: {
       handlers: [
-        rest.get(`${env.VITE_API_URL}/about`, (_req, res, ctx) => {
-          return res(ctx.status(200), ctx.json({}))
+        http.get(`${env.VITE_API_URL}/about`, () => {
+          return HttpResponse.json(aboutPageMock)
         })
       ]
     }
@@ -29,8 +29,8 @@ export const With_Data: Story = {
   parameters: {
     msw: {
       handlers: [
-        rest.get(`${env.VITE_API_URL}/about`, (_req, res, ctx) => {
-          return res(ctx.status(200), ctx.json(aboutPageMock))
+        http.get(`${env.VITE_API_URL}/about`, () => {
+          return HttpResponse.json(aboutPageMock)
         })
       ]
     }

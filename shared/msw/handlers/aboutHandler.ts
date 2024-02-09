@@ -1,18 +1,18 @@
-import { rest } from 'msw'
+import { http, HttpResponse } from 'msw'
 import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
 import env from 'src/helpers/env'
 
 export default [
-  rest.get(`${env.VITE_API_URL}/about`, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(aboutPageMock))
+  http.get(`${env.VITE_API_URL}/about`, () => {
+    return HttpResponse.json(aboutPageMock)
   }),
-  rest.post(`${env.VITE_API_URL}/about`, (_req, res, ctx) => {
-    return res(ctx.status(201))
+  http.post(`${env.VITE_API_URL}/about`, () => {
+    return new HttpResponse(null, { status: 201 })
   }),
-  rest.patch(`${env.VITE_API_URL}/about`, (_req, res, ctx) => {
-    return res(ctx.status(204))
+  http.patch(`${env.VITE_API_URL}/about`, () => {
+    return new HttpResponse(null, { status: 204 })
   }),
-  rest.delete(`${env.VITE_API_URL}/about`, (_req, res, ctx) => {
-    return res(ctx.status(204))
+  http.delete(`${env.VITE_API_URL}/about`, () => {
+    return new HttpResponse(null, { status: 204 })
   })
 ]

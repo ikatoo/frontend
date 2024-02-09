@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import projectsMock from 'shared/mocks/projectsMock/result.json'
-import projectsService from '.'
+import projectsService, { CreateProject } from '.'
 import api from '../api'
 
 describe('projects page fetch data', () => {
@@ -15,14 +15,28 @@ describe('projects page fetch data', () => {
 
   test('should create projects page data', async () => {
     api.post = vi.fn().mockResolvedValue({ data: {}, status: 201 })
-    const result = await projectsService.create(projectsMock[0])
+    const data: CreateProject = projectsMock.map(
+      ({ start, lastUpdate, ...project }) => ({
+        start: new Date(start),
+        lastUpdate: new Date(lastUpdate),
+        ...project
+      })
+    )[0]
+    const result = await projectsService.create(data)
 
     expect(result?.status).toEqual(201)
   })
 
   test('should update projects page data', async () => {
     api.patch = vi.fn().mockResolvedValue({ data: {}, status: 204 })
-    const result = await projectsService.patch(7, projectsMock[1])
+    const data: CreateProject = projectsMock.map(
+      ({ start, lastUpdate, ...project }) => ({
+        start: new Date(start),
+        lastUpdate: new Date(lastUpdate),
+        ...project
+      })
+    )[1]
+    const result = await projectsService.patch(7, data)
 
     expect(result?.status).toEqual(204)
   })

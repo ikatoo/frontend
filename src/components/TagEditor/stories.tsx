@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
+import projectsMock from 'shared/mocks/projectsMock/result.json'
 import TagEditor from '.'
 
 const meta: Meta<typeof TagEditor> = {
@@ -21,7 +21,11 @@ export const Primary: Story = {
 export const withInitialValue: Story = {
   render: () => (
     <div className="w-80 p-15">
-      <TagEditor name="tags" title="Tags" initalValue={aboutPageMock.skills} />
+      <TagEditor
+        name="tags"
+        title="Tags"
+        initalValue={projectsMock[1].skills}
+      />
     </div>
   )
 }

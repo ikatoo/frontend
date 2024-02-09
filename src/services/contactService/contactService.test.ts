@@ -15,7 +15,10 @@ describe('contact page fetch data', () => {
 
   test('should create contact page data', async () => {
     api.post = vi.fn().mockResolvedValue({ data: {}, status: 201 })
-    const result = await contactService.create(contactPageMock)
+    const result = await contactService.create({
+      ...contactPageMock,
+      userId: 1
+    })
 
     expect(result?.status).toEqual(201)
   })
