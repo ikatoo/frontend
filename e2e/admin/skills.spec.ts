@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
-import skillsPageMock from 'shared/mocks/skillsPageMock/result.json' assert { type: 'json' }
+import axios from 'axios'
+import { randomBytes } from 'crypto'
 import { authorize } from 'src/helpers/playwrightUtils'
 
 const _URL = '/admin/skills'
@@ -15,89 +16,64 @@ test.describe('ADMIN - Skills page', () => {
     )
   })
 
-  test('should save new skills page', async ({ page }) => {
-    await page.route(`${process.env.VITE_API_URL}/skills`, (route) => {
-      route.fulfill({ status: 200, json: {} })
-    })
-
+  test('should save new skills page', async ({ page, context }) => {
+    const randomTestId = randomBytes(10).toString('hex')
     await page.goto(_URL)
     await authorize(page)
 
-    const title = page.getByLabel('Título')
-    const description = page.getByPlaceholder('Descrição', { exact: true })
-    const saveButton = page.getByRole('button', { name: 'Salvar' })
+    await page.waitForURL('http://localhost:3000/admin/skills')
+    const accessToken = `${
+      (await context.storageState()).origins[0].localStorage[0].value
+    }`
+    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+    axios.delete(process.env.VITE_API_URL + '/skills-page')
+    await page.reload({ waitUntil: 'networkidle' })
 
-    await title.fill(skillsPageMock.title)
-    await title.press('Tab')
-
-    await description.fill(skillsPageMock.description)
-    await description.press('Tab')
-
-    await page.route(`${process.env.VITE_API_URL}/skills-page`, (route) => {
-      route.fulfill({ status: 201 })
-    })
-    await saveButton.click()
+    await page.getByLabel('Título').fill('new title' + randomTestId)
+    await page
+      .getByPlaceholder('Descrição', { exact: true })
+      .fill('new desc' + randomTestId)
+    await page.getByRole('button', { name: 'Salvar' }).click()
 
     await expect(page.getByText('Success on create skills page.')).toBeVisible()
   })
 
   test('should complete update skills page data', async ({ page }) => {
-    const newData: Omit<typeof skillsPageMock, 'id' | 'projects'> = {
-      title: 'new title',
-      description: 'new description'
+    const randomTestId = randomBytes(10).toString('hex')
+    const newData = {
+      title: 'new title' + randomTestId,
+      description: 'new description' + randomTestId
     }
 
     await page.goto(_URL)
     await authorize(page)
-
-    await page.route(
-      `${process.env.VITE_API_URL}/skills-page`,
-      async (route) => {
-        await route.fulfill({ json: skillsPageMock, status: 200 })
-      }
-    )
+    await page.waitForLoadState()
 
     const title = page.getByLabel('Título')
     const description = page.getByPlaceholder('Descrição', { exact: true })
-    const updateButton = page.getByRole('button', { name: 'Atualizar' })
-
-    await page.waitForResponse(`${process.env.VITE_API_URL}/skills-page`)
-
-    await expect(title).toHaveValue(skillsPageMock.title)
 
     await title.fill(newData.title)
-    await title.press('Tab')
     await description.fill(newData.description)
-    await description.press('Tab')
-    await updateButton.click()
+    await page.getByRole('button', { name: 'Atualizar' }).click()
 
     await expect(page.getByText('Success on update skills page.')).toBeVisible()
   })
 
   test('should partial update skills page data', async ({ page }) => {
+    const randomTestId = randomBytes(10).toString('hex')
     const newData = {
-      title: 'new title'
+      title: 'new title' + randomTestId,
+      description: 'new description' + randomTestId
     }
 
     await page.goto(_URL)
     await authorize(page)
-
-    await page.route(
-      `${process.env.VITE_API_URL}/skills-page`,
-      async (route) => {
-        await route.fulfill({ json: skillsPageMock, status: 200 })
-      }
-    )
+    await page.waitForLoadState()
 
     const title = page.getByLabel('Título')
-    const updateButton = page.getByRole('button', { name: 'Atualizar' })
 
-    await page.waitForResponse(`${process.env.VITE_API_URL}/skills-page`)
-
-    await expect(title).toHaveValue(skillsPageMock.title)
     await title.fill(newData.title)
-    await title.press('Tab')
-    await updateButton.click()
+    await page.getByRole('button', { name: 'Atualizar' }).click()
 
     await expect(page.getByText('Success on update skills page.')).toBeVisible()
   })

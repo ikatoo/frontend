@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Button from 'src/components/Button'
 import Form, { Actions } from 'src/components/Form'
@@ -31,16 +31,14 @@ export const AdminSkills = () => {
     setDescription(initialData?.description ?? '')
   }, [initialData])
 
-  const getInitialData = useCallback(async () => {
-    const result = await skillsService.get()
-    !!result?.data && setInitialData(result.data)
-  }, [])
-
   useEffect(() => {
     setPageSubtitle('Edit Skills Page')
-
+    const getInitialData = async () => {
+      const result = await skillsService.get()
+      !!result?.data && setInitialData(result.data)
+    }
     getInitialData()
-  }, [getInitialData])
+  }, [])
 
   const handleReset = () => {
     setTitle('')
@@ -55,7 +53,6 @@ export const AdminSkills = () => {
       title,
       description
     })
-    getInitialData()
     setAlert({
       title: 'Success on create skills page.',
       type: 'message'
@@ -69,7 +66,6 @@ export const AdminSkills = () => {
       title,
       description
     })
-    getInitialData()
     setAlert({ title: 'Success on update skills page.', type: 'message' })
   }
 

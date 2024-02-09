@@ -53,22 +53,12 @@ test.describe('ADMIN - About page', () => {
     await page.goto(_URL)
     await authorize(page)
 
-    await page.route(
-      `${process.env.VITE_API_URL}/about-page`,
-      async (route) => {
-        await route.fulfill({ json: aboutPageMock, status: 200 })
-      }
-    )
-
     const title = page.getByPlaceholder('Título')
     const description = page.getByPlaceholder('Descrição', { exact: true })
     const updateButton = page.getByRole('button', { name: 'Atualizar' })
 
     await title.fill(newData.title)
-    await title.press('Tab')
-
     await description.fill(newData.description)
-    await description.press('Tab')
 
     await updateButton.click()
 
