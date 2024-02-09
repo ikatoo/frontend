@@ -3,14 +3,28 @@ import api from '../api'
 
 export default {
   create: async (pageData: Partial<AboutPageServiceProps>) => {
-    const { data, status } = await api.post('/about-page', pageData)
+    const { image, ...rest } = pageData
+    const { data, status } = await api.post('/about-page', {
+      ...rest,
+      image: {
+        imageUrl: image?.url,
+        imageAlt: image?.alt
+      }
+    })
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
     return { data: json, status }
   },
   patch: async (pageData: Partial<AboutPageServiceProps>) => {
-    const { data, status } = await api.patch('/about-page', pageData)
+    const { image, ...rest } = pageData
+    const { data, status } = await api.patch('/about-page', {
+      ...rest,
+      image: {
+        imageUrl: image?.url,
+        imageAlt: image?.alt
+      }
+    })
     const json =
       typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 

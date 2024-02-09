@@ -43,8 +43,8 @@ export const AdminAbout = () => {
   useEffect(() => {
     initialData?.title && setTitle(initialData.title)
     initialData?.description && setDescription(initialData.description)
-    initialData?.image?.url && setImageUrl(initialData.image.url)
-    initialData?.image?.alt && setImageAlt(initialData.image.alt)
+    initialData?.image?.url && setImageUrl(initialData.image.url ?? '')
+    initialData?.image?.alt && setImageAlt(initialData.image.alt ?? '')
   }, [initialData])
 
   const save = async (event: React.FormEvent) => {
