@@ -10,10 +10,12 @@ const meta: Meta<typeof Card> = {
 export default meta
 type Story = StoryObj<typeof Card>
 
+const mock = projectsMock[1]
+
 export const Default: Story = {
   render: () => (
     <div className="max-w-sm">
-      <Card {...projectsMock[1].description} />
+      <Card title={mock.title} content={mock.description} />
     </div>
   )
 }
@@ -21,7 +23,11 @@ export const Default: Story = {
 export const With_Image: Story = {
   render: () => (
     <div className="max-w-sm">
-      <Card {...projectsMock[1].description} image={projectsMock[1].snapshot} />
+      <Card
+        title={mock.title}
+        content={mock.description}
+        image={mock.snapshot}
+      />
     </div>
   )
 }

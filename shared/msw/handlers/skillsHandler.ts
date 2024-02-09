@@ -1,21 +1,21 @@
-import { rest } from 'msw'
+import { http, HttpResponse } from 'msw'
 import skillsPageMock from 'shared/mocks/skillsPageMock/result.json'
 import env from 'src/helpers/env'
 
 export default [
-  rest.get(`${env.VITE_API_URL}/skills`, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({}))
+  http.get(`${env.VITE_API_URL}/skills`, () => {
+    return HttpResponse.json({})
   }),
-  rest.get(`${env.VITE_API_URL}/skills`, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(skillsPageMock))
+  http.get(`${env.VITE_API_URL}/skills`, () => {
+    return HttpResponse.json(skillsPageMock)
   }),
-  rest.post(`${env.VITE_API_URL}/skills`, (_req, res, ctx) => {
-    return res(ctx.status(201))
+  http.post(`${env.VITE_API_URL}/skills`, () => {
+    return new HttpResponse(null, { status: 201 })
   }),
-  rest.patch(`${env.VITE_API_URL}/skills`, (_req, res, ctx) => {
-    return res(ctx.status(204))
+  http.patch(`${env.VITE_API_URL}/skills`, () => {
+    return new HttpResponse(null, { status: 204 })
   }),
-  rest.delete(`${env.VITE_API_URL}/skills`, (_req, res, ctx) => {
-    return res(ctx.status(204))
+  http.delete(`${env.VITE_API_URL}/skills`, () => {
+    return new HttpResponse(null, { status: 204 })
   })
 ]

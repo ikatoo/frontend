@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 
 export type HandlerProps = {
   url: string
@@ -9,7 +9,7 @@ export type HandlerProps = {
 
 export default (props: HandlerProps[]) =>
   props.map((handler) =>
-    rest[handler.method](handler.url, (_req, res, ctx) => {
-      return res(ctx.status(handler.status), ctx.json(handler.result))
+    http[handler.method](handler.url, () => {
+      return HttpResponse.json(handler.result)
     })
   )

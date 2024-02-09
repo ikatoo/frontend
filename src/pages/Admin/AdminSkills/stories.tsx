@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import skillsHandler from 'shared/msw/handlers/skillsHandler'
+import { HttpResponse, http } from 'msw'
+import mock from 'shared/mocks/skillsPageMock/result.json'
 import { AdminSkills } from '../AdminSkills'
 
 const meta: Meta<typeof AdminSkills> = {
@@ -14,7 +15,11 @@ type Story = StoryObj<typeof AdminSkills>
 export const Default: Story = {
   parameters: {
     msw: {
-      handlers: [skillsHandler[0]]
+      handlers: [
+        http.get('*/skills-page/user-id/*', () => {
+          return HttpResponse.json({})
+        })
+      ]
     }
   }
 }
@@ -22,7 +27,11 @@ export const Default: Story = {
 export const WithData: Story = {
   parameters: {
     msw: {
-      handlers: [skillsHandler[1]]
+      handlers: [
+        http.get('*/skills-page/user-id/*', () => {
+          return HttpResponse.json(mock)
+        })
+      ]
     }
   }
 }

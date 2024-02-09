@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import axios from 'axios'
 import aboutPageMock from 'shared/mocks/aboutPageMock/result.json' assert { type: 'json' }
 import { authorize } from 'src/helpers/playwrightUtils'
 
@@ -14,61 +15,53 @@ test.describe('ADMIN - About page', () => {
     )
   })
 
-  test('should save new about page', async ({ page }) => {
+  test('should save new about page', async ({ page, context }) => {
     await page.goto(_URL)
     await authorize(page)
 
-    await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
-      await route.fulfill({ status: 200, json: {} })
-    })
+    await page.waitForURL('http://localhost:3000/admin/about')
+    const accessToken = `${
+      (await context.storageState()).origins[0].localStorage[0].value
+    }`
+    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+    axios.delete(process.env.VITE_API_URL + '/about-page')
+    await page.reload({ waitUntil: 'networkidle' })
 
-    await page.getByPlaceholder('Título').fill('new title')
-    await page
-      .getByPlaceholder('Descrição', { exact: true })
-      .fill('new description')
-    const skills = page.getByPlaceholder(
-      'Press "," | "Enter" | "Shift+Enter" to add Habilidades'
-    )
+    const title = page.getByPlaceholder('Título')
+    const description = page.getByPlaceholder('Descrição', { exact: true })
+    const url = page.getByPlaceholder('https://dominio.com/imagem.png')
+    const alt = page.getByPlaceholder('Descrição da imagem')
 
-    for (let index = 1; index < 4; index++) {
-      await skills.fill(`skill ${index}`)
-      await skills.press(',')
-    }
-
-    await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
-      await route.fulfill({ status: 201 })
-    })
+    await title.fill('new title')
+    await description.fill('new description')
+    await url.fill('new url')
+    await alt.fill('new alt')
     await page.getByRole('button', { name: 'Salvar' }).click()
-
     await expect(page.getByText('Success on create about page.')).toBeVisible()
   })
 
   test('should complete update about page', async ({ page }) => {
-    const newData: typeof aboutPageMock = {
+    const newData: Omit<typeof aboutPageMock, 'id'> = {
       title: 'new title',
       description: 'new description',
-      skills: [
-        {
-          title: 'new skill 1'
-        },
-        {
-          title: 'new skill 2'
-        }
-      ]
+      image: {
+        url: 'new url',
+        alt: 'new alt'
+      }
     }
 
     await page.goto(_URL)
     await authorize(page)
 
-    await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
-      await route.fulfill({ json: aboutPageMock, status: 200 })
-    })
+    await page.route(
+      `${process.env.VITE_API_URL}/about-page`,
+      async (route) => {
+        await route.fulfill({ json: aboutPageMock, status: 200 })
+      }
+    )
 
     const title = page.getByPlaceholder('Título')
     const description = page.getByPlaceholder('Descrição', { exact: true })
-    const skills = page.getByPlaceholder(
-      'Press "," | "Enter" | "Shift+Enter" to add Habilidades'
-    )
     const updateButton = page.getByRole('button', { name: 'Atualizar' })
 
     await title.fill(newData.title)
@@ -76,12 +69,6 @@ test.describe('ADMIN - About page', () => {
 
     await description.fill(newData.description)
     await description.press('Tab')
-
-    for (let index = 0; index < newData.skills.length; index++) {
-      await skills.fill(newData.skills[index].title)
-      await skills.press(',')
-    }
-    await skills.press('Tab')
 
     await updateButton.click()
 
@@ -92,9 +79,12 @@ test.describe('ADMIN - About page', () => {
     page.goto(_URL)
     await authorize(page)
 
-    await page.route(`${process.env.VITE_API_URL}/about`, async (route) => {
-      await route.fulfill({ json: aboutPageMock, status: 200 })
-    })
+    await page.route(
+      `${process.env.VITE_API_URL}/about-page`,
+      async (route) => {
+        await route.fulfill({ json: aboutPageMock, status: 200 })
+      }
+    )
 
     const description = page.getByPlaceholder('Descrição', { exact: true })
     const updateButton = page.getByRole('button', { name: 'Atualizar' })

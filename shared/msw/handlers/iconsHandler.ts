@@ -1,29 +1,29 @@
-import { rest } from 'msw'
+import { http, HttpResponse } from 'msw'
 import simpleIconsJSONMock from 'shared/mocks/simpleIconsJSONMock'
 
 export default [
-  rest.get(
+  http.get(
     'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/nodejs.svg',
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.body("<svg key='nodejs' />"))
+    () => {
+      return new HttpResponse("<svg key='nodejs' />")
     }
   ),
-  rest.get(
+  http.get(
     'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/git.svg',
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.body("<svg key='git' />"))
+    () => {
+      return new HttpResponse("<svg key='git' />")
     }
   ),
-  rest.get(
+  http.get(
     'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/reactjs.svg',
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.body("<svg key='reactjs' />"))
+    () => {
+      return new HttpResponse("<svg key='reactjs' />")
     }
   ),
-  rest.get(
+  http.get(
     'https://raw.githubusercontent.com/simple-icons/simple-icons/develop/_data/simple-icons.json',
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json(simpleIconsJSONMock))
+    () => {
+      return HttpResponse.json(simpleIconsJSONMock)
     }
   )
 ]

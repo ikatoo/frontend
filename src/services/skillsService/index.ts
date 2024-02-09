@@ -31,7 +31,7 @@ export default {
   },
   delete: async () => {
     try {
-      const { data, status } = await api.delete('skills')
+      const { data, status } = await api.delete('skills-page')
       const json =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
