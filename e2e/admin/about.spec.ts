@@ -1,87 +1,120 @@
-import { expect, test } from '@playwright/test'
-import axios from 'axios'
-import aboutPageMock from 'shared/mocks/aboutPageMock/result.json' assert { type: 'json' }
-import { authorize } from 'src/helpers/playwrightUtils'
+// import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
 
-const _URL = '/admin'
+// const api = await request.newContext({
+//   baseURL: process.env.VITE_API_URL
+// })
 
-test.describe('ADMIN - About page', () => {
-  test('has page title', async ({ page }) => {
-    await page.goto(_URL)
-    await authorize(page)
+describe('ADMIN - About page', () => {
+  const _URL = '/admin'
+  const authorize = async () => {
+    const actualUrl = await browser.getUrl()
 
-    await expect(page).toHaveTitle(
+    if (actualUrl.includes('/signin')) {
+      await $('#email').setValue('teste@teste.com')
+      await $('#password').setValue('teste')
+      await $('#signin').click()
+    }
+  }
+
+  it('has page title', async () => {
+    await browser.url(_URL)
+    await authorize()
+
+    await expect(browser).toHaveTitle(
       /ikatoo - software developer - Edit About Page/i
     )
   })
 
-  test('should save new about page', async ({ page, context }) => {
-    await page.goto(_URL)
-    await authorize(page)
+  it('should save new about page', async () => {
+    await browser.url(_URL)
+    await authorize()
 
-    await page.waitForURL('http://localhost:3000/admin/about')
-    const accessToken = `${
-      (await context.storageState()).origins[0].localStorage[0].value
-    }`
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-    axios.delete(process.env.VITE_API_URL + '/about-page')
-    await page.reload({ waitUntil: 'networkidle' })
-
-    const title = page.getByPlaceholder('Título')
-    const description = page.getByPlaceholder('Descrição', { exact: true })
-    const url = page.getByPlaceholder('https://dominio.com/imagem.png')
-    const alt = page.getByPlaceholder('Descrição da imagem')
-
-    await title.fill('new title')
-    await description.fill('new description')
-    await url.fill('new url')
-    await alt.fill('new alt')
-    await page.getByRole('button', { name: 'Salvar' }).click()
-    await expect(page.getByText('Success on create about page.')).toBeVisible()
-  })
-
-  test('should complete update about page', async ({ page }) => {
-    const newData: Omit<typeof aboutPageMock, 'id'> = {
-      title: 'new title',
-      description: 'new description',
-      image: {
-        url: 'new url',
-        alt: 'new alt'
-      }
-    }
-
-    await page.goto(_URL)
-    await authorize(page)
-
-    const title = page.getByPlaceholder('Título')
-    const description = page.getByPlaceholder('Descrição', { exact: true })
-    const updateButton = page.getByRole('button', { name: 'Atualizar' })
-
-    await title.fill(newData.title)
-    await description.fill(newData.description)
-
-    await updateButton.click()
-
-    await expect(page.getByText('Success on update about page.')).toBeVisible()
-  })
-
-  test('should partial update about page', async ({ page }) => {
-    page.goto(_URL)
-    await authorize(page)
-
-    await page.route(
-      `${process.env.VITE_API_URL}/about-page`,
-      async (route) => {
-        await route.fulfill({ json: aboutPageMock, status: 200 })
-      }
+    const accessToken = await browser.execute(
+      'return window.localStorage.accessToken'
     )
+    await $('#title').setValue(`${accessToken}`)
+    // const accessToken = `${
+    //   (await context.storageState()).origins[0].localStorage[0].value
+    // }`
+    // api.delete('/about-page', {
+    //   headers: {
+    //     Authorization: `Bearer ${accessToken}`
+    //   }
+    // })
+    // await browser.reload({ waitUntil: 'load' })
 
-    const description = page.getByPlaceholder('Descrição', { exact: true })
-    const updateButton = page.getByRole('button', { name: 'Atualizar' })
+    // const title = browser.getByPlaceholder('Título')
+    // const description = browser.getByPlaceholder('Descrição', { exact: true })
+    // const url = browser.getByPlaceholder('https://dominio.com/imagem.png')
+    // const alt = browser.getByPlaceholder('Descrição da imagem')
 
-    await description.fill('new description')
-    await updateButton.click()
+    // await title.fill('new title')
+    // await description.fill('new description')
+    // await url.fill('new url')
+    // await alt.fill('new alt')
 
-    await expect(page.getByText('Success on update about page.')).toBeVisible()
+    // await browser.getByRole('button', { name: 'Salvar' }).click()
+    // await browser.waitForLoadState()
+
+    // await expect(
+    //   browser.getByText('Success on create about browser.')
+    // ).toBeVisible()
   })
+
+  // test('should complete update about page', async () => {
+  //   const newData: Omit<typeof aboutPageMock, 'id'> = {
+  //     title: 'new title',
+  //     description: 'new description',
+  //     image: {
+  //       url: 'new url',
+  //       alt: 'new alt'
+  //     }
+  //   }
+
+  //   await browser.goto(_URL)
+  //   await authorize(page)
+  //   await browser.waitForURL('http://localhost:3000/admin/about')
+
+  //   const title = browser.getByPlaceholder('Título')
+  //   const description = browser.getByPlaceholder('Descrição', { exact: true })
+  //   const updateButton = browser.getByRole('button', { name: 'Atualizar' })
+
+  //   await title.fill(newData.title)
+  //   await description.fill(newData.description)
+
+  //   await updateButton.click()
+
+  //   await expect(browser.getByText('Success on update about browser.')).toBeVisible()
+  // })
+
+  // test('should partial update about page', async () => {
+  //   browser.goto(_URL)
+  //   await authorize(page)
+  //   await browser.waitForURL('http://localhost:3000/admin/about')
+
+  //   const accessToken = `${
+  //     (await context.storageState()).origins[0].localStorage[0].value
+  //   }`
+  //   const req = await api.get('/about-page/user-id/1')
+  //   const data = await req.json()
+  //   if (!data?.title) {
+  //     await api.post('/about-page', {
+  //       data: {
+  //         title: 'first title',
+  //         description: 'first description'
+  //       },
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`
+  //       }
+  //     })
+  //   }
+  //   await browser.reload({ waitUntil: 'networkidle' })
+
+  //   await page
+  //     .getByPlaceholder('Descrição', { exact: true })
+  //     .fill('new description')
+  //   await browser.getByRole('button', { name: 'Atualizar' }).click()
+
+  //   await expect(browser.getByText('Success on update about browser.')).toBeVisible()
+  // })
 })

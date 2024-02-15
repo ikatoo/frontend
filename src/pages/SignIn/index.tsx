@@ -71,6 +71,7 @@ export const SignInPage = () => {
             type="submit"
             block
             styleType="primary"
+            id="signin"
           >
             ENTRAR
           </Button>

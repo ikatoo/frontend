@@ -14,9 +14,6 @@
     "test": "vitest",
     "test:run": "vitest run",
     "coverage": "vitest run --coverage",
-    "playwright": "npx playwright test",
-    "playwright:ui": "npx playwright test --ui",
-    "playwright:codegen": "npx playwright codegen",
     "docker:vite:up": "docker compose -f docker/vite/compose.yml up -d",
     "docker:vite:down": "docker compose -f docker/vite/compose.yml down",
     "dev": "vite",
@@ -26,7 +23,8 @@
     "preview": "vite preview",
     "prepare": "husky install",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "wdio": "wdio run ./wdio.conf.ts"
   },
   "dependencies": {
     "@styled-icons/boxicons-logos": "10.46.0",
@@ -50,7 +48,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",
-    "@playwright/test": "^1.32.3",
     "@storybook/addon-actions": "^7.6.12",
     "@storybook/addon-essentials": "^7.6.12",
     "@storybook/addon-interactions": "^7.6.12",
@@ -68,7 +65,11 @@
     "@types/styled-components": "5.1.26",
     "@typescript-eslint/eslint-plugin": "5.41.0",
     "@typescript-eslint/parser": "5.41.0",
-    "@vitejs/plugin-react": "^2.1.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@wdio/cli": "^8.31.1",
+    "@wdio/local-runner": "^8.32.0",
+    "@wdio/mocha-framework": "^8.31.1",
+    "@wdio/spec-reporter": "^8.31.1",
     "autoprefixer": "10.4.12",
     "babel-loader": "^8.2.5",
     "dotenv": "^16.0.3",
@@ -84,16 +85,19 @@
     "jsdom": "20.0.2",
     "lint-staged": "13.0.3",
     "msw": "^2.1.4",
-    "msw-storybook-addon": "^2.0.0--canary.122.b3ed3b1.0",
+    "msw-storybook-addon": "^2.0.0-beta.1",
     "postcss": "8.4.17",
     "prettier": "2.7.1",
     "prop-types": "^15.8.1",
     "storybook": "^7.6.12",
     "tailwind-styled-components": "2.1.7",
     "tailwindcss": "3.1.8",
+    "ts-node": "^10.9.2",
     "typescript": "^4.6.4",
     "vite": "^5.0.12",
-    "vitest": "^0.32.2"
+    "vitest": "^0.32.2",
+    "wdio-vite-service": "^1.0.6",
+    "wdio-wait-for": "^3.0.11"
   },
   "msw": {
     "workerDirectory": "public"
