@@ -1,11 +1,20 @@
-// import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
-
-// const api = await request.newContext({
-//   baseURL: process.env.VITE_API_URL
-// })
+import axios from 'axios'
+import { randomBytes } from 'crypto'
+import { env } from 'process'
+import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
 
 describe('ADMIN - About page', () => {
+  const baseURL = `${env.VITE_API_URL}`
+  const API_URL =
+    baseURL[baseURL.length - 1] === '/' ? baseURL.slice(0, -1) : baseURL
   const _URL = '/admin'
+  const api = axios.create({
+    baseURL: API_URL,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
   const authorize = async () => {
     const actualUrl = await browser.getUrl()
 
@@ -32,89 +41,94 @@ describe('ADMIN - About page', () => {
     const accessToken = await browser.execute(
       'return window.localStorage.accessToken'
     )
-    await $('#title').setValue(`${accessToken}`)
-    // const accessToken = `${
-    //   (await context.storageState()).origins[0].localStorage[0].value
-    // }`
-    // api.delete('/about-page', {
-    //   headers: {
-    //     Authorization: `Bearer ${accessToken}`
-    //   }
-    // })
-    // await browser.reload({ waitUntil: 'load' })
+    api.defaults.headers.Authorization = `Bearer ${accessToken}`
+    await api.delete('/about-page')
+    await browser.refresh()
 
-    // const title = browser.getByPlaceholder('Título')
-    // const description = browser.getByPlaceholder('Descrição', { exact: true })
-    // const url = browser.getByPlaceholder('https://dominio.com/imagem.png')
-    // const alt = browser.getByPlaceholder('Descrição da imagem')
+    await $('#title').setValue('new title')
+    await $('#description').setValue('new title')
+    await $('#illustrationURL').setValue('new url')
+    await $('#illustrationALT').setValue('new alt')
+    await $('#save').click()
 
-    // await title.fill('new title')
-    // await description.fill('new description')
-    // await url.fill('new url')
-    // await alt.fill('new alt')
+    const alertElement = $('[role="alert"]')
 
-    // await browser.getByRole('button', { name: 'Salvar' }).click()
-    // await browser.waitForLoadState()
-
-    // await expect(
-    //   browser.getByText('Success on create about browser.')
-    // ).toBeVisible()
+    await expect(alertElement).toBeDisplayed()
+    await expect(alertElement).toHaveText('Success on create about page.')
   })
 
-  // test('should complete update about page', async () => {
-  //   const newData: Omit<typeof aboutPageMock, 'id'> = {
-  //     title: 'new title',
-  //     description: 'new description',
-  //     image: {
-  //       url: 'new url',
-  //       alt: 'new alt'
-  //     }
-  //   }
+  it('should complete update about page', async () => {
+    const randomTestId = randomBytes(10).toString('hex')
+    const mock = {
+      title: `first title ${randomTestId}`,
+      description: `first description ${randomTestId}`,
+      image: {
+        imageUrl: `image url ${randomTestId}`,
+        imageAlt: `image alt ${randomTestId}`
+      }
+    }
+    const newData: Omit<typeof aboutPageMock, 'id'> = {
+      title: 'new title',
+      description: 'new description',
+      image: {
+        url: 'new url',
+        alt: 'new alt'
+      }
+    }
 
-  //   await browser.goto(_URL)
-  //   await authorize(page)
-  //   await browser.waitForURL('http://localhost:3000/admin/about')
+    await browser.url(_URL)
+    await authorize()
 
-  //   const title = browser.getByPlaceholder('Título')
-  //   const description = browser.getByPlaceholder('Descrição', { exact: true })
-  //   const updateButton = browser.getByRole('button', { name: 'Atualizar' })
+    const accessToken = await browser.execute(
+      'return window.localStorage.accessToken'
+    )
+    api.defaults.headers.Authorization = `Bearer ${accessToken}`
+    const { data } = await api.get('/about-page/user-id/1')
+    if (!data?.title) {
+      await api.post('/about-page', mock)
+    }
 
-  //   await title.fill(newData.title)
-  //   await description.fill(newData.description)
+    await browser.refresh()
 
-  //   await updateButton.click()
+    await $('#title').setValue(newData.title)
+    await $('#description').setValue(newData.description)
+    await $('#update').click()
 
-  //   await expect(browser.getByText('Success on update about browser.')).toBeVisible()
-  // })
+    const alert = $('[role="alert"]')
 
-  // test('should partial update about page', async () => {
-  //   browser.goto(_URL)
-  //   await authorize(page)
-  //   await browser.waitForURL('http://localhost:3000/admin/about')
+    await expect(alert).toBeDisplayed()
+    await expect(alert).toHaveText('Success on update about page.')
+  })
 
-  //   const accessToken = `${
-  //     (await context.storageState()).origins[0].localStorage[0].value
-  //   }`
-  //   const req = await api.get('/about-page/user-id/1')
-  //   const data = await req.json()
-  //   if (!data?.title) {
-  //     await api.post('/about-page', {
-  //       data: {
-  //         title: 'first title',
-  //         description: 'first description'
-  //       },
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`
-  //       }
-  //     })
-  //   }
-  //   await browser.reload({ waitUntil: 'networkidle' })
+  it('should partial update about page', async () => {
+    const randomTestId = randomBytes(10).toString('hex')
+    const mock = {
+      title: `first title ${randomTestId}`,
+      description: `first description ${randomTestId}`,
+      image: {
+        imageUrl: `image url ${randomTestId}`,
+        imageAlt: `image alt ${randomTestId}`
+      }
+    }
+    await browser.url(_URL)
+    await authorize()
 
-  //   await page
-  //     .getByPlaceholder('Descrição', { exact: true })
-  //     .fill('new description')
-  //   await browser.getByRole('button', { name: 'Atualizar' }).click()
+    const accessToken = await browser.execute(
+      'return window.localStorage.accessToken'
+    )
+    api.defaults.headers.Authorization = `Bearer ${accessToken}`
+    const { data } = await axios.get(API_URL + '/about-page/user-id/1')
+    if (!data?.title) {
+      await axios.post(API_URL + '/about-page', mock)
+    }
+    await browser.refresh()
 
-  //   await expect(browser.getByText('Success on update about browser.')).toBeVisible()
-  // })
+    await (await $('#description')).setValue('new description')
+    await $('#update').click()
+
+    const alert = $('[role="alert"]')
+
+    await expect(alert).toBeDisplayed()
+    await expect(alert).toHaveText('Success on update about page.')
+  })
 })

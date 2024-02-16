@@ -109,7 +109,7 @@ export const AdminAbout = () => {
 
             <TextWrapper>
               <TextArea
-                name="editor"
+                name="description"
                 initialValue={description}
                 label="Descrição"
                 placeholder="Descrição"
@@ -142,12 +142,12 @@ export const AdminAbout = () => {
 
             <Actions>
               {isEmpty && (
-                <Button styleType="primary" onClick={save}>
+                <Button id="save" styleType="primary" onClick={save}>
                   Salvar
                 </Button>
               )}
               {!isEmpty && (
-                <Button styleType="primary" onClick={update}>
+                <Button id="update" styleType="primary" onClick={update}>
                   Atualizar
                 </Button>
               )}
