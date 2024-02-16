@@ -59,7 +59,10 @@ export const config: Options.Testrunner = {
   capabilities: [
     {
       browserName: 'chrome',
-      browserVersion: 'latest'
+      browserVersion: 'latest',
+      'goog:chromeOptions': {
+        args: ['headless', 'disable-gpu']
+      }
     }
     // {
     //   browserName: 'firefox'
