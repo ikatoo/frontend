@@ -103,11 +103,11 @@ export const AdminSkills = () => {
 
             <Actions>
               {isEmpty ? (
-                <Button styleType="primary" onClick={save}>
+                <Button id="save" styleType="primary" onClick={save}>
                   Salvar
                 </Button>
               ) : (
-                <Button styleType="primary" onClick={update}>
+                <Button id="update" styleType="primary" onClick={update}>
                   Atualizar
                 </Button>
               )}
