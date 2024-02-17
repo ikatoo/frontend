@@ -25,6 +25,9 @@ describe('ADMIN - Skills page', () => {
     }
   }
 
+  const getAccessToken = async () =>
+    `${await browser.execute('return window.localStorage.accessToken')}`
+
   it('has page title', async () => {
     await browser.url(_URL)
     await authorize()
@@ -39,9 +42,7 @@ describe('ADMIN - Skills page', () => {
     await browser.url(_URL)
     await authorize()
 
-    const accessToken = await browser.execute(
-      'return window.localStorage.accessToken'
-    )
+    const accessToken = await getAccessToken()
     api.defaults.headers.Authorization = `Bearer ${accessToken}`
     await api.delete('/skills-page')
     await browser.refresh()
@@ -56,80 +57,65 @@ describe('ADMIN - Skills page', () => {
     await expect(alertElement).toHaveText('Success on create skills page.')
   })
 
-  // it('should complete update skills page data', async () => {
-  //   const randomTestId = randomBytes(10).toString('hex')
-  //   const newData = {
-  //     title: 'new title' + randomTestId,
-  //     description: 'new description' + randomTestId
-  //   }
+  it('should complete update skills page data', async () => {
+    const randomTestId = randomBytes(10).toString('hex')
+    const newData = {
+      title: 'new title' + randomTestId,
+      description: 'new description' + randomTestId
+    }
 
-  //   await browser.url(_URL)
-  //   await authorize(page)
+    await browser.url(_URL)
+    await authorize()
 
-  //   await browser.waitForURL('http://localhost:3000/admin/skills')
-  //   const accessToken = `${
-  //     (await context.storageState()).origins[0].localStorage[0].value
-  //   }`
-  //   const data = await (await api.get('skills-page/user-id/1')).json()
-  //   if (!data?.title)
-  //     await api.post('/skills-page', {
-  //       data: {
-  //         title: 'first title',
-  //         description: 'first description'
-  //       },
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`
-  //       }
-  //     })
-  //   await browser.reload({ waitUntil: 'networkidle' })
+    const accessToken = await getAccessToken()
+    const { data } = await api.get('/skills-page/user-id/1')
+    if (!data?.title) {
+      api.defaults.headers.Authorization = `Bearer ${accessToken}`
+      await api.post('/skills-page', {
+        title: 'first title',
+        description: 'first description'
+      })
+    }
+    await browser.refresh()
 
-  //   const title = browser.getByLabel('Título')
-  //   const description = browser.getByPlaceholder('Descrição', { exact: true })
+    await $('#title').setValue(newData.title)
+    await $('#description').setValue(newData.description)
 
-  //   await title.fill(newData.title)
-  //   await description.fill(newData.description)
+    await $('#update').click()
 
-  //   await browser.getByRole('button', { name: 'Atualizar' }).click()
+    const alertElement = $('[role="alert"]')
 
-  //   await expect(
-  //     browser.getByText('Success on update skills browser.')
-  //   ).toBeVisible()
-  // })
+    await expect(alertElement).toBeDisplayed()
+    await expect(alertElement).toHaveText('Success on update skills page.')
+  })
 
-  // it('should partial update skills page data', async () => {
-  //   const randomTestId = randomBytes(10).toString('hex')
-  //   const newData = {
-  //     title: 'new title' + randomTestId,
-  //     description: 'new description' + randomTestId
-  //   }
+  it('should partial update skills page data', async () => {
+    const randomTestId = randomBytes(10).toString('hex')
+    const newData = {
+      title: 'new title' + randomTestId,
+      description: 'new description' + randomTestId
+    }
 
-  //   await browser.url(_URL)
-  //   await authorize(page)
+    await browser.url(_URL)
+    await authorize()
 
-  //   await browser.waitForURL('http://localhost:3000/admin/skills')
-  //   const accessToken = `${
-  //     (await context.storageState()).origins[0].localStorage[0].value
-  //   }`
-  //   const data = await (await api.get('skills-page/user-id/1')).json()
-  //   if (!data?.title)
-  //     await api.post('/skills-page', {
-  //       data: {
-  //         title: 'first title',
-  //         description: 'first description'
-  //       },
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`
-  //       }
-  //     })
-  //   await browser.reload({ waitUntil: 'networkidle' })
+    const accessToken = await getAccessToken()
+    const { data } = await api.get('skills-page/user-id/1')
+    if (!data?.title) {
+      api.defaults.headers.Authorization = `Bearer ${accessToken}`
+      await api.post('/skills-page', {
+        title: 'first title',
+        description: 'first description'
+      })
+    }
+    await browser.refresh()
 
-  //   const title = browser.getByLabel('Título')
+    await $('#title').setValue(newData.title)
+    await $('#update').click()
 
-  //   await title.fill(newData.title)
-  //   await browser.getByRole('button', { name: 'Atualizar' }).click()
+    const alertElement = $('[role="alert"]')
 
-  //   await expect(
-  //     browser.getByText('Success on update skills browser.')
-  //   ).toBeVisible()
-  // })
+    await expect(alertElement).toBeDisplayed()
+    await expect(alertElement).toHaveText('Success on update skills page.')
+  })
 })
