@@ -1,3 +1,4 @@
+import { $, browser } from '@wdio/globals'
 import axios from 'axios'
 import { randomBytes } from 'crypto'
 import { env } from 'process'
