@@ -2,7 +2,7 @@ import { $, browser } from '@wdio/globals'
 import axios from 'axios'
 import { randomBytes } from 'crypto'
 import { env } from 'process'
-import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
+import aboutPageMock from '../../shared/mocks/aboutPageMock/result.json'
 
 describe('ADMIN - About page', () => {
   const baseURL = `${env.VITE_API_URL}`
