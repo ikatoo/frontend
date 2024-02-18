@@ -26,8 +26,6 @@ dist-ssr
 
 .env
 /test-results/
-/playwright-report/
-/playwright/.cache/
 
 /storybook-static
 
