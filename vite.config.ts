@@ -15,8 +15,7 @@ export default defineConfig(({ mode }) => {
     },
     resolve: {
       alias: {
-        src: `/src`,
-        shared: `/shared`
+        src: `/src`
       }
     }
   }
