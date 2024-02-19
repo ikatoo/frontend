@@ -1,64 +1,66 @@
+import { browser, $, expect } from '@wdio/globals'
 
 const _URL = '/signin'
 
-test.describe('ADMIN - SignIn Page', () => {
-  test('has components', async ({ page }) => {
-    await page.goto(_URL)
+describe('ADMIN - SignIn Page', () => {
+  const authorize = async () => {
+    const actualUrl = await browser.getUrl()
 
-    const logo = page.getByLabel('Logotipo')
-    const email = page.getByLabel('E-mail')
-    const password = page.getByLabel('Senha')
-    const recoveryLink = page.getByRole('link', {
-      name: 'Recupere sua senha aqui.'
-    })
-    const signInButton = page.getByRole('button', {
-      name: 'ENTRAR'
-    })
-    const LoginGroup = page.getByRole('group')
-    const googleButton = page.getByRole('button', {
-      name: 'Login com Google'
-    })
-    const linkedinButton = page.getByRole('button', {
-      name: 'Login com Linkedin'
-    })
-    const emailButton = page.getByRole('button', {
-      name: 'Login via email'
-    })
+    if (actualUrl.includes('/signin')) {
+      await $('#email').setValue('teste@teste.com')
+      await $('#password').setValue('teste')
+      await $('#signin').click()
+    }
+  }
 
-    await expect(logo).toBeVisible()
-    await expect(email).toBeVisible()
-    await expect(password).toBeVisible()
-    await expect(recoveryLink).toBeVisible()
-    await expect(signInButton).toBeVisible()
-    await expect(LoginGroup).toBeVisible()
-    await expect(googleButton).toBeVisible()
-    await expect(linkedinButton).toBeVisible()
-    await expect(emailButton).toBeVisible()
+  it('has components', async () => {
+    await browser.url(_URL)
+
+    const logo = $('aria/Logotipo')
+    const email = $('#email')
+    const password = $('#password')
+    const recoveryLink = $('a=Recupere sua senha aqui.')
+    const signInButton = $('button=ENTRAR')
+    const LoginGroup = $('fieldset=Login com')
+    const googleButton = $('aria/Login com Google')
+    const linkedinButton = $('aria/Login com Linkedin')
+    const emailButton = $('aria/Login via email')
+
+    await expect(logo).toBeDisplayed()
+    await expect(email).toBeDisplayed()
+    await expect(password).toBeDisplayed()
+    await expect(recoveryLink).toBeDisplayed()
+    await expect(signInButton).toBeDisplayed()
+    await expect(signInButton).toBeDisabled()
+    await expect(LoginGroup).toBeDisplayed()
+    await expect(googleButton).toBeDisplayed()
+    await expect(linkedinButton).toBeDisplayed()
+    await expect(emailButton).toBeDisplayed()
   })
 
-  test('redirect to signin page on access protected route without authentication', async ({
-    page
-  }) => {
-    await page.goto('/admin/about')
+  it('redirect to signin page on access protected route without authentication', async () => {
+    await browser.url('/admin/about')
 
-    await expect(page).toHaveTitle(
+    await expect(browser).toHaveTitle(
       'iKatoo - Software Developer - Authentication'
     )
   })
 
-  test('do sign in and redirect to admin', async ({ page }) => {
-    await page.goto(_URL)
-    await authorize(page)
+  it('do sign in and redirect to admin', async () => {
+    const baseUrl = new URL(await browser.getUrl()).origin
+    await browser.url(_URL)
+    await authorize()
 
-    await expect(page).toHaveURL('/admin')
+    await expect(browser).toHaveUrl(baseUrl + '/admin/about')
   })
 
-  test('redirect to preview url after authentication', async ({ page }) => {
-    await page.goto('/admin/skills')
-    await authorize(page)
+  it('redirect to preview url after authentication', async () => {
+    const baseUrl = new URL(await browser.getUrl()).origin
+    await browser.url('/admin/skills')
+    await authorize()
 
-    await expect(page).toHaveURL('/admin/skills')
-    await expect(page).toHaveTitle(
+    await expect(browser).toHaveUrl(baseUrl + '/admin/skills')
+    await expect(browser).toHaveTitle(
       'iKatoo - Software Developer - Edit Skills Page'
     )
   })
