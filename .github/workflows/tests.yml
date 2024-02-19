@@ -68,11 +68,11 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Install playwright browsers
-        run: npx playwright install --with-deps
+      - name: Run local dev server
+        run: npm run dev
 
       - name: Run tests
-        run: npx playwright test
+        run: npm run wdio:headless
 
       - name: Enviar email em caso de falha
         if: ${{ failure() }}
