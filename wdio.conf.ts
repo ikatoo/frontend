@@ -30,6 +30,7 @@ export const config: Options.Testrunner = {
   // of the config file unless it's absolute.
   //
   specs: [
+    './e2e/**/*.spec.ts'
     // ToDo: define location for spec files here
   ],
   // Patterns to exclude.
