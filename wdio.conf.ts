@@ -9,7 +9,7 @@ export const config: Options.Testrunner = {
   autoCompileOpts: {
     autoCompile: true,
     tsNodeOpts: {
-      project: './tsconfig.json',
+      project: './tsconfig.e2e.json',
       transpileOnly: true
     }
   },
@@ -29,7 +29,9 @@ export const config: Options.Testrunner = {
   // The path of the spec files will be resolved relative from the directory of
   // of the config file unless it's absolute.
   //
-  specs: ['./e2e/**/*.{e2e,spec}.ts'],
+  specs: [
+    // ToDo: define location for spec files here
+  ],
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
@@ -61,9 +63,6 @@ export const config: Options.Testrunner = {
       browserName: 'chrome',
       browserVersion: '115'
     }
-    // {
-    //   browserName: 'firefox'
-    // }
   ],
 
   //
@@ -113,8 +112,8 @@ export const config: Options.Testrunner = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: ['vite'],
-
+  // services: [],
+  //
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
   // see also: https://webdriver.io/docs/frameworks
