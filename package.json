@@ -11,8 +11,6 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint src --max-warnings=0",
-    "test": "vitest",
-    "test:run": "vitest run",
     "coverage": "vitest run --coverage",
     "docker:vite:up": "docker compose -f docker/vite/compose.yml up -d",
     "docker:vite:down": "docker compose -f docker/vite/compose.yml down",
@@ -24,8 +22,10 @@
     "prepare": "husky install",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "wdio": "wdio run ./wdio.conf.ts",
-    "wdio:headless": "wdio run ./wdio-headless.conf.ts"
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:e2e": "npm run dev & wdio run ./wdio.conf.ts",
+    "test:e2e:headless": "npm run dev & wdio run ./wdio-headless.conf.ts"
   },
   "dependencies": {
     "@styled-icons/boxicons-logos": "10.46.0",
