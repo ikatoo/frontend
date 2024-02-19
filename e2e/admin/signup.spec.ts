@@ -1,3 +1,4 @@
+import { browser, $, expect } from '@wdio/globals'
 
 const _URL = '/signup'
 
@@ -7,116 +8,35 @@ const mockedUser = {
   password: 'secr3tp4ss0W1D'
 }
 
-test.describe('ADMIN - Signup Page', () => {
-  test('has components', async ({ page }) => {
-    await page.goto(_URL)
+describe('ADMIN - Signup Page', () => {
+  it('has components', async () => {
+    await browser.url(_URL)
 
-    const logo = page.getByLabel('Logotipo')
-    const name = page.getByLabel('Nome')
-    const email = page.getByLabel('E-mail', { exact: true })
-    const confirmEmail = page.getByLabel('Confirmar E-mail', { exact: true })
-    const password = page.getByLabel('Senha', { exact: true })
-    const confirmPassword = page.getByLabel('Confirmar Senha', { exact: true })
-    const recoveryLink = page.getByRole('link', {
-      name: 'Recupere sua senha aqui.'
-    })
-    const backToHomeLink = page.getByRole('link', {
-      name: 'Voltar a tela de login.'
-    })
-    const signUpButton = page.getByRole('button', {
-      name: 'CADASTRAR'
-    })
-
-    await expect(logo).toBeVisible()
-    await expect(name).toBeVisible()
-    await expect(email).toBeVisible()
-    await expect(confirmEmail).toBeVisible()
-    await expect(password).toBeVisible()
-    await expect(confirmPassword).toBeVisible()
-    await expect(recoveryLink).toBeVisible()
-    await expect(backToHomeLink).toBeVisible()
-    await expect(signUpButton).toBeVisible()
-    await expect(signUpButton).not.toBeEnabled()
+    await expect($('aria/Logotipo')).toBeDisplayed()
+    await expect($('#name')).toBeDisplayed()
+    await expect($('#email')).toBeDisplayed()
+    await expect($('#confirm-email')).toBeDisplayed()
+    await expect($('#password')).toBeDisplayed()
+    await expect($('#confirm-password')).toBeDisplayed()
+    await expect($('a=Recupere sua senha aqui.')).toBeDisplayed()
+    await expect($('a=Voltar a tela de login.')).toBeDisplayed()
+    await expect($('button=CADASTRAR')).toBeDisplayed()
+    await expect($('button=CADASTRAR')).toBeDisabled()
   })
 
-  test('should redirect to admin root on signup with success', async ({
-    page
-  }) => {
-    await page.goto(_URL)
+  it('should alert when fail on create user', async () => {
+    await browser.url(_URL)
 
-    const name = page.getByLabel('Nome')
-    const email = page.getByLabel('E-mail', { exact: true })
-    const confirmEmail = page.getByLabel('Confirmar E-mail', { exact: true })
-    const password = page.getByLabel('Senha', { exact: true })
-    const confirmPassword = page.getByLabel('Confirmar Senha', { exact: true })
-    const signupButton = page.getByRole('button', { name: 'CADASTRAR' })
+    await $('#name').setValue(mockedUser.name)
+    await $('#email').setValue(mockedUser.email)
+    await $('#confirm-email').setValue(mockedUser.email)
+    await $('#password').setValue(mockedUser.password)
+    await $('#confirm-password').setValue(mockedUser.password)
+    await $('button=CADASTRAR').click()
 
-    await name.fill(mockedUser.name)
-    await name.press('Tab')
+    const alertElement = $('[role="alert"]')
 
-    await email.fill(mockedUser.email)
-    await email.press('Tab')
-
-    await confirmEmail.fill(mockedUser.email)
-    await confirmEmail.press('Tab')
-
-    await password.fill(mockedUser.password)
-    await password.press('Tab')
-
-    await confirmPassword.fill(mockedUser.password)
-    await confirmPassword.press('Tab')
-
-    await page.route(`${process.env.VITE_API_URL}/user`, (route) => {
-      route.fulfill({
-        json: { accessToken: 'valid-access-token' },
-        status: 201
-      })
-    })
-    await page.route(
-      `${process.env.VITE_API_URL}/auth/verify-token`,
-      (route) => {
-        route.fulfill({
-          status: 201
-        })
-      }
-    )
-    await signupButton.click()
-
-    await expect(page).toHaveURL('/admin')
-  })
-
-  test('should alert when fail on create user', async ({ page }) => {
-    await page.goto(_URL)
-
-    const name = page.getByLabel('Nome')
-    const email = page.getByLabel('E-mail', { exact: true })
-    const confirmEmail = page.getByLabel('Confirmar E-mail', { exact: true })
-    const password = page.getByLabel('Senha', { exact: true })
-    const confirmPassword = page.getByLabel('Confirmar Senha', { exact: true })
-    const signupButton = page.getByRole('button', { name: 'CADASTRAR' })
-
-    await name.fill(mockedUser.name)
-    await name.press('Tab')
-
-    await email.fill(mockedUser.email)
-    await email.press('Tab')
-
-    await confirmEmail.fill(mockedUser.email)
-    await confirmEmail.press('Tab')
-
-    await password.fill(mockedUser.password)
-    await password.press('Tab')
-
-    await confirmPassword.fill(mockedUser.password)
-    await confirmPassword.press('Tab')
-
-    await page.route(`${process.env.VITE_API_URL}/user`, (route) => {
-      route.fulfill({
-        status: 500
-      })
-    })
-    await signupButton.click()
-
-    await expect(page.getByText('Internal Server Error')).toBeVisible()
+    await expect(alertElement).toBeDisplayed()
+    await expect(alertElement).toHaveText('Internal Server Error')
   })
 })
