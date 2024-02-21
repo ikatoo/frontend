@@ -68,11 +68,8 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Start Server
-        run: npx vite --host
-
       - name: Run tests
-        run: npm run test:e2e:headless
+        run: npm run dev & npm run test:e2e:headless
 
       - name: Enviar email em caso de falha
         if: ${{ failure() }}
