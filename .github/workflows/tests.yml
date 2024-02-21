@@ -68,8 +68,11 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Start Server
+        run: npx vite --host
+
       - name: Run tests
-        run: npm run dev & wdio run ./wdio-headless.conf.ts
+        run: npm run test:e2e:headless
 
       - name: Enviar email em caso de falha
         if: ${{ failure() }}
