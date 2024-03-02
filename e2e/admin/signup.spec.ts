@@ -35,6 +35,7 @@ describe('ADMIN - Signup Page', () => {
     await $('button=CADASTRAR').click()
 
     const alertElement = $('[role="alert"]')
+    await alertElement.waitForDisplayed()
 
     await expect(alertElement).toBeDisplayed()
     await expect(alertElement).toHaveText('Internal Server Error')
