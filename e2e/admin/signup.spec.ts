@@ -1,4 +1,5 @@
 import { browser, $, expect } from '@wdio/globals'
+import { randomBytes } from 'crypto'
 
 const _URL = '/signup'
 
@@ -39,5 +40,29 @@ describe('ADMIN - Signup Page', () => {
 
     await expect(alertElement).toBeDisplayed()
     await expect(alertElement).toHaveText('Internal Server Error')
+  })
+
+  it('should show success alert when create user', async () => {
+    await browser.url(_URL)
+
+    const randomTestId = randomBytes(12).toString('hex')
+    const mockedUser = {
+      name: `New Name ${randomTestId}`,
+      email: `new_${randomTestId}@email.com`,
+      password: randomTestId
+    }
+
+    await $('#name').setValue(mockedUser.name)
+    await $('#email').setValue(mockedUser.email)
+    await $('#confirm-email').setValue(mockedUser.email)
+    await $('#password').setValue(mockedUser.password)
+    await $('#confirm-password').setValue(mockedUser.password)
+    await $('button=CADASTRAR').click()
+
+    const alertElement = $('[role="alert"]')
+    await alertElement.waitForDisplayed()
+
+    await expect(alertElement).toBeDisplayed()
+    await expect(alertElement).toHaveText('User created with success.')
   })
 })

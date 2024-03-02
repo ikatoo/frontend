@@ -63,6 +63,10 @@ export const SignUpPage = () => {
 
     const response = await usersService.create({ name, email, password })
     if (response.status === 201) {
+      setAlert({
+        type: 'message',
+        title: 'User created with success.'
+      })
       const token = response.data.accessToken
       setLocalStorage('accessToken', token)
       navigate('/admin', { replace: true })
