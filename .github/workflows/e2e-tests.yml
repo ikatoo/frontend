@@ -55,14 +55,14 @@ jobs:
 
     steps:
       - name: Checkout Backend Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ikatoo/backend
           ref: dev
           path: $BACKEND_DIRECTORY
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20.x
 
@@ -79,7 +79,7 @@ jobs:
         run: npm run start
 
       # - name: Checkout Frontend Repository
-      #   uses: actions/checkout@v3
+      #   uses: actions/checkout@v4
       #   with:
       #     ref: ${{github.ref_name}}
       #     path: $FRONTEND_DIRECTORY

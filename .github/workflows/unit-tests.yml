@@ -14,13 +14,13 @@ jobs:
       VITE_PORT: 3000
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: $FRONTEND_DIRECTORY
           ref: ${{github.ref_name}}
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20.x
 
