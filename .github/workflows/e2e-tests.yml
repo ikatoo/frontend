@@ -76,7 +76,7 @@ jobs:
 
       - name: Start Backend
         working-directory: $BACKEND_DIRECTORY
-        run: ls -la
+        run: ls -la dist
 
       # - name: Checkout Frontend Repository
       #   uses: actions/checkout@v3
