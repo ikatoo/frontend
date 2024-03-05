@@ -78,33 +78,33 @@ jobs:
         working-directory: $BACKEND_DIRECTORY
         run: node dist/src/main
 
-      # - name: Checkout Frontend Repository
-      #   uses: actions/checkout@v4
-      #   with:
-      #     ref: ${{github.ref_name}}
-      #     path: $FRONTEND_DIRECTORY
+      - name: Checkout Frontend Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{github.ref_name}}
+          path: $FRONTEND_DIRECTORY
 
-      # - name: Install Frontend Dependencies
-      #   working-directory: $FRONTEND_DIRECTORY
-      #   run: npm ci
+      - name: Install Frontend Dependencies
+        working-directory: $FRONTEND_DIRECTORY
+        run: npm ci
 
-      # - name: Run Vite
-      #   working-directory: $FRONTEND_DIRECTORY
-      #   run: npx vite --host 0.0.0.0 --port 3000
+      - name: Run Vite
+        working-directory: $FRONTEND_DIRECTORY
+        run: npx vite --host 0.0.0.0 --port 3000
 
-      # - name: Test
-      #   working-directory: $FRONTEND_DIRECTORY
-      #   run: npm run test:e2e:headless
+      - name: Test
+        working-directory: $FRONTEND_DIRECTORY
+        run: npm run test:e2e:headless
 
-      # - name: Enviar email em caso de falha
-      #   if: ${{ failure() }}
-      #   uses: dawidd6/action-send-mail@v3
-      #   with:
-      #     server_address: smtp.office365.com
-      #     server_port: 587
-      #     username: mckatoo@outlook.com
-      #     password: ${{ secrets.SMTP_PASSWORD }}
-      #     subject: Github Actions job result
-      #     to: mckatoo@gmail.com
-      #     from: iKatoo Repository
-      #     html_body: Os testes E2E do repositório <a href="https://${{github.repository}}/tree/${{github.ref_name}}">${{github.repository}}</a> falharam. Por favor, verifique e corrija o código.
+      - name: Enviar email em caso de falha
+        if: ${{ failure() }}
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.office365.com
+          server_port: 587
+          username: mckatoo@outlook.com
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: Github Actions job result
+          to: mckatoo@gmail.com
+          from: iKatoo Repository
+          html_body: Os testes E2E do repositório <a href="https://${{github.repository}}/tree/${{github.ref_name}}">${{github.repository}}</a> falharam. Por favor, verifique e corrija o código.
