@@ -76,7 +76,7 @@ jobs:
 
       - name: Start Backend
         working-directory: $BACKEND_DIRECTORY
-        run: npm run start:prod
+        run: node dist/src/main
 
       # - name: Checkout Frontend Repository
       #   uses: actions/checkout@v4
