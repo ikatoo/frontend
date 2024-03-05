@@ -68,7 +68,7 @@ jobs:
 
       - name: Install Backend Dependencies
         working-directory: $BACKEND_DIRECTORY
-        run: npm ci
+        run: npm install
 
       - name: Build Backend
         working-directory: $BACKEND_DIRECTORY
