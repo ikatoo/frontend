@@ -71,6 +71,7 @@ jobs:
         run: npm ci
 
       - name: Build and Start Backend
+        working-directory: $BACKEND_DIRECTORY
         run: npx nest build && npx nest start
 
       - name: Checkout Frontend Repository
