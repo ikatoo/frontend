@@ -72,11 +72,11 @@ jobs:
 
       - name: Build Backend
         working-directory: $BACKEND_DIRECTORY
-        run: npx nest build
+        run: npm run build
 
       - name: Start Backend
         working-directory: $BACKEND_DIRECTORY
-        run: ls -la dist/src
+        run: npm run start
 
       # - name: Checkout Frontend Repository
       #   uses: actions/checkout@v3
