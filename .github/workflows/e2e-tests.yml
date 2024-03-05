@@ -1,0 +1,105 @@
+name: Tests
+
+on: [push, workflow_dispatch]
+
+jobs:
+  e2e_tests:
+    runs-on: ubuntu-latest
+
+    env:
+      VITE_API_URL: http://localhost:8000
+      VITE_PORT: 3000
+
+      BACKEND_PORT: 8000
+
+      POSTGRES_HOSTNAME: localhost
+      POSTGRES_PASSWORD: pass
+      POSTGRES_USER: user
+      POSTGRES_DBNAME: dbname
+
+      ADMINER_PORT: 8080
+
+      PRIVATE_KEY: e4194215d4e0f163b67aae74
+      REFRESH_PRIVATE_KEY: 3525f72ce9a6d9a7e7293549
+
+      CLOUDINARY_APIKEY: ${{ secrets.CLOUDINARY_APIKEY }}
+      CLOUDINARY_APISECRET: ${{ secrets.CLOUDINARY_APISECRET }}
+      CLOUDINARY_CLOUDNAME: mckatoo
+      CLOUDINARY_FOLDER: ikatoo
+      CLOUDINARY_URL: cloudinary://${{ secrets.CLOUDINARY_APIKEY }}:${{ secrets.CLOUDINARY_APISECRET }}@mckatoo
+
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      SMTP_SECURE: true
+      SMTP_SERVER_ADDRESS: smtp.gmail.com
+      SMTP_SERVER_PORT: 465
+      SMTP_USERNAME: mckatoo@gmail.com
+
+      BACKEND_DIRECTORY: backend
+      FRONTEND_DIRECTORY: frontend
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: ${POSTGRES_DBNAME}
+          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+          POSTGRES_HOST_AUTH_METHOD: trust
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    container:
+      image: postgres:14
+
+    steps:
+      - name: Checkout Backend Repository
+        uses: actions/checkout@v3
+        with:
+          repository: ikatoo/backend
+          ref: dev
+          path: ${{BACKEND_DIRECTORY}}
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+
+      - name: Install Backend Dependencies
+        working-directory: ${{BACKEND_DIRECTORY}}
+        run: npm ci
+
+      - name: Build and Start Backend
+        run: npx nest build && npx nest start
+
+      - name: Checkout Frontend Repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{github.ref_name}}
+          path: ${{FRONTEND_DIRECTORY}}
+
+      - name: Install Frontend Dependencies
+        working-directory: ${{FRONTEND_DIRECTORY}}
+        run: npm ci
+
+      - name: Run Vite
+        working-directory: ${{FRONTEND_DIRECTORY}}
+        run: npx vite --host 0.0.0.0 --port 3000
+
+      - name: Test
+        working-directory: ${{FRONTEND_DIRECTORY}}
+        run: npm run test:e2e:headless
+
+      - name: Enviar email em caso de falha
+        if: ${{ failure() }}
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.office365.com
+          server_port: 587
+          username: mckatoo@outlook.com
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: Github Actions job result
+          to: mckatoo@gmail.com
+          from: iKatoo Repository
+          html_body: Os testes E2E do repositório <a href="https://${{github.repository}}/tree/${{github.ref_name}}">${{github.repository}}</a> falharam. Por favor, verifique e corrija o código.
