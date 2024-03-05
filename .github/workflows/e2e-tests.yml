@@ -70,13 +70,13 @@ jobs:
         working-directory: $BACKEND_DIRECTORY
         run: npm install
 
-      # - name: Build Backend
-      #   working-directory: $BACKEND_DIRECTORY
-      #   run: npm run build
+      - name: Build Backend
+        working-directory: $BACKEND_DIRECTORY
+        run: npm run build
 
       - name: Start Backend
         working-directory: $BACKEND_DIRECTORY
-        run: npm run start:dev
+        run: npm run start:prod
 
       # - name: Checkout Frontend Repository
       #   uses: actions/checkout@v4
