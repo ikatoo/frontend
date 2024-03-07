@@ -94,7 +94,7 @@ jobs:
         run: npm ci
 
       - name: Run Vite on Docker Compose
-        uses: isbang/compose-action@v1.5.1
+        uses: adambirds/docker-compose-action@v1.3.0
         with:
           compose-file: ./docker/vite/compose.yml
           services: dev
