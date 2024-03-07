@@ -94,7 +94,9 @@ jobs:
         run: npm ci
 
       - name: Run Vite on Docker Compose
-        run: npm run docker:vite:up
+        uses: isbang/compose-action@v1.5.1
+        with:
+          compose-file: ./docker/vite/compose.yml
 
       - name: Test
         run: npm run test:e2e:headless
