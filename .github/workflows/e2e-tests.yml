@@ -81,7 +81,8 @@ jobs:
       - name: Create Tables and Initial User
         env:
           PGPASSWORD: $POSTGRES_PASSWORD
-        run: psql -v ON_ERROR_STOP=1 --host postgres --username postgres --dbname postgres -a -f ./docker/backend/init.sql
+        run: ls
+        # run: psql -v ON_ERROR_STOP=1 --host postgres --username postgres --dbname postgres -a -f ./docker/backend/init.sql
 
       - name: Checkout Frontend Repository
         uses: actions/checkout@v4
