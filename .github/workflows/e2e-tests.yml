@@ -38,6 +38,8 @@ jobs:
     services:
       postgres:
         image: postgres
+        volumes:
+          - "/docker-entrypoint-initdb.d:docker/backend/docker-entrypoint-initdb.d"
         env:
           POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
           POSTGRES_DB: ${POSTGRES_DB}
@@ -71,35 +73,22 @@ jobs:
           SMTP_SERVER_PORT: ${SMTP_SERVER_PORT}
           SMTP_USERNAME: ${SMTP_USERNAME}
 
-    container:
-      image: postgres:14
-
     steps:
       - name: Checkout Frontend Repository
         uses: actions/checkout@v4
         with:
           ref: ${{github.ref_name}}
 
-      - name: Create Tables and Initial User
-        env:
-          PGPASSWORD: $POSTGRES_PASSWORD
-        run: psql -v ON_ERROR_STOP=1 --host postgres --username postgres --dbname postgres -a -f ./docker/backend/init.sql
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
 
-      - name: Install Dependencies
+      - name: Install Frontend Dependencies
         run: npm ci
 
-      - name: Run Vite on Docker Compose
-        uses: adambirds/docker-compose-action@v1.3.0
-        with:
-          compose-file: ./docker/vite/compose.yml
-          services: dev
-        env:
-          VITE_API_URL: $VITE_API_URL
+      - name: Run Vite
+        run: npm run docker:vite:up
 
       - name: Test
         run: npm run test:e2e:headless
