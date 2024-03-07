@@ -50,7 +50,10 @@ jobs:
           --health-timeout 5s
           --health-retries 5
       backend:
-        image: backend:dev
+        image: ghcr.io/ikatoo/backend:dev
+        credentials:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHP_TOKEN }}
         env:
           PORT: ${BACKEND_PORT}
           POSTGRES_HOSTNAME: ${POSTGRES_HOSTNAME}
