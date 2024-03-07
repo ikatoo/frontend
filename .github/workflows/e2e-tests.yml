@@ -35,9 +35,6 @@ jobs:
       SMTP_SERVER_PORT: 465
       SMTP_USERNAME: mckatoo@gmail.com
 
-      BACKEND_DIRECTORY: backend
-      FRONTEND_DIRECTORY: frontend
-
     services:
       postgres:
         image: postgres
@@ -78,28 +75,23 @@ jobs:
       image: postgres:14
 
     steps:
-      - name: Create Tables and Initial User
-        env:
-          PGPASSWORD: $POSTGRES_PASSWORD
-        run: ls
-        # run: psql -v ON_ERROR_STOP=1 --host postgres --username postgres --dbname postgres -a -f ./docker/backend/init.sql
-
       - name: Checkout Frontend Repository
         uses: actions/checkout@v4
         with:
           ref: ${{github.ref_name}}
-          path: $FRONTEND_DIRECTORY
+
+      - name: Create Tables and Initial User
+        env:
+          PGPASSWORD: $POSTGRES_PASSWORD
+        run: psql -v ON_ERROR_STOP=1 --host postgres --username postgres --dbname postgres -a -f ./docker/backend/init.sql
 
       - name: Install Frontend Dependencies
-        working-directory: $FRONTEND_DIRECTORY
         run: npm ci
 
       - name: Run Vite
-        working-directory: $FRONTEND_DIRECTORY
         run: npx vite --host 0.0.0.0 --port 3000
 
       - name: Test
-        working-directory: $FRONTEND_DIRECTORY
         run: npm run test:e2e:headless
 
       - name: Enviar email em caso de falha
