@@ -77,30 +77,6 @@ jobs:
       image: postgres:14
 
     steps:
-      - name: Checkout Backend Repository
-        uses: actions/checkout@v4
-        with:
-          repository: ikatoo/backend
-          ref: dev
-          path: $BACKEND_DIRECTORY
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
-
-      - name: Install Backend Dependencies
-        working-directory: $BACKEND_DIRECTORY
-        run: npm install
-
-      - name: Build Backend
-        working-directory: $BACKEND_DIRECTORY
-        run: npm run build
-
-      - name: Start Backend
-        working-directory: $BACKEND_DIRECTORY
-        run: node ./dist/src/main
-
       - name: Create Tables and Initial User
         env:
           PGPASSWORD: $POSTGRES_PASSWORD
