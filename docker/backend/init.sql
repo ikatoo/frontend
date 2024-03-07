@@ -109,7 +109,7 @@ ALTER TABLE ONLY "public"."skills_on_users_projects" ADD CONSTRAINT "skills_on_p
 
 ALTER TABLE ONLY "public"."skills_pages" ADD CONSTRAINT "skills_page_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 
-INSERT INTO "users" ("id", "name", "email", "hash_password", "enabled") VALUES
+INSERT INTO "public"."users" ("id", "name", "email", "hash_password", "enabled") VALUES
 (1,	'Teste',	'teste@teste.com',	'$2b$08$GApHk.mZutQKbipj5ZFhvOpYe7534xj3ELOFrF8VpT2rdedK33Sp6',	't');
 
 -- 2023-11-21 13:33:01.122348+00
