@@ -97,6 +97,9 @@ jobs:
         uses: isbang/compose-action@v1.5.1
         with:
           compose-file: ./docker/vite/compose.yml
+          services: dev
+        env:
+          VITE_API_URL: $VITE_API_URL
 
       - name: Test
         run: npm run test:e2e:headless
