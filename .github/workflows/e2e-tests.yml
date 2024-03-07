@@ -50,7 +50,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
       backend:
-        image: ghcr.io/ikatoo/backend:dev
+        image: backend:dev
         env:
           PORT: ${BACKEND_PORT}
           POSTGRES_HOSTNAME: ${POSTGRES_HOSTNAME}
