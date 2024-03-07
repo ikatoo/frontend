@@ -49,6 +49,26 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      backend:
+        image: ghcr.io/ikatoo/backend:dev
+        env:
+          PORT: ${BACKEND_PORT}
+          POSTGRES_HOSTNAME: ${POSTGRES_HOSTNAME}
+          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+          POSTGRES_USER: ${POSTGRES_USER}
+          POSTGRES_DBNAME: ${POSTGRES_DBNAME}
+          PRIVATE_KEY: ${PRIVATE_KEY}
+          REFRESH_PRIVATE_KEY: ${REFRESH_PRIVATE_KEY}
+          CLOUDINARY_APIKEY: ${CLOUDINARY_APIKEY}
+          CLOUDINARY_APISECRET: ${CLOUDINARY_APISECRET}
+          CLOUDINARY_CLOUDNAME: ${CLOUDINARY_CLOUDNAME}
+          CLOUDINARY_FOLDER: ${CLOUDINARY_FOLDER}
+          CLOUDINARY_URL: ${CLOUDINARY_URL}
+          SMTP_PASSWORD: ${SMTP_PASSWORD}
+          SMTP_SECURE: ${SMTP_SECURE}
+          SMTP_SERVER_ADDRESS: ${SMTP_SERVER_ADDRESS}
+          SMTP_SERVER_PORT: ${SMTP_SERVER_PORT}
+          SMTP_USERNAME: ${SMTP_USERNAME}
 
     container:
       image: postgres:14
@@ -76,7 +96,12 @@ jobs:
 
       - name: Start Backend
         working-directory: $BACKEND_DIRECTORY
-        run: node dist/src/main
+        run: node ./dist/src/main
+
+      - name: Create Tables and Initial User
+        env:
+          PGPASSWORD: $POSTGRES_PASSWORD
+        run: psql -v ON_ERROR_STOP=1 --host postgres --username $POSTGRES_USER --dbname $POSTGRES_DB -a -f ./docker/backend/init.sql
 
       - name: Checkout Frontend Repository
         uses: actions/checkout@v4
