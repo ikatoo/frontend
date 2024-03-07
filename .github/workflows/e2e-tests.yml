@@ -90,11 +90,11 @@ jobs:
         with:
           node-version: 20.x
 
-      - name: Install Frontend Dependencies
+      - name: Install Dependencies
         run: npm ci
 
-      - name: Run Vite
-        run: npx vite --host 0.0.0.0 --port 3000
+      - name: Run Vite on Docker Compose
+        run: npm run docker:vite:up
 
       - name: Test
         run: npm run test:e2e:headless
