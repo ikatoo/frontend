@@ -84,7 +84,7 @@ jobs:
 
       - name: Prepare DB
         run: |
-          docker run postgres ls -l \
+          docker run -v docker/backend/init.sql:/init.sql postgres ls -l \
           # docker run --rm -v docker/backend/init.sql:/init.sql \
           # --env POSTGRES_PASSWORD=postgres \
           # postgres \
