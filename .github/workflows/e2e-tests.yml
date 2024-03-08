@@ -38,6 +38,8 @@ jobs:
     services:
       postgres:
         image: postgres
+        ports:
+          - 5432:5432
         env:
           POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
           POSTGRES_DB: ${POSTGRES_DB}
@@ -84,11 +86,10 @@ jobs:
 
       - name: Prepare DB
         run: |
-          docker ps
-          # docker run -v ./docker/backend/init.sql:/init.sql \
-          # --env POSTGRES_PASSWORD=postgres \
-          # postgres \
-          # psql -v ON_ERROR_STOP=1 --host postgres --username postgres --dbname postgres -a -f ./init.sql
+          docker run -v ./docker/backend/init.sql:/init.sql \
+          --env POSTGRES_PASSWORD=postgres \
+          postgres \
+          psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -a -f ./init.sql
 
       # - name: Install Frontend Dependencies
       #   run: npm ci
