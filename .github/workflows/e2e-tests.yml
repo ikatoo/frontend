@@ -89,7 +89,7 @@ jobs:
           docker run -v ./docker/backend/init.sql:/init.sql \
           --env POSTGRES_PASSWORD=postgres \
           postgres \
-          psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -a -f ./init.sql
+          psql -v ON_ERROR_STOP=1 --host 127.0.0.1 --username postgres --dbname postgres -a -f ./init.sql
 
       # - name: Install Frontend Dependencies
       #   run: npm ci
