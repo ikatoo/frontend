@@ -83,7 +83,7 @@ jobs:
           node-version: 20.x
 
       - name: Prepare DB
-        run: docker run --rm -v docker/backend/init.sql:/init.sql --env POSTGRES_PASSWORD=postgres postgres ls -l /
+        run: docker run --rm -v docker/backend:/backend --env POSTGRES_PASSWORD=postgres postgres ls -l /backend
           # psql -v ON_ERROR_STOP=1 --host postgres --username postgres --dbname postgres -a -f ./init.sql
 
       - name: Install Frontend Dependencies
