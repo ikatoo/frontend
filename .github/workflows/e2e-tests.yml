@@ -39,7 +39,7 @@ jobs:
       postgres:
         image: postgres
         volumes:
-          - "docker/backend/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+          - "${{ github.workspace }}/docker/backend/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
         env:
           POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
           POSTGRES_DB: ${POSTGRES_DB}
