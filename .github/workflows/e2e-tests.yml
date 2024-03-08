@@ -96,7 +96,8 @@ jobs:
           password: ${{ secrets.GHP_TOKEN }}
 
       - name: Prepare Backend
-        run: docker run -d -p $BACKEND_PORT:$BACKEND_PORT ghcr.io/ikatoo/backend:dev
+        run: docker run -d -p $BACKEND_PORT:$BACKEND_PORT \
+          ghcr.io/ikatoo/backend:dev
         # run: docker run -d -e PORT=${BACKEND_PORT} \
         #   -e POSTGRES_HOSTNAME=${POSTGRES_HOSTNAME} \
         #   -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
