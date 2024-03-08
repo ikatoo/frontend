@@ -1,7 +1,5 @@
-#!/bin/bash
-set -e
+-- Adminer 4.8.1 PostgreSQL 14.10 dump
 
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
 CREATE SEQUENCE about_pages_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
 
 CREATE TABLE "public"."about_pages" (
@@ -114,4 +112,4 @@ ALTER TABLE ONLY "public"."skills_pages" ADD CONSTRAINT "skills_page_user_id_fke
 INSERT INTO "users" ("id", "name", "email", "hash_password", "enabled") VALUES
 (1,	'Teste',	'teste@teste.com',	'$2b$08$GApHk.mZutQKbipj5ZFhvOpYe7534xj3ELOFrF8VpT2rdedK33Sp6',	't');
 
-EOSQL
+-- 2023-11-21 13:33:01.122348+00

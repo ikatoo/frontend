@@ -38,8 +38,6 @@ jobs:
     services:
       postgres:
         image: postgres
-        volumes:
-          - "${{ github.workspace }}/docker/backend/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
         env:
           POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
           POSTGRES_DB: ${POSTGRES_DB}
@@ -83,6 +81,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
+
+      - name: Prepare DB
+        run: |
+          docker run --rm -v docker/backend/init.sql:/init.sql \
+          --env POSTGRES_PASSWORD=postgres \
+          postgres psql -v ON_ERROR_STOP=1 --host postgres --username postgres --dbname postgres -a -f ./init.sql
 
       - name: Install Frontend Dependencies
         run: npm ci
