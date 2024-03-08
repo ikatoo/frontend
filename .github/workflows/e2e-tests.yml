@@ -84,10 +84,11 @@ jobs:
 
       - name: Prepare DB
         run: |
-          docker run -v ./docker/backend/init.sql:/init.sql \
-          --env POSTGRES_PASSWORD=postgres \
-          postgres \
-          psql -v ON_ERROR_STOP=1 --host postgres --username postgres --dbname postgres -a -f ./init.sql
+          docker ps
+          # docker run -v ./docker/backend/init.sql:/init.sql \
+          # --env POSTGRES_PASSWORD=postgres \
+          # postgres \
+          # psql -v ON_ERROR_STOP=1 --host postgres --username postgres --dbname postgres -a -f ./init.sql
 
       # - name: Install Frontend Dependencies
       #   run: npm ci
