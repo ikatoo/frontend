@@ -35,43 +35,41 @@ jobs:
       SMTP_SERVER_PORT: 465
       SMTP_USERNAME: mckatoo@gmail.com
 
-    services:
-      postgres:
-        image: postgres
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-          POSTGRES_DB: ${POSTGRES_DB}
-          POSTGRES_HOST_AUTH_METHOD: trust
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-      backend:
-        image: ghcr.io/ikatoo/backend:dev
-        credentials:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHP_TOKEN }}
-        env:
-          PORT: ${BACKEND_PORT}
-          POSTGRES_HOSTNAME: ${POSTGRES_HOSTNAME}
-          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-          POSTGRES_USER: ${POSTGRES_USER}
-          POSTGRES_DBNAME: ${POSTGRES_DBNAME}
-          PRIVATE_KEY: ${PRIVATE_KEY}
-          REFRESH_PRIVATE_KEY: ${REFRESH_PRIVATE_KEY}
-          CLOUDINARY_APIKEY: ${CLOUDINARY_APIKEY}
-          CLOUDINARY_APISECRET: ${CLOUDINARY_APISECRET}
-          CLOUDINARY_CLOUDNAME: ${CLOUDINARY_CLOUDNAME}
-          CLOUDINARY_FOLDER: ${CLOUDINARY_FOLDER}
-          CLOUDINARY_URL: ${CLOUDINARY_URL}
-          SMTP_PASSWORD: ${SMTP_PASSWORD}
-          SMTP_SECURE: ${SMTP_SECURE}
-          SMTP_SERVER_ADDRESS: ${SMTP_SERVER_ADDRESS}
-          SMTP_SERVER_PORT: ${SMTP_SERVER_PORT}
-          SMTP_USERNAME: ${SMTP_USERNAME}
+    # services:
+    #   postgres:
+    #     image: postgres
+    #     env:
+    #       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    #       POSTGRES_DB: ${POSTGRES_DB}
+    #       POSTGRES_HOST_AUTH_METHOD: trust
+    #     options: >-
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
+    #   backend:
+    #     image: ghcr.io/ikatoo/backend:dev
+    #     credentials:
+    #       username: ${{ github.actor }}
+    #       password: ${{ secrets.GHP_TOKEN }}
+    #     env:
+    #       PORT: ${BACKEND_PORT}
+    #       POSTGRES_HOSTNAME: ${POSTGRES_HOSTNAME}
+    #       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    #       POSTGRES_USER: ${POSTGRES_USER}
+    #       POSTGRES_DBNAME: ${POSTGRES_DBNAME}
+    #       PRIVATE_KEY: ${PRIVATE_KEY}
+    #       REFRESH_PRIVATE_KEY: ${REFRESH_PRIVATE_KEY}
+    #       CLOUDINARY_APIKEY: ${CLOUDINARY_APIKEY}
+    #       CLOUDINARY_APISECRET: ${CLOUDINARY_APISECRET}
+    #       CLOUDINARY_CLOUDNAME: ${CLOUDINARY_CLOUDNAME}
+    #       CLOUDINARY_FOLDER: ${CLOUDINARY_FOLDER}
+    #       CLOUDINARY_URL: ${CLOUDINARY_URL}
+    #       SMTP_PASSWORD: ${SMTP_PASSWORD}
+    #       SMTP_SECURE: ${SMTP_SECURE}
+    #       SMTP_SERVER_ADDRESS: ${SMTP_SERVER_ADDRESS}
+    #       SMTP_SERVER_PORT: ${SMTP_SERVER_PORT}
+    #       SMTP_USERNAME: ${SMTP_USERNAME}
 
     steps:
       - name: Checkout Frontend Repository
@@ -86,10 +84,11 @@ jobs:
 
       - name: Prepare DB
         run: |
-          docker run -v ./docker/backend/init.sql:/init.sql \
-          --env POSTGRES_PASSWORD=postgres \
-          postgres \
-          psql -v ON_ERROR_STOP=1 --host 127.0.0.1 --username postgres --dbname postgres -a -f ./init.sql
+          echo $POSTGRES_PASSWORD
+      #     docker run -v ./docker/backend/init.sql:/init.sql \
+      #     --env POSTGRES_PASSWORD=postgres \
+      #     postgres \
+      #     psql -v ON_ERROR_STOP=1 --host postgres --username postgres --dbname postgres -a -f ./init.sql
 
       # - name: Install Frontend Dependencies
       #   run: npm ci
