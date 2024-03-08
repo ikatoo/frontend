@@ -84,11 +84,41 @@ jobs:
 
       - name: Prepare DB
         run: |
-          echo $POSTGRES_PASSWORD
-      #     docker run -v ./docker/backend/init.sql:/init.sql \
-      #     --env POSTGRES_PASSWORD=postgres \
-      #     postgres \
-      #     psql -v ON_ERROR_STOP=1 --host postgres --username postgres --dbname postgres -a -f ./init.sql
+          docker run -e POSTGRES_PASSWORD=postgres \
+          -v ./docker/backend/init.sql:/docker-entrypoint-initdb.d/init.sql \
+          -d -p 5432:5432 postgres
+
+      - name: Authenticate on Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHP_TOKEN }}
+
+      - name: Prepare Backend
+        run: docker run -d -e PORT=$BACKEND_PORT \
+          -e POSTGRES_HOSTNAME=$POSTGRES_HOSTNAME \
+          -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+          -e POSTGRES_USER=$POSTGRES_USER \
+          -e POSTGRES_DBNAME=$POSTGRES_DBNAME \
+          -e PRIVATE_KEY=$PRIVATE_KEY \
+          -e REFRESH_PRIVATE_KEY=$REFRESH_PRIVATE_KEY \
+          -e CLOUDINARY_APIKEY=$CLOUDINARY_APIKEY \
+          -e CLOUDINARY_APISECRET=$CLOUDINARY_APISECRET \
+          -e CLOUDINARY_CLOUDNAME=$CLOUDINARY_CLOUDNAME \
+          -e CLOUDINARY_FOLDER=$CLOUDINARY_FOLDER \
+          -e CLOUDINARY_URL=$CLOUDINARY_URL \
+          -e SMTP_PASSWORD=$SMTP_PASSWORD \
+          -e SMTP_SECURE=$SMTP_SECURE \
+          -e SMTP_SERVER_ADDRESS=$SMTP_SERVER_ADDRESS \
+          -e SMTP_SERVER_PORT=$SMTP_SERVER_PORT \
+          -e SMTP_USERNAME=$SMTP_USERNAME \
+          -p $BACKEND_PORT:$BACKEND_PORT \
+          ghcr.io/ikatoo/backend:dev
+
+      - name: List containers
+        run: docker ps -a
+
 
       # - name: Install Frontend Dependencies
       #   run: npm ci
