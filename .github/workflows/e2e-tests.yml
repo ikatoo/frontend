@@ -47,8 +47,7 @@ jobs:
           node-version: 20.x
 
       - name: Prepare DB
-        run: |
-          docker run -d --name db-test -p 5432:5432
+        run: docker run -d --name db-test -p 5432:5432
           -v ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
           -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD $POSTGRES_DBNAME
 
