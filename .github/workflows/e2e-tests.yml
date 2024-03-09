@@ -20,8 +20,8 @@ jobs:
 
       ADMINER_PORT: 8080
 
-      PRIVATE_KEY: e4194215d4e0f163b67aae74
-      REFRESH_PRIVATE_KEY: 3525f72ce9a6d9a7e7293549
+      PRIVATE_KEY: some_key
+      REFRESH_PRIVATE_KEY: some_private_key
 
       CLOUDINARY_APIKEY: ${{ secrets.CLOUDINARY_APIKEY }}
       CLOUDINARY_APISECRET: ${{ secrets.CLOUDINARY_APISECRET }}
@@ -48,9 +48,9 @@ jobs:
 
       - name: Prepare DB
         run: |
-          docker run -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
-          -v ./docker/backend/init.sql:/docker-entrypoint-initdb.d/init.sql \
-          -d -p 5432:5432 postgres
+          docker run -d --name db-test -p 5432:5432
+          -v ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+          -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD $POSTGRES_DBNAME
 
       - name: Authenticate on Container Registry
         uses: docker/login-action@v3
@@ -60,8 +60,10 @@ jobs:
           password: ${{ secrets.GHP_TOKEN }}
 
       - name: Prepare Backend
-        run: docker run -d -e PORT=$BACKEND_PORT
-          -e POSTGRES_HOSTNAME=$POSTGRES_HOSTNAME
+        run: docker run -d --name backend
+          --link db-test:db-test
+          -e PORT=$BACKEND_PORT
+          -e POSTGRES_HOSTNAME=localhost
           -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD
           -e POSTGRES_USER=$POSTGRES_USER
           -e POSTGRES_DBNAME=$POSTGRES_DBNAME
@@ -84,7 +86,14 @@ jobs:
         run: npm ci
 
       - name: Run Vite
-        run: npm run docker:vite:up
+        run: docker run --name frontend
+          -d --user=node
+          --workdir=/home/node/app
+          -v ./:/home/node/app
+          --expose=3000
+          -p 3000:3000
+          node:20-alpine
+          npx vite --host 0.0.0.0
 
       - name: Test
         run: npm run test:e2e:headless
