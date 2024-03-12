@@ -58,7 +58,7 @@ jobs:
           password: ${{ secrets.GHP_TOKEN }}
 
       - name: Prepare Backend
-        run: docker run -d --name backend
+        run: docker run -d -t --name backend
           --link db-test:db-test
           -e "PORT=${BACKEND_PORT}"
           -e "POSTGRES_HOSTNAME=db-test"
