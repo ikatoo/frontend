@@ -83,46 +83,43 @@ jobs:
           -p "${BACKEND_PORT}:${BACKEND_PORT}"
           ghcr.io/ikatoo/backend:dev
 
-      - name: List Containers
-        run: docker ps -a
+      - name: Create Test User
+        run: >-
+          curl -m 20 -X POST http://localhost:8000/user
+          -H "Content-Type: application/json"
+          -d '{"email": "teste@teste.com", "password": "teste", "name": "Teste"}'
 
-      # - name: Create Test User
-      #   run: >-
-      #     curl -X POST http://localhost:8000/user
-      #     -H "Content-Type: application/json"
-      #     -d '{"email": "teste@teste.com", "password": "teste", "name": "Teste"}'
+      - name: Enable Test User
+        run: docker exec -t -i db-test
+          psql -U postgres postgres -c 'update users set "enabled" = true'
 
-      # - name: Enable Test User
-      #   run: docker exec -t -i db-test
-      #     psql -U postgres postgres -c 'update users set "enabled" = true'
+      - name: Install Frontend Dependencies
+        run: npm ci
 
-      # - name: Install Frontend Dependencies
-      #   run: npm ci
+      - name: Run Vite
+        run: docker run --name frontend
+          -d --user=node
+          --workdir=/home/node/app
+          -v ./:/home/node/app
+          -e "VITE_API_URL=http://localhost:8000"
+          -e "VITE_PORT=3000"
+          --expose=3000
+          -p "3000:3000"
+          node:20-alpine
+          npx vite --host 0.0.0.0
 
-      # - name: Run Vite
-      #   run: docker run --name frontend
-      #     -d --user=node
-      #     --workdir=/home/node/app
-      #     -v ./:/home/node/app
-      #     -e "VITE_API_URL=http://localhost:8000"
-      #     -e "VITE_PORT=3000"
-      #     --expose=3000
-      #     -p "3000:3000"
-      #     node:20-alpine
-      #     npx vite --host 0.0.0.0
+      - name: Test
+        run: npm run test:e2e:headless
 
-      # - name: Test
-      #   run: npm run test:e2e:headless
-
-      # - name: Enviar email em caso de falha
-      #   if: ${{ failure() }}
-      #   uses: dawidd6/action-send-mail@v3
-      #   with:
-      #     server_address: smtp.office365.com
-      #     server_port: 587
-      #     username: mckatoo@outlook.com
-      #     password: ${{ secrets.SMTP_PASSWORD }}
-      #     subject: Github Actions job result
-      #     to: mckatoo@gmail.com
-      #     from: iKatoo Repository
-      #     html_body: Os testes E2E do repositório <a href="https://${{github.repository}}/tree/${{github.ref_name}}">${{github.repository}}</a> falharam. Por favor, verifique e corrija o código.
+      - name: Enviar email em caso de falha
+        if: ${{ failure() }}
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.office365.com
+          server_port: 587
+          username: mckatoo@outlook.com
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: Github Actions job result
+          to: mckatoo@gmail.com
+          from: iKatoo Repository
+          html_body: Os testes E2E do repositório <a href="https://${{github.repository}}/tree/${{github.ref_name}}">${{github.repository}}</a> falharam. Por favor, verifique e corrija o código.
