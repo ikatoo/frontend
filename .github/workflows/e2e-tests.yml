@@ -82,18 +82,11 @@ jobs:
           ghcr.io/ikatoo/backend:dev
 
       - name: Create Test User
-        uses: indiesdev/curl@v1.1
-        with:
-          url: http://localhost:8000/user
-          method: "POST"
-          headers: '{"Content-Type": "application/json"}'
-          body: '{"email": "teste@teste.com", "password": "teste", "name": "Teste"}'
-          timeout: 5000
-          retries: 3
-        # run: >-
-        #   curl -m 20 -X POST http://localhost:8000/user
-        #   -H "Content-Type: application/json"
-        #   -d '{"email": "teste@teste.com", "password": "teste", "name": "Teste"}'
+        run: >-
+          docker exec -t -i backend
+          curl -m 20 -X POST http://localhost:8000/user
+          -H "Content-Type: application/json"
+          -d '{"email": "teste@teste.com", "password": "teste", "name": "Teste"}'
 
       - name: Enable Test User
         run: docker exec -t -i db-test
