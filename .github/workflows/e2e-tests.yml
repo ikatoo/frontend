@@ -86,7 +86,7 @@ jobs:
           docker run -d -t -i
           --link backend:backend
           ubuntu
-          curl -m 20 -X POST http://localhost:8000/user
+          curl -m 20 -X POST http://backend:8000/user
           -H "Content-Type: application/json"
           -d '{"email": "teste@teste.com", "password": "teste", "name": "Teste"}'
 
