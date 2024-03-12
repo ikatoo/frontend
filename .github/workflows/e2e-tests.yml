@@ -81,12 +81,14 @@ jobs:
           -p "${BACKEND_PORT}:${BACKEND_PORT}"
           ghcr.io/ikatoo/backend:dev
 
-      - name: Create Test User
-        run: >-
-          curl -m 20 http://google.com
-          # curl -m 20 -X POST http://localhost:8000/user
-          # -H "Content-Type: application/json"
-          # -d '{"email": "teste@teste.com", "password": "teste", "name": "Teste"}'
+      - name: Inspect backend
+        run: docker inspect backend
+
+      # - name: Create Test User
+      #   run: >-
+      #     curl -m 20 -X POST http://localhost:8000/user
+      #     -H "Content-Type: application/json"
+      #     -d '{"email": "teste@teste.com", "password": "teste", "name": "Teste"}'
 
       # - name: Enable Test User
       #   run: docker exec -t -i db-test
