@@ -60,7 +60,6 @@ jobs:
       - name: Prepare Backend
         run: docker run -d -t --name backend
           --link db-test:db-test
-          --expose "8000"
           -e "PORT=${BACKEND_PORT}"
           -e "POSTGRES_HOSTNAME=db-test"
           -e "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
@@ -79,6 +78,7 @@ jobs:
           -e "SMTP_SERVER_PORT=${SMTP_SERVER_PORT}"
           -e "SMTP_USERNAME=${SMTP_USERNAME}"
           -e "DEVELOPMENT=true"
+          --expose="${BACKEND_PORT}"
           -p "${BACKEND_PORT}:${BACKEND_PORT}"
           ghcr.io/ikatoo/backend:dev
 
