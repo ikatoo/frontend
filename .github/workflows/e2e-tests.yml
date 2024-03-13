@@ -83,9 +83,10 @@ jobs:
 
       - name: Create Test User
         run: >-
-          curl -m 20 -X POST http://localhost:8000/user
-          -H "Content-Type: application/json"
-          -d '{"email": "teste@teste.com", "password": "teste", "name": "Teste"}'
+          curl http://localhost:8000
+          # curl -m 20 -X POST http://localhost:8000/user
+          # -H "Content-Type: application/json"
+          # -d '{"email": "teste@teste.com", "password": "teste", "name": "Teste"}'
 
       - name: Enable Test User
         run: docker exec -t -i db-test
