@@ -53,6 +53,10 @@ jobs:
       - name: Prepare DB
         run: |
           docker run -d -t -v ./init-db.sh:/init-db.sh postgres "./init-db.sh"
+          docker run -d -t -v ./init-db.sh:/init-db.sh postgres
+            psql --host="${POSTGRES_HOSTNAME}" --username="${POSTGRES_USER}" --dbname="${POSTGRES_DBNAME}" <<-EOSQL
+            select * from users;
+            EOSQL
 
       # - name: Prepare DB
       #   run: docker run -d --name db-test
