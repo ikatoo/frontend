@@ -62,12 +62,11 @@ jobs:
         run: docker run -d -t -i -v ./init-db.sh:/init-db.sh postgres "./init-db.sh"
 
       - name: List users
-        run: docker ps -a
-        # run: docker run -d -t -v ./init-db.sh:/init-db.sh postgres
-        #     psql --host="${POSTGRES_HOSTNAME}"
-        #     --username="${POSTGRES_USER}"
-        #     --dbname="${POSTGRES_DBNAME}"
-        #     -c "select 'hello world';"
+        run: docker exec -t -i -v ./init-db.sh:/init-db.sh postgres
+            psql --host="dbtest"
+            --username="${POSTGRES_USER}"
+            --dbname="${POSTGRES_DBNAME}"
+            -c "select 'hello world';"
 
       # - name: Prepare DB
       #   run: docker run -d --name db-test
