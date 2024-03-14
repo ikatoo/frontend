@@ -1,7 +1,3 @@
-#!/bin/bash
-set -e
-
-psql -v ON_ERROR_STOP=1 --host="${POSTGRES_HOSTNAME}" --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
 -- Adminer 4.8.1 PostgreSQL 14.10 dump
 
 CREATE SEQUENCE about_pages_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
@@ -114,4 +110,3 @@ ALTER TABLE ONLY "public"."skills_on_users_projects" ADD CONSTRAINT "skills_on_p
 ALTER TABLE ONLY "public"."skills_pages" ADD CONSTRAINT "skills_page_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 
 -- 2023-11-21 13:33:01.122348+00
-EOSQL
