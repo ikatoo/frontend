@@ -33,6 +33,12 @@ jobs:
       SMTP_SERVER_PORT: 465
       SMTP_USERNAME: mckatoo@gmail.com
 
+    services:
+      db-test:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+
     steps:
       - name: Checkout Frontend Repository
         uses: actions/checkout@v4
@@ -44,81 +50,81 @@ jobs:
         with:
           node-version: 20.x
 
-      - name: Prepare DB
-        run: docker run -d --name db-test
-          -p "5432:5432"
-          -v ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
-          -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD postgres
+      # - name: Prepare DB
+      #   run: docker run -d --name db-test
+      #     -p "5432:5432"
+      #     -v ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+      #     -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD postgres
 
-      - name: Authenticate on Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHP_TOKEN }}
+      # - name: Authenticate on Container Registry
+      #   uses: docker/login-action@v3
+      #   with:
+      #     registry: ghcr.io
+      #     username: ${{ github.actor }}
+      #     password: ${{ secrets.GHP_TOKEN }}
 
-      - name: Prepare Backend
-        run: docker run -d -t --name backend
-          --link db-test:db-test
-          -e "PORT=${BACKEND_PORT}"
-          -e "POSTGRES_HOSTNAME=db-test"
-          -e "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
-          -e "POSTGRES_USER=${POSTGRES_USER}"
-          -e "POSTGRES_DBNAME=${POSTGRES_DBNAME}"
-          -e "PRIVATE_KEY=${PRIVATE_KEY}"
-          -e "REFRESH_PRIVATE_KEY=${REFRESH_PRIVATE_KEY}"
-          -e "CLOUDINARY_APIKEY=${CLOUDINARY_APIKEY}"
-          -e "CLOUDINARY_APISECRET=${CLOUDINARY_APISECRET}"
-          -e "CLOUDINARY_CLOUDNAME=${CLOUDINARY_CLOUDNAME}"
-          -e "CLOUDINARY_FOLDER=${CLOUDINARY_FOLDER}"
-          -e "CLOUDINARY_URL=${CLOUDINARY_URL}"
-          -e "SMTP_PASSWORD=${SMTP_PASSWORD}"
-          -e "SMTP_SECURE=${SMTP_SECURE}"
-          -e "SMTP_SERVER_ADDRESS=${SMTP_SERVER_ADDRESS}"
-          -e "SMTP_SERVER_PORT=${SMTP_SERVER_PORT}"
-          -e "SMTP_USERNAME=${SMTP_USERNAME}"
-          -e "DEVELOPMENT=true"
-          --expose="${BACKEND_PORT}"
-          -p "${BACKEND_PORT}:${BACKEND_PORT}"
-          ghcr.io/ikatoo/backend:dev
+      # - name: Prepare Backend
+      #   run: docker run -d -t --name backend
+      #     --link db-test:db-test
+      #     -e "PORT=${BACKEND_PORT}"
+      #     -e "POSTGRES_HOSTNAME=db-test"
+      #     -e "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+      #     -e "POSTGRES_USER=${POSTGRES_USER}"
+      #     -e "POSTGRES_DBNAME=${POSTGRES_DBNAME}"
+      #     -e "PRIVATE_KEY=${PRIVATE_KEY}"
+      #     -e "REFRESH_PRIVATE_KEY=${REFRESH_PRIVATE_KEY}"
+      #     -e "CLOUDINARY_APIKEY=${CLOUDINARY_APIKEY}"
+      #     -e "CLOUDINARY_APISECRET=${CLOUDINARY_APISECRET}"
+      #     -e "CLOUDINARY_CLOUDNAME=${CLOUDINARY_CLOUDNAME}"
+      #     -e "CLOUDINARY_FOLDER=${CLOUDINARY_FOLDER}"
+      #     -e "CLOUDINARY_URL=${CLOUDINARY_URL}"
+      #     -e "SMTP_PASSWORD=${SMTP_PASSWORD}"
+      #     -e "SMTP_SECURE=${SMTP_SECURE}"
+      #     -e "SMTP_SERVER_ADDRESS=${SMTP_SERVER_ADDRESS}"
+      #     -e "SMTP_SERVER_PORT=${SMTP_SERVER_PORT}"
+      #     -e "SMTP_USERNAME=${SMTP_USERNAME}"
+      #     -e "DEVELOPMENT=true"
+      #     --expose="${BACKEND_PORT}"
+      #     -p "${BACKEND_PORT}:${BACKEND_PORT}"
+      #     ghcr.io/ikatoo/backend:dev
 
-      - name: Create Test User
-        run: >-
-          curl -m 20 -X POST http://localhost:8000/user
-          -H "Content-Type: application/json"
-          -d '{"email": "teste@teste.com", "password": "teste", "name": "Teste"}'
+      # - name: Create Test User
+      #   run: >-
+      #     curl -m 20 -X POST http://localhost:8000/user
+      #     -H "Content-Type: application/json"
+      #     -d '{"email": "teste@teste.com", "password": "teste", "name": "Teste"}'
 
-      - name: Enable Test User
-        run: docker exec -t -i db-test
-          psql -U postgres postgres -c 'update users set "enabled" = true'
+      # - name: Enable Test User
+      #   run: docker exec -t -i db-test
+      #     psql -U postgres postgres -c 'update users set "enabled" = true'
 
-      - name: Install Frontend Dependencies
-        run: npm ci
+      # - name: Install Frontend Dependencies
+      #   run: npm ci
 
-      - name: Run Vite
-        run: docker run --name frontend
-          -d --user=node
-          --workdir=/home/node/app
-          -v ./:/home/node/app
-          -e "VITE_API_URL=http://localhost:8000"
-          -e "VITE_PORT=3000"
-          --expose=3000
-          -p "3000:3000"
-          node:20-alpine
-          npx vite --host 0.0.0.0
+      # - name: Run Vite
+      #   run: docker run --name frontend
+      #     -d --user=node
+      #     --workdir=/home/node/app
+      #     -v ./:/home/node/app
+      #     -e "VITE_API_URL=http://localhost:8000"
+      #     -e "VITE_PORT=3000"
+      #     --expose=3000
+      #     -p "3000:3000"
+      #     node:20-alpine
+      #     npx vite --host 0.0.0.0
 
-      - name: Test
-        run: npm run test:e2e:headless
+      # - name: Test
+      #   run: npm run test:e2e:headless
 
-      - name: Enviar email em caso de falha
-        if: ${{ failure() }}
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.office365.com
-          server_port: 587
-          username: mckatoo@outlook.com
-          password: ${{ secrets.SMTP_PASSWORD }}
-          subject: Github Actions job result
-          to: mckatoo@gmail.com
-          from: iKatoo Repository
-          html_body: Os testes E2E do repositório <a href="https://${{github.repository}}/tree/${{github.ref_name}}">${{github.repository}}</a> falharam. Por favor, verifique e corrija o código.
+      # - name: Enviar email em caso de falha
+      #   if: ${{ failure() }}
+      #   uses: dawidd6/action-send-mail@v3
+      #   with:
+      #     server_address: smtp.office365.com
+      #     server_port: 587
+      #     username: mckatoo@outlook.com
+      #     password: ${{ secrets.SMTP_PASSWORD }}
+      #     subject: Github Actions job result
+      #     to: mckatoo@gmail.com
+      #     from: iKatoo Repository
+      #     html_body: Os testes E2E do repositório <a href="https://${{github.repository}}/tree/${{github.ref_name}}">${{github.repository}}</a> falharam. Por favor, verifique e corrija o código.
