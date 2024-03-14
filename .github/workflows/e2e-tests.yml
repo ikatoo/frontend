@@ -40,6 +40,7 @@ jobs:
           POSTGRES_PASSWORD: $POSTGRES_PASSWORD
         options: >-
           --name dbtest
+          --tty
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
