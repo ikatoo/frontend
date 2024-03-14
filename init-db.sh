@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-psql -v ON_ERROR_STOP=1 --host="${POSTGRES_HOSTNAME}" --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+psql -v ON_ERROR_STOP=1 --host="localhost" --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
 -- Adminer 4.8.1 PostgreSQL 14.10 dump
 
 CREATE SEQUENCE about_pages_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
