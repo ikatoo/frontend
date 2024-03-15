@@ -60,12 +60,13 @@ jobs:
           node-version: 20.x
 
       - name: Prepare DB
-        run: docker run -d -t -i -v ./init-db.sh:/init-db.sh postgres "./init-db.sh"
+        run: docker run --rm -d -t -i -v ./init-db.sh:/init-db.sh postgres "./init-db.sh"
 
       - name: List users
-        run: |
-          sudo apt install -y postgresql-client
-          PGPASSWORD=${POSTGRES_PASSWORD} psql --host=localhost --username="${POSTGRES_USER}" ${POSTGRES_DBNAME} -c "select 'hello world';"
+        run: docker run --rm -d -t -i postgres -c "select 'hello world';"
+        # run: |
+        #   sudo apt install -y postgresql-client
+        #   PGPASSWORD=${POSTGRES_PASSWORD} psql --host=localhost --username="${POSTGRES_USER}" ${POSTGRES_DBNAME} -c "select 'hello world';"
         # run: docker exec -t -i dbtest
         #     psql
         #     --username="${POSTGRES_USER}"
