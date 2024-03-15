@@ -90,10 +90,6 @@ jobs:
       - name: Prepare DB
         run: docker run --rm -d -t -i -v ./init-db.sh:/init-db.sh postgres "./init-db.sh"
 
-      - name: List users
-        run: echo 'testeeeeeeeeeeeeeeeeeeeeeeeee eeee'
-        # run: docker run --rm -d -t -i postgres "psql --username=${POSTGRES_USER} postgres -c \"select 'hello world'\";"
-
       # - name: Authenticate on Container Registry
       #   uses: docker/login-action@v3
       #   with:
@@ -125,11 +121,11 @@ jobs:
       # #     -p "${BACKEND_PORT}:${BACKEND_PORT}"
       # #     ghcr.io/ikatoo/backend:dev
 
-      # - name: Create Test User
-      #   run: >-
-      #     curl -m 20 -X POST http://localhost:8000/user
-      #     -H "Content-Type: application/json"
-      #     -d '{"email": "teste@teste.com", "password": "teste", "name": "Teste"}'
+      - name: Create Test User
+        run: >-
+          curl -m 20 -X POST http://localhost:8000/user
+          -H "Content-Type: application/json"
+          -d '{"email": "teste@teste.com", "password": "teste", "name": "Teste"}'
 
       # - name: Enable Test User
       #   run: docker exec -t -i db-test
