@@ -39,8 +39,8 @@ jobs:
         env:
           POSTGRES_PASSWORD: $POSTGRES_PASSWORD
         options: >-
+          -t
           --name dbtest
-          --tty true
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
