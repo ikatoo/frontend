@@ -53,7 +53,7 @@ jobs:
         image: ghcr.io/ikatoo/backend:dev
         credentials:
           username: ${{ github.actor }}
-          password: ${{ secrets.github_token }}
+          password: ${{ secrets.GHP_TOKEN }}
         ports:
           - "${BACKEND_PORT}:${BACKEND_PORT}"
         env:
