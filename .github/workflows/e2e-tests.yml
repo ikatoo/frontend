@@ -38,6 +38,7 @@ jobs:
         image: postgres
         env:
           POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+          POSTGRES_HOST_AUTH_METHOD: trust
         options: >-
           -t
           --name dbtest
@@ -63,7 +64,7 @@ jobs:
         run: docker run --rm -d -t -i -v ./init-db.sh:/init-db.sh postgres "./init-db.sh"
 
       - name: List users
-        run: docker run --rm -d -t -i postgres -c "select 'hello world';"
+        run: docker run --rm -d -t -i postgres "psql --username=${POSTGRES_USER} ${POSTGRES_DBNAME} -c select 'hello world';"
         # run: |
         #   sudo apt install -y postgresql-client
         #   PGPASSWORD=${POSTGRES_PASSWORD} psql --host=localhost --username="${POSTGRES_USER}" ${POSTGRES_DBNAME} -c "select 'hello world';"
