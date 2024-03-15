@@ -90,6 +90,9 @@ jobs:
       - name: Prepare DB
         run: docker run --rm -d -t -i -v ./init-db.sh:/init-db.sh postgres "./init-db.sh"
 
+      - name: List users
+        run: docker run --rm -d -t -i postgres -c "select 'hello world';"
+
       # - name: Authenticate on Container Registry
       #   uses: docker/login-action@v3
       #   with:
