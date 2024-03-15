@@ -55,7 +55,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHP_TOKEN }}
         ports:
-          - $BACKEND_PORT}:$BACKEND_PORT
+          - $BACKEND_PORT:$BACKEND_PORT
         env:
           PORT: $BACKEND_PORT
           POSTGRES_HOSTNAME: localhost
