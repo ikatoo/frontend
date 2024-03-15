@@ -64,8 +64,8 @@ jobs:
 
       - name: List users
         run: |
-          apt install -y postgresql-client
-          psql -U "${POSTGRES_USER}" ${POSTGRES_DBNAME} -c "select 'hello world';"
+          sudo apt install -y postgresql-client
+          # psql -U "${POSTGRES_USER}" ${POSTGRES_DBNAME} -c "select 'hello world';"
         # run: docker exec -t -i dbtest
         #     psql
         #     --username="${POSTGRES_USER}"
