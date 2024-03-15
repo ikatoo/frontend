@@ -52,7 +52,7 @@ jobs:
       backend:
         image: ghcr.io/ikatoo/backend:dev
         ports:
-          - $BACKEND_PORT:$BACKEND_PORT
+          - "${BACKEND_PORT}:${BACKEND_PORT}"
         env:
           PORT: $BACKEND_PORT
           POSTGRES_HOSTNAME: localhost
