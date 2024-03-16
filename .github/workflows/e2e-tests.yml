@@ -104,7 +104,7 @@ jobs:
 
       - name: Run Backend Dev
         working-directory: backend
-        run: docker run -d -t -i
+        run: docker run -d -t
           --name backend
           -v dist:/usr/share/nginx/html
           -p 8000:80
@@ -138,11 +138,10 @@ jobs:
 
       - name: Create Test User
         run: |
-          docker ps -a
-          # docker exec -t -i backend ls
-          # docker inspect backend
-          # docker logs backend
-          # curl -m20 http://localhost:8000
+          docker exec -t -i backend ls
+          docker inspect backend
+          docker logs backend
+          curl -m20 http://localhost:8000
           # echo "CLOUDINARY_APISECRET ======= ${{ secrets.CLOUDINARY_APISECRET }}"
           # echo "CLOUDINARY_APIKEY ========== ${{ secrets.CLOUDINARY_APIKEY }}"
         # run: curl http://localhost:8000
