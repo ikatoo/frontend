@@ -134,7 +134,8 @@ jobs:
 
       - name: Create Test User
         run: |
-          echo "CLOUDINARY_URL ========= $CLOUDINARY_URL"
+          echo "CLOUDINARY_APISECRET ======= ${{ secrets.CLOUDINARY_APISECRET }}"
+          echo "CLOUDINARY_APIKEY ========== ${{ secrets.CLOUDINARY_APIKEY }}"
           docker inspect backend
           docker logs backend
         # run: curl http://localhost:8000
