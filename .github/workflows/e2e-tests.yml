@@ -138,7 +138,8 @@ jobs:
 
       - name: Create Test User
         run: |
-          docker exec -t -i backend ls
+          docker ps -a
+          # docker exec -t -i backend ls
           # docker inspect backend
           # docker logs backend
           # curl -m20 http://localhost:8000
