@@ -58,7 +58,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: dev
-          repository: https://github.com/ikatoo/backend
+          repository: ikatoo/backend
           path: backend
 
       # - name: Setup Node
