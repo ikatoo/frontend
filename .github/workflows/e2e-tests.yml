@@ -115,8 +115,12 @@ jobs:
 
       - name: Create Test User
         run: |
+          docker run -d -t -i --name=teste ubuntu echo 'isso é um teste'
+          docker ps -a
+          docker logs backend
+          docker logs teste
           # docker logs backend
-          curl http://localhost:8000
+          # curl http://localhost:8000
           # echo "CLOUDINARY_APISECRET ======= ${{ secrets.CLOUDINARY_APISECRET }}"
           # echo "CLOUDINARY_APIKEY ========== ${{ secrets.CLOUDINARY_APIKEY }}"
         # run: curl http://localhost:8000
