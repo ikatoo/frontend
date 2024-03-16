@@ -88,6 +88,7 @@ jobs:
         working-directory: backend
         run: docker run --name backend
           -d --user=node
+          -t -i
           --workdir=/home/node/app
           -v ./:/home/node/app
           -e "PORT=8000"
@@ -131,6 +132,7 @@ jobs:
       # - name: Run Vite
       #   run: docker run --name frontend
       #     -d --user=node
+      #     -t -i
       #     --workdir=/home/node/app
       #     -v ./:/home/node/app
       #     -e "VITE_API_URL=http://localhost:8000"
