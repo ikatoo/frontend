@@ -134,6 +134,7 @@ jobs:
 
       - name: Create Test User
         run: |
+          echo "CLOUDINARY_URL ========= $CLOUDINARY_URL"
           docker inspect backend
           docker logs backend
         # run: curl http://localhost:8000
