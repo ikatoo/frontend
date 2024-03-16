@@ -52,6 +52,8 @@ jobs:
         credentials:
           username: ${{ github.actor }}
           password: ${{ secrets.GHP_TOKEN }}
+        options: >-
+          --name backend
         ports:
           - 8000:8000
         env:
@@ -131,7 +133,10 @@ jobs:
       #     ghcr.io/ikatoo/backend:dev
 
       - name: Create Test User
-        run: curl http://localhost:8000
+        run: |
+          docker inspect backend
+          docker logs backend
+        # run: curl http://localhost:8000
         # run: >-
         #   curl http://localhost:8000
 
