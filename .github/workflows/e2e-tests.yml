@@ -55,11 +55,11 @@ jobs:
           path: frontend
 
       - name: Checkout Backend Repository
-        run: echo "github.ref_name ======= ${{github.ref_name}}"
-        # uses: actions/checkout@v4
-        # with:
-        #   ref: https://github.com/ikatoo/backend
-        #   path: backend
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+          repository: https://github.com/ikatoo/backend
+          path: backend
 
       # - name: Setup Node
       #   uses: actions/setup-node@v4
