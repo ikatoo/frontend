@@ -80,38 +80,61 @@ jobs:
         working-directory: backend
         run: npm install
 
-      # - name: Build Backend
-      #   working-directory: backend
-      #   run: npm run build
+      - name: Build Backend
+        working-directory: backend
+        env:
+          PORT: 8000
+          POSTGRES_HOSTNAME: localhost
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DBNAME: postgres
+          PRIVATE_KEY: $PRIVATE_KEY
+          REFRESH_PRIVATE_KEY: $REFRESH_PRIVATE_KEY
+          CLOUDINARY_APIKEY: $CLOUDINARY_APIKEY
+          CLOUDINARY_APISECRET: $CLOUDINARY_APISECRET
+          CLOUDINARY_CLOUDNAME: $CLOUDINARY_CLOUDNAME
+          CLOUDINARY_FOLDER: $CLOUDINARY_FOLDER
+          CLOUDINARY_URL: $CLOUDINARY_URL
+          SMTP_PASSWORD: $SMTP_PASSWORD
+          SMTP_SECURE: $SMTP_SECURE
+          SMTP_SERVER_ADDRESS: $SMTP_SERVER_ADDRESS
+          SMTP_SERVER_PORT: $SMTP_SERVER_PORT
+          SMTP_USERNAME: $SMTP_USERNAME
+        run: npm run build
 
       - name: Run Backend Dev
         working-directory: backend
-        run: docker run --name backend
-          -d --user=node
-          -t -i
-          --workdir=/home/node/app
-          -v ./:/home/node/app
-          -e "PORT=8000"
-          -e "POSTGRES_HOSTNAME=localhost"
-          -e "POSTGRES_PASSWORD=postgres"
-          -e "POSTGRES_USER=postgres"
-          -e "POSTGRES_DBNAME=postgres"
-          -e "PRIVATE_KEY=$PRIVATE_KEY"
-          -e "REFRESH_PRIVATE_KEY=$REFRESH_PRIVATE_KEY"
-          -e "CLOUDINARY_APIKEY=$CLOUDINARY_APIKEY"
-          -e "CLOUDINARY_APISECRET=$CLOUDINARY_APISECRET"
-          -e "CLOUDINARY_CLOUDNAME=$CLOUDINARY_CLOUDNAME"
-          -e "CLOUDINARY_FOLDER=$CLOUDINARY_FOLDER"
-          -e "CLOUDINARY_URL=$CLOUDINARY_URL"
-          -e "SMTP_PASSWORD=$SMTP_PASSWORD"
-          -e "SMTP_SECURE=$SMTP_SECURE"
-          -e "SMTP_SERVER_ADDRESS=$SMTP_SERVER_ADDRESS"
-          -e "SMTP_SERVER_PORT=$SMTP_SERVER_PORT"
-          -e "SMTP_USERNAME=$SMTP_USERNAME"
-          --expose=$BACKEND_PORT
-          -p "$BACKEND_PORT:$BACKEND_PORT"
-          node:20-alpine
-          npm run start:dev
+        run: docker run -d --name backend
+          -e "VITE_API_URL=$VITE_API_URL"
+          -v dist:/usr/share/nginx/html
+          -p 8000:80
+          nginx:alpine
+        # run: docker run --name backend
+        #   -d --user=node
+        #   -t -i
+        #   --workdir=/home/node/app
+        #   -v ./:/home/node/app
+        #   -e "PORT=8000"
+        #   -e "POSTGRES_HOSTNAME=localhost"
+        #   -e "POSTGRES_PASSWORD=postgres"
+        #   -e "POSTGRES_USER=postgres"
+        #   -e "POSTGRES_DBNAME=postgres"
+        #   -e "PRIVATE_KEY=$PRIVATE_KEY"
+        #   -e "REFRESH_PRIVATE_KEY=$REFRESH_PRIVATE_KEY"
+        #   -e "CLOUDINARY_APIKEY=$CLOUDINARY_APIKEY"
+        #   -e "CLOUDINARY_APISECRET=$CLOUDINARY_APISECRET"
+        #   -e "CLOUDINARY_CLOUDNAME=$CLOUDINARY_CLOUDNAME"
+        #   -e "CLOUDINARY_FOLDER=$CLOUDINARY_FOLDER"
+        #   -e "CLOUDINARY_URL=$CLOUDINARY_URL"
+        #   -e "SMTP_PASSWORD=$SMTP_PASSWORD"
+        #   -e "SMTP_SECURE=$SMTP_SECURE"
+        #   -e "SMTP_SERVER_ADDRESS=$SMTP_SERVER_ADDRESS"
+        #   -e "SMTP_SERVER_PORT=$SMTP_SERVER_PORT"
+        #   -e "SMTP_USERNAME=$SMTP_USERNAME"
+        #   --expose=$BACKEND_PORT
+        #   -p "$BACKEND_PORT:$BACKEND_PORT"
+        #   node:20-alpine
+        #   npm run start:dev
 
       - name: Create Test User
         run: |
