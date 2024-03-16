@@ -74,7 +74,7 @@ jobs:
           SMTP_SERVER_ADDRESS: $SMTP_SERVER_ADDRESS
           SMTP_SERVER_PORT: $SMTP_SERVER_PORT
           SMTP_USERNAME: $SMTP_USERNAME
-          DEVELOPMENT: true
+          DEVELOPMENT: "true"
 
     steps:
       - name: Checkout Frontend Repository
@@ -133,10 +133,12 @@ jobs:
       #     ghcr.io/ikatoo/backend:dev
 
       - name: Create Test User
+        env:
+          DEVELOPMENT: true
         run: |
-          echo "CLOUDINARY_APISECRET ======= ${{ secrets.CLOUDINARY_APISECRET }}"
-          echo "CLOUDINARY_APIKEY ========== ${{ secrets.CLOUDINARY_APIKEY }}"
-          docker inspect backend
+          # echo "CLOUDINARY_APISECRET ======= ${{ secrets.CLOUDINARY_APISECRET }}"
+          # echo "CLOUDINARY_APIKEY ========== ${{ secrets.CLOUDINARY_APIKEY }}"
+          # docker inspect backend
           docker logs backend
         # run: curl http://localhost:8000
         # run: >-
