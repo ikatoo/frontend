@@ -80,6 +80,10 @@ jobs:
         working-directory: backend
         run: npm install
 
+      - name: Build Backend
+        working-directory: backend
+        run: npm run build
+
       - name: Run Backend Dev
         working-directory: backend
         run: docker run --name backend
@@ -110,11 +114,9 @@ jobs:
 
       - name: Create Test User
         run: |
-          # curl http://localhost:8000
+          curl http://localhost:8000
           # echo "CLOUDINARY_APISECRET ======= ${{ secrets.CLOUDINARY_APISECRET }}"
           # echo "CLOUDINARY_APIKEY ========== ${{ secrets.CLOUDINARY_APIKEY }}"
-          docker inspect backend
-          docker logs backend
         # run: curl http://localhost:8000
         # run: >-
           # curl http://localhost:8000
