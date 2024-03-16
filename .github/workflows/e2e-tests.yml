@@ -73,7 +73,7 @@ jobs:
         env:
           PGPASSWORD: postgres
         run: |
-          psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -f init-db.sql
+          psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -f ./backend/src/infra/db/pg-promise/init.sql
           psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -c "select * from users;"
 
       # - name: Create Test User
