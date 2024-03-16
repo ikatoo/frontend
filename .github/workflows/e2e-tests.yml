@@ -113,7 +113,7 @@ jobs:
           # curl http://localhost:8000
           # echo "CLOUDINARY_APISECRET ======= ${{ secrets.CLOUDINARY_APISECRET }}"
           # echo "CLOUDINARY_APIKEY ========== ${{ secrets.CLOUDINARY_APIKEY }}"
-          # docker inspect backend
+          docker inspect backend
           docker logs backend
         # run: curl http://localhost:8000
         # run: >-
