@@ -25,7 +25,8 @@ jobs:
       CLOUDINARY_APISECRET: ${{ secrets.CLOUDINARY_APISECRET }}
       CLOUDINARY_CLOUDNAME: mckatoo
       CLOUDINARY_FOLDER: ikatoo
-      CLOUDINARY_URL: cloudinary://${{ secrets.CLOUDINARY_APIKEY }}:${{ secrets.CLOUDINARY_APISECRET }}@mckatoo
+      CLOUDINARY_URL: cloudinary://CLOUDINARY_APIKEY:CLOUDINARY_APISECRET@mckatoo
+      # CLOUDINARY_URL: cloudinary://${{ secrets.CLOUDINARY_APIKEY }}:${{ secrets.CLOUDINARY_APISECRET }}@mckatoo
 
       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
       SMTP_SECURE: true
@@ -74,7 +75,7 @@ jobs:
           SMTP_SERVER_ADDRESS: $SMTP_SERVER_ADDRESS
           SMTP_SERVER_PORT: $SMTP_SERVER_PORT
           SMTP_USERNAME: $SMTP_USERNAME
-          DEVELOPMENT: "true"
+          DEVELOPMENT: true
 
     steps:
       - name: Checkout Frontend Repository
@@ -133,8 +134,6 @@ jobs:
       #     ghcr.io/ikatoo/backend:dev
 
       - name: Create Test User
-        env:
-          DEVELOPMENT: true
         run: |
           # echo "CLOUDINARY_APISECRET ======= ${{ secrets.CLOUDINARY_APISECRET }}"
           # echo "CLOUDINARY_APIKEY ========== ${{ secrets.CLOUDINARY_APIKEY }}"
