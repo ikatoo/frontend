@@ -77,7 +77,8 @@ jobs:
           psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -c "select * from users;"
 
       - name: Install Backend Dependencies
-        run: npm ci
+        working-directory: backend
+        run: npm install
 
       - name: Run Backend Dev
         working-directory: backend
