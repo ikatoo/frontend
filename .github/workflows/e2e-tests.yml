@@ -76,6 +76,39 @@ jobs:
           psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -f ./backend/src/infra/db/pg-promise/init.sql
           psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -c "select * from users;"
 
+      - name: Install Backend Dependencies
+        run: npm ci
+
+      - name: Run Backend Dev
+        working-directory: backend
+        run: docker run --name backend
+          -d --user=node
+          --workdir=/home/node/app
+          -v ./:/home/node/app
+          -e "PORT=8000"
+          -e "POSTGRES_HOSTNAME=localhost"
+          -e "POSTGRES_PASSWORD=postgres"
+          -e "POSTGRES_USER=postgres"
+          -e "POSTGRES_DBNAME=postgres"
+          -e "PRIVATE_KEY=$PRIVATE_KEY"
+          -e "REFRESH_PRIVATE_KEY=$REFRESH_PRIVATE_KEY"
+          -e "CLOUDINARY_APIKEY=$CLOUDINARY_APIKEY"
+          -e "CLOUDINARY_APISECRET=$CLOUDINARY_APISECRET"
+          -e "CLOUDINARY_CLOUDNAME=$CLOUDINARY_CLOUDNAME"
+          -e "CLOUDINARY_FOLDER=$CLOUDINARY_FOLDER"
+          -e "CLOUDINARY_URL=$CLOUDINARY_URL"
+          -e "SMTP_PASSWORD=$SMTP_PASSWORD"
+          -e "SMTP_SECURE=$SMTP_SECURE"
+          -e "SMTP_SERVER_ADDRESS=$SMTP_SERVER_ADDRESS"
+          -e "SMTP_SERVER_PORT=$SMTP_SERVER_PORT"
+          -e "SMTP_USERNAME=$SMTP_USERNAME"
+          --expose=$BACKEND_PORT
+          -p "$BACKEND_PORT:$BACKEND_PORT"
+          node:20-alpine
+          npm run start:dev
+
+
+
       # - name: Create Test User
       #   run: |
       #     # echo "CLOUDINARY_APISECRET ======= ${{ secrets.CLOUDINARY_APISECRET }}"
