@@ -108,17 +108,16 @@ jobs:
           node:20-alpine
           npm run start:dev
 
-
-
-      # - name: Create Test User
-      #   run: |
-      #     # echo "CLOUDINARY_APISECRET ======= ${{ secrets.CLOUDINARY_APISECRET }}"
-      #     # echo "CLOUDINARY_APIKEY ========== ${{ secrets.CLOUDINARY_APIKEY }}"
-      #     # docker inspect backend
-      #     docker logs backend
+      - name: Create Test User
+        run: |
+          curl http://localhost:8000
+          # echo "CLOUDINARY_APISECRET ======= ${{ secrets.CLOUDINARY_APISECRET }}"
+          # echo "CLOUDINARY_APIKEY ========== ${{ secrets.CLOUDINARY_APIKEY }}"
+          # docker inspect backend
+          docker logs backend
         # run: curl http://localhost:8000
         # run: >-
-        #   curl http://localhost:8000
+          # curl http://localhost:8000
 
       # - name: Enable Test User
       #   run: psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -c 'update users set "enabled" = true;'
