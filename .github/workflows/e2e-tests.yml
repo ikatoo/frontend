@@ -128,14 +128,13 @@ jobs:
       #     -p "${BACKEND_PORT}:${BACKEND_PORT}"
       #     ghcr.io/ikatoo/backend:dev
 
-      # - name: Create Test User
-      #   run: docker exec -t -i backend curl http://localhost:8000
+      - name: Create Test User
+        run: docker exec -t -i backend curl http://localhost:8000
         # run: >-
         #   curl http://localhost:8000
 
       # - name: Enable Test User
-      #   run: docker exec -t -i db-test
-      #     psql -U postgres postgres -c 'update users set "enabled" = true'
+      #   run: psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -c 'update users set "enabled" = true;'
 
       # - name: Install Frontend Dependencies
       #   run: npm ci
