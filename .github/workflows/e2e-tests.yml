@@ -61,20 +61,20 @@ jobs:
           repository: ikatoo/backend
           path: backend
 
-      # - name: Setup Node
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 20.x
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
 
-      # - name: Install System Dependencies
-      #   run: sudo apt-get install -y postgresql-client curl
+      - name: Install System Dependencies
+        run: sudo apt-get install -y postgresql-client curl
 
-      # - name: Create Tables
-      #   env:
-      #     PGPASSWORD: postgres
-      #   run: |
-      #     psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -f init-db.sql
-      #     psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -c "select * from users;"
+      - name: Create Tables
+        env:
+          PGPASSWORD: postgres
+        run: |
+          psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -f init-db.sql
+          psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -c "select * from users;"
 
       # - name: Create Test User
       #   run: |
