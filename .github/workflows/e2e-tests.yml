@@ -88,8 +88,8 @@ jobs:
           node:alpine
           npx -y http-server
 
-      # - name: Test backend
-      #   run: curl http://localhost:8000
+      - name: Test backend
+        run: curl http://localhost:8000
 
       # - name: Run Backend Dev
       #   working-directory: backend
