@@ -58,6 +58,8 @@ jobs:
           sudo apt-get install -y curl postgresql-client
 
       - name: Backend Compose UP
+        env:
+          PORT: $BACKEND_PORT
         working-directory: backend
         run: docker compose up postgres backend -d
 
