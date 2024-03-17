@@ -108,6 +108,7 @@ jobs:
         working-directory: backend
         run: docker run -d -it
           --name backend
+          -p 8000:8080
           node:bullseye
           npx -y http-server
 
@@ -115,7 +116,7 @@ jobs:
         run:
           # docker exec -t -i
           # backend
-          curl http://localhost:8080
+          curl http://localhost:8000
 
       # - name: Run Backend Dev
       #   working-directory: backend
