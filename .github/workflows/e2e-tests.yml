@@ -33,23 +33,6 @@ jobs:
       SMTP_SERVER_PORT: 465
       SMTP_USERNAME: mckatoo@gmail.com
 
-    # services:
-    #   db-test:
-    #     image: postgres
-    #     env:
-    #       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
-    #       POSTGRES_HOST_AUTH_METHOD: trust
-    #     options: >-
-    #       --health-cmd pg_isready
-    #       --health-interval 10s
-    #       --health-timeout 5s
-    #       --health-retries 5
-    #     ports:
-    #       - 5432:5432
-
-    container:
-      image: ubuntu
-
     steps:
       - name: Checkout Frontend Repository
         uses: actions/checkout@v4
@@ -72,25 +55,34 @@ jobs:
       - name: Install System Dependencies
         run: |
           apt-get update
-          apt-get install -y postgresql-client curl ca-certificates curl
-          install -m 0755 -d /etc/apt/keyrings
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-          chmod a+r /etc/apt/keyrings/docker.asc
-          echo \
-            "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-            $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-            tee /etc/apt/sources.list.d/docker.list > /dev/null
-          apt-get update
-          apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+          apt-get install curl postgresql-client
 
-      - name: Prepare DB
+      - name: Backend Compose UP
         working-directory: backend
-        run: docker run -d -t -i
-          --name db-test
-          -e "POSTGRES_PASSWORD=$POSTGRES_PASSWORD"
-          -v ./docker/backend/init.sql:/init.sql
-          -p 5432:5432
-          postgres
+        run: docker compose up postgres backend -d
+
+      # - name: Install System Dependencies
+      #   run: |
+      #     apt-get update
+      #     apt-get install -y postgresql-client curl ca-certificates
+      #     install -m 0755 -d /etc/apt/keyrings
+      #     curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+      #     chmod a+r /etc/apt/keyrings/docker.asc
+      #     echo \
+      #       "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      #       $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+      #       tee /etc/apt/sources.list.d/docker.list > /dev/null
+      #     apt-get update
+      #     apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+      # - name: Prepare DB
+      #   working-directory: backend
+      #   run: docker run -d -t -i
+      #     --name db-test
+      #     -e "POSTGRES_PASSWORD=$POSTGRES_PASSWORD"
+      #     -v ./docker/backend/init.sql:/init.sql
+      #     -p 5432:5432
+      #     postgres
 
 
       # - name: Create Tables
@@ -100,22 +92,22 @@ jobs:
       #     psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -f ./backend/src/infra/db/pg-promise/init.sql
       #     psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -c "select * from users;"
 
-      - name: Install Backend Dependencies
-        working-directory: backend
-        run: npm install
+      # - name: Install Backend Dependencies
+      #   working-directory: backend
+      #   run: npm install
 
-      - name: Run Backend Dev
-        working-directory: backend
-        run: docker run -d -it
-          --name backend
-          node:bullseye
-          npx -y http-server
+      # - name: Run Backend Dev
+      #   working-directory: backend
+      #   run: docker run -d -it
+      #     --name backend
+      #     node:bullseye
+      #     npx -y http-server
 
-      - name: Test backend
-        run:
-          docker exec -t -i
-          backend
-          curl http://localhost:8080
+      # - name: Test backend
+      #   run:
+      #     docker exec -t -i
+      #     backend
+      #     curl http://localhost:8080
 
       # - name: Run Backend Dev
       #   working-directory: backend
