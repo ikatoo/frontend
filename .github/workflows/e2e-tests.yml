@@ -54,8 +54,8 @@ jobs:
 
       - name: Install System Dependencies
         run: |
-          apt-get update
-          apt-get install curl postgresql-client
+          sudo apt-get update
+          sudo apt-get install -y curl postgresql-client
 
       - name: Backend Compose UP
         working-directory: backend
