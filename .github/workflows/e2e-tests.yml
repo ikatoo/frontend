@@ -47,6 +47,9 @@ jobs:
         ports:
           - 5432:5432
 
+    container:
+      image: ubuntu
+
     steps:
       - name: Checkout Frontend Repository
         uses: actions/checkout@v4
