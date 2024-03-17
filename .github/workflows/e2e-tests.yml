@@ -59,7 +59,23 @@ jobs:
 
       - name: Backend Compose UP
         env:
-          PORT: ${PORT}
+          PORT: 8000
+          POSTGRES_HOSTNAME: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DBNAME: postgres
+          PRIVATE_KEY: some_private_key
+          REFRESH_PRIVATE_KEY: some_refresh_key
+          CLOUDINARY_APIKEY: ${{ secrets.CLOUDINARY_APIKEY }}
+          CLOUDINARY_APISECRET: ${{ secrets.CLOUDINARY_APISECRET }}
+          CLOUDINARY_CLOUDNAME: mckatoo
+          CLOUDINARY_FOLDER: ikatoo
+          CLOUDINARY_URL: "cloudinary://${{ secrets.CLOUDINARY_APIKEY }}:${{ secrets.CLOUDINARY_APISECRET }}@mckatoo"
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_SECURE: true
+          SMTP_SERVER_ADDRESS: smtp.gmail.com
+          SMTP_SERVER_PORT: 465
+          SMTP_USERNAME: mckatoo@gmail.com
         working-directory: backend
         run: echo "PORT ==== ${PORT}"
         # run: docker compose up postgres backend -d
