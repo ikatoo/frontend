@@ -82,39 +82,43 @@ jobs:
 
       - name: Run Backend Dev
         working-directory: backend
-        env:
-          PORT: 8000
-          POSTGRES_HOSTNAME: localhost
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_DBNAME: postgres
-          PRIVATE_KEY: $PRIVATE_KEY
-          REFRESH_PRIVATE_KEY: $REFRESH_PRIVATE_KEY
-          CLOUDINARY_APIKEY: $CLOUDINARY_APIKEY
-          CLOUDINARY_APISECRET: $CLOUDINARY_APISECRET
-          CLOUDINARY_CLOUDNAME: $CLOUDINARY_CLOUDNAME
-          CLOUDINARY_FOLDER: $CLOUDINARY_FOLDER
-          CLOUDINARY_URL: $CLOUDINARY_URL
-          SMTP_PASSWORD: $SMTP_PASSWORD
-          SMTP_SECURE: $SMTP_SECURE
-          SMTP_SERVER_ADDRESS: $SMTP_SERVER_ADDRESS
-          SMTP_SERVER_PORT: $SMTP_SERVER_PORT
-          SMTP_USERNAME: $SMTP_USERNAME
-        run: docker run -d -t -i
-          --name backend
-          --user node
-          --workdir "/home/node/app"
-          -v ./:/home/node/app
-          -p 8000:8000
-          node:alpine
-          npm run start:dev
+        run: npx -y http-server -p 8000
 
-      - name: Create Test User
-        run: |
-          docker inspect backend
-          docker logs backend
-          docker ps
-          curl http://localhost:8000
+      # - name: Run Backend Dev
+      #   working-directory: backend
+      #   env:
+      #     PORT: 8000
+      #     POSTGRES_HOSTNAME: localhost
+      #     POSTGRES_PASSWORD: postgres
+      #     POSTGRES_USER: postgres
+      #     POSTGRES_DBNAME: postgres
+      #     PRIVATE_KEY: $PRIVATE_KEY
+      #     REFRESH_PRIVATE_KEY: $REFRESH_PRIVATE_KEY
+      #     CLOUDINARY_APIKEY: $CLOUDINARY_APIKEY
+      #     CLOUDINARY_APISECRET: $CLOUDINARY_APISECRET
+      #     CLOUDINARY_CLOUDNAME: $CLOUDINARY_CLOUDNAME
+      #     CLOUDINARY_FOLDER: $CLOUDINARY_FOLDER
+      #     CLOUDINARY_URL: $CLOUDINARY_URL
+      #     SMTP_PASSWORD: $SMTP_PASSWORD
+      #     SMTP_SECURE: $SMTP_SECURE
+      #     SMTP_SERVER_ADDRESS: $SMTP_SERVER_ADDRESS
+      #     SMTP_SERVER_PORT: $SMTP_SERVER_PORT
+      #     SMTP_USERNAME: $SMTP_USERNAME
+      #   run: docker run -d -t -i
+      #     --name backend
+      #     --user node
+      #     --workdir "/home/node/app"
+      #     -v ./:/home/node/app
+      #     -p 8000:8000
+      #     node:alpine
+      #     npm run start:dev
+
+      # - name: Create Test User
+      #   run: |
+      #     docker inspect backend
+      #     docker logs backend
+      #     docker ps
+      #     curl http://localhost:8000
           # docker exec -t -i backend ls
           # docker inspect backend
           # docker logs backend
