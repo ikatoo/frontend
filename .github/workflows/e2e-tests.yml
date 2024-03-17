@@ -59,7 +59,7 @@ jobs:
 
       - name: Backend Compose UP
         env:
-          PORT: $PORT
+          PORT: ${PORT}
         working-directory: backend
         run: echo "PORT ==== ${PORT}"
         # run: docker compose up postgres backend -d
