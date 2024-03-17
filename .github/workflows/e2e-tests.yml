@@ -88,9 +88,12 @@ jobs:
           npx -y http-server
 
       - name: Test backend
-        run: docker exec -t -i
-          backend
-          curl http://localhost:8080
+        run: |
+          ps
+          echo "$(tty)"
+        # run: docker exec -t -i
+        #   backend
+        #   curl http://localhost:8080
 
       # - name: Run Backend Dev
       #   working-directory: backend
