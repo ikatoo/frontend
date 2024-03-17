@@ -33,19 +33,19 @@ jobs:
       SMTP_SERVER_PORT: 465
       SMTP_USERNAME: mckatoo@gmail.com
 
-    services:
-      db-test:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
-          POSTGRES_HOST_AUTH_METHOD: trust
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
+    # services:
+    #   db-test:
+    #     image: postgres
+    #     env:
+    #       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    #       POSTGRES_HOST_AUTH_METHOD: trust
+    #     options: >-
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
+    #     ports:
+    #       - 5432:5432
 
     container:
       image: ubuntu
@@ -74,12 +74,22 @@ jobs:
           apt-get update
           apt-get install -y postgresql-client curl
 
-      - name: Create Tables
-        env:
-          PGPASSWORD: postgres
-        run: |
-          psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -f ./backend/src/infra/db/pg-promise/init.sql
-          psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -c "select * from users;"
+      - name: Prepare DB
+        working-directory: backend
+        run: docker run -d -t -i
+          --name db-test
+          -e "POSTGRES_PASSWORD=$POSTGRES_PASSWORD"
+          -v ./docker/backend/init.sql:/init.sql
+          -p 5432:5432
+          postgres
+
+
+      # - name: Create Tables
+      #   env:
+      #     PGPASSWORD: postgres
+      #   run: |
+      #     psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -f ./backend/src/infra/db/pg-promise/init.sql
+      #     psql -v ON_ERROR_STOP=1 --host localhost --username postgres --dbname postgres -c "select * from users;"
 
       - name: Install Backend Dependencies
         working-directory: backend
