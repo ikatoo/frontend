@@ -86,7 +86,8 @@ jobs:
           # http://localhost:8000 \
           # -H "Content-Type: application/json" \
           # -d '{"name": "Teste", "email": "teste@teste.com", "password": "teste"}'
-          curl http://localhost:8000/users -o users-request.txt
+          echo "------ Users Request ------" >> users-request.txt
+          # curl http://localhost:8000/users -o users-request.txt
           cat users-request.txt
 
       # - name: Enable Test User
