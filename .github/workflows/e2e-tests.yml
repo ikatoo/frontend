@@ -86,7 +86,8 @@ jobs:
           npm run start:dev
 
       - name: Create User
-        run: curl -m30 http://localhost:8000
+        run: docker exec -t -i backend ls
+        # run: curl -m30 http://localhost:8000
 
       # - name: Create User
       #   working-directory: backend
