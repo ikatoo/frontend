@@ -82,20 +82,14 @@ jobs:
       - name: Install System Dependencies
         run: sudo apt-get install -y curl postgresql-client
 
-      - name: Check Api Version
-        run: curl http://localhost:8000
-
-  e2e_test:
-    runs-on: ubuntu-latest
-    needs: prepare_environment
-
-    steps:
       - name: Create User
         run: >-
+          docker compose ps
           curl -X POST \
+          http://localhost:8000 \
           -H "Content-Type: application/json" \
-          -d '{"name": "Teste", "email": "teste@teste.com", "password": "teste"}' \
-          http://localhost:8000
+          -d '{"name": "Teste", "email": "teste@teste.com", "password": "teste"}'
+          curl http://localhost:8000/users
 
       # - name: Install System Dependencies
       #   run: |
