@@ -52,6 +52,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y curl postgresql-client
 
+      - name: Install Backend Dependencies
+        working-directory: backend
+        run: npm install
+
       - name: Backend Up
         working-directory: backend
         run: docker run
@@ -79,7 +83,7 @@ jobs:
           -e "SMTP_SERVER_PORT=465"
           -e "SMTP_USERNAME=mckatoo@gmail.com"
           node:bullseye
-          npm install && npm run start:dev
+          npm run start:dev
 
       - name: Create User
         run: curl -m30 http://localhost:8000
