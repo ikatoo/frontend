@@ -82,12 +82,11 @@ jobs:
       - name: Create User
         working-directory: backend
         run: >-
-          docker compose ps
-          # curl -X POST \
-          # http://localhost:8000 \
-          # -H "Content-Type: application/json" \
-          # -d '{"name": "Teste", "email": "teste@teste.com", "password": "teste"}'
-          # curl http://localhost:8000/users
+          curl -X POST \
+          http://localhost:8000 \
+          -H "Content-Type: application/json" \
+          -d '{"name": "Teste", "email": "teste@teste.com", "password": "teste"}'
+          curl http://localhost:8000/users
 
       # - name: Install System Dependencies
       #   run: |
