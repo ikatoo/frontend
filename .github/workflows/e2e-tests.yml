@@ -3,7 +3,7 @@ name: E2E Tests
 on: [push, workflow_dispatch]
 
 jobs:
-  e2e_tests:
+  prepare_environment:
     runs-on: ubuntu-latest
 
     env:
@@ -78,6 +78,24 @@ jobs:
           SMTP_USERNAME: mckatoo@gmail.com
         working-directory: backend
         run: docker compose up postgres backend -d
+
+      - name: Install System Dependencies
+        run: sudo apt-get install -y curl postgresql-client
+
+      - name: Check Api Version
+        run: curl http://localhost:8000
+
+  e2e_test:
+    runs-on: ubuntu-latest
+    needs: prepare_environment
+
+    steps:
+      - name: Create User
+        run: >-
+          curl -X POST \
+          -H "Content-Type: application/json" \
+          -d '{"name": "Teste", "email": "teste@teste.com", "password": "teste"}' \
+          http://localhost:8000
 
       # - name: Install System Dependencies
       #   run: |
