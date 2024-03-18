@@ -59,7 +59,7 @@ jobs:
       - name: Backend Up
         working-directory: backend
         run: docker run
-          -d -t -i
+          -d -t -i --rm
           --name backend
           --user node
           --workdir /home/node/app
@@ -82,11 +82,11 @@ jobs:
           -e "SMTP_SERVER_ADDRESS=smtp.gmail.com"
           -e "SMTP_SERVER_PORT=465"
           -e "SMTP_USERNAME=mckatoo@gmail.com"
-          node:bullseye
+          node:alpine
           npm run start:dev
 
       - name: Create User
-        run: docker exec -t -i backend ls
+        run: docker run --rm --link "backend:backend" ubuntu-latest curl -m30 http://backend:8000
         # run: curl -m30 http://localhost:8000
 
       # - name: Create User
