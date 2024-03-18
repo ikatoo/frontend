@@ -81,7 +81,7 @@ jobs:
 
       - name: Create User
         working-directory: backend
-        run: curl http://localhost:8000
+        run: curl http://localhost:8000/users
         # run: >-
         #   curl -X POST
         #   http://localhost:8000
