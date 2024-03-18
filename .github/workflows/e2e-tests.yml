@@ -52,6 +52,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y curl postgresql-client
 
+      - name: Install Backend Dependencies
+        working-directory: backend
+        run: npm install
+
       - name: Backend Up
         env:
           PORT: 8000
