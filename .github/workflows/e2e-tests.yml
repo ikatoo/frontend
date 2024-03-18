@@ -9,8 +9,6 @@ jobs:
     env:
       VITE_API_URL: http://localhost:8000
       VITE_PORT: 3000
-      PORT: 8000
-      ADMINER_PORT: 8080
       BACKEND_PORT: 8000
       POSTGRES_HOSTNAME: postgres
       POSTGRES_PORT: 5432
@@ -31,18 +29,18 @@ jobs:
       SMTP_USERNAME: mckatoo@gmail.com
 
     steps:
-      - name: Checkout Frontend Repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{github.ref_name}}
-          path: frontend
-
       - name: Checkout Backend Repository
         uses: actions/checkout@v4
         with:
           ref: dev
           repository: ikatoo/backend
           path: backend
+
+      - name: Checkout Frontend Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{github.ref_name}}
+          path: frontend
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -54,7 +52,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y curl postgresql-client
 
-      - name: Backend Compose UP
+      - name: Backend Up
         env:
           PORT: 8000
           POSTGRES_HOSTNAME: postgres
@@ -74,18 +72,18 @@ jobs:
           SMTP_SERVER_PORT: 465
           SMTP_USERNAME: mckatoo@gmail.com
         working-directory: backend
-        run: docker compose up -d postgres backend
+        run: npm run start:dev
 
       - name: Install System Dependencies
         run: sudo apt-get install -y curl postgresql-client
 
-      - name: Create User
-        working-directory: backend
-        run: psql -v ON_ERROR_STOP=1
-          --host localhost
-          --username postgres
-          --dbname postgres
-          -c 'select * from users;'
+      # - name: Create User
+      #   working-directory: backend
+      #   run: psql -v ON_ERROR_STOP=1
+      #     --host localhost
+      #     --username postgres
+      #     --dbname postgres
+      #     -c 'select * from users;'
           # curl https://httpbin.org/get
           # CODE=`curl -m30 --write-out '%{http_code}' --silent --output /dev/null http://localhost:8000`
           # if [ $CODE!="200" ]
