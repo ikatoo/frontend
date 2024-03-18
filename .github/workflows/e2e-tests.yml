@@ -81,8 +81,11 @@ jobs:
 
       - name: Create User
         working-directory: backend
-        run: |
-          docker exec -t -i postgres psql -U postgres 'select * from users;'
+        run: psql -v ON_ERROR_STOP=1
+          --host localhost
+          --username postgres
+          --dbname postgres
+          -c 'select * from users;'
           # curl https://httpbin.org/get
           # CODE=`curl -m30 --write-out '%{http_code}' --silent --output /dev/null http://localhost:8000`
           # if [ $CODE!="200" ]
@@ -96,12 +99,12 @@ jobs:
         #   -H "Content-Type: application/json"
         #   -d '{"name": "Teste", "email": "teste@teste.com", "password": "teste"}'
 
-      - name: Enable Test User
-        run: psql -v ON_ERROR_STOP=1
-          --host localhost
-          --username postgres
-          --dbname postgres
-          -c 'select * from users;'
+      # - name: Enable Test User
+      #   run: psql -v ON_ERROR_STOP=1
+      #     --host localhost
+      #     --username postgres
+      #     --dbname postgres
+      #     -c 'select * from users;'
         # run: psql -v ON_ERROR_STOP=1
         #   --host localhost
         #   --username postgres
