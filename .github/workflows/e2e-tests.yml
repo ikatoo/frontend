@@ -56,27 +56,37 @@ jobs:
         working-directory: backend
         run: npm install
 
-      - name: Backend Up
-        env:
-          PORT: 8000
-          POSTGRES_HOSTNAME: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_DBNAME: postgres
-          PRIVATE_KEY: some_private_key
-          REFRESH_PRIVATE_KEY: some_refresh_key
-          CLOUDINARY_APIKEY: ${{ secrets.CLOUDINARY_APIKEY }}
-          CLOUDINARY_APISECRET: ${{ secrets.CLOUDINARY_APISECRET }}
-          CLOUDINARY_CLOUDNAME: mckatoo
-          CLOUDINARY_FOLDER: ikatoo
-          CLOUDINARY_URL: "cloudinary://${{ secrets.CLOUDINARY_APIKEY }}:${{ secrets.CLOUDINARY_APISECRET }}@mckatoo"
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          SMTP_SECURE: true
-          SMTP_SERVER_ADDRESS: smtp.gmail.com
-          SMTP_SERVER_PORT: 465
-          SMTP_USERNAME: mckatoo@gmail.com
+      - name: Build Backend
         working-directory: backend
-        run: npm run start:dev
+        run: npm run build
+
+      - name: Backend Up
+        working-directory: backend
+        run: docker run
+          --name backend
+          --user node
+          --workdir /home/node/app
+          -v ./:/home/node/app
+          -p 8000:8000
+          -e "PORT=8000"
+          -e "POSTGRES_HOSTNAME=postgres"
+          -e "POSTGRES_PASSWORD=postgres"
+          -e "POSTGRES_USER=postgres"
+          -e "POSTGRES_DBNAME=postgres"
+          -e "PRIVATE_KEY=some_private_key"
+          -e "REFRESH_PRIVATE_KEY=some_refresh_key"
+          -e "CLOUDINARY_APIKEY=${{ secrets.CLOUDINARY_APIKEY }}"
+          -e "CLOUDINARY_APISECRET=${{ secrets.CLOUDINARY_APISECRET }}"
+          -e "CLOUDINARY_CLOUDNAME=mckatoo"
+          -e "CLOUDINARY_FOLDER=ikatoo"
+          -e "CLOUDINARY_URL="cloudinary://${{ secrets.CLOUDINARY_APIKEY }}:${{ secrets.CLOUDINARY_APISECRET }}@mckatoo""
+          -e "SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}"
+          -e "SMTP_SECURE=true"
+          -e "SMTP_SERVER_ADDRESS=smtp.gmail.com"
+          -e "SMTP_SERVER_PORT=465"
+          -e "SMTP_USERNAME=mckatoo@gmail.com"
+          node:ubuntu
+          npm run start:dev
 
       - name: Install System Dependencies
         run: sudo apt-get install -y curl postgresql-client
