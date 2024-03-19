@@ -87,7 +87,7 @@ jobs:
         #   npm run start:dev
 
       - name: Create User
-        run: docker exec backend ls
+        run: docker exec backend curl http://localhost:8000
         # run: docker run --rm
         #   --link "backend:backend"
         #   ubuntu
