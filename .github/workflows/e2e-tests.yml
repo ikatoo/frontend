@@ -58,7 +58,7 @@ jobs:
 
       - name: Backend Up
         working-directory: backend
-        run: docker run --rm -d -ti --name backend -p 8000:8000 node:alpine npx -y http-server -p 8000
+        run: docker run --rm -d -ti --name backend -p 8000:8000 node:bullseye npx -y http-server -p 8000
         # run: docker run
         #   -d -t -i --rm
         #   --name backend
@@ -87,11 +87,12 @@ jobs:
         #   npm run start:dev
 
       - name: Create User
+        run: docker exec backend ls
         # run: docker run --rm
         #   --link "backend:backend"
         #   ubuntu
         #   curl -m30 http://backend:8000
-        run: curl -m30 http://localhost:8000
+        # run: curl -m30 http://localhost:8000
 
       # - name: Create User
       #   working-directory: backend
