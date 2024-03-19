@@ -88,7 +88,7 @@ jobs:
       - name: Create User
         run: docker run --rm
           --link "backend:backend"
-          ubuntu-latest
+          ubuntu
           curl -m30 http://backend:8000
         # run: curl -m30 http://localhost:8000
 
