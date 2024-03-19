@@ -58,10 +58,8 @@ jobs:
 
       - name: Backend Up
         working-directory: backend
-        run: docker run --rm -d -ti --name backend -p 8000:8000 node:bullseye npx -y http-server -p 8000
+        run: docker run --rm -ti --name backend -p 8000:8000 node:bullseye npx -y http-server -p 8000
 
-      - name: Docker logs
-        run: docker logs backend
         # run: docker run
         #   -d -t -i --rm
         #   --name backend
