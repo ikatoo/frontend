@@ -7,154 +7,68 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      VITE_API_URL: http://localhost:8000
+      VITE_API_URL: https://backend-dev-i46f.onrender.com
       VITE_PORT: 3000
-      BACKEND_PORT: 8000
-      POSTGRES_HOSTNAME: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DBNAME: postgres
-      PRIVATE_KEY: some_key
-      REFRESH_PRIVATE_KEY: some_private_key
-      CLOUDINARY_APIKEY: ${{ secrets.CLOUDINARY_APIKEY }}
-      CLOUDINARY_APISECRET: ${{ secrets.CLOUDINARY_APISECRET }}
-      CLOUDINARY_CLOUDNAME: mckatoo
-      CLOUDINARY_FOLDER: ikatoo
-      CLOUDINARY_URL: "cloudinary://${{ secrets.CLOUDINARY_APIKEY }}:${{ secrets.CLOUDINARY_APISECRET }}@mckatoo"
-      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-      SMTP_SECURE: true
-      SMTP_SERVER_ADDRESS: smtp.gmail.com
-      SMTP_SERVER_PORT: 465
-      SMTP_USERNAME: mckatoo@gmail.com
 
     steps:
-      - name: Checkout Backend Repository
-        uses: actions/checkout@v4
-        with:
-          ref: dev
-          repository: ikatoo/backend
-          path: backend
-
       - name: Checkout Frontend Repository
         uses: actions/checkout@v4
         with:
           ref: ${{github.ref_name}}
-          path: frontend
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
 
-      - name: Install System Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y curl postgresql-client
+      - name: Create User
+        env:
+          VITE_API_URL: ${VITE_API_URL}
+        run: >-
+          curl -X POST \
+          ${VITE_API_URL} \
+          -H "Content-Type: application/json" \
+          -d '{"name": "Teste", "email": "teste@teste.com", "password": "teste"}'
 
-      - name: Install Backend Dependencies
-        working-directory: backend
-        run: npm install
+      - name: Enable Test User
+        run: PGPASSWORD=${{secrets.PGPASSWORD}}
+          psql -v ON_ERROR_STOP=1
+          --set "ENVSCHEMA=dev"
+          --host ${{secrets.PGHOST}}
+          --username ${{secrets.PGUSER}}
+          --dbname ${{secrets.PGDBNAME}}
+          -c 'update users set "enabled" = true;'
 
-      - name: Backend Up
-        working-directory: backend
-        run: docker run --rm --name backend -p 8000:8000 node:bullseye npx -y http-server -p 8000
+      - name: Install Frontend Dependencies
+        run: npm ci
 
-        # run: docker run
-        #   -d -t -i --rm
-        #   --name backend
-        #   --user node
-        #   --workdir /home/node/app
-        #   -v ./:/home/node/app
-        #   -p 8000:8000
-        #   -e "PORT=8000"
-        #   -e "POSTGRES_HOSTNAME=postgres"
-        #   -e "POSTGRES_PASSWORD=postgres"
-        #   -e "POSTGRES_USER=postgres"
-        #   -e "POSTGRES_DBNAME=postgres"
-        #   -e "PRIVATE_KEY=some_private_key"
-        #   -e "REFRESH_PRIVATE_KEY=some_refresh_key"
-        #   -e "CLOUDINARY_APIKEY=${{ secrets.CLOUDINARY_APIKEY }}"
-        #   -e "CLOUDINARY_APISECRET=${{ secrets.CLOUDINARY_APISECRET }}"
-        #   -e "CLOUDINARY_CLOUDNAME=mckatoo"
-        #   -e "CLOUDINARY_FOLDER=ikatoo"
-        #   -e "CLOUDINARY_URL="cloudinary://${{ secrets.CLOUDINARY_APIKEY }}:${{ secrets.CLOUDINARY_APISECRET }}@mckatoo""
-        #   -e "SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}"
-        #   -e "SMTP_SECURE=true"
-        #   -e "SMTP_SERVER_ADDRESS=smtp.gmail.com"
-        #   -e "SMTP_SERVER_PORT=465"
-        #   -e "SMTP_USERNAME=mckatoo@gmail.com"
-        #   node:alpine
-        #   npm run start:dev
+      - name: Run Vite
+        env:
+          VITE_API_URL: ${VITE_API_URL}
+        run: docker run --name frontend
+          -d --user=node
+          -t -i
+          --workdir=/home/node/app
+          -v ./:/home/node/app
+          -e "VITE_API_URL=$VITE_API_URL"
+          -e "VITE_PORT=3000"
+          --expose=3000
+          -p "3000:3000"
+          node:20-alpine
+          npx vite --host 0.0.0.0
 
-      # - name: Create User
-      #   run: docker exec backend curl http://localhost:8000
-        # run: docker run --rm
-        #   --link "backend:backend"
-        #   ubuntu
-        #   curl -m30 http://backend:8000
-        # run: curl -m30 http://localhost:8000
+      - name: Test
+        run: npm run test:e2e:headless
 
-      # - name: Create User
-      #   working-directory: backend
-      #   run: psql -v ON_ERROR_STOP=1
-      #     --host localhost
-      #     --username postgres
-      #     --dbname postgres
-      #     -c 'select * from users;'
-          # curl https://httpbin.org/get
-          # CODE=`curl -m30 --write-out '%{http_code}' --silent --output /dev/null http://localhost:8000`
-          # if [ $CODE!="200" ]
-          # then
-          #     echo "FAILURE"
-          # else
-          #     echo "SUCCESS"
-          # fi
-        #   curl -X POST
-        #   http://localhost:8000
-        #   -H "Content-Type: application/json"
-        #   -d '{"name": "Teste", "email": "teste@teste.com", "password": "teste"}'
-
-      # - name: Enable Test User
-      #   run: psql -v ON_ERROR_STOP=1
-      #     --host localhost
-      #     --username postgres
-      #     --dbname postgres
-      #     -c 'select * from users;'
-        # run: psql -v ON_ERROR_STOP=1
-        #   --host localhost
-        #   --username postgres
-        #   --dbname postgres
-        #   -c 'update users set "enabled" = true;'
-
-      # - name: Install Frontend Dependencies
-      #   run: npm ci
-
-      # - name: Run Vite
-      #   run: docker run --name frontend
-      #     -d --user=node
-      #     -t -i
-      #     --workdir=/home/node/app
-      #     -v ./:/home/node/app
-      #     -e "VITE_API_URL=http://localhost:8000"
-      #     -e "VITE_PORT=3000"
-      #     --expose=3000
-      #     -p "3000:3000"
-      #     node:20-alpine
-      #     npx vite --host 0.0.0.0
-
-      # - name: Test
-      #   run: npm run test:e2e:headless
-
-      # - name: Enviar email em caso de falha
-      #   if: ${{ failure() }}
-      #   uses: dawidd6/action-send-mail@v3
-      #   with:
-      #     server_address: smtp.office365.com
-      #     server_port: 587
-      #     username: mckatoo@outlook.com
-      #     password: ${{ secrets.SMTP_PASSWORD }}
-      #     subject: Github Actions job result
-      #     to: mckatoo@gmail.com
-      #     from: iKatoo Repository
-      #     html_body: Os testes E2E do repositório <a href="https://${{github.repository}}/tree/${{github.ref_name}}">${{github.repository}}</a> falharam. Por favor, verifique e corrija o código.
+      - name: Enviar email em caso de falha
+        if: ${{ failure() }}
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.office365.com
+          server_port: 587
+          username: mckatoo@outlook.com
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: Github Actions job result
+          to: mckatoo@gmail.com
+          from: iKatoo Repository
+          html_body: Os testes E2E do repositório <a href="https://${{github.repository}}/tree/${{github.ref_name}}">${{github.repository}}</a> falharam. Por favor, verifique e corrija o código.
