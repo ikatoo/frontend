@@ -24,7 +24,7 @@ jobs:
       - name: Create User
         run: >-
           curl -X POST
-          https://backend-dev-i46f.onrender.com
+          ${VITE_API_URL}/user
           -H "Content-Type: application/json"
           -d '{"name": "Teste", "email": "teste@teste.com", "password": "teste"}'
 
