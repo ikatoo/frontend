@@ -68,7 +68,8 @@ describe('ADMIN - Skills page', () => {
     await authorize()
 
     const accessToken = await getAccessToken()
-    const { data } = await api.get('/skills-page/user-id/1')
+    const { data: users } = await axios.get(API_URL + '/users')
+    const { data } = await api.get(`/skills-page/user-id/${users[0].id}`)
     if (!data?.title) {
       api.defaults.headers.Authorization = `Bearer ${accessToken}`
       await api.post('/skills-page', {
@@ -100,7 +101,8 @@ describe('ADMIN - Skills page', () => {
     await authorize()
 
     const accessToken = await getAccessToken()
-    const { data } = await api.get('skills-page/user-id/1')
+    const { data: users } = await axios.get(API_URL + '/users')
+    const { data } = await api.get(`skills-page/user-id/${users[0].id}`)
     if (!data?.title) {
       api.defaults.headers.Authorization = `Bearer ${accessToken}`
       await api.post('/skills-page', {
@@ -111,7 +113,9 @@ describe('ADMIN - Skills page', () => {
     await browser.refresh()
 
     await $('#title').setValue(newData.title)
-    await $('#update').click()
+    const updateButton = await $('#update')
+    await updateButton.waitForClickable()
+    await updateButton.click()
 
     const alertElement = $('[role="alert"]')
 

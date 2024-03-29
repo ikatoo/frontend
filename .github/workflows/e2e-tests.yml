@@ -23,50 +23,54 @@ jobs:
 
       - name: Create User
         run: >-
+          curl ${VITE_API_URL}/users &&
           curl -X POST
           ${VITE_API_URL}/user
           -H "Content-Type: application/json"
           -d '{"name": "Teste", "email": "teste@teste.com", "password": "teste"}'
 
-      # - name: Enable Test User
-      #   run: PGPASSWORD=${{secrets.PGPASSWORD}}
-      #     psql -v ON_ERROR_STOP=1
-      #     --set "ENVSCHEMA=dev"
-      #     --host ${{secrets.PGHOST}}
-      #     --username ${{secrets.PGUSER}}
-      #     --dbname ${{secrets.PGDBNAME}}
-      #     -c 'update users set "enabled" = true;'
+      - name: Install postgresql-client
+        run: sudo apt update && sudo apt install -y postgresql-client
 
-      # - name: Install Frontend Dependencies
-      #   run: npm ci
+      - name: Enable Test User
+        run:
+          PGPASSWORD=${{secrets.PGPASSWORD}} psql
+          -h ${{secrets.PGHOST}}
+          -U ${{secrets.PGUSER}}
+          ${{secrets.PGDBNAME}}
+          -c 'update dev.users set "enabled" = true;';
 
-      # - name: Run Vite
-      #   env:
-      #     VITE_API_URL: ${VITE_API_URL}
-      #   run: docker run --name frontend
-      #     -d --user=node
-      #     -t -i
-      #     --workdir=/home/node/app
-      #     -v ./:/home/node/app
-      #     -e "VITE_API_URL=$VITE_API_URL"
-      #     -e "VITE_PORT=3000"
-      #     --expose=3000
-      #     -p "3000:3000"
-      #     node:20-alpine
-      #     npx vite --host 0.0.0.0
+      - name: Install Frontend Dependencies
+        run: npm ci
 
-      # - name: Test
-      #   run: npm run test:e2e:headless
+      - name: Run Vite
+        env:
+          VITE_API_URL: ${VITE_API_URL}
+        run: docker run --rm
+          --name frontend
+          -d --user=node
+          -t -i
+          --workdir=/home/node/app
+          -v ./:/home/node/app
+          -e "VITE_API_URL=$VITE_API_URL"
+          -e "VITE_PORT=3000"
+          --expose=3000
+          -p "3000:3000"
+          node:20-alpine
+          npx vite --host 0.0.0.0
 
-      # - name: Enviar email em caso de falha
-      #   if: ${{ failure() }}
-      #   uses: dawidd6/action-send-mail@v3
-      #   with:
-      #     server_address: smtp.office365.com
-      #     server_port: 587
-      #     username: mckatoo@outlook.com
-      #     password: ${{ secrets.SMTP_PASSWORD }}
-      #     subject: Github Actions job result
-      #     to: mckatoo@gmail.com
-      #     from: iKatoo Repository
-      #     html_body: Os testes E2E do repositório <a href="https://${{github.repository}}/tree/${{github.ref_name}}">${{github.repository}}</a> falharam. Por favor, verifique e corrija o código.
+      - name: Test
+        run: npm run test:e2e:headless
+
+      - name: Enviar email em caso de falha
+        if: ${{ failure() }}
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.office365.com
+          server_port: 587
+          username: mckatoo@outlook.com
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: Github Actions job result
+          to: mckatoo@gmail.com
+          from: iKatoo Repository
+          html_body: Os testes E2E do repositório <a href="https://${{github.repository}}/tree/${{github.ref_name}}">${{github.repository}}</a> falharam. Por favor, verifique e corrija o código.

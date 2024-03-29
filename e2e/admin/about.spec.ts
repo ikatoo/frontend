@@ -118,13 +118,16 @@ describe('ADMIN - About page', () => {
       'return window.localStorage.accessToken'
     )
     api.defaults.headers.Authorization = `Bearer ${accessToken}`
-    const { data } = await axios.get(API_URL + '/about-page/user-id/1')
+    const { data: users } = await axios.get(API_URL + '/users')
+    const { data } = await axios.get(API_URL + `/about-page/user-id/${users[0].id}`)
     if (!data?.title) {
       await axios.post(API_URL + '/about-page', mock)
     }
+
     await browser.refresh()
 
-    await (await $('#description')).setValue('new description')
+    const descriptionField = await $('#description')
+    await (descriptionField).setValue('new description')
     await $('#update').click()
 
     const alert = $('[role="alert"]')
