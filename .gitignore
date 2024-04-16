@@ -25,6 +25,7 @@ dist-ssr
 .vercel
 
 .env
+.secrets
 /test-results/
 
 /storybook-static
