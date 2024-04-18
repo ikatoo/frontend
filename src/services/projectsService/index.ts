@@ -55,15 +55,6 @@ export default {
 
     return { data: json, status }
   },
-  getByUserId: async (userId = 1) => {
-    const { data, status } = await api.get<CreateProject[]>(
-      `projects/user-id/${userId}`
-    )
-    const json: CreateProject[] =
-      typeof data === 'string' && data !== '' ? JSON.parse(data) : data
-
-    return { data: json, status }
-  },
   getByID: async (id: number) => {
     const { data, status } = await api.get<CreateProject>(`project/id/${id}`)
     const json: CreateProject =

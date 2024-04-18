@@ -16,11 +16,9 @@ export default {
 
     return { data: json, status }
   },
-  get: async (userId = 1) => {
+  get: async () => {
     try {
-      const { data, status } = await api.get<SkillsPageProps>(
-        `skills-page/user-id/${userId}`
-      )
+      const { data, status } = await api.get<SkillsPageProps>('skills-page')
       const json: SkillsPageProps =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
