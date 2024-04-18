@@ -7,10 +7,7 @@ export const API_URL =
     : env.VITE_API_URL
 
 const api = axios.create({
-  baseURL: API_URL,
-  headers: {
-    ContentType: 'application/json'
-  }
+  baseURL: API_URL
 })
 
 export default api
