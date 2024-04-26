@@ -11,8 +11,5 @@ export default {
     p-4
     md:mt-0
     md:gap-4
-  `,
-  CardWrapper: tw.div`
-    h-full
   `
 }

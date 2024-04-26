@@ -2,7 +2,7 @@ import tw from 'tailwind-styled-components'
 
 export default {
   Wrapper: tw.div`
-    w-80
+    md:h-80
     grid
     bg-white
     shadow-md
@@ -11,14 +11,15 @@ export default {
     rounded-lg
     dark:bg-gray-800
     dark:border-gray-700
-    `,
+   `,
   Image: tw.img`
+    md:h-44
     rounded-t-lg
     aspect-video
-    object-none
+    object-contain
   `,
   InfoWrapper: tw.div`
-    w-full
+    md:44
     text-slate-800
     dark:text-slate-100
     p-2
