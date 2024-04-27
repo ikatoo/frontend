@@ -14,7 +14,7 @@ export const Projects = () => {
     setPageSubtitle('Projects Page')
 
     const getInitialData = async () => {
-      const initialData = (await projectsService.getByUserId(user?.id))?.data
+      const initialData = (await projectsService.getAll())?.data
       !!initialData && setProjects(initialData)
     }
 
