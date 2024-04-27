@@ -21,11 +21,9 @@ export default {
 
     return { data: json, status }
   },
-  get: async (userId = 1) => {
+  get: async () => {
     try {
-      const { data, status } = await api.get<ContactPageProps>(
-        `contact-page/user-id/${userId}`
-      )
+      const { data, status } = await api.get<ContactPageProps>('contact-page')
       const json: ContactPageProps =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 
