@@ -19,6 +19,7 @@ export default {
     object-contain
   `,
   InfoWrapper: tw.div`
+    w-full
     md:44
     text-slate-800
     dark:text-slate-100
@@ -32,7 +33,7 @@ export default {
     flex
   `,
   Title: tw.h1`
-    text-xl
+    text-sm
     font-bold
   `,
   Subtitle: tw.h2`
