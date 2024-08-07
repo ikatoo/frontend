@@ -1,7 +1,7 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
-import { CheckboxProps } from '.'
-import theme from '../../styles/theme'
+import theme from 'src/styles/theme'
+import CommonLabel from 'src/styles/common/label'
 
 const Wrapper = styled.div`
   display: flex;
@@ -55,13 +55,9 @@ const Input = styled.input`
   }
 `
 
-const Label = styled.label<Pick<CheckboxProps, 'labelColor'>>`
-  ${({ labelColor }) => css`
-    cursor: pointer;
-    padding-left: ${theme.spacings.xxsmall};
-    ${!!labelColor && `color: ${theme.colors[labelColor]};`}
-    line-height: 1.8rem;
-  `}
+const Label = styled(CommonLabel)`
+  padding-left: ${theme.spacings.xxsmall};
+  line-height: 1.8rem;
 `
 
 export default {

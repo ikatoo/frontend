@@ -6,7 +6,7 @@ export type TextInputProps = {
   onInputChange?: (value: string) => void
   focus?: boolean
   label?: string
-  labelColor?: 'black' | 'white'
+  $labelColor?: 'black' | 'white'
   initialValue?: string
   icon?: React.ReactNode
   iconPosition?: 'left' | 'right'
@@ -20,7 +20,7 @@ const TextInput = ({
   focus,
   iconPosition = 'left',
   label,
-  labelColor = 'black',
+  $labelColor = 'black',
   name,
   initialValue = '',
   error,
@@ -49,7 +49,7 @@ const TextInput = ({
   return (
     <Styles.Wrapper disabled={disabled}>
       {!!label && (
-        <Styles.Label labelColor={labelColor} htmlFor={name}>
+        <Styles.Label $labelColor={$labelColor} htmlFor={name}>
           {label}
         </Styles.Label>
       )}

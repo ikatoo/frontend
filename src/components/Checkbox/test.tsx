@@ -26,7 +26,7 @@ describe('<Checkbox />', () => {
 
   it('should render with black label', () => {
     render(
-      <Checkbox label="checkbox label" labelFor="check" labelColor="black" />
+      <Checkbox label="checkbox label" labelFor="check" $labelColor="black" />
     )
 
     expect(screen.getByText(/checkbox label/i)).toHaveStyle({
@@ -60,12 +60,12 @@ describe('<Checkbox />', () => {
     expect(onCheck).toHaveBeenCalledWith(false)
   })
 
-  it('should be accessible with tab', () => {
+  it('should be accessible with tab', async () => {
     render(<Checkbox label="Checkbox" labelFor="Checkbox" />)
 
     expect(document.body).toHaveFocus()
 
-    userEvent.tab()
+    await userEvent.tab()
 
     expect(screen.getByLabelText(/checkbox/i)).toHaveFocus()
   })

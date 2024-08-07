@@ -26,7 +26,7 @@ export const Default: Story = {
   render: () => (
     <DateInput
       label="Date"
-      labelColor="white"
+      $labelColor="white"
       placeholder="dd/mm/YYYY"
       name="Initial Date"
       iconPosition="right"

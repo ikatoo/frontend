@@ -2,10 +2,9 @@ import styled, { css } from 'styled-components'
 
 import { DateInputProps } from '.'
 import theme from '../../styles/theme'
+import CommonLabel from 'src/styles/common/label'
 
 type IconPositionProps = Pick<DateInputProps, 'iconPosition'>
-
-type LabelProps = Pick<DateInputProps, 'labelColor'>
 
 type WrapperProps = Pick<DateInputProps, 'disabled' | 'monthAndYearOnly'>
 
@@ -20,13 +19,8 @@ const Wrapper = styled.div<WrapperProps>`
   `}
 `
 
-const Label = styled.label<LabelProps>`
-  ${({ labelColor }) => css`
-    font-size: ${theme.font.sizes.large};
-    color: ${theme.colors[labelColor ?? 'black']};
-    text-wrap: nowrap;
-    cursor: pointer;
-  `}
+const Label = styled(CommonLabel)`
+  text-wrap: nowrap;
 `
 
 const InputWrapper = styled.div`

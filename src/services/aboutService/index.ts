@@ -32,9 +32,8 @@ export default {
   },
   get: async () => {
     try {
-      const { data, status } = await api.get<AboutPageServiceProps>(
-        'about-page'
-      )
+      const { data, status } =
+        await api.get<AboutPageServiceProps>('about-page')
       const json: AboutPageServiceProps =
         typeof data === 'string' && data !== '' ? JSON.parse(data) : data
 

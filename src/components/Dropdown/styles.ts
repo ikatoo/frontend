@@ -76,7 +76,9 @@ export const Wrapper = styled.div<WrapperProps>`
 
     ${Content},
     ${Overlay} {
-      transition: transform 0.2s ease-in, opacity ${theme.transition.default};
+      transition:
+        transform 0.2s ease-in,
+        opacity ${theme.transition.default};
 
       ${isOpen && wrapperModifiers.open()}
       ${!isOpen && wrapperModifiers.close()}

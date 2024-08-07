@@ -8,7 +8,7 @@ import Dropdown from '../Dropdown'
 export type DateInputProps = {
   onDateChange?: (value: string) => void
   label?: string
-  labelColor?: 'black' | 'white'
+  $labelColor?: 'black' | 'white'
   initialValue?: string
   iconPosition?: 'left' | 'right'
   disabled?: boolean
@@ -20,7 +20,7 @@ export type DateInputProps = {
 const DateInput = ({
   iconPosition = 'left',
   label,
-  labelColor = 'black',
+  $labelColor = 'black',
   name,
   initialValue = '',
   error,
@@ -61,7 +61,7 @@ const DateInput = ({
   return (
     <Styles.Wrapper monthAndYearOnly={monthAndYearOnly} disabled={disabled}>
       {!!label && (
-        <Styles.Label labelColor={labelColor} htmlFor={name}>
+        <Styles.Label $labelColor={$labelColor} htmlFor={name}>
           {label}
         </Styles.Label>
       )}

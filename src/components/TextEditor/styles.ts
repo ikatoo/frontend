@@ -1,12 +1,13 @@
 import styled, { css } from 'styled-components'
 import tw from 'tailwind-styled-components'
 
-import { EditorProps } from '.'
 import theme from '../../styles/theme'
+import Label from 'src/styles/common/label'
 
-type LabelProps = Pick<EditorProps, 'labelColor'>
-
-type WrapperProps = { error?: boolean }
+type WrapperProps = {
+  error?: boolean
+  disabled?: boolean
+}
 
 const EditorWrapper = styled.div`
   ${() => css`
@@ -20,14 +21,6 @@ const EditorWrapper = styled.div`
     &:focus-within {
       box-shadow: 0 0 0.5rem ${theme.colors.primary};
     }
-  `}
-`
-
-const Label = styled.label<LabelProps>`
-  ${({ labelColor }) => css`
-    font-size: ${theme.font.sizes.large};
-    color: ${theme.colors[labelColor ?? 'black']};
-    cursor: pointer;
   `}
 `
 

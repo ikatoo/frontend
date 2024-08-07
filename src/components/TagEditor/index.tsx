@@ -66,7 +66,7 @@ const TagEditor = (props: TagEditorProps) => {
         value={newTag}
         name={props.name}
         label={props.title}
-        labelColor="white"
+        $labelColor="white"
         error={alert}
         tabIndex={props.tabIndex ?? 0}
       />

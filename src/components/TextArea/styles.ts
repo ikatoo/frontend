@@ -2,8 +2,7 @@ import styled, { css } from 'styled-components'
 
 import { TextAreaProps } from '.'
 import theme from '../../styles/theme'
-
-type LabelProps = Pick<TextAreaProps, 'labelColor'>
+import Label from 'src/styles/common/label'
 
 type WrapperProps = Pick<TextAreaProps, 'disabled'> & { error?: boolean }
 
@@ -47,14 +46,6 @@ const TextArea = styled.textarea`
       font-size: ${theme.font.sizes.large};
     }
   }
-`
-
-const Label = styled.label<LabelProps>`
-  ${({ labelColor }) => css`
-    font-size: ${theme.font.sizes.large};
-    color: ${theme.colors[labelColor ?? 'black']};
-    cursor: pointer;
-  `}
 `
 
 const Error = styled.p`

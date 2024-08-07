@@ -5,7 +5,7 @@ export type EditorProps = {
   onEditorChange?: (value: string) => void
   name: string
   label?: string
-  labelColor?: 'black' | 'white'
+  $labelColor?: 'black' | 'white'
   initialValue?: string
   disabled?: boolean
   error?: string
@@ -22,7 +22,7 @@ const TextEditor = (props: EditorProps) => {
       <Styles.EditorWrapper>
         <TextArea
           label={props.label}
-          labelColor={props.labelColor}
+          labelColor={props.$labelColor}
           name={props.name}
           tabIndex={props.tabIndex ?? 0}
           onTextAreaChange={onChange}

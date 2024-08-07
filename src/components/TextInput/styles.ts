@@ -3,10 +3,9 @@ import styled, { css } from 'styled-components'
 import tw from 'tailwind-styled-components'
 import { TextInputProps } from '.'
 import theme from '../../styles/theme'
+import CommonLabel from 'src/styles/common/label'
 
 type IconPositionProps = Pick<TextInputProps, 'iconPosition'>
-
-type LabelProps = Pick<TextInputProps, 'labelColor'>
 
 type WrapperProps = Pick<TextInputProps, 'disabled'>
 
@@ -51,13 +50,8 @@ const Input = styled.input<IconPositionProps>`
   `}
 `
 
-const Label = styled.label<LabelProps>`
-  ${({ labelColor }) => css`
-    font-size: ${theme.font.sizes.large};
-    color: ${theme.colors[labelColor ?? 'black']};
-    cursor: pointer;
-    text-wrap: nowrap;
-  `}
+const Label = styled(CommonLabel)`
+  text-wrap: nowrap;
 `
 
 const Icon = styled.div<IconPositionProps>`
