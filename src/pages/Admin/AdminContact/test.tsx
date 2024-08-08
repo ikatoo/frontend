@@ -110,25 +110,21 @@ describe('ADMIN: contact page', () => {
 
     expect(title).toHaveFocus()
 
-    userEvent.tab()
-    await waitFor(() => {
-      expect(description).toHaveFocus()
-    })
+    await userEvent.tab()
 
-    userEvent.tab()
-    await waitFor(() => {
-      expect(email).toHaveFocus()
-    })
+    expect(description).toHaveFocus()
 
-    userEvent.tab()
-    await waitFor(() => {
-      expect(localization).toHaveFocus()
-    })
+    await userEvent.tab()
 
-    userEvent.tab()
-    await waitFor(() => {
-      expect(clearButton).toHaveFocus()
-    })
+    expect(email).toHaveFocus()
+
+    await userEvent.tab()
+
+    expect(localization).toHaveFocus()
+
+    await userEvent.tab()
+
+    expect(clearButton).toHaveFocus()
   })
 
   test('should save data when save button is clicked', async () => {
@@ -182,20 +178,16 @@ describe('ADMIN: contact page', () => {
       .parentElement as Element
     const saveButton = screen.getByRole('button', { name: 'Salvar' })
 
-    userEvent.type(title, mock.title)
-    userEvent.type(description, mock.description)
-    userEvent.type(email, mock.email)
+    await userEvent.type(title, mock.title)
+    await userEvent.type(description, mock.description)
+    await userEvent.type(email, mock.email)
 
-    await waitFor(() => {
-      expect(localization).toHaveTextContent(mock.localization.lat.toString())
-      expect(localization).toHaveTextContent(mock.localization.lng.toString())
-    })
+    expect(localization).toHaveTextContent(mock.localization.lat.toString())
+    expect(localization).toHaveTextContent(mock.localization.lng.toString())
 
-    userEvent.click(saveButton)
+    await userEvent.click(saveButton)
 
-    await waitFor(() => {
-      expect(screen.getByText('Success on create contact.')).toBeInTheDocument()
-    })
+    expect(screen.getByText('Success on create contact.')).toBeInTheDocument()
   })
 
   test('should update data when update button is clicked', async () => {
@@ -250,11 +242,9 @@ describe('ADMIN: contact page', () => {
 
     const updateButton = screen.getByRole('button', { name: 'Atualizar' })
 
-    userEvent.click(updateButton)
+    await userEvent.click(updateButton)
 
-    await waitFor(() => {
-      expect(screen.getByText('Success on update contact.')).toBeInTheDocument()
-    })
+    expect(screen.getByText('Success on update contact.')).toBeInTheDocument()
   })
 
   test('should clear all text inputs when click on clear button', async () => {
@@ -315,15 +305,13 @@ describe('ADMIN: contact page', () => {
       expect(screen.getByRole('button', { name: 'Atualizar' })).toBeEnabled()
     })
 
-    userEvent.click(clearButton)
+    await userEvent.click(clearButton)
 
-    await waitFor(() => {
-      expect(title).toHaveValue('')
-      expect(description).toHaveValue('')
-      expect(email).toHaveValue('')
-      expect(localization).toHaveTextContent(mockedCoords.latitude.toString())
-      expect(localization).toHaveTextContent(mockedCoords.longitude.toString())
-      expect(title).toHaveFocus()
-    })
+    expect(title).toHaveValue('')
+    expect(description).toHaveValue('')
+    expect(email).toHaveValue('')
+    expect(localization).toHaveTextContent(mockedCoords.latitude.toString())
+    expect(localization).toHaveTextContent(mockedCoords.longitude.toString())
+    expect(title).toHaveFocus()
   })
 })

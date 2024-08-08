@@ -52,7 +52,7 @@ export const Overlay = styled.div`
 `
 
 type WrapperProps = {
-  isOpen?: boolean
+  $isOpen?: boolean
 }
 
 const wrapperModifiers = {
@@ -71,7 +71,7 @@ const wrapperModifiers = {
 }
 
 export const Wrapper = styled.div<WrapperProps>`
-  ${({ isOpen }) => css`
+  ${({ $isOpen }) => css`
     position: relative;
 
     ${Content},
@@ -80,8 +80,8 @@ export const Wrapper = styled.div<WrapperProps>`
         transform 0.2s ease-in,
         opacity ${theme.transition.default};
 
-      ${isOpen && wrapperModifiers.open()}
-      ${!isOpen && wrapperModifiers.close()}
+      ${$isOpen && wrapperModifiers.open()}
+      ${!$isOpen && wrapperModifiers.close()}
     }
   `}
 `

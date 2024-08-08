@@ -103,7 +103,7 @@ describe('ADMIN: projects page', () => {
     )
   })
 
-  test('should change focus on press tab key', () => {
+  test('should change focus on press tab key', async () => {
     serverUse(server, [
       http.get('*projects/user-id/*', () => {
         return HttpResponse.json(
@@ -119,36 +119,36 @@ describe('ADMIN: projects page', () => {
     render(<AdminProjects />)
 
     expect(screen.getByRole('textbox', { name: 'Título' })).toHaveFocus()
-    userEvent.tab()
+    await userEvent.tab()
 
     expect(
       screen.getByText('Click or Drop & Down a file here').parentElement
     ).toHaveFocus()
-    userEvent.tab()
+    await userEvent.tab()
 
     expect(screen.getByRole('textbox', { name: 'Repositório' })).toHaveFocus()
-    userEvent.tab()
+    await userEvent.tab()
 
     expect(screen.getByRole('textbox', { name: 'Projeto' })).toHaveFocus()
-    userEvent.tab()
+    await userEvent.tab()
 
     expect(screen.getByRole('textbox', { name: 'Início' })).toHaveFocus()
-    userEvent.tab()
+    await userEvent.tab()
 
     expect(
       screen.getByRole('textbox', { name: 'Última atualização' })
     ).toHaveFocus()
-    userEvent.tab()
+    await userEvent.tab()
 
     expect(
       screen.getByRole('textbox', { name: 'Breve Descrição' })
     ).toHaveFocus()
-    userEvent.tab()
+    await userEvent.tab()
 
     expect(
       screen.getByRole('textbox', { name: 'Habilidades desenvolvidas' })
     ).toHaveFocus()
-    userEvent.tab()
+    await userEvent.tab()
 
     expect(
       screen.getByRole('button', { name: /LIMPAR FORMULÁRIO/i })
@@ -221,12 +221,15 @@ describe('ADMIN: projects page', () => {
     const dropArea = screen.getByText('Click or Drop & Down a file here')
       .parentElement as HTMLElement
 
-    userEvent.type(screen.getByRole('textbox', { name: 'Título' }), mock.title)
-    userEvent.type(
+    await userEvent.type(
+      screen.getByRole('textbox', { name: 'Título' }),
+      mock.title
+    )
+    await userEvent.type(
       screen.getByRole('textbox', { name: 'Repositório' }),
       githubRepository
     )
-    userEvent.type(
+    await userEvent.type(
       screen.getByRole('textbox', { name: 'Projeto' }),
       githubProject
     )
@@ -234,7 +237,7 @@ describe('ADMIN: projects page', () => {
       name: 'Início'
     })
     if (!startField.textContent?.length) {
-      userEvent.type(
+      await userEvent.type(
         startField,
         new Date(mock.start).toLocaleDateString('pt-BR', {
           dateStyle: 'short'
@@ -245,14 +248,14 @@ describe('ADMIN: projects page', () => {
       name: 'Última atualização'
     })
     if (!lastUpdateField.textContent?.length) {
-      userEvent.type(
+      await userEvent.type(
         lastUpdateField,
         new Date(mock.lastUpdate).toLocaleDateString('pt-BR', {
           dateStyle: 'short'
         })
       )
     }
-    userEvent.type(
+    await userEvent.type(
       screen.getByRole('textbox', {
         name: 'Breve Descrição'
       }),
@@ -282,7 +285,7 @@ describe('ADMIN: projects page', () => {
       expect(addProjectButton).toBeEnabled()
     })
 
-    userEvent.click(addProjectButton)
+    await userEvent.click(addProjectButton)
 
     const success = await screen.findByText('Success on create project.')
 
@@ -386,22 +389,22 @@ describe('ADMIN: projects page', () => {
       name: 'Limpar Formulário'
     })
 
-    userEvent.type(titleInput, mock.title)
-    userEvent.type(repoInput, githubRepository)
-    userEvent.type(projectInput, githubProject)
-    userEvent.type(
+    await userEvent.type(titleInput, mock.title)
+    await userEvent.type(repoInput, githubRepository)
+    await userEvent.type(projectInput, githubProject)
+    await userEvent.type(
       startInput,
       new Date(mock.start).toLocaleDateString('pt-BR', {
         dateStyle: 'short'
       })
     )
-    userEvent.type(
+    await userEvent.type(
       lastUpdateInput,
       new Date(mock.lastUpdate).toLocaleDateString('pt-BR', {
         dateStyle: 'short'
       })
     )
-    userEvent.type(descriptionInput, mock.description)
+    await userEvent.type(descriptionInput, mock.description)
     const file: DataTransferItem = {
       kind: 'file',
       type: 'image/png',
@@ -418,7 +421,7 @@ describe('ADMIN: projects page', () => {
       }
     })
 
-    userEvent.click(clearButton)
+    await userEvent.click(clearButton)
 
     await waitFor(() => {
       expect(titleInput).toHaveValue('')
@@ -471,7 +474,7 @@ describe('ADMIN: projects page', () => {
     const removeButton = screen.getByLabelText(
       `remove project with title ${mockToRemove.title}`
     )
-    userEvent.click(removeButton)
+    await userEvent.click(removeButton)
 
     const success = await screen.findByText('Success on remove project.')
 
@@ -536,7 +539,7 @@ describe('ADMIN: projects page', () => {
     const editButton = await screen.findByLabelText(
       `edit project with title ${mockToEdit.title}`
     )
-    userEvent.click(editButton)
+    await userEvent.click(editButton)
 
     const titleInput = screen.getByLabelText('Título')
     const descriptionInput = screen.getByLabelText('Breve Descrição')
@@ -593,16 +596,16 @@ describe('ADMIN: projects page', () => {
       webkitGetAsEntry: vi.fn()
     }
 
-    userEvent.type(titleInput, ' title updated')
-    userEvent.type(lastUpdateInput, mockedNewLastUpdate)
-    userEvent.type(descriptionInput, ' description updated')
+    await userEvent.type(titleInput, ' title updated')
+    await userEvent.type(lastUpdateInput, mockedNewLastUpdate)
+    await userEvent.type(descriptionInput, ' description updated')
     fireEvent.drop(dropArea, {
       dataTransfer: {
         items: [file]
       }
     })
 
-    userEvent.click(updateButton)
+    await userEvent.click(updateButton)
 
     const successMessage = await screen.findByText('Success on update project.')
 

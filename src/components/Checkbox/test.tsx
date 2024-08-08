@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { waitFor } from 'src/helpers/testUtils'
 import { vi } from 'vitest'
 
 import Checkbox from '.'
@@ -41,10 +40,9 @@ describe('<Checkbox />', () => {
 
     expect(onCheck).not.toHaveBeenCalled()
 
-    userEvent.click(screen.getByRole('checkbox'))
-    await waitFor(() => {
-      expect(onCheck).toHaveBeenCalledTimes(1)
-    })
+    await userEvent.click(screen.getByRole('checkbox'))
+
+    expect(onCheck).toHaveBeenCalledTimes(1)
     expect(onCheck).toHaveBeenCalledWith(true)
   })
 
@@ -53,10 +51,9 @@ describe('<Checkbox />', () => {
 
     render(<Checkbox label="Checkbox" onCheck={onCheck} isChecked />)
 
-    userEvent.click(screen.getByRole('checkbox'))
-    await waitFor(() => {
-      expect(onCheck).toHaveBeenCalledTimes(1)
-    })
+    await userEvent.click(screen.getByRole('checkbox'))
+
+    expect(onCheck).toHaveBeenCalledTimes(1)
     expect(onCheck).toHaveBeenCalledWith(false)
   })
 

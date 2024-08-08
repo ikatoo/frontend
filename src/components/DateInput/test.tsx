@@ -15,6 +15,6 @@ describe('<DateInput />', () => {
     render(<DateInput name="InitialDate" label="Initial Date" />)
 
     const input = screen.getByRole('textbox')
-    userEvent.click(input)
+    await userEvent.click(input)
   })
 })

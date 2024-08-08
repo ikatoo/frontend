@@ -85,15 +85,13 @@ describe('ADMIN: Skills page', () => {
       name: 'Limpar'
     })
 
-    await waitFor(() => {
-      expect(title).toHaveFocus()
-      userEvent.tab()
-      expect(description).toHaveFocus()
-      userEvent.tab()
-      expect(submitButton).toHaveFocus()
-      userEvent.tab()
-      expect(clearButton).toHaveFocus()
-    })
+    expect(title).toHaveFocus()
+    await userEvent.tab()
+    expect(description).toHaveFocus()
+    await userEvent.tab()
+    expect(submitButton).toHaveFocus()
+    await userEvent.tab()
+    expect(clearButton).toHaveFocus()
   })
 
   test('should show save message when submit data', async () => {
@@ -113,16 +111,14 @@ describe('ADMIN: Skills page', () => {
     const descriptionInput = screen.getByLabelText('Descrição')
     const saveButton = screen.getByRole('button', { name: /salvar/i })
 
-    userEvent.type(titleInput, skillsPageMock.title)
-    userEvent.type(descriptionInput, skillsPageMock.description)
-    userEvent.click(saveButton)
+    await userEvent.type(titleInput, skillsPageMock.title)
+    await userEvent.type(descriptionInput, skillsPageMock.description)
+    await userEvent.click(saveButton)
 
-    await waitFor(() => {
-      expect(
-        screen.getByText('Success on create skills page.')
-      ).toBeInTheDocument()
-      expect(skillsService.create).toHaveBeenCalledTimes(1)
-    })
+    expect(
+      screen.getByText('Success on create skills page.')
+    ).toBeInTheDocument()
+    expect(skillsService.create).toHaveBeenCalledTimes(1)
   })
 
   test('should show update message when submit a new data', async () => {
@@ -155,15 +151,13 @@ describe('ADMIN: Skills page', () => {
 
     const updateButton = screen.getByRole('button', { name: 'Atualizar' })
 
-    userEvent.type(titleInput, newSkillsPageMock.title)
-    userEvent.type(descriptionInput, newSkillsPageMock.description)
-    userEvent.click(updateButton)
+    await userEvent.type(titleInput, newSkillsPageMock.title)
+    await userEvent.type(descriptionInput, newSkillsPageMock.description)
+    await userEvent.click(updateButton)
 
-    await waitFor(() => {
-      expect(
-        screen.getByText('Success on update skills page.')
-      ).toBeInTheDocument()
-    })
+    expect(
+      screen.getByText('Success on update skills page.')
+    ).toBeInTheDocument()
   })
 
   test('should clear all text inputs and set focus in the first text input when click on Clear Button', async () => {
@@ -186,15 +180,13 @@ describe('ADMIN: Skills page', () => {
     })
 
     const clearButton = screen.getByRole('button', { name: 'Limpar' })
-    userEvent.click(clearButton)
+    await userEvent.click(clearButton)
 
     const allInputText = screen.getAllByRole('textbox')
     allInputText.forEach((input) => {
       expect(input).toHaveValue('')
     })
 
-    await waitFor(() => {
-      expect(titleInput).toHaveFocus()
-    })
+    expect(titleInput).toHaveFocus()
   })
 })

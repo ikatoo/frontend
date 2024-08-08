@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 
@@ -35,12 +35,11 @@ describe('<TextArea />', () => {
 
     const input = screen.getByRole('textbox')
     const text = 'This is my new text'
-    userEvent.type(input, text)
 
-    await waitFor(() => {
-      expect(input).toHaveValue(text)
-      expect(onTextAreaChange).toHaveBeenCalledTimes(text.length)
-    })
+    await userEvent.type(input, text)
+
+    expect(input).toHaveValue(text)
+    expect(onTextAreaChange).toHaveBeenCalledTimes(text.length)
     expect(onTextAreaChange).toHaveBeenCalledWith(text)
   })
 
@@ -56,14 +55,14 @@ describe('<TextArea />', () => {
     )
 
     const input = screen.getByRole('textbox')
+
     expect(input).toBeDisabled()
 
     const text = 'This is my new text'
-    userEvent.type(input, text)
 
-    await waitFor(() => {
-      expect(input).not.toHaveValue(text)
-    })
+    await userEvent.type(input, text)
+
+    expect(input).not.toHaveValue(text)
     expect(onTextAreaChange).not.toHaveBeenCalled()
   })
 
@@ -77,23 +76,23 @@ describe('<TextArea />', () => {
     expect(container.firstChild).toMatchSnapshot()
   })
 
-  it('Is accessible by tab', () => {
+  it('Is accessible by tab', async () => {
     render(<TextArea label="TextAreaLabel" name="TextAreaName" />)
 
     const input = screen.getByLabelText('TextAreaLabel')
     expect(document.body).toHaveFocus()
 
-    userEvent.tab()
+    await userEvent.tab()
     expect(input).toHaveFocus()
   })
 
-  it('Is not accessible by tab when disabled', () => {
+  it('Is not accessible by tab when disabled', async () => {
     render(<TextArea label="TextArea" name="TextArea" disabled />)
 
     const input = screen.getByLabelText('TextArea')
     expect(document.body).toHaveFocus()
 
-    userEvent.tab()
+    await userEvent.tab()
     expect(input).not.toHaveFocus()
   })
 })

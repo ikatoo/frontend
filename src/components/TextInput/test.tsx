@@ -54,12 +54,10 @@ describe('<TextField />', () => {
 
     const input = screen.getByRole('textbox')
     const text = 'This is my new text'
-    userEvent.type(input, text)
+    await userEvent.type(input, text)
 
-    await waitFor(() => {
-      expect(input).toHaveValue(text)
-      expect(onInputChange).toHaveBeenCalledTimes(text.length)
-    })
+    expect(input).toHaveValue(text)
+    expect(onInputChange).toHaveBeenCalledTimes(text.length)
     expect(onInputChange).toHaveBeenCalledWith(text)
   })
 
@@ -78,11 +76,9 @@ describe('<TextField />', () => {
     expect(input).toBeDisabled()
 
     const text = 'This is my new text'
-    userEvent.type(input, text)
+    await userEvent.type(input, text)
 
-    await waitFor(() => {
-      expect(input).not.toHaveValue(text)
-    })
+    expect(input).not.toHaveValue(text)
     expect(onInputChange).not.toHaveBeenCalled()
   })
 
@@ -101,23 +97,27 @@ describe('<TextField />', () => {
     expect(container.firstChild).toMatchSnapshot()
   })
 
-  it('Is accessible by tab', () => {
+  it('Is accessible by tab', async () => {
     render(<TextField label="TextField" name="TextField" />)
 
     const input = screen.getByLabelText('TextField')
+
     expect(document.body).toHaveFocus()
 
-    userEvent.tab()
+    await userEvent.tab()
+
     expect(input).toHaveFocus()
   })
 
-  it('Is not accessible by tab when disabled', () => {
+  it('Is not accessible by tab when disabled', async () => {
     render(<TextField label="TextField" name="TextField" disabled />)
 
     const input = screen.getByLabelText('TextField')
+
     expect(document.body).toHaveFocus()
 
-    userEvent.tab()
+    await userEvent.tab()
+
     expect(input).not.toHaveFocus()
   })
 

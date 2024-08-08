@@ -329,7 +329,7 @@ describe('<UploadInput />', () => {
     expect(hiddenInput).toHaveValue('')
   })
 
-  it('should be accessible with tab', () => {
+  it('should be accessible with tab', async () => {
     render(<UploadInput name="test" label="drop image here" />)
 
     const dropArea = screen.getByText('drop image here')
@@ -337,7 +337,7 @@ describe('<UploadInput />', () => {
 
     expect(document.body).toHaveFocus()
 
-    userEvent.tab()
+    await userEvent.tab()
 
     expect(dropArea).toHaveFocus()
   })

@@ -34,7 +34,7 @@ const Dropdown = ({
   }
 
   return (
-    <Styles.Wrapper isOpen={isOpen}>
+    <Styles.Wrapper $isOpen={isOpen}>
       <Styles.Title onClick={onClick}>{title}</Styles.Title>
 
       <Styles.Content width={width} aria-hidden={!isOpen}>

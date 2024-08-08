@@ -73,7 +73,7 @@ describe('ADMIN: About page', () => {
     ).not.toBeInTheDocument()
   })
 
-  test('should change focus on press tab key', () => {
+  test('should change focus on press tab key', async () => {
     serverUse(server, [
       http.get('*/about-page/user-id/*', () => {
         return HttpResponse.json({})
@@ -83,15 +83,25 @@ describe('ADMIN: About page', () => {
     render(<AdminAbout />)
 
     expect(screen.getByRole('textbox', { name: /título/i })).toHaveFocus()
-    userEvent.tab()
+
+    await userEvent.tab()
+
     expect(screen.getByRole('textbox', { name: /Descrição/i })).toHaveFocus()
-    userEvent.tab()
+
+    await userEvent.tab()
+
     expect(screen.getByRole('textbox', { name: /url/i })).toHaveFocus()
-    userEvent.tab()
+
+    await userEvent.tab()
+
     expect(screen.getByRole('textbox', { name: /alt/i })).toHaveFocus()
-    userEvent.tab()
+
+    await userEvent.tab()
+
     expect(screen.getByRole('button', { name: /salvar/i })).toHaveFocus()
-    userEvent.tab()
+
+    await userEvent.tab()
+
     expect(
       screen.getByRole('button', {
         name: /limpar formulário/i
@@ -118,15 +128,14 @@ describe('ADMIN: About page', () => {
 
     const submitButton = screen.getByRole('button', { name: /salvar/i })
 
-    userEvent.type(screen.getByLabelText(/título/i), aboutPageMock.title)
-    userEvent.type(
+    await userEvent.type(screen.getByLabelText(/título/i), aboutPageMock.title)
+    await userEvent.type(
       screen.getByLabelText(/Descrição/i),
       aboutPageMock.description
     )
-    userEvent.type(screen.getByLabelText(/url/i), aboutPageMock.image.url)
-    userEvent.type(screen.getByLabelText(/alt/i), aboutPageMock.image.alt)
-
-    userEvent.click(submitButton)
+    await userEvent.type(screen.getByLabelText(/url/i), aboutPageMock.image.url)
+    await userEvent.type(screen.getByLabelText(/alt/i), aboutPageMock.image.alt)
+    await userEvent.click(submitButton)
 
     const successMessage = await screen.findByText(
       /Success on create about page./i
@@ -164,7 +173,8 @@ describe('ADMIN: About page', () => {
     const updateButton = screen.getByRole('button', {
       name: /atualizar/i
     })
-    userEvent.click(updateButton)
+
+    await userEvent.click(updateButton)
 
     const successMessage = await screen.findByText(
       'Success on update about page.'
@@ -197,7 +207,7 @@ describe('ADMIN: About page', () => {
       name: 'Limpar Formulário'
     })
 
-    userEvent.click(clearButton)
+    await userEvent.click(clearButton)
 
     await waitFor(() => {
       expect(title).toHaveValue('')
