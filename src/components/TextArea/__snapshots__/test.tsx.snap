@@ -72,7 +72,6 @@ exports[`<TextArea /> > Renders with error 1`] = `
   <label
     class="c1 c2"
     for="username"
-    labelcolor="black"
   >
     TextArea
   </label>

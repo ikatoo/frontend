@@ -16,7 +16,7 @@ export const Default: Story = {
         showUploadButton
         name="snapshot"
         label="Snapshot ou ilustração"
-        labelColor="black"
+        $labelColor="black"
         onChangeFile={(file) => {
           console.log('file name', file.name)
           console.log('file type', file.type)

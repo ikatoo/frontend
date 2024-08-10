@@ -28,7 +28,7 @@ describe('<TextContainer>', () => {
     render(<TextContainer title={title}>{content}</TextContainer>)
 
     const titleElement = screen.getByText(title)
-    expect(titleElement).toHaveStyleRule('font-size', 'clamp(1rem,3vw,3rem)')
+    expect(titleElement).toHaveStyleRule('font-size', 'clamp(1rem, 3vw, 3rem)')
     expect(titleElement).toHaveStyleRule('line-height', '1')
     expect(titleElement).toHaveClass('ml-4 font-body text-5xl text-mck_aqua')
 

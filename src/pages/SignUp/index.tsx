@@ -90,21 +90,21 @@ export const SignUpPage = () => {
             <TextInput
               name="name"
               label="Nome"
-              labelColor="white"
+              $labelColor="white"
               onInputChange={setName}
               autoFocus
             />
             <TextInput
               name="email"
               label="E-mail"
-              labelColor="white"
+              $labelColor="white"
               onInputChange={setEmail}
               error={emailError}
             />
             <TextInput
               name="confirm-email"
               label="Confirmar E-mail"
-              labelColor="white"
+              $labelColor="white"
               onInputChange={setConfirmEmail}
               error={emailError}
             />
@@ -112,7 +112,7 @@ export const SignUpPage = () => {
               name="password"
               label="Senha"
               type="password"
-              labelColor="white"
+              $labelColor="white"
               onInputChange={setPassword}
               error={passwordError}
             />
@@ -120,7 +120,7 @@ export const SignUpPage = () => {
               name="confirm-password"
               label="Confirmar Senha"
               type="password"
-              labelColor="white"
+              $labelColor="white"
               onInputChange={setConfirmPassword}
               error={passwordError}
             />

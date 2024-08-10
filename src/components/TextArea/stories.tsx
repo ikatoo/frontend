@@ -43,5 +43,5 @@ export const WhiteLabel: ComponentStory<typeof TextArea> = (args) => (
   </div>
 )
 WhiteLabel.args = {
-  labelColor: 'white'
+  $labelColor: 'white'
 }

@@ -22,7 +22,7 @@ const TextEditor = (props: EditorProps) => {
       <Styles.EditorWrapper>
         <TextArea
           label={props.label}
-          labelColor={props.$labelColor}
+          $labelColor={props.$labelColor}
           name={props.name}
           tabIndex={props.tabIndex ?? 0}
           onTextAreaChange={onChange}

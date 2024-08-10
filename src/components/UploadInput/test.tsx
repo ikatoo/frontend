@@ -5,13 +5,6 @@ import { vi } from 'vitest'
 import UploadInput from '.'
 
 describe('<UploadInput />', () => {
-  beforeEach(() => {
-    vi.useFakeTimers()
-  })
-  afterEach(() => {
-    vi.restoreAllMocks()
-  })
-
   it('should render the component', () => {
     render(<UploadInput name="test" label="file here" />)
     const component = screen.getByText('file here')
@@ -59,9 +52,8 @@ describe('<UploadInput />', () => {
         items: [file]
       }
     })
-    await waitFor(() => {
-      expect(uploadButton).not.toBeDisabled()
-    })
+
+    expect(uploadButton).not.toBeDisabled()
   })
 
   it('should update label with name and size of the choosed file and enable upload button', async () => {
@@ -86,10 +78,8 @@ describe('<UploadInput />', () => {
       }
     })
 
-    await waitFor(() => {
-      expect(screen.getByText('test.png - 0.000MB')).toBeInTheDocument()
-      expect(screen.getByRole('button')).toBeEnabled()
-    })
+    expect(screen.getByText('test.png - 0.000MB')).toBeInTheDocument()
+    expect(screen.getByRole('button')).toBeEnabled()
   })
 
   it('should disable upload button and show default label when cancel choice of the image file', async () => {
@@ -122,12 +112,10 @@ describe('<UploadInput />', () => {
       target: {}
     })
 
-    await waitFor(() => {
-      expect(uploadButton).toBeDisabled()
-      expect(
-        screen.getByText('Click or Drop & Down a file here')
-      ).toBeInTheDocument()
-    })
+    expect(uploadButton).toBeDisabled()
+    expect(
+      screen.getByText('Click or Drop & Down a file here')
+    ).toBeInTheDocument()
   })
 
   it('should call function when change file', async () => {
@@ -162,9 +150,7 @@ describe('<UploadInput />', () => {
       }
     })
 
-    await waitFor(() => {
-      expect(onChangeFileFn).toHaveBeenCalledTimes(1)
-    })
+    expect(onChangeFileFn).toHaveBeenCalledTimes(1)
   })
 
   it('should call function when press upload button', async () => {
@@ -204,12 +190,11 @@ describe('<UploadInput />', () => {
 
     fireEvent.click(uploadButton)
 
-    await waitFor(() => {
-      expect(onUploadFn).toHaveBeenCalledTimes(1)
-    })
+    expect(onUploadFn).toHaveBeenCalledTimes(1)
   })
 
-  it('should the label show an error message when the chosen file is not an image', () => {
+  it('should show an error message when the chosen file is not an image', () => {
+    vi.useFakeTimers()
     render(<UploadInput name="test" label="drop image here" />)
 
     const file: DataTransferItem = {
@@ -227,12 +212,10 @@ describe('<UploadInput />', () => {
     const dropArea = screen.getByText('drop image here')
       .parentElement as HTMLElement
 
-    act(() => {
-      fireEvent.drop(dropArea, {
-        dataTransfer: {
-          items: [file]
-        }
-      })
+    fireEvent.drop(dropArea, {
+      dataTransfer: {
+        items: [file]
+      }
     })
 
     expect(screen.getByText('Image only.')).toBeInTheDocument()
@@ -240,6 +223,8 @@ describe('<UploadInput />', () => {
       vi.advanceTimersByTime(5000)
     })
     expect(screen.getByText('drop image here')).toBeInTheDocument()
+
+    vi.useRealTimers()
   })
 
   it('should not enable upload button when droped file is not valid', () => {

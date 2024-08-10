@@ -81,7 +81,7 @@ export const AdminSkills = () => {
                   setFocus(false)
                 }}
                 initialValue={title}
-                labelColor="white"
+                $labelColor="white"
                 label="Título"
                 name="title"
                 placeholder="Título"
@@ -96,7 +96,7 @@ export const AdminSkills = () => {
                 initialValue={description}
                 label="Descrição"
                 placeholder="Descrição"
-                labelColor="white"
+                $labelColor="white"
                 onTextAreaChange={setDescription}
               />
             </TextWrapper>

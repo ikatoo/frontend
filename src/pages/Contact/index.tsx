@@ -97,7 +97,7 @@ export const Contact = () => {
                       setFocused(false)
                     }}
                     onInputChange={setName}
-                    labelColor="white"
+                    $labelColor="white"
                     label="Nome"
                     name="name"
                     placeholder="Seu Nome"
@@ -109,7 +109,7 @@ export const Contact = () => {
                   <TextInput
                     value={from}
                     onInputChange={setFrom}
-                    labelColor="white"
+                    $labelColor="white"
                     label="Email"
                     name="email"
                     placeholder="seu@email.com"

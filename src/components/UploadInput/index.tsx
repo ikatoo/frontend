@@ -11,7 +11,7 @@ import Styles from './styles'
 export type UploadInputProps = {
   name: string
   label?: string
-  labelColor?: 'black' | 'white'
+  $labelColor?: 'black' | 'white'
   disabled?: boolean
   showUploadButton?: boolean
   reset?: boolean
@@ -20,7 +20,7 @@ export type UploadInputProps = {
 } & InputHTMLAttributes<HTMLInputElement>
 
 const UploadInput = ({
-  labelColor = 'black',
+  $labelColor = 'black',
   disabled = false,
   label = 'Click or Drop & Down a file here',
   showUploadButton = false,
@@ -129,7 +129,7 @@ const UploadInput = ({
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         disabled={disabled}
-        labelColor={labelColor}
+        $labelColor={$labelColor}
       >
         <Styles.Error>{error}</Styles.Error>
         {!error.length && <span>{newLabel}</span>}

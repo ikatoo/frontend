@@ -13,16 +13,16 @@ const Container = styled.div`
   }
 `
 
-const DropArea = styled.div<Pick<UploadInputProps, 'disabled' | 'labelColor'>>`
+const DropArea = styled.div<Pick<UploadInputProps, 'disabled' | '$labelColor'>>`
   cursor: pointer;
   background-color: ${theme.colors.light};
-  ${({ disabled, labelColor }) =>
+  ${({ disabled, $labelColor }) =>
     !!disabled &&
-    labelColor &&
+    $labelColor &&
     css`
       cursor: not-allowed;
       background-color: ${theme.colors.lightGray};
-      color: ${(disabled && theme.colors.light) ?? theme.colors[labelColor]};
+      color: ${(disabled && theme.colors.light) ?? theme.colors[$labelColor]};
     `}
 `
 

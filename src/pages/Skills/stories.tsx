@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Skills } from '.'
-import skillsHandler from 'shared/msw/handlers/skillsHandler'
+import { http, HttpResponse } from 'msw'
+import env from 'src/helpers/env'
 
 const meta: Meta<typeof Skills> = {
   title: 'Pages/Skills',
@@ -12,7 +13,11 @@ const meta: Meta<typeof Skills> = {
   ],
   parameters: {
     msw: {
-      handlers: [skillsHandler[1]]
+      handlers: [
+        http.post(`${env.VITE_API_URL}/skills`, () => {
+          return HttpResponse.json({ status: 201 })
+        })
+      ]
     }
   }
 }

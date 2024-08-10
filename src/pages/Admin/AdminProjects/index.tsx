@@ -226,7 +226,7 @@ export const AdminProjects = () => {
                   name="title"
                   placeholder="Nome do projeto ou portfolio."
                   label="Título"
-                  labelColor="white"
+                  $labelColor="white"
                   initialValue={title}
                   onInputChange={setTitle}
                   focus={titleFocused}
@@ -265,7 +265,7 @@ export const AdminProjects = () => {
                   <TextInput
                     name="baseGithub"
                     label="Github"
-                    labelColor="white"
+                    $labelColor="white"
                     initialValue="https://github.com/"
                     disabled
                   />
@@ -273,7 +273,7 @@ export const AdminProjects = () => {
                     name="owner"
                     placeholder="Seu nome de usuário no github"
                     label="Repositório"
-                    labelColor="white"
+                    $labelColor="white"
                     initialValue={githubOwner}
                     onInputChange={setGithubOwner}
                     onBlur={onChangeGithub}
@@ -282,7 +282,7 @@ export const AdminProjects = () => {
                     name="githubProjectName"
                     placeholder="Nome do repositório"
                     label="Projeto"
-                    labelColor="white"
+                    $labelColor="white"
                     initialValue={githubRepo}
                     onInputChange={setGithubRepo}
                     onBlur={onChangeGithub}
@@ -295,7 +295,7 @@ export const AdminProjects = () => {
                   name="start"
                   placeholder="dd/mm/YYYY"
                   label="Início"
-                  labelColor="white"
+                  $labelColor="white"
                   initialValue={start}
                   onDateChange={setStart}
                 />
@@ -303,7 +303,7 @@ export const AdminProjects = () => {
                   name="lastUpdate"
                   placeholder="dd/mm/YYYY"
                   label="Última atualização"
-                  labelColor="white"
+                  $labelColor="white"
                   initialValue={lastUpdate}
                   onDateChange={setLastUpdate}
                 />
@@ -316,7 +316,7 @@ export const AdminProjects = () => {
                 placeholder="Motivação, caracteristicas ou funcionalidades com até 100 caracteres."
                 maxLength={100}
                 label="Breve Descrição"
-                labelColor="white"
+                $labelColor="white"
                 initialValue={description}
                 onInputChange={setDescription}
               />

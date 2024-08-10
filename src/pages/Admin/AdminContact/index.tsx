@@ -133,7 +133,7 @@ export const AdminContact = () => {
               name="title"
               placeholder="Título da página"
               label="Título"
-              labelColor="white"
+              $labelColor="white"
               initialValue={title}
               onInputChange={setTitle}
               focus={titleFocused}
@@ -148,7 +148,7 @@ export const AdminContact = () => {
               placeholder="Instrução breve e clara para uma comunicação eficiente com até 350 caracteres."
               maxLength={350}
               label="Breve Descrição"
-              labelColor="white"
+              $labelColor="white"
               initialValue={description}
               onInputChange={setDescription}
             />
@@ -158,7 +158,7 @@ export const AdminContact = () => {
                 name="email"
                 placeholder="Ex: seuemail@provedor.com.br"
                 label="Email"
-                labelColor="white"
+                $labelColor="white"
                 initialValue={email}
                 onInputChange={setEmail}
               />

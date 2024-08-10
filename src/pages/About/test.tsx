@@ -6,6 +6,7 @@ import aboutPageMock from 'shared/mocks/aboutPageMock/result.json'
 import { serverUse, waitFor } from 'src/helpers/testUtils'
 import { describe, expect, test, vi } from 'vitest'
 import { About } from '.'
+import { AboutPageServiceProps } from 'src/types/AboutPage'
 
 vi.mock('../../components/IconCloud')
 
@@ -23,28 +24,30 @@ describe('About Page', () => {
 
   test('renders the about page with data from the server', async () => {
     serverUse(server, [
-      http.get('*/about-page/user-id/*', () => {
+      http.get('*/about-page', () => {
         return HttpResponse.json(aboutPageMock)
       })
     ])
 
-    render(<About />)
-
     await waitFor(() => {
-      expect(screen.getByText(aboutPageMock.title)).toBeInTheDocument()
-      expect(
-        screen.getByText(/Me chamo Milton Carlos Katoo/i)
-      ).toBeInTheDocument()
+      render(<About />)
     })
+
+    expect(screen.getByText(aboutPageMock.title)).toBeInTheDocument()
+    expect(
+      screen.getByText(/Me chamo Milton Carlos Katoo/i)
+    ).toBeInTheDocument()
   })
 
   test('shoud not render image wrapper if illustration url not exist', async () => {
     serverUse(server, [
-      http.get('*/about-page/user-id/*', () => {
-        const { image: _, ...page } = aboutPageMock
-        return HttpResponse.json({
-          ...page
-        })
+      http.get('*/about-page', () => {
+        const data: AboutPageServiceProps = {
+          title: aboutPageMock.title,
+          description: aboutPageMock.description,
+          image: {}
+        }
+        return HttpResponse.json(data)
       })
     ])
 
@@ -58,7 +61,7 @@ describe('About Page', () => {
 
   test('shoud not render image wrapper if illustration url is empty', async () => {
     serverUse(server, [
-      http.get('*/about-page/user-id/*', () => {
+      http.get('*/about-page', () => {
         return HttpResponse.json({
           ...aboutPageMock,
           image: { url: '', alt: '' }

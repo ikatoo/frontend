@@ -71,7 +71,7 @@ export const RecoveryPage = () => {
             <TextInput
               name="email"
               label="E-mail"
-              labelColor="white"
+              $labelColor="white"
               onInputChange={setEmail}
               error={emailError}
               autoFocus

@@ -6,12 +6,12 @@ import CommonLabel from 'src/styles/common/label'
 
 type IconPositionProps = Pick<DateInputProps, 'iconPosition'>
 
-type WrapperProps = Pick<DateInputProps, 'disabled' | 'monthAndYearOnly'>
+type WrapperProps = Pick<DateInputProps, 'disabled' | '$monthAndYearOnly'>
 
 const Wrapper = styled.div<WrapperProps>`
-  ${({ disabled, monthAndYearOnly }) => css`
+  ${({ disabled, $monthAndYearOnly }) => css`
     width: fit-content;
-    ${!monthAndYearOnly &&
+    ${!$monthAndYearOnly &&
     `
       min-width: 8rem;
     `}

@@ -14,7 +14,7 @@ export type DateInputProps = {
   disabled?: boolean
   error?: string
   name: string
-  monthAndYearOnly?: boolean
+  $monthAndYearOnly?: boolean
 } & InputHTMLAttributes<HTMLInputElement>
 
 const DateInput = ({
@@ -26,7 +26,7 @@ const DateInput = ({
   error,
   disabled = false,
   onDateChange,
-  monthAndYearOnly = false,
+  $monthAndYearOnly = false,
   ...props
 }: DateInputProps) => {
   const [value, setValue] = useState('')
@@ -49,7 +49,7 @@ const DateInput = ({
 
   const icon = <Calendar />
 
-  const dateFormat: Intl.DateTimeFormatOptions = monthAndYearOnly
+  const dateFormat: Intl.DateTimeFormatOptions = $monthAndYearOnly
     ? {
         month: '2-digit',
         year: 'numeric'
@@ -59,7 +59,7 @@ const DateInput = ({
       }
 
   return (
-    <Styles.Wrapper monthAndYearOnly={monthAndYearOnly} disabled={disabled}>
+    <Styles.Wrapper $monthAndYearOnly={$monthAndYearOnly} disabled={disabled}>
       {!!label && (
         <Styles.Label $labelColor={$labelColor} htmlFor={name}>
           {label}
@@ -90,7 +90,7 @@ const DateInput = ({
         }
       >
         <Month
-          monthAndYearOnly={monthAndYearOnly}
+          monthAndYearOnly={$monthAndYearOnly}
           onClick={(date) => {
             setValue(date.toLocaleDateString(undefined, dateFormat))
             setIsOpen(false)

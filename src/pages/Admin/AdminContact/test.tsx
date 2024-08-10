@@ -26,7 +26,7 @@ describe('ADMIN: contact page', () => {
 
   test('should render all elements', async () => {
     serverUse(server, [
-      http.get('*/contact-page/user-id/*', () => {
+      http.get('*/contact-page', () => {
         return HttpResponse.json({})
       })
     ])
@@ -56,7 +56,7 @@ describe('ADMIN: contact page', () => {
 
   test('should load data at render', async () => {
     serverUse(server, [
-      http.get('*/contact-page/user-id/*', () => {
+      http.get('*/contact-page', () => {
         return HttpResponse.json(mock)
       })
     ])
@@ -85,7 +85,7 @@ describe('ADMIN: contact page', () => {
 
   test('should change focus on press tab key', async () => {
     serverUse(server, [
-      http.get('*/contact-page/user-id/*', () => {
+      http.get('*/contact-page', () => {
         return HttpResponse.json({})
       })
     ])
@@ -129,7 +129,7 @@ describe('ADMIN: contact page', () => {
 
   test('should save data when save button is clicked', async () => {
     serverUse(server, [
-      http.get('*/contact-page/user-id/*', () => {
+      http.get('*/contact-page', () => {
         return HttpResponse.json({})
       }),
       http.post('*/contact-page', () => {
@@ -192,7 +192,7 @@ describe('ADMIN: contact page', () => {
 
   test('should update data when update button is clicked', async () => {
     serverUse(server, [
-      http.get('*/contact-page/user-id/*', () => {
+      http.get('*/contact-page', () => {
         return HttpResponse.json(mock)
       }),
       http.patch('*/contact-page', () => {
@@ -249,7 +249,7 @@ describe('ADMIN: contact page', () => {
 
   test('should clear all text inputs when click on clear button', async () => {
     serverUse(server, [
-      http.get('*/contact-page/user-id/*', () => {
+      http.get('*/contact-page', () => {
         return HttpResponse.json(mock)
       })
     ])

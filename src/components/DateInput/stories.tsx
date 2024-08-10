@@ -38,7 +38,7 @@ export const Default: Story = {
 export const Month_and_Year: Story = {
   render: () => (
     <DateInput
-      monthAndYearOnly
+      $monthAndYearOnly
       placeholder="mm/YYYY"
       name="Initial Date"
       onDateChange={(date) => console.log(date)}

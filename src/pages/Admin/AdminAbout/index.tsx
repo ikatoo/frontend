@@ -98,7 +98,7 @@ export const AdminAbout = () => {
                 onBlur={() => {
                   setTitleFocused(false)
                 }}
-                labelColor="white"
+                $labelColor="white"
                 label="Título"
                 name="title"
                 placeholder="Título"
@@ -113,7 +113,7 @@ export const AdminAbout = () => {
                 initialValue={description}
                 label="Descrição"
                 placeholder="Descrição"
-                labelColor="white"
+                $labelColor="white"
                 onTextAreaChange={(value) => setDescription(value)}
               />
             </TextWrapper>
@@ -123,7 +123,7 @@ export const AdminAbout = () => {
                 <legend>Imagem</legend>
                 <TextInput
                   initialValue={imageUrl}
-                  labelColor="white"
+                  $labelColor="white"
                   label="URL"
                   name="illustrationURL"
                   placeholder="https://dominio.com/imagem.png"
@@ -131,7 +131,7 @@ export const AdminAbout = () => {
                 />
                 <TextInput
                   initialValue={imageAlt}
-                  labelColor="white"
+                  $labelColor="white"
                   label="ALT"
                   name="illustrationALT"
                   placeholder="Descrição da imagem"

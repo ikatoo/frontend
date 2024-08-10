@@ -5,7 +5,7 @@ import Styles from './styles'
 export type TextAreaProps = {
   onTextAreaChange?: (value: string) => void
   label?: string
-  labelColor?: 'black' | 'white'
+  $labelColor?: 'black' | 'white'
   initialValue?: string
   disabled?: boolean
   error?: string
@@ -14,7 +14,7 @@ export type TextAreaProps = {
 
 const TextArea = ({
   label,
-  labelColor = 'black',
+  $labelColor = 'black',
   name,
   initialValue = '',
   error,
@@ -38,7 +38,7 @@ const TextArea = ({
   return (
     <Styles.Wrapper disabled={disabled} error={!!error}>
       {!!label && (
-        <Styles.Label labelColor={labelColor} htmlFor={name}>
+        <Styles.Label $labelColor={$labelColor} htmlFor={name}>
           {label}
         </Styles.Label>
       )}
